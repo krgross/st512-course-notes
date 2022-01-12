@@ -1,2 +1,15 @@
-maximum-likelihood-estimation
-a-very-simple-example-with-a-single-observation
+fig:unnamed-chunk-2
+eq:slr
+fig:unnamed-chunk-3
+simple-linear-regression
+introduction-to-simple-linear-regression
+least-squares-estimation
+sidebar-on-degrees-of-freedom
+inference-for-the-slope
+standard-errors
+confidence-intervals
+statistical-hypothesis-tests
+inference-for-the-intercept
+sums-of-squares-decomposition-and-r2
+fitting-the-slr-model-in-r
+diagnostic-plots

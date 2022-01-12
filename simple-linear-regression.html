@@ -32,7 +32,7 @@
   
   
 
-<link rel="next" href="bibliography.html"/>
+
 <script src="libs/header-attrs-2.9/header-attrs.js"></script>
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
@@ -120,28 +120,6 @@ code span.vs { color: #4070a0; } /* VerbatimString */
 code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
 </style>
 
-<style type="text/css">
-/* Used with Pandoc 2.11+ new --citeproc when CSL is used */
-div.csl-bib-body { }
-div.csl-entry {
-  clear: both;
-}
-.hanging div.csl-entry {
-  margin-left:2em;
-  text-indent:-2em;
-}
-div.csl-left-margin {
-  min-width:2em;
-  float:left;
-}
-div.csl-right-inline {
-  margin-left:2em;
-  padding-left:1em;
-}
-div.csl-indent {
-  margin-left: 2em;
-}
-</style>
 
 </head>
 
@@ -155,25 +133,21 @@ div.csl-indent {
       <nav role="navigation">
 
 <ul class="summary">
-<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Simple linear regression</a>
+<li class="chapter" data-level="1" data-path=""><a href="#simple-linear-regression"><i class="fa fa-check"></i><b>1</b> Simple linear regression</a>
 <ul>
-<li class="chapter" data-level="1.1" data-path="index.html"><a href="index.html#introduction-to-simple-linear-regression"><i class="fa fa-check"></i><b>1.1</b> Introduction to simple linear regression</a></li>
-<li class="chapter" data-level="1.2" data-path="index.html"><a href="index.html#least-squares-estimation"><i class="fa fa-check"></i><b>1.2</b> Least-squares estimation</a>
+<li class="chapter" data-level="1.1" data-path=""><a href="#introduction-to-simple-linear-regression"><i class="fa fa-check"></i><b>1.1</b> Introduction to simple linear regression</a></li>
+<li class="chapter" data-level="1.2" data-path=""><a href="#least-squares-estimation"><i class="fa fa-check"></i><b>1.2</b> Least-squares estimation</a>
 <ul>
-<li class="chapter" data-level="1.2.1" data-path="index.html"><a href="index.html#sidebar-on-degrees-of-freedom"><i class="fa fa-check"></i><b>1.2.1</b> Sidebar on degrees of freedom</a></li>
+<li class="chapter" data-level="1.2.1" data-path=""><a href="#sidebar-on-degrees-of-freedom"><i class="fa fa-check"></i><b>1.2.1</b> Sidebar on degrees of freedom</a></li>
 </ul></li>
-<li class="chapter" data-level="1.3" data-path="index.html"><a href="index.html#inference-for-the-slope"><i class="fa fa-check"></i><b>1.3</b> Inference for the slope</a>
+<li class="chapter" data-level="1.3" data-path=""><a href="#inference-for-the-slope"><i class="fa fa-check"></i><b>1.3</b> Inference for the slope</a>
 <ul>
-<li class="chapter" data-level="1.3.1" data-path="index.html"><a href="index.html#standard-errors"><i class="fa fa-check"></i><b>1.3.1</b> Standard errors</a></li>
-<li class="chapter" data-level="1.3.2" data-path="index.html"><a href="index.html#confidence-intervals"><i class="fa fa-check"></i><b>1.3.2</b> Confidence intervals</a></li>
-<li class="chapter" data-level="1.3.3" data-path="index.html"><a href="index.html#statistical-hypothesis-tests"><i class="fa fa-check"></i><b>1.3.3</b> Statistical hypothesis tests</a></li>
-<li class="chapter" data-level="1.3.4" data-path="index.html"><a href="index.html#inference-for-the-intercept"><i class="fa fa-check"></i><b>1.3.4</b> Inference for the intercept</a></li>
+<li class="chapter" data-level="1.3.1" data-path=""><a href="#standard-errors"><i class="fa fa-check"></i><b>1.3.1</b> Standard errors</a></li>
+<li class="chapter" data-level="1.3.2" data-path=""><a href="#confidence-intervals"><i class="fa fa-check"></i><b>1.3.2</b> Confidence intervals</a></li>
+<li class="chapter" data-level="1.3.3" data-path=""><a href="#statistical-hypothesis-tests"><i class="fa fa-check"></i><b>1.3.3</b> Statistical hypothesis tests</a></li>
+<li class="chapter" data-level="1.3.4" data-path=""><a href="#inference-for-the-intercept"><i class="fa fa-check"></i><b>1.3.4</b> Inference for the intercept</a></li>
 </ul></li>
-<li class="chapter" data-level="1.4" data-path="index.html"><a href="index.html#sums-of-squares-decomposition-and-r2"><i class="fa fa-check"></i><b>1.4</b> Sums of squares decomposition and <span class="math inline">\(R^2\)</span></a></li>
-<li class="chapter" data-level="1.5" data-path="index.html"><a href="index.html#fitting-the-slr-model-in-r"><i class="fa fa-check"></i><b>1.5</b> Fitting the SLR model in R</a></li>
-<li class="chapter" data-level="1.6" data-path="index.html"><a href="index.html#diagnostic-plots"><i class="fa fa-check"></i><b>1.6</b> Diagnostic plots</a></li>
 </ul></li>
-<li class="chapter" data-level="" data-path="bibliography.html"><a href="bibliography.html"><i class="fa fa-check"></i>Bibliography</a></li>
 </ul>
 
       </nav>
@@ -202,8 +176,8 @@ div.csl-indent {
 <h2><span class="header-section-number">1.1</span> Introduction to simple linear regression</h2>
 <p>Linear regression is a versatile statistical tool that can be used to characterize relationships between quantitative variables. We will study linear regression in depth, and begin with a simple example.</p>
 <p><em>Example</em>: Blood alcohol content (BAC) vs. number of beers consumed. Data were obtained for <span class="math inline">\(n=16\)</span> individuals. Here is a scatter plot of the data:</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="index.html#cb2-1" aria-hidden="true" tabindex="-1"></a>beer <span class="ot">&lt;-</span> <span class="fu">read.table</span>(<span class="st">&quot;data/beer.txt&quot;</span>, <span class="at">head =</span> T)</span>
-<span id="cb2-2"><a href="index.html#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">with</span>(beer, <span class="fu">plot</span>(BAC <span class="sc">~</span> Beers, <span class="at">xlab =</span> <span class="st">&quot;beers consumed&quot;</span>))</span></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>beer <span class="ot">&lt;-</span> <span class="fu">read.table</span>(<span class="st">&quot;data/beer.txt&quot;</span>, <span class="at">head =</span> T)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">with</span>(beer, <span class="fu">plot</span>(BAC <span class="sc">~</span> Beers, <span class="at">xlab =</span> <span class="st">&quot;beers consumed&quot;</span>))</span></code></pre></div>
 <div class="figure" style="text-align: center"><span id="fig:unnamed-chunk-2"></span>
 <img src="index_files/figure-html/unnamed-chunk-2-1.png" alt="BAC vs. beers consumed." width="384" />
 <p class="caption">
@@ -238,10 +212,10 @@ y_i =\beta_0 +\beta_1 x_i +\varepsilon_i \tag{1.1}
 <h2><span class="header-section-number">1.2</span> Least-squares estimation</h2>
 <p>The parameters of an SLR model are estimated by fitting a least-squares line to the data. That is to say, we find the values of the parameters that minimize the sum of the squared differences between the data points themselves and the line. The estimates are denoted by “hats,” i.e., <span class="math inline">\(\widehat{\beta_0}\)</span> is the estimate of <span class="math inline">\(\beta_0\)</span>. Other authors use <span class="math inline">\(b\)</span>’s instead of <span class="math inline">\(\widehat{\beta}\)</span>’s for parameter estimates in regression. Both types of notation commonly appear in the scientific literature.</p>
 <p>In ST511 or a similar course, you may have derived formulas for calculating the least-squares estimates <span class="math inline">\(\widehat{\beta_1}\)</span> and <span class="math inline">\(\widehat{\beta_1}\)</span> by hand. In ST512, we will use a computer (although it is worth noting that one could derive the formulas for <span class="math inline">\(\widehat{\beta_0}\)</span> and <span class="math inline">\(\widehat{\beta_1}\)</span> by using basic calculus tools to minimize the error sum-of squares). We’ll defer a discussion of how to use R until a later section of the notes. For now, we’ll observe that the least-squares estimates of the intercept and slope for the BAC data are <span class="math inline">\(\widehat{\beta_0} = -0.013\)</span> and <span class="math inline">\(\widehat{\beta_1} = 0.018\)</span>. Here’s a picture of the scatter-plot with the least-squares line:</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="index.html#cb3-1" aria-hidden="true" tabindex="-1"></a>fm1 <span class="ot">&lt;-</span> <span class="fu">with</span>(beer, <span class="fu">lm</span>(BAC <span class="sc">~</span> Beers))</span>
-<span id="cb3-2"><a href="index.html#cb3-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-3"><a href="index.html#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="fu">with</span>(beer, <span class="fu">plot</span>(BAC <span class="sc">~</span> Beers, <span class="at">xlab =</span> <span class="st">&quot;beers consumed&quot;</span>))</span>
-<span id="cb3-4"><a href="index.html#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(fm1)</span></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>fm1 <span class="ot">&lt;-</span> <span class="fu">with</span>(beer, <span class="fu">lm</span>(BAC <span class="sc">~</span> Beers))</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="fu">with</span>(beer, <span class="fu">plot</span>(BAC <span class="sc">~</span> Beers, <span class="at">xlab =</span> <span class="st">&quot;beers consumed&quot;</span>))</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(fm1)</span></code></pre></div>
 <div class="figure" style="text-align: center"><span id="fig:unnamed-chunk-3"></span>
 <img src="index_files/figure-html/unnamed-chunk-3-1.png" alt="SLR fit of BAC vs. beers consumed." width="384" />
 <p class="caption">
@@ -294,11 +268,11 @@ Note that we divide by <span class="math inline">\(n - 2\)</span> because there 
 <p>This fifth assumption is usually not listed as one of the assumptions in SLR, but it is useful to keep in mind. The predictor and the response are <em>not</em> placed on equal footing. Note that assumption number 1 deals with the mean component of the model, while assumptions 2–4 deal with the error component of the model.</p>
 <div id="standard-errors" class="section level3" number="1.3.1">
 <h3><span class="header-section-number">1.3.1</span> Standard errors</h3>
-<p>As intelligent scientists, we realize that estimates are not exactly equal to the parameters that they seek to estimate. We can characterize the uncertainty in parameter estimates in different ways. One tool that we have for quantifying uncertainty in parameter estimates is to calculate a standard error. In general, a <em>standard error</em> quantifies the variability in an estimate that is attributable to random sampling. Most parameter estimates that we will encounter have known formulas for their standard errors. In most cases, these formulas are complicated, and we will rely on computers to calculate standard errors for us. However, the formula for the standard error of the slope parameter in SLR is interesting to examine because it contains a valuable insight that we can use when collecting data for a regression study. The standard error of <span class="math inline">\(\widehat{\beta_1}\)</span>, denoted <span class="math inline">\(s_{\widehat{\beta_1}}\)</span>, is given by the formula
+<p>As intelligent scientists, we realize that estimates are not exactly equal to the parameters that they seek to estimate. We can characterize the uncertainty in parameter estimates in different ways. One tool that we have for quantifying uncertainty in parameter estimates is to calculate a standard error. In general, a <em>standard error</em> quantifies the variability in an estimate that is attributable to random sampling. Most parameter estimates that we will encounter have known formulas for their standard errors. In most cases, these formulas are complicated, and we will rely on computers to calculate standard errors for us. However, the formula for the standard error of the slope parameter in SLR is interesting to examine because it contains a valuable insight that we can use when collecting data for a regression study. The standard error of $ $, denoted <span class="math inline">\(s_{\widehat{\beta_1}}\)</span>, is given by the formula
 <span class="math display">\[
 s_{\widehat{\beta_1}} = \dfrac{s_{\varepsilon}}{\sqrt{S_{xx} } } 
 \]</span>
-where <span class="math inline">\(S_{xx} =\sum_{i}\left(x_{i} -\bar{x}\right)^2\)</span> quantifies the dispersion in the predictor variables.</p>
+where $S_{xx} =<em>{i}(x</em>{i} -{x})^2 $ quantifies the dispersion in the predictor variables.</p>
 <p>Although this formula looks a bit daunting, there’s some intuition to be gained here, and a lesson for experimental design. Suppose we had designed a regression experiment in which all of the individuals were assigned similar values of the predictor. In this case, <span class="math inline">\(S_{xx}\)</span> would be small, and consequently the standard error <span class="math inline">\(s_{\widehat{\beta_1}}\)</span> would be large. Conversely, if the values of the predictor were very different among individuals in the study, then <span class="math inline">\(S_{xx}\)</span> would be large and the standard error <span class="math inline">\(s_{\widehat{\beta_1}}\)</span> would be small. Thus, if we want a precise estimate of the slope, we should choose predictor values that span the range over which we want to learn.</p>
 <p>Thought question: Following this line of reasoning, is it a good idea to design a study so that half the individuals are assigned a very large value of the predictor, and the other half are assigned a very small value? Why or why not?</p>
 <p>For the BAC example, <span class="math inline">\(s_{\widehat{\beta_1}} = 0.0024\)</span>.</p>
@@ -310,7 +284,7 @@ where <span class="math inline">\(S_{xx} =\sum_{i}\left(x_{i} -\bar{x}\right)^2\
 \mathrm{estimate} \pm  \mathrm{critical\ value} \times \mathrm{standard\ error}
 \]</span>
 Critical values are found either by consulting a table (and re-living the good old days) or using the internet or a computer program. Critical values depend on the {} that you want to associate with the CI. Although it seems a bit backwards, we typically denote the confidence level of a CI as <span class="math inline">\(100 \times \left(1-\alpha \right)\%\)</span>. Thus, for a 95% confidence interval (a common choice), <span class="math inline">\(\alpha = 0.05\)</span>. Alternatively, we might seek a 99% CI, in which case <span class="math inline">\(\alpha = 0.01\)</span>.</p>
-<p>To construct a CI for <span class="math inline">\(\beta_1\)</span> , we find the appropriate critical values from a <span class="math inline">\(t\)</span>-distribution with <span class="math inline">\(n - 2\)</span> df. For a <span class="math inline">\(100\times \left(1-\alpha \right)\%\)</span> CI, the critical value is the value that ``cuts-off’’ an upper tail of <span class="math inline">\(\alpha / 2\)</span> %. For example, to calculate a 99% CI for <span class="math inline">\(\beta_{1}\)</span>, we need to find the critical value of a <span class="math inline">\(t\)</span>-distribution with 14 df that cuts-off an upper 0.5%-tail. Using an online calculator, or another tool, we find that this critical value is 2.977. Thus, a 99% CI is 0.018 <span class="math inline">\(\pm\)</span> 2.977 <span class="math inline">\(\times\)</span> 0.0024 = (0.011, 0.025).</p>
+<p>To construct a CI for <span class="math inline">\(\beta_1\)</span> , we find the appropriate critical values from a <span class="math inline">\(t\)</span>-distribution with <span class="math inline">\(n - 2\)</span> df. For a <span class="math inline">\(100\times \left(1-\alpha \right)\%\)</span> CI, the critical value is the value that ``cuts-off’’ an upper tail of <span class="math inline">\(\alpha / 2\)</span> %. For example, to calculate a 99% CI for $_{1} $, we need to find the critical value of a <span class="math inline">\(t\)</span>-distribution with 14 df that cuts-off an upper 0.5%-tail. Using an online calculator, or another tool, we find that this critical value is 2.977. Thus, a 99% CI is 0.018 <span class="math inline">\(\pm\)</span> 2.977 <span class="math inline">\(\times\)</span> 0.0024 = (0.011, 0.025).</p>
 <p>Recall that the appropriate interpretation of the confidence level a CI is fairly tricky. A proper interpretation is that, if we were to repeat this experiment a large number of times, and calculate a 99% CI for each experiment, in the long run 99% of those CIs would contain the true value of <span class="math inline">\(\beta_1\)</span>. Of course, in real life, we’ll only do the experiment once, and we don’t know if our experiment is one of the 99% in which the CI contains the true parameter value or not. It is often tempting to abbreviate this interpretation by saying that ``there is a 99% chance that <span class="math inline">\(\beta_1\)</span> is in the CI’’, although technically this interpretation is incorrect (because any single CI either contains the parameter or it doesn’t).</p>
 <p>Note also that there is a trade-off between the confidence level and the width of the interval. If we wanted greater confidence that our interval contained the true parameter value, we could increase the confidence level. However, increasing the confidence level increases the width of the interval, and thus provides less information about the true parameter value in some sense. If we follow this argument to its (il)logical extreme, a 100% CI for <span class="math inline">\(\beta_1\)</span> covers the interval from negative infinity to positive infinity. Now we are fully confident that our interval contains <span class="math inline">\(\beta_1\)</span>, but at the cost of having no information whatsoever about the actual value of <span class="math inline">\(\beta_1\)</span>.</p>
 </div>
@@ -318,13 +292,9 @@ Critical values are found either by consulting a table (and re-living the good o
 <h3><span class="header-section-number">1.3.3</span> Statistical hypothesis tests</h3>
 <p>Finally, a third way to characterize the statistical uncertainty in $ $ is to conduct a statistical hypothesis test. Recall that statistical hypotheses are statements about the values of unknown parameters, and a statistical hypothesis test is a way to measure the strength of evidence against a `null hypothesis’. In the context of SLR, we are almost always interested in testing the null hypothesis that the true value of the slope parameter is equal to zero. In notation, we write this as <span class="math inline">\(H_0: \beta_1 = 0\)</span>. Evidence against this null hypothesis is taken as evidence that the predictor is linearly related to the response.</p>
 <p>Recall that in statistical hypothesis testing, we must also specify an alternative hypothesis. In SLR, we are almost always interested in testing <span class="math inline">\(H_0: \beta_1 = 0\)</span> vs. the two-sided alternative <span class="math inline">\(H_a: \beta_1 \ne 0\)</span>. We conduct a statistical hypothesis test by first calculating a test statistic. In general, formulas for test statistics take the form:
-<span class="math display">\[
-\mbox{test statistic} = \dfrac{\mbox{parameter estimate} - \mbox{value of parameter under }H_0} {\mbox{standard error}}
-\]</span></p>
+</p>
 <p>Test statistics have the property that if the null hypothesis is true, then the test statistic has a known sampling distribution. In the case of testing <span class="math inline">\(H_0: \beta_1 = 0\)</span> vs. <span class="math inline">\(H_a: \beta_1 \ne 0\)</span> in SLR, if the null hypothesis is true, then the test statistic will have a <span class="math inline">\(t\)</span>-distribution with <span class="math inline">\(n-2\)</span> df. In notation, the test statistic is
-<span class="math display">\[
-t=\frac{\widehat{\beta}_{1} -0}{s_{\widehat{\beta }_{1} } } =\frac{\widehat{\beta }_{1} }{s_{\widehat{\beta }_{1} } } 
-\]</span>
+
 In SLR, this test is so common that the value of the <span class="math inline">\(t\)</span>-statistic is provided automatically by most statistical software packages, including R. For the BAC data, the <span class="math inline">\(t\)</span>-statistic associated with the test of <span class="math inline">\(H_0: \beta_1 = 0\)</span> vs. <span class="math inline">\(H_a: \beta_1 \ne 0\)</span> is <span class="math inline">\(t = 7.48\)</span>.</p>
 <p>Values of the test statistic by themselves are not terribly enlightening. Instead, we use the test statistic to find a <span class="math inline">\(p\)</span>-value. <span class="math inline">\(P\)</span>-values are famously difficult to interpret, and those difficulties in interpretation have impeded their proper use. In 2016, a blue-ribbon panel of experts were convened by the American Statistical Association (the leading professional organization for statisticians in the US) to take the remarkable step of issuing a policy statement regarding the use of <span class="math inline">\(p\)</span>-values. That statement (Wasserstein &amp; Lazar, 2016,  70:129-133) defines a <span class="math inline">\(p\)</span>-value as follows: ``Informally, a <span class="math inline">\(p\)</span>-value is the probability under a specified statistical model that a statistical summary of the data (e.g., the sample mean difference between two compared groups) would be equal to or more extreme than its observed value.’’
 (Bear in mind that this definition is the work of two dozen of the world’s leading statisticians.)</p>
@@ -339,155 +309,26 @@ Thus, there is exceedingly strong evidence that BAC is related to the number of 
 <p>The values above could be found by consulting a table, or by using statistical software such as R. Because the test of <span class="math inline">\(H_0: \beta_1 = 0\)</span> vs. <span class="math inline">\(H_a: \beta_1 \ne 0\)</span> is sufficiently common in SLR, most computer packages will do this calculation for us.</p>
 <p>We’ll sweep a lot of acrimonious debate about statistical hypothesis testing under the rug and simply say that some scientists like to make a decision about whether or not to “reject” the null hypothesis. Although R.A. Fisher (a founding father of statistics) would roll over in his grave if he heard us saying this, most scientists make these “reject” or “do not reject” decisions by comparing the <span class="math inline">\(p\)</span>-value to the test’s {}, which is usually denoted by the Greek letter <span class="math inline">\(\alpha\)</span>. The significance level of a test is the frequency with which one would erroneously reject a true null hypothesis; you might also think of it as the allowable false-positive rate. Consequently, tests with smaller significance levels require more evidence against the null to reject it (this sounds backwards at first, but makes sense when you think about it). Most scientists conventionally make reject / do not reject decisions with a significance level of <span class="math inline">\(\alpha = .05\)</span>, but you are free to use whatever significance level you deem appropriate. If <span class="math inline">\(p \le \alpha\)</span>, we reject the null hypothesis; otherwise, we fail to reject it. (Remember that we never `accept’ the null hypothesis. We only fail to reject it.)</p>
 <p>Although it is rare, we can also entertain so-called ‘one-sided’ alternative hypotheses. For example, suppose that we were uninterested in the (somewhat nonsensical) possibility that the numbers of beers consumed decreased BAC, and only were interested in measuring the evidence that the numbers of beers consumed increases BAC. To do so, we might test the same null hypothesis <span class="math inline">\(H_0: \beta_1 = 0\)</span> vs. the one-sided alternative <span class="math inline">\(H_a: \beta_1 &gt; 0\)</span>. To conduct this test, the test statistic is still
-<span class="math display">\[
-t=\dfrac{\widehat{\beta }_{1} -0}{s_{\widehat{\beta }_{1} } } =\dfrac{0.0180}{0.0024} =7.48.
-\]</span>
+
 However, because the alternative hypothesis is one-sided, to calculate a <span class="math inline">\(p\)</span>-value, we interpret ``equal to or more extreme than its observed value" as the probability of observing a test statistic  than 7.48, i.e.,
-<span class="math display">\[
-p=\Pr{ t_{14} &gt;7.48} =1.5\times 10^{-6} 
-\]</span>
+
 We would then reject <span class="math inline">\(H_0: \beta_1 = 0\)</span> in favor of the one-sided alternative <span class="math inline">\(H_a: \beta_1 &gt; 0\)</span> at the <span class="math inline">\(\alpha = .05\)</span> significance level.</p>
 <p>Finally, although it doesn’t make much sense in terms of what we know about alcohol, we could consider testing <span class="math inline">\(H_0: \beta_1 = 0\)</span> vs. the one-sided alternative <span class="math inline">\(H_a: \beta_1 &lt; 0\)</span>. Again, the test statistic is the same (<span class="math inline">\(t\)</span> = 7.48), but now evidence against the null and in favor of the alternative is provided by negative values of the test statistic, so the p-value is the probability of observing a test statistic  than 7.48, i.e.,<br />
-<span class="math display">\[
-p=\Pr{ t_{14} &lt; 7.48} = 1 - \Pr{ t_{14} &gt; 7.48} \approx 0.9999.
-\]</span>
+
 Thus, there is no evidence that would allow us to reject <span class="math inline">\(H_0: \beta_1 = 0\)</span> in favor of the one-sided alternative <span class="math inline">\(H_a: \beta_1 &lt; 0\)</span>.</p>
 <p>One final note: Although it is rarely done, there is no reason why we must restrict ourselves to testing <span class="math inline">\(H_0: \beta_1 = 0\)</span>. We could in fact test any null hypothesis. For example, suppose conventional wisdom held that each additional beer consumed increased BAC by 0.02, and we were interested in asking if these data contain evidence that the conventional wisdom is false. Then we could test <span class="math inline">\(H_0: \beta_1 = 0.02\)</span> vs. <span class="math inline">\(H_a: \beta_1 \ne 0.02\)</span>, although we have to calculate the test statistic and <span class="math inline">\(p\)</span>-value manually instead of relying on computer output:
 <span class="math display">\[\begin{align*}
-t &amp; = \dfrac{\widehat{\beta_1} -0.02}{s_{\widehat{\beta_1} }} \\
-&amp; = \dfrac{0.0180-0.02}{0.0024} \\
-&amp; =-0.83 \\ \\
-p &amp; =  \Pr{t_{14} &lt;-0.83} +\Pr{t_{14} &gt;0.83} \\
-&amp; = 2 \times \Pr{ t_{14} &gt;0.83}\\
-&amp; =  0.421. 
+t &amp; = &amp; \dfrac{\widehat{\beta_1} -0.02}{s_{\widehat{\beta_1} }} = \dfrac{0.0180-0.02}{0.0024} =-0.83 \\ 
+p &amp; = &amp; \Pr{t_{14} &lt;-0.83} +\Pr{t_{14} &gt;0.83} = 2 \times \Pr{ t_{14} &gt;0.83} =  0.421. 
 \end{align*}\]</span>
 Thus, these data contain no evidence that would allow us to reject <span class="math inline">\(H_0: \beta_1 = 0.02\)</span> vs. <span class="math inline">\(H_a: \beta_1 \ne 0.02\)</span> at any reasonable significance level.</p>
-<p>Confusion alert: Do be mindful of the distinction between a statistical hypothesis and a scientific hypothesis. The following excerpt from an article by B. Dennis and M.L. Taper puts it nicely: ``A statistical hypothesis is an assumption about the form of a probability model, and a statistical hypothesis test is the use of data to make a decision between two probability models. A scientific hypothesis, on the other hand, is an explanatory assertion about some aspect of nature.’’ (<span class="citation"><a href="#ref-dennis1994density" role="doc-biblioref">Dennis and Taper</a> (<a href="#ref-dennis1994density" role="doc-biblioref">1994</a>)</span>). Thus, while a statistical hypothesis can often embody a scientific hypothesis, a scientific hypothesis does not always boil down to a statistical hypothesis.</p>
+<p>Confusion alert: Do be mindful of the distinction between a statistical hypothesis and a scientific hypothesis. The following excerpt from an article by B. Dennis and M.L. Taper puts it nicely: ``A statistical hypothesis is an assumption about the form of a probability model, and a statistical hypothesis test is the use of data to make a decision between two probability models. A scientific hypothesis, on the other hand, is an explanatory assertion about some aspect of nature.’’ (, 1994, v64 p210). Thus, while a statistical hypothesis can often embody a scientific hypothesis, a scientific hypothesis does not always boil down to a statistical hypothesis.</p>
 </div>
 <div id="inference-for-the-intercept" class="section level3" number="1.3.4">
 <h3><span class="header-section-number">1.3.4</span> Inference for the intercept</h3>
-<p>Most statistical packages automatically provide the standard errors for the intercept, <span class="math inline">\(s_{\widehat{\beta_0}}\)</span>, as well as a test of <span class="math inline">\(H_0: \beta_0 = 0\)</span> vs. <span class="math inline">\(H_a: \beta_0 \ne 0\)</span>. Sometimes this is a meaningful test, but usually it isn’t. The scientific context of the problem will determine whether or not it makes sense to pay attention to this test.</p>
+<p>Most statistical packages automatically provide the standard errors for the intercept, $s_{} $, as well as a test of <span class="math inline">\(H_0: \beta_0 = 0\)</span> vs. <span class="math inline">\(H_a: \beta_0 \ne 0\)</span>. Sometimes this is a meaningful test, but usually it isn’t. The scientific context of the problem will determine whether or not it makes sense to pay attention to this test.</p>
 <p>There is a special type of regression called ``regression through the origin’’ that is appropriate when we can assume <span class="math inline">\(\beta_0 = 0\)</span> automatically. Should we use regression through the origin for the BAC example?</p>
 </div>
-</div>
-<div id="sums-of-squares-decomposition-and-r2" class="section level2" number="1.4">
-<h2><span class="header-section-number">1.4</span> Sums of squares decomposition and <span class="math inline">\(R^2\)</span></h2>
-<p>We have already seen that the SSE measures the unexplained variability in the response.<br />
-<span class="math display">\[
-{\rm SSE}=\sum _{i=1}^{n}e_{i}^{2} = \sum _{i=1}^{n}\left(y_{i} -\hat{y}_{i} \right)^{2}  
-\]</span>
-We can also define the <em>total sum of squares</em>, SS(Total):
-<span class="math display">\[
-{\rm SS(Total)}=\sum _{i=1}^{n}\left(y_{i} -\bar{y}\right)^{2} 
- \]</span>
-SS(Total) is a measure of the total variability in the response. Finally, we can define the <em>regression sum of squares</em>, SS(Regression), as
-<span class="math display">\[
-{\rm SS(Regression)}=\sum _{i=1}^{n}\left(\hat{y}_{i} -\bar{y}\right)^{2}  
-\]</span>
-SS(Regression) measures the variability in the response that is explained by the regression. The regression sum of squares is also called the model sum of squares, or SS(Model).</p>
-<p>By a small miracle (actually, by the Pythagorean Theorem), it happens to be true that:
-<span class="math display">\[
-{\rm SS(Total)=SS(Regression)+SSE}
-\]</span>
-The {}, or <span class="math inline">\(R^2\)</span>, is the proportion of the variability in the response explained by the regression model. The formula for <span class="math inline">\(R^2\)</span> is
-<span class="math display">\[
-R^2 = \dfrac{{\rm SS(Regression)}}{{\rm SS(Total)}} = 1-\frac{{\rm SSE}}{{\rm SS(Total)}} .
-\]</span>
-<span class="math inline">\(R^2\)</span> is a nice metric because it quantifies how much of the variability in the response is explained by the predictor. Values of <span class="math inline">\(R^2\)</span> close to 1 indicate that the regression model explains much of the variability in the response, while values of <span class="math inline">\(R^2\)</span> close to 0 suggest the regression model explains little of the variability in the response. We’ll also see that <span class="math inline">\(R^2\)</span> is not limited to SLR and in fact has the same interpretation for more complicated regression models that we will examine later. For the BAC example, <span class="math inline">\(R^2\)</span> = 0.80, suggesting that variation in beers consumed explains roughly 80% of the variation in BAC.</p>
-<p>Mathematically, <span class="math inline">\(R^2\)</span> can also be computed as square of the sample correlation coefficient between the fitted values and the response. In SLR, the fitted values and the predictor are perfectly correlated with one another, so <span class="math inline">\(R^2\)</span> is also the square of the sample correlation coefficient between the predictor and the response.</p>
-</div>
-<div id="fitting-the-slr-model-in-r" class="section level2" number="1.5">
-<h2><span class="header-section-number">1.5</span> Fitting the SLR model in R</h2>
-<p>In this section of ST512, we’ll learn a little about both R and SAS. We’ll be using R for the regression component of the course.</p>
-<p>The basic command in R for fitting a regression model is the function <code>lm</code>, short for [l]inear [l]odel. (As the name suggests, the `lm’ function can be used for more than just SLR.) The basic syntax is</p>
-<pre><code>&gt; lm(response ~ predictor)</code></pre>
-<p>where “response” and “predictor” would be replaced by the appropriate variable names. The <code>&gt;</code> is the R prompt, and is meant to show what you could type at the command line. Although the above command would work, it would fit the SLR and then forget the model fit. We want to keep the model fit around to analyze it, so we’ll store it in memory under a name of our choosing. Here, we’ll choose the name <code>fm1</code>, although any name would work. Anything proceeded by a pound sign (#) is a comment in R. We’ll assume that the BAC data have already been read into R and reside in memory, and that the variables in the BAC data are named <code>BAC</code> and <code>Beers</code>. Here is code for fitting a SLR model to these data:</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="index.html#cb5-1" aria-hidden="true" tabindex="-1"></a>fm1 <span class="ot">&lt;-</span> <span class="fu">lm</span>(BAC <span class="sc">~</span> Beers, <span class="at">data =</span> beer)</span>
-<span id="cb5-2"><a href="index.html#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-3"><a href="index.html#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="co"># The &#39;&lt;-&#39; is the assignment operator.</span></span>
-<span id="cb5-4"><a href="index.html#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Here, the output produced by the call to &#39;lm&#39; is stored in memory under</span></span>
-<span id="cb5-5"><a href="index.html#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="co"># the name &#39;fm1&#39;.  We can learn about &#39;fm1&#39; by asking for a summary.</span></span>
-<span id="cb5-6"><a href="index.html#cb5-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-7"><a href="index.html#cb5-7" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(fm1)</span></code></pre></div>
-<pre><code>## 
-## Call:
-## lm(formula = BAC ~ Beers, data = beer)
-## 
-## Residuals:
-##       Min        1Q    Median        3Q       Max 
-## -0.027118 -0.017350  0.001773  0.008623  0.041027 
-## 
-## Coefficients:
-##              Estimate Std. Error t value Pr(&gt;|t|)    
-## (Intercept) -0.012701   0.012638  -1.005    0.332    
-## Beers        0.017964   0.002402   7.480 2.97e-06 ***
-## ---
-## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
-## 
-## Residual standard error: 0.02044 on 14 degrees of freedom
-## Multiple R-squared:  0.7998, Adjusted R-squared:  0.7855 
-## F-statistic: 55.94 on 1 and 14 DF,  p-value: 2.969e-06</code></pre>
-<p>Let’s examine each portion of the R output above.</p>
-<p>The portion labeled <code>Call</code> simply tells us what command was used to generate the model.</p>
-<p>The portion labeled <code>Residuals</code> tells us a five-number summary (minimum, first quartile, median, third quartile, and maximum) of the residuals.</p>
-<p>The portion labeled <code>Coefficients</code> gives us a table of parameter estimates and standard errors. Each row of the table corresponds to a single parameter. The row labeled (Intercept) obviously corresponds to the intercept. The row labeled with the name of the predictor gives information about the slope parameter.</p>
-<p>In addition to parameter estimates and standard errors, R (like many computer packages) also automatically generates hypothesis tests of <span class="math inline">\(H_0: \beta_0 = 0\)</span> vs. <span class="math inline">\(H_a: \beta_0 \ne 0\)</span> and <span class="math inline">\(H_0: \beta_1 = 0\)</span> vs. <span class="math inline">\(H_a: \beta_1 \ne 0\)</span>. It is up to you, the user, to determine whether or not these tests are informative.</p>
-<p>Finally, the last block of output provides a variety of additional information. The “residual standard error” (perhaps not the best terminology) is the estimate of the residual standard deviation, <span class="math inline">\(s_{\varepsilon}\)</span>. R also provides two different <span class="math inline">\(R^2\)</span> values; the <span class="math inline">\(R^2\)</span> that we discussed above is labeled as the “Multiple R-squared.” We will discuss adjusted R-squared later. Finally, the <span class="math inline">\(F\)</span>-statistic corresponds to a `model utility test’, which we will discuss in the context of multiple regression. For now, you might notice that in SLR the p-value of the model-utility test is always equal to the p-value for the test of <span class="math inline">\(H_0: \beta_1 = 0\)</span> vs. <span class="math inline">\(H_a: \beta_1 \ne 0\)</span>. We will explain why this is so later.</p>
-<p>The SS decomposition for a regression model is also referred to as the analysis of variance for the regression model. We can use the `anova’ command in R to obtain the SS decomposition:</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="index.html#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">anova</span>(fm1)</span></code></pre></div>
-<pre><code>## Analysis of Variance Table
-## 
-## Response: BAC
-##           Df    Sum Sq   Mean Sq F value    Pr(&gt;F)    
-## Beers      1 0.0233753 0.0233753  55.944 2.969e-06 ***
-## Residuals 14 0.0058497 0.0004178                      
-## ---
-## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
-<p>The <span class="math inline">\(F\)</span>-statistic is the model utility test, which we will examine in more detail when we study multiple regression.</p>
-</div>
-<div id="diagnostic-plots" class="section level2" number="1.6">
-<h2><span class="header-section-number">1.6</span> Diagnostic plots</h2>
-<p>We have seen that, in order to draw statistical inferences from a simple linear regression, we need to make several assumptions. Although in everyday life assumptions can get a bad name, assumptions in statistics are necessary and appropriate. The statistician Don Rubin puts it nicely: ``Nothing is wrong with making assumptions … they are the strands that link statistics to science. It is the scientific quality of the assumptions, not their existence, that is critical.’’ (<span class="citation"><a href="#ref-rubin2005causal" role="doc-biblioref">Rubin</a> (<a href="#ref-rubin2005causal" role="doc-biblioref">2005</a>)</span>). In regression, we can use <em>diagnostic plots</em> to investigate the scientific quality of our assumptions. The main idea of diagnostic plots is that if the assumptions are appropriate, then residuals should be independent draws from a normal distribution with constant variance. Any structure in the residuals indicates a violation of at least one assumption.</p>
-<p>We list commonly used diagnostic plots below. Although some types of plots are more useful for examining some assumptions than others, there isn’t a strict correspondence between plot types and assumptions. Any plot can reveal a departure from any one of our assumptions. Examples of each for the BAC data and the R code used to generate the plots are provided as examples.</p>
-<p>1.Residuals vs. fitted values. Check for non-constant variance (trumpeting). The BAC data shown here don’t show an obvious increase or decrease in variance as the fitted values increase, although the fact that the largest residual is associated with the largest fitted value is notable. We might want to go back and check that data point out.</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="index.html#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">resid</span>(fm1) <span class="sc">~</span> <span class="fu">fitted</span>(fm1), <span class="at">xlab =</span> <span class="st">&quot;Fitted Values&quot;</span>, <span class="at">ylab =</span> <span class="st">&quot;Residuals&quot;</span>)</span>
-<span id="cb9-2"><a href="index.html#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">h =</span> <span class="dv">0</span>, <span class="at">lty =</span> <span class="st">&quot;dotted&quot;</span>)</span></code></pre></div>
-<p><img src="index_files/figure-html/unnamed-chunk-7-1.png" width="384" style="display: block; margin: auto;" /></p>
-<ol start="2" style="list-style-type: decimal">
-<li>Residuals vs. predictor. We can use this plot to check for non-linear trends. If we see a non-linear trend, like a hump-shaped pattern, it might suggest that the true relationship between predictor and response is actually non-linear.</li>
-</ol>
-<p>For the BAC data, you’ll note that the plot below looks exactly like the plot of residuals vs. fitted values above. This isn’t just coincidence; in fact, residuals vs. fitted values and residuals vs. predictor will always generate exactly the same patterns in SLR. (The reason is because in SLR the fitted value is just a linear function of the predictor.) We want to get in the habit of checking both types of plots, however, because when we start entertaining multiple predictor variables in multiple regression, the plots will no longer be identical.</p>
-<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="index.html#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">resid</span>(fm1) <span class="sc">~</span> beer<span class="sc">$</span>Beers, <span class="at">xlab =</span> <span class="st">&quot;Beers&quot;</span>, <span class="at">ylab =</span> <span class="st">&quot;Residuals&quot;</span>)</span>
-<span id="cb10-2"><a href="index.html#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">h =</span> <span class="dv">0</span>, <span class="at">lty =</span> <span class="st">&quot;dotted&quot;</span>)</span></code></pre></div>
-<p><img src="index_files/figure-html/unnamed-chunk-8-1.png" width="384" style="display: block; margin: auto;" /></p>
-<ol start="3" style="list-style-type: decimal">
-<li>Residuals vs. variables not in the model, e.g., other predictors, observer, order of observation. In the BAC data, the only other variable we have (for now at least) is the order in which the observations appear in the data set. Without knowing how the data were collected or recorded, it’s impossible to say whether this variable is meaningful. However, the plot suggests a distinctive downward trend – data points that appear early in the data set are associated with positive residuals, and data points that appear later in the data set are associated with negative residuals. What do you think might have caused this trend?</li>
-</ol>
-<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="index.html#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">resid</span>(fm1), <span class="at">xlab =</span> <span class="st">&quot;Order&quot;</span>, <span class="at">ylab =</span> <span class="st">&quot;Residuals&quot;</span>)</span>
-<span id="cb11-2"><a href="index.html#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">h =</span> <span class="dv">0</span>, <span class="at">lty =</span> <span class="st">&quot;dotted&quot;</span>)</span></code></pre></div>
-<p><img src="index_files/figure-html/unnamed-chunk-9-1.png" width="384" style="display: block; margin: auto;" /></p>
-<ol start="4" style="list-style-type: decimal">
-<li>An obvious way to check the normality assumption is to plot a histogram of the residuals. While this is a straightforward idea, it suffers from the fact that the shape of the histogram depends strongly on how the residuals are grouped into bins. Note how the two histograms below of the BAC residuals provide different impressions about the suitability of the normality assumption.</li>
-</ol>
-<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="index.html#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(<span class="fu">resid</span>(fm1), <span class="at">main =</span> <span class="st">&quot;Bin width = 0.01&quot;</span>, <span class="at">xlab =</span> <span class="st">&quot;Residuals&quot;</span>)</span></code></pre></div>
-<p><img src="index_files/figure-html/unnamed-chunk-10-1.png" width="384" style="display: block; margin: auto;" /></p>
-<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="index.html#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(<span class="fu">resid</span>(fm1), <span class="at">main =</span> <span class="st">&quot;Bin width = 0.02&quot;</span>, <span class="at">xlab =</span> <span class="st">&quot;Residuals&quot;</span>, <span class="at">breaks =</span> <span class="dv">4</span>)</span></code></pre></div>
-<p><img src="index_files/figure-html/unnamed-chunk-10-2.png" width="384" style="display: block; margin: auto;" />
-An alternative to histograms is a normal probability plot of residuals, also known as a quantile-quantile, or Q-Q, plot. Q-Q plots calculate the empirical quantile of each residual, and compare this to the theoretical quantile from a normal distribution. If the normality assumption is appropriate, the empirical and theoretical quantiles will change at the same rate, so when plotted against one another, they’ll fall on a line. If the normality assumption is not appropriate, the plot of empirical vs. theoretical quantiles will bend.</p>
-<p>As we’ll see below, the normality assumption is the  critical of the assumptions in regression. Thus, unless the Q-Q plot shows big and dramatic bends, we won’t concern ourselves with small bumps and wiggles. The Q-Q plot for the BAC data below doesn’t seem terribly problematic.</p>
-<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="index.html#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">qqnorm</span>(<span class="fu">resid</span>(fm1))</span>
-<span id="cb14-2"><a href="index.html#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="fu">qqline</span>(<span class="fu">resid</span>(fm1))</span></code></pre></div>
-<p><img src="index_files/figure-html/unnamed-chunk-11-1.png" width="384" style="display: block; margin: auto;" /></p>
-
-</div>
-</div>
-<h3>Bibliography</h3>
-<div id="refs" class="references csl-bib-body hanging-indent">
-<div id="ref-dennis1994density" class="csl-entry">
-Dennis, Brian, and Mark L Taper. 1994. <span>“Density Dependence in Time Series Observations of Natural Populations: Estimation and Testing.”</span> <em>Ecological Monographs</em> 64 (2): 205–24.
-</div>
-<div id="ref-rubin2005causal" class="csl-entry">
-Rubin, Donald B. 2005. <span>“Causal Inference Using Potential Outcomes: Design, Modeling, Decisions.”</span> <em>Journal of the American Statistical Association</em> 100 (469): 322–31.
 </div>
 </div>
             </section>
@@ -496,7 +337,7 @@ Rubin, Donald B. 2005. <span>“Causal Inference Using Potential Outcomes: Desig
         </div>
       </div>
 
-<a href="bibliography.html" class="navigation navigation-next navigation-unique" aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
@@ -542,7 +383,8 @@ gitbook.start({
 "download": null,
 "toc": {
 "collapse": "subsection"
-}
+},
+"search": false
 });
 });
 </script>
