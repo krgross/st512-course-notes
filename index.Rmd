@@ -14,75 +14,115 @@ description: "Course notes for ST 512, Statistical Methods for Researchers, taug
 knitr::opts_chunk$set(fig.width = 4, fig.height = 4, fig.align = "center") 
 ```
 
+# Preface {-}
+
+These are course notes for ST 512, Statistical Methods for Researchers II, taught at North Carolina State University.  ST 512 is the second semester of a two-semester sequence in statistical methods.  These notes are a proto-textbook, and are available for use by anyone associated with NCSU.
+
+*Philosophy*
+
+<!-- Why do we learn statistics?  Statistics is a tool that can make for more effective data analysis.  It is not meant merely to serve a signalling function.   -->
+
+When it comes to statistics, researchers cannot necessarily rely on their common sense to lead them towards correct answers.  Statistical reasoning is non-intuitive (@kahneman2011thinking), and the foundational ideas of statistics are elusive.  Therefore statistical literacy must be learned.  The primary goal of this course is to sharpen students' statistical literacy so that they may become more effective researchers.  However, one does not develop a deep conceptual understanding merely by discussing concepts.  Instead, conceptual understanding is honed in part by studying the details of particular methods to understand why those details matter.  When we study the details of a method, the expectation is not that the student will remember those details in perpetuity.  Indeed, practicing scientists are unlikely anyway to have the cognitive bandwidth to remember details about statistical methods that they do not use routinely.  Instead, the point of studying statistical methods in detail is to strengthen conceptual understanding by exploring statistical methods at more than a superficial level.  Examining details now will also make those details more recognizable if and when one faces a future data-analysis task that requires re-engaging those details.  That said, the ultimate emphasis of this course is not on the details of the methods, but is instead on the ideas, concepts, and reasoning that underlie statistical thinking.  I hope that students of this course will deepen their conceptual understanding of statistics and by doing so strengthen their effectiveness as scientists.
+
+*Scope*
+
+This classes focuses on linear statistical models, that is, regression and ANOVA.  These linear models are the backbone of techniques for analyzing designed experiments in science.  These methods can also be, and often are, used to analyze so-called "observational data", that is, data collected outside an experimental context.^[That said, regression lends itself a bit more to the analysis of observational data than ANOVA does.]  Of course, most graduate students will need to learn specialized statistical methods that are popular in their own field of study.  These notes are not meant to cover these specialized methods, and thus they are not meant to embody the whole of statistics.  However, study of regression and ANOVA provides an opportunity to master core tools and provides a springboard to the study of more specialized and possibly discipline-specific methods.
+
+This class deals exclusively with so-called "frequentist" statistical inference.  We do not engage Bayesian methods.  This class is also firmly situated in the study of low-dimensional statistical models.  We value parsimony, and we take the view that well constructed models are worthy objects of study in their own right.  More concretely, we seek to construct statistical models with parameters that correspond to natural phenomena of interest.  This view exists in some tension with the contrasting "big data" culture of statistics, which places more emphasis on the detection of patterns and prediction of future observations, and is less concerned with unpacking the "black box" that characterizes those patterns (@breiman2001statistical). 
+
+*Assumed math background*
+
+ST 512 does not assume knowledge of or use any math beyond arithmetic and basic probability.  At NCSU, it is assumed that students have learned the necessary probability background in a first statistics class like ST 511.  This basic probability includes an understanding of random variables, standard distributions --- primarily Gaussian (normal) distributions, but also binomial and Poisson --- and basic properties of means and variances.
+
+Students who are willing to engage the math a bit more deeply will find that doing so provides a more satisfying path through the material and leads to a more durable understanding.  Without knowing the math underneath, one can only learn statistical methods as different recipes in a vast cookbook, a tedious task that taxes the memory and gives statistics courses their reputation for drudgery.  For those who are so inclined, learning a bit of the mathematical theory reveals how the methods we study connect with one another, and thus provides a scaffolding to organize the methods sensibly and coherently.  Moreover, the underpinning mathematics can be understood with a minimum of calculus.  Linear algebra, however, is more essential.  Indeed, the linear models that we study are, ultimately, exercises in linear algebra.  This course assumes no previous familiarity with linear algebra, and so we will not emphasize the linear algebra underpinnings of the methods.  In the fullness of time, I hope that these notes will eventually include sidebars that present the linear algebra underneath the methods, for interested readers.
+
+In this day and age, one might ask why it's necessary to understand the math at all.  Indeed, the internet makes it easy to find quickly code for any standard analysis.  Moreover, while the robots' takeover of humanity may or may not be imminent, we are probably not too far away from the rise of artificial intelligence-based statistical consulting, where anyone can upload a data set and answer a few questions about it in return for an AI's analysis.  In such a world, the primary task facing an analyst is not so much to get the computer to give you an answer, but instead to confirm that the answer is in fact the one you want. Towards this end, knowing a bit about the math behind the methods makes it possible to determine whether the computer output you've obtained is indeed the analysis you hoped for.  Throughout, we will try to emphasize simple, quick calculations that can be used to verify that computer output is correct, or indicate that something needs to be fixed.
+
+*Computing*
+
+ST 512 serves a broad clientele.  Some students will be better served learning R, and others will be better served learning SAS.  R and SAS code are used throughout these notes, but the notes are not meant to provide fully fledged instruction in R or SAS.  For students in the class, instruction in R and SAS will be provided in the labs associated with the course.  Eventually, I hope that these notes will eventually include computing companions that discuss implementation of the methods in both R and SAS.
+
+*Format of these notes*
+
+Material that appears in <span style="color: gray;"> gray text </span> and is offset by horizontal rules (like the one below this paragraph) is enrichment material to provide a deeper exploration for interested readers.  This material may be skipped without loss.  This structure is inspired by @mascolell1995microeconomic's lovely text.
+
+---
+
 # Simple linear regression
 
-## Introduction to simple linear regression
+In statistics, regression models are those that relate the distribution of an output variable to the value(s) of one or several input variables.  Characterizing the relationships among input and output variables is central to much of science, and indeed regression methods form the foundation for much of data analysis.  We'll have a lot to say about regression, but we'll begin with so-called simple linear regression (SLR).  SLR models are "simple" in the sense that they contain only one predictor.  In ST 512, we assume that you have encountered SLR models before.  The purpose of our study here is twofold.  First, we hope to understand the SLR model at a reasonably deep level.  Much of this understanding will carry over to our study of more complicated models, so it is helpful to establish it here in a less complicated setting.  Second, we will review many of the foundational concepts of (frequentist) statistical inference.  While this should not be your first exposure to these ideas, it's worth our time to review them again to solidify our understanding.
 
-Linear regression is a versatile statistical tool that can be used to characterize relationships between quantitative variables.  We will study linear regression in depth, and begin with a simple example.
+## The basics of SLR
 
-*Example*: Blood alcohol content (BAC) vs. number of beers consumed.  Data were obtained for $n=16$ individuals.  Here is a scatter plot of the data:
-```{r fig.cap = "BAC vs. beers consumed."}
+Simple linear regression characterizes the relationship between two variables: a predictor variable and a response variable.   We will begin with a simple example for context.
+
+*Example*: Individuals in this study consumed a certain number of beers, and their blood alcohol content (BAC) was measured.  Data were obtained for $n=16$ individuals.  Here is a scatter plot of the data:
+```{r fig.cap = "BAC vs. beers consumed.", echo = FALSE }
 beer <- read.table("data/beer.txt", head = T)
 with(beer, plot(BAC ~ Beers, xlab = "beers consumed"))
 ```
 
-We seek to quantify the relationship between beers and BAC in these data by fitting a statistical model.  A statistical model is a mathematical description of the relationship between the sample data and the population from which it was drawn.  Because samples are collected randomly, statistical models are written using the mathematics of probability.  Statistical models can be thought of as consisting of two parts: a signal or mean component that quantifies the patterns in the data that are repeatable from one sample to the next, and the error or noise component that captures the variation in the data unique to a given sample.  In words, then, we might represent a statistical model using the equation "data = signal + error".  The plus sign in this word equation should not be taken too literally, because the signal and error are not always combined in an additive way.  Statistical models can be written in words or in mathematical notation.  Word models are helpful for building understanding, but they are somewhat ambiguous and are not as mathematically precise as we need.  Consequently, we'll use word models to build intuition, and mathematical notation for precision.
+To begin, let's observe that the two variables that a regression model associates are not on equal footing.  One variable is designated as the "predictor" and the other variable is designated as the "response".  The predictor variable is denoted by the symbol $x$, and the response variable is denoted by $y$.  In plotting, we almost always show the predictor on the horizontal axis and the response on the vertical axis.^[This convention is so common that one often hears the horizontal axis referred to as the $x$-axis and the vertical axis referred to as the $y$-axis.  If we wanted to be exceedingly careful we should only refer to the axes in this way when the variables that they show are in fact $x$ and $y$, but few outside of mathematics find such care necessary.]  The predictor is also called the "independent" variable because, in a designed experiment, its values are determined by the investigator.  The response is also called the "dependent" variable because its distribution depends on the value of the predictor variable, in a way that is determined by nature.  For the BAC data, we will identify the number of beers consumed as the predictor and BAC as the response.
 
-A *simple linear regression*  (SLR) is a simple statistical model for these data.  In words, we can write an SLR model for these data as
-$$
-\mbox{BAC = intercept + slope} \times \mbox{beers + error}
-$$
-In notation, the model is
+The regression model associates each value of the predictor variable with a distribution for the response variable.  Indeed, the fact that the output of the model is a distribution is what makes this a statistical model, as opposed to some other flavor of mathematical model.  A *simple linear regression*  (SLR) is a simple statistical model in which the association between the value of the predictor and the distribution of the response takes a specific form.  In particular, in a SLR, the distribution of the response variable is Gaussian (or normal) with a mean that depends linearly on the value of the predictor and a variance that is independent of the value of the predictor.  When we plot the fit of a regression model, we typically only plot the regression line.  However, the line merely shows how the average of the distribution of the response depends on the predictor.  The model has more structure than a plot of the regression line suggests.
+
+In terms of an equation, we can write the model using the regression equation
 \begin{equation}
-y_i =\beta_0 +\beta_1 x_i +\varepsilon_i (\#eq:slr)
+y_i =\beta_0 +\beta_1 x_i +\varepsilon_i (\#eq:slr).
 \end{equation}
+In words, we might re-write the equation as
+$$
+\mbox{response = intercept + slope} \times \mbox{predictor + error}.
+$$
+In the mathematical equation above, the *i* subscript distinguishes individual data points.  For example, $y_1$ is the value of the response associated with the first observation in the data set.  Usually, we use the notation $n$ for the total number of data points, and so to be precise we might also write $i = 1, \ldots, n$.  In words, we say that "$i$ varies from 1 to $n$" or "$i$ ranges from 1 to $n$".  We'll suppress the $i$ subscript when we don't need it.  
 
-The components of this model are:
+In the SLR model, the equation $\beta_0 + \beta_1 x$ shows how the average of the response depends on the predictor value. The parameter $\beta_0$ is called the intercept, and it gives the value of the regression line when the predictor $x = 0$.  As we will see, the value of the regression line at $x=0$ often isn't a scientifically meaningful quantity, even though we need to know the value to specify the model fully.   The parameter $\beta_1$ is the slope.  In SLR, the slope is a parameter tells us by how much regression line rises or falls as the predictor changes.  Positive values of the slope indicate that the regression line increases as the predictor increases, and negative values of the slope indicate that the regression line decreases as the predictor increases.
 
-* $y$: the "response" or "dependent" variable.  Here, the response is BAC.  By convention, the response variable is usually written on the left of the equals sign.  The *i* subscript is used to distinguish among individual data points.  For example, $y_1$ is the value of the response associated with the first observation in the data set.  Usually, we use the notation $n$ for the total number of data points, and so to be precise we might also write $i = 1, \ldots, n$.  In words, we say that "$i$ varies from 1 to $n$" or "$i$ ranges from 1 to $n$".  We'll suppress the $i$ subscript when we don't need it.
-
-* $x$: the "predictor" or "independent" variable.  Here, the predictor is the number of beers consumed.
-
-* $\beta_0$: intercept.  In SLR, the intercept is a parameter that gives the value of the regression line when the predictor $x = 0$.  Sometimes this is a meaningful quantity, and other times it isn't.
-
-* $\beta_1$: slope.  In SLR, the slope is a parameter tells us by how much regression line rises or falls as the predictor changes.  Positive values of the slope indicate that the regression line increases as the predictor increases, and negative values of the slope indicate that the regression line decreases as the predictor increases.
-
-* $\varepsilon$: error.  The error term is a catch-all that subsumes all the other factors that might influence the response that are not included in the predictors.  In the context of the BAC example, these might include body weight, metabolism, and/or alcohol content of the beer (if it differed among subjects).
+The regression line alone is not sufficient to fully specify the entire regression model.  To the regression line we add a normally distributed error, denoted by $\varepsilon$.  The error term is a catch-all that subsumes all the other factors that might influence the response that are not included in the predictors.  In the context of the BAC example, these might include body weight, metabolism, and/or alcohol content of the beer (if it differed among subjects). 
 
 Although they look similar, it is important to realize that $\beta_0$, $\beta_1$, and $\varepsilon$ are different beasts.  The quantities $\beta_0$ and $\beta_1$ are parameters.  Recall that in statistics, *parameters* are quantities that characterize a population.  We assume that true values of $\beta_0$ and $\beta_1$ exist; those values are just unknown to us.  We will estimate these parameters and draw inferences about their values on the basis of data.
 
-In contrast, the error term $\varepsilon$ is a random variable.  It does not have one single value, but instead takes a different value for every member of a population.  We describe the distribution of the errors across the members of the population using a probability distribution.  In simple linear regression, we assume that the random errors have a normal (or bell-shaped) distribution with mean 0 and variance $\sigma_{\varepsilon}^{2} $.  We also assume that the random errors are independent among individuals in our sample.  A succinct way of stating this is to state that the errors are normal and "independent and identically distributed" (abbreviated "iid").  In notation, we write $\varepsilon_{i} \sim \mathcal{N}\left(0, \sigma_{\varepsilon }^2 \right)$. 
+In contrast, the error term $\varepsilon$ is a random variable.  It does not have one single value, but instead takes a different value for every member of a population.  We describe the distribution of the errors across the members of the population using a probability distribution.  In simple linear regression, we assume that the random errors have a Gaussian (or normal, or bell-shaped) distribution with mean 0 and variance $\sigma_{\varepsilon}^{2}$.  We also assume that the random errors are independent among individuals in our sample.  A succinct way of stating this is to state that the errors are Gaussian and "independent and identically distributed" (abbreviated "iid").  In notation, we write $\varepsilon_{i} \stackrel{\text{iid}}{\sim} \mathcal{N}\left(0, \sigma_{\varepsilon }^2 \right)$, a statement which we would read as "the errors have a normal (or Gaussian) distribution with mean 0 and variance $\sigma^2_\varepsilon$".  The error variance $\sigma_{\varepsilon }^2$ is a parameter, and it measure of the variability in the response that is not explained by the predictor.  We will also discuss how to estimate $\sigma_{\varepsilon }^2$.  (It is also possible to draw statistical inferences for $\sigma_{\varepsilon }^2$, although we will not discuss how to do so in ST512.)
 
-<!-- Need to add iid over squiggle above. -->
+Before moving on to discussing how to estimate the model parameters, let's reflect a bit on the slope, $\beta_1$, because this is the parameter that captures the linear association between the two variables.  I recently learned of a particularly nice way to interpret the slope, due to @gelman2020regression.  Their interpretation works like this.  Consider two values of the response $y_1$ and $y_2$, associated respectively with two values of the predictor $x_1$ and $x_2$.  The regression model says that, on average, the difference $y_1 - y_2$ will equal $\beta_1 \times (x_1 - x_2)$.  The "on average" part of this interpretation is important because we realize that any two actual observations will also include their respective errors, and so we don't expect these two observations to differ by exactly $\beta_1 \times (x_1 - x_2)$.  Second, this interpretation also makes it clear that the regression model predicts that the average difference between two responses will increase or decrease linearly as the difference between their two associated predictor values grows or shrinks.  Thus, if the SLR model is appropriate for the BAC data (something we have yet to verify), then the model suggests that the average BAC difference between two individuals who have consumed 1 vs.\ 2 beers is the same as the average BAC difference between two individuals who have consumed 4 vs.\ 5 beers, and that both of these differences are one-half as big as the average BAC difference between two individuals who have drank 2.5 vs.\ 4.5 beers.
 
-Thus, individual error terms are not parameters.  However, the error variance $\sigma_{\varepsilon }^2$ is a parameter, and it measure of the variability in the response that is not explained by the predictor.  We will also discuss how to estimate $\sigma_{\varepsilon }^2$.  (It is also possible to draw statistical inferences for $\sigma_{\varepsilon }^2$, although we will not discuss how to do so in ST512.)
+---
 
-Another way to think of the SLR model is this.  Consider a single value of the predictor $x$.  For the subset of individuals in the population that possess that particular value of $x$, the population of responses (for that subset) has a normal (bell-shaped, or Gaussian) distribution with mean $\beta_0 +\beta_1 x_i$ and variance $\sigma_{\varepsilon }^2$.\footnote{Mathematically, this follows from the fact that if we add a constant [here, $\beta_0 +\beta_1 x_i$] to a normally distributed random variable, the sum is also a normally distributed random variable, but with a shifted mean.}  Thus, when we consider all possible values of the predictor, the SLR model describes a family of normally distributed responses, with the mean of that normal distribution changing linearly as a function of the predictor.
+<span style="color: gray;"> Our assumption of normally distributed errors has a deeper justification than may meet the eye.  If you've studied probability, you may have encountered an important result called the Central Limit Theorem.  For our purposes, the Central Limit Theorem tells us that if the error results from the combined effect of many small factors added together, then the error's distribution will be approximately normal.  (We will see that regression models are not sensitive to moderate departures from normality, so approximately normal errors are good enough.)  This result provides a strong justification for expecting normally distributed errors in many cases.  The normality assumption begins to break down when the errors are dominated by only a few factors, or when the factors that contribute to the error combine multiplicitavely.  This latter scenario --- errors that result from the product of many small influences as opposed to their sum --- frequently arises in biology when the response measures some form of population size.  Populations grow or shrink multiplicitavely, and so population sizes tend to have right-skewed distributions. 
 
-A note on terminology: the "simple" in simple linear regression refers to the fact that there is only one independent variable.  Models with more than one predictor, which we will study later, are referred to as multiple linear regression models.  
+We might also note that the style of writing the regression model as the sum of the regression line ($\beta_0 + \beta_1 x$) and an error term with mean zero ($\varepsilon$) works because we have assumed that the errors have a normal distribution.  A normal distribution has the special property that we can take a normally distributed quantity, add a constant to it, and the sum will still have a normal distribution.  Most statistical distributions do not have this property; for example, a Poisson random variate plus a non-zero constant does not yield a Poisson distributed sum.  Some authors find it more natural to write the SLR model as $y \sim \mathcal{N}(\beta_0 + \beta_1 x, \sigma^2)$, to emphasize that the response has a Gaussian distribution and that the predictor only affects the mean of this distribution.  We will use the style of eq. \@ref(eq:slr), because this style lends itself more readily to mixed-effects models with multiple variance terms.  However, the two styles of notation denote the same model.  Feel free to use whichever style makes the most sense to you.
+
+</span>
+
+---
 
 ## Least-squares estimation 
 
-The parameters of an SLR model are estimated by fitting a least-squares line to the data.  That is to say, we find the values of the parameters that minimize the sum of the squared differences between the data points themselves and the line.  The estimates are denoted by "hats", i.e., $\widehat{\beta_0}$ is the estimate of $\beta_0$.  Other authors use $b$'s instead of $\widehat{\beta}$'s for parameter estimates in regression.  Both types of notation commonly appear in the scientific literature.
+The parameters of an SLR model are estimated by the method of least-squares.  That is, we find the values of the parameters that minimize the sum of the squared differences between the data points themselves and the line.  The estimates are denoted by "hats", i.e., $\hat{\beta}_0$ is the estimate of $\beta_0$.  Other authors use $b$'s instead of $\widehat{\beta}$'s for parameter estimates in regression.  Both types of notation commonly appear in the scientific literature.
 
-In ST511 or a similar course, you may have derived formulas for calculating the least-squares estimates $\widehat{\beta_1}$ and $\widehat{\beta_1}$  by hand.  In ST512, we will use a computer (although it is worth noting that one could derive the formulas for $\widehat{\beta_0}$ and $\widehat{\beta_1}$  by using basic calculus tools to minimize the error sum-of squares).   We'll defer a discussion of how to use R until a later section of the notes.  For now, we'll observe that the least-squares estimates of the intercept and slope for the BAC data are $\widehat{\beta_0} = -0.013$ and $\widehat{\beta_1} = 0.018$.  Here's a picture of the scatter-plot with the least-squares line: 
+If we were inventing SLR from scratch, we might imagine many possible criteria that we could use to determine the parameter values that provide the best fit of the SLR model.  For example, we might contemplate fitting the line that minimized the average absolute difference between the data points and the line.  The reason why we favor the least-squares criterion is a direct consequence of the assumption that the errors take a Gaussian distribution.^[More precisely, the least-squares estimates of the intercept and slope are the *maximum likelihood* estimates, when we assume that the errors take a Gaussian distribution.  Maximum likelihood is beyond the scope of ST 512.]
+
+In ST511 or a similar course, you may have derived formulas for calculating the least-squares estimates $\hat{\beta}_1$ and $\hat{\beta}_1$  by hand.  In ST512, we will use a computer, although one might note that one could derive the formulas for $\hat{\beta}_0$ and $\hat{\beta}_1$  by using basic calculus tools to minimize the error sum-of squares. Using R, we obtain the least-squares fit of the regression model to the BAC data below.^[A note on terminology: It is conventional to refer to a regression model as a regression of the response on, versus, or against the predictor.  Thus, the BAC model could be described as a regression of BAC on the number of beers consumed, or alternatively as a regression of BAC against the number of beers consumed.]
+
+```{r}
+fm1 <- with(beer, lm(BAC ~ Beers))
+summary(fm1)
+```
+
+The least-squares estimates of the intercept and slope for the BAC data are $\hat{\beta}_0 = -0.013$ and $\hat{\beta}_1 = 0.018$, respectively.  Here's a picture of the scatter-plot with the least-squares line: 
 
 ```{r fig.cap = "SLR fit of BAC vs. beers consumed."}
-fm1 <- with(beer, lm(BAC ~ Beers))
-
 with(beer, plot(BAC ~ Beers, xlab = "beers consumed"))
 abline(fm1)
 ```
 
-Thus, the best fitting line predicts a positive relationship between BAC and beers consumed.  More precisely, it tells us that (on average) BAC increases by 0.018 for every additional beer consumed.  This estimate for the slope is a start, but we'll want to go further and try to use this estimate to draw statistical inferences.
+Thus, the best fitting line predicts a positive relationship between BAC and beers consumed.  Using the interpretation that we introduced in the previous section, we would say that if we measure the BAC of two people, one of whom has consumed one more beer than the other, on average the BAC of the person who drank more beers will be 0.018 higher than the BAC of the persion who drank fewer beers.  Similarly, if we compare the BAC of two people, one of whom drank four more beers than the other, on average the BAC of the person who drank more beers will be $0.4 \times 0.018 = 0.072$ higher than the person who drank fewer beers, and so on.
 
-A note on terminology: It is conventional to refer to a regression model as a regression of the response on, versus, or against the predictor.  That is, the model above could be described as a regression of BAC on the number of beers consumed, or alternatively as a regression of BAC against the number of beers consumed.
+Evaluating the fitted regression line for a given value of the predictor generates a *fitted value* for each data point.  Fitted values are denoted $\hat{y}_i$.  In notation, $\hat{y}_i = \hat{\beta}_0 + \hat{\beta}_1 x_i$.  
 
-Evaluating the fitted regression line for a given value of the predictor generates a *fitted value* for each data point.  Fitted values are denoted $\widehat{y_i}$.  In notation, $\widehat{y_i} = \widehat{\beta_0} + \widehat{\beta_1} x_i $.  Again, the $i$ subscript is used to distinguish the individual observations.  
+Why did the error term vanish in the equation for $\hat{y}_i$?
 
-Why did the error term vanish in the equation for $\widehat{y_i}$?
-
-The *residual* for observation $i$, denoted $e_i$, is the difference between the actual observation and the fitted value.  In notation, $e_i = y_i -\widehat{y_i}$.  In terms of the data plot, the residuals can be thought of as the vertical differences between the actual data points and the fitted line.  In the figure below, the vertical line represents the residual for the individual who consumed 9 beers.
+The *residual* for observation $i$, denoted $e_i$, is the difference between the actual observation and the fitted value.  In notation, $e_i = y_i -\hat{y}_i$.  In terms of the data plot, the residuals can be thought of as the vertical differences between the actual data points and the fitted line.  In the figure below, the vertical line represents the residual for the individual who consumed 9 beers.
 
 ```{r, echo = FALSE}
 with(beer, plot(BAC ~ Beers, xlab = "beers consumed"))
@@ -90,13 +130,13 @@ abline(fm1)
 segments(x0 = 9, y0 = 0.19, y1 = fitted(fm1)[3], col = "red")
 ```
 
-*Example*: The first individual in the data set drank $x_1 = 5$ beers and had a BAC of $y_1 = 0.1$.  Find $\widehat{y_1}$ and $e_1$.  Answer: $\widehat{y_1} = 0.077$, $e_1 = 0.023$.
+*Example*: The first individual in the data set drank $x_1 = 5$ beers and had a BAC of $y_1 = 0.1$.  Find the fitted value and residual for this data point.  Answer: $\hat{y}_1 = 0.077$, $e_1 = 0.023$.
 
 The *error sum of squares* (SSE) is
 $$
-SSE = \sum_{i=1}^{n} e_i^{2} = \sum_{i=1}^{n} \left(y_{i} - \widehat{y_i} \right)^{2}. 
+SSE = \sum_{i=1}^{n} e_i^{2} = \sum_{i=1}^{n} \left(y_{i} - \hat{y}_i \right)^{2}. 
 $$
-The SSE is a measure of the unexplained variability in the data.  The least squares estimates, $\widehat{\beta_0}$ and  $\widehat{\beta_1}$, are called the least squares estimates because they minimize the SSE.  
+The SSE is a measure of the unexplained variability in the data.  The least squares estimates, $\hat{\beta}_0$ and  $\hat{\beta}_1$, are called the least squares estimates because they minimize the SSE.  
 
 We can use the SSE to find an estimate of the error variance parameter by using the formula
 $$
@@ -118,7 +158,7 @@ Most error terms, like the SLR error variance $\sigma_\varepsilon^2$, are estima
 
 Consider the following thought experiment.  Suppose that, bizarrely, we knew the values of the parameters $\beta_0$ and $\beta_1$ in an SLR, and only needed to estimate the error variance $\sigma_\varepsilon^2$.  We could do so using the sum of squares $\sum_{i=1}^{n}\left(y_{i} -\left[\beta_0 +\beta_1 x_i \right]\right)^2$.  In this case, each of our $n$ data points would contribute a `free difference' to the summation above, and so there would be $n$ free differences with which we could estimate the error variance $\sigma_\varepsilon^2$.
 
-However, we are almost never know the values of the $\beta_0$ and $\beta_1$ in advance.  Instead, we have to use the data to estimate both $\beta_0$ and $\beta_1$.  Now, because we have to estimate both $\beta_0$ and $\beta_1$, there are only $n - 2$ free differences in the sum of squares $\sum_{i=1}^{n}\left(y_{i} -\left[\widehat{\beta_0} +\widehat{\beta_1} x_i \right]\right)^{2}$.  One way to visualize this is to imagine fitting a line to a data set  with only $n = 2$ data points (with different $x$ values).  The line would be guaranteed to pass through both points, and consequently both residuals would equal 0. Because both residuals equal 0, the SSE would also equal 0.  However, the SSE doesn't equal 0 because the actual value of  $\sigma_\varepsilon^2$ equals 0.  Instead, the SSE equals 0 because there is no information remaining to estimate the residual variance.
+However, we are almost never know the values of the $\beta_0$ and $\beta_1$ in advance.  Instead, we have to use the data to estimate both $\beta_0$ and $\beta_1$.  Now, because we have to estimate both $\beta_0$ and $\beta_1$, there are only $n - 2$ free differences in the sum of squares $\sum_{i=1}^{n}\left(y_{i} -\left[\hat{\beta}_0 +\hat{\beta}_1 x_i \right]\right)^{2}$.  One way to visualize this is to imagine fitting a line to a data set  with only $n = 2$ data points (with different $x$ values).  The line would be guaranteed to pass through both points, and consequently both residuals would equal 0. Because both residuals equal 0, the SSE would also equal 0.  However, the SSE doesn't equal 0 because the actual value of  $\sigma_\varepsilon^2$ equals 0.  Instead, the SSE equals 0 because there is no information remaining to estimate the residual variance.
 
 In general, when we have to use the same data set to estimate the parameters of the signal component \textit{and} to estimate a variance parameter, then each parameter that we have to estimate in the mean component eliminates a free difference from the sum of squares $\sum_{i=1}^{n}\left(y_{i} -\hat{y}_{i} \right)^{2}$.  To convert the sum of squares into an estimate of an error variance, we need to count the number of free differences (or degrees of freedom) correctly, and divide the sum of squares by the appropriate number of df to make sure we get a valid variance estimate. 
 
@@ -138,23 +178,25 @@ To draw statistical inferences about the slope parameter $\beta_1$, we make the 
 
 4.  Normality.  The errors have a normal (i.e., bell-shaped, or Gaussian) distribution.
 
-5. The predictors are measured without error.
+<!-- 5. The predictors are measured without error. -->
 
-This fifth assumption is usually not listed as one of the assumptions in SLR, but it is useful to keep in mind.  The predictor and the response are *not* placed on equal footing.  Note that assumption number 1 deals with the mean component of the model, while assumptions 2--4 deal with the error component of the model.
+<!-- This fifth assumption is usually not listed as one of the assumptions in SLR, but it is useful to keep in mind.  The predictor and the response are *not* placed on equal footing.  -->
+
+Note that assumption number 1 deals with the mean component of the model, while assumptions 2--4 deal with the error component of the model.
 
 ### Standard errors
 
-As intelligent scientists, we realize that estimates are not exactly equal to the parameters that they seek to estimate.  We can characterize the uncertainty in parameter estimates in different ways.  One tool that we have for quantifying uncertainty in parameter estimates is to calculate a standard error.  In general, a *standard error* quantifies the variability in an estimate that is attributable to random sampling.  Most parameter estimates that we will encounter have known formulas for their standard errors.  In most cases, these formulas are complicated, and we will rely on computers to calculate standard errors for us.  However, the formula for the standard error of the slope parameter in SLR is interesting to examine because it contains a valuable insight that we can use when collecting data for a regression study.  The standard error of $\widehat{\beta_1}$, denoted $s_{\widehat{\beta_1}}$, is given by the formula
+As intelligent scientists, we realize that estimates are not exactly equal to the parameters that they seek to estimate.  We can characterize the uncertainty in parameter estimates in different ways.  One tool that we have for quantifying uncertainty in parameter estimates is to calculate a standard error.  In general, a *standard error* quantifies the variability in an estimate that is attributable to random sampling.  Most parameter estimates that we will encounter have known formulas for their standard errors.  In most cases, these formulas are complicated, and we will rely on computers to calculate standard errors for us.  However, the formula for the standard error of the slope parameter in SLR is interesting to examine because it contains a valuable insight that we can use when collecting data for a regression study.  The standard error of $\hat{\beta}_1$, denoted $s_{\hat{\beta}_1}$, is given by the formula
 $$
-s_{\widehat{\beta_1}} = \dfrac{s_{\varepsilon}}{\sqrt{S_{xx} } } 
+s_{\hat{\beta}_1} = \dfrac{s_{\varepsilon}}{\sqrt{S_{xx} } } 
 $$ 
 where $S_{xx} =\sum_{i}\left(x_{i} -\bar{x}\right)^2$ quantifies the dispersion in the predictor variables.  
 
-Although this formula looks a bit daunting, there's some intuition to be gained here, and a lesson for experimental design.  Suppose we had designed a regression experiment in which all of the individuals were assigned similar values of the predictor.  In this case, $S_{xx}$ would be small, and consequently the standard error $s_{\widehat{\beta_1}}$ would be large.  Conversely, if the values of the predictor were very different among individuals in the study, then $S_{xx}$ would be large and the standard error $s_{\widehat{\beta_1}}$ would be small.  Thus, if we want a precise estimate of the slope, we should choose predictor values that span the range over which we want to learn.
+Although this formula looks a bit daunting, there's some intuition to be gained here, and a lesson for experimental design.  Suppose we had designed a regression experiment in which all of the individuals were assigned similar values of the predictor.  In this case, $S_{xx}$ would be small, and consequently the standard error $s_{\hat{\beta}_1}$ would be large.  Conversely, if the values of the predictor were very different among individuals in the study, then $S_{xx}$ would be large and the standard error $s_{\hat{\beta}_1}$ would be small.  Thus, if we want a precise estimate of the slope, we should choose predictor values that span the range over which we want to learn.
 
 Thought question: Following this line of reasoning, is it a good idea to design a study so that half the individuals are assigned a very large value of the predictor, and the other half are assigned a very small value?  Why or why not?
 
-For the BAC example, $s_{\widehat{\beta_1}} = 0.0024$.
+For the BAC example, $s_{\hat{\beta}_1} = 0.0024$.
 
 ### Confidence intervals
 
@@ -172,7 +214,7 @@ Note also that there is a trade-off between the confidence level and the width o
 
 ### Statistical hypothesis tests
 
-Finally, a third way to characterize the statistical uncertainty in $\widehat{\beta_1} $ is to conduct a statistical hypothesis test.  Recall that statistical hypotheses are statements about the values of unknown parameters, and a statistical hypothesis test is a way to measure the strength of evidence against a `null hypothesis'.  In the context of SLR, we are almost always interested in testing the null hypothesis that the true value of the slope parameter is equal to zero.  In notation, we write this as $H_0: \beta_1 = 0$.  Evidence against this null hypothesis is taken as evidence that the predictor is linearly related to the response.  
+Finally, a third way to characterize the statistical uncertainty in $\hat{\beta}_1 $ is to conduct a statistical hypothesis test.  Recall that statistical hypotheses are statements about the values of unknown parameters, and a statistical hypothesis test is a way to measure the strength of evidence against a `null hypothesis'.  In the context of SLR, we are almost always interested in testing the null hypothesis that the true value of the slope parameter is equal to zero.  In notation, we write this as $H_0: \beta_1 = 0$.  Evidence against this null hypothesis is taken as evidence that the predictor is linearly related to the response.  
 
 Recall that in statistical hypothesis testing, we must also specify an alternative hypothesis.  In SLR, we are almost always interested in testing $H_0: \beta_1 = 0$ vs. the two-sided alternative $H_a: \beta_1 \ne 0$.  We conduct a statistical hypothesis test by first calculating a test statistic.  In general, formulas for test statistics take the form:
 $$
@@ -220,7 +262,7 @@ Thus, there is no evidence that would allow us to reject $H_0: \beta_1 = 0$ in f
 
 One final note: Although it is rarely done, there is no reason why we must restrict ourselves to testing  $H_0: \beta_1 = 0$.  We could in fact test any null hypothesis.  For example, suppose conventional wisdom held that each additional beer consumed increased BAC by 0.02, and we were interested in asking if these data contain evidence that the conventional wisdom is false.  Then we could test  $H_0: \beta_1 = 0.02$ vs.\ $H_a: \beta_1 \ne 0.02$, although we have to calculate the test statistic and $p$-value manually instead of relying on computer output:
 \begin{align*}
-t & = \dfrac{\widehat{\beta_1} -0.02}{s_{\widehat{\beta_1} }} \\
+t & = \dfrac{\hat{\beta}_1 -0.02}{s_{\hat{\beta}_1 }} \\
 & = \dfrac{0.0180-0.02}{0.0024} \\
 & =-0.83 \\ \\
 p & =  \Pr{t_{14} <-0.83} +\Pr{t_{14} >0.83} \\
@@ -233,7 +275,7 @@ Confusion alert: Do be mindful of the distinction between a statistical hypothes
 
 ### Inference for the intercept
 
-Most statistical packages automatically provide the standard errors for the intercept, $s_{\widehat{\beta_0}}$, as well as a test of $H_0: \beta_0 = 0$ vs.\ $H_a: \beta_0 \ne 0$.  Sometimes this is a meaningful test, but usually it isn't.  The scientific context of the problem will determine whether or not it makes sense to pay attention to this test. 
+Most statistical packages automatically provide the standard errors for the intercept, $s_{\hat{\beta}_0}$, as well as a test of $H_0: \beta_0 = 0$ vs.\ $H_a: \beta_0 \ne 0$.  Sometimes this is a meaningful test, but usually it isn't.  The scientific context of the problem will determine whether or not it makes sense to pay attention to this test. 
 
 There is a special type of regression called ``regression through the origin'' that is appropriate when we can assume $\beta_0 = 0$ automatically.  Should we use regression through the origin for the BAC example?
 
@@ -340,6 +382,192 @@ As we'll see below, the normality assumption is the \textit{least} critical of t
 qqnorm(resid(fm1))
 qqline(resid(fm1))
 ```
+
+## Consequences of violating model assumptions, and possible fixes
+
+1. Linearity 
+	
+When the linearity assumption is violated, the model has little worth.  What's the point of fitting a linear model to data when the relationship between predictor and response is clearly not linear?
+	
+The best fix is to fit a non-linear model using non-linear regression.  (We will discuss non-linear regression later.)  A second-best option is to transform the predictor and / or the response to make the relationship linear.  
+	
+2. Independence
+	
+Inference about regression parameters using naive standard errors is not trustworthy when errors are correlated (there is more uncertainty in the estimates than the naive standard errors suggest).
+	
+The most common source of non-independence is either temporal or spatial structure in the data.  Arguably, we have seen this with the BAC data, where one way to think about the downward trend of residuals vs.\ the order of observation is that residuals close together in time tend to be positively correlated.  The best, and easiest, way to accommodate this type of dependence is to include (an)other predictor(s) in the model for time or space.   A second-best solution is to use specific methods for time-series data or spatial data, which doable, but is fairly involved, and will require considerable additional study.
+	
+3. Constant variance
+	
+Like violations of the independence assumption, violations of the constant-variance assumption cause inference about regression parameters is not trustworthy.  Non-constant variance causes there to be more uncertainty in the parameters estimates than the default CIs or $t$-tests suggest.
+	
+There are two possible fixes for non-constant variance.  If the non-constant variance arises because the response variable has a known, non-normal distribution, then one can use generalized linear models (such as logistic regression for binary data, or Poisson regression for count data).  We will touch on generalized linear models briefly at the end of ST 512.  Alternatively, if there is no obvious alternative distribution for the response, the usual approach is to transform the response variable to "stabilize" the variance.  
+	 
+For better or worse, there used to be a bit of a cottage industry in statistics in developing variance-stabilizing transformations.  Remember that transformations come with a cost of diminished interpretability, and be wary of exotic transformations.  It is not uncommon to observe data where the variance increases as the mean response increases.  Good transformations for this situation are either a log transformation or a square-root transformation.^[Note that a log transformation will not work if the data contain response values equal to 0.  The usual approach in this case is either to take the $\ln(y + 1)$, or to take $\ln(y + c)$, where $c$ is one-half of the smallest non-zero response value in the data set.  Note also that the base of the logarithm doesn't matter when taking a log transformation.  Natural log is the most common choice, but one can also use $\log_2$ or $\log_{10}$.]  Another common non-constant variance problem arises when the response is a percentage or a proportion.  In this case, the standard and appropriate transformation is the arcsin-square root transformation, i.e., if the observed response is 10\%, the transformed response is $\sin^{-1}(\sqrt{.1})=0.322$.
+	
+4. Normality
+	
+Perhaps surprisingly, the consequences of violating the normality assuption are minimal, unless departures from normality are severe (e.g., binary data).  When one encounters decidedly non-normal data, the usual remedy is to entertain a so-called generalized linear models, i.e., logistic regression for binary data; Poisson regression for count data.	
+
+*Example*: Box office take (in millions of US\$) vs. a composite rating score from critics' reviews:
+```{r}
+movie <- read.table("data/movie.txt", head = T, stringsAsFactors = T)
+
+with(movie, plot(BoxOffice ~ Score, xlab = "Average rating", ylab = "Box office take"))
+fm1 <- lm(BoxOffice ~ Score, data = movie)
+abline(fm1)
+```
+
+The plots of residuals vs. fitted value show clear evidence of non-constant variance.  The Q-Q plot indicates right-skew.  Taking a square-root transformation of the response stabilizes the variance nicely:
+```{r}
+plot(resid(fm1) ~ fitted(fm1), xlab = "Fitted value", ylab = "Residual")
+abline(h = 0,lty = "dashed")
+
+qqnorm(resid(fm1),main = "QQ plot, movie data")
+qqline(resid(fm1))
+```
+
+Let's try a square-root transformation of the response:
+```{r}
+fm2 <- lm(sqrt(BoxOffice) ~ Score, data = movie)
+summary(fm2)
+
+plot(fm2)
+```
+Another commonly used transformation for right-skewed data is the log transformation.  Here are residual plots and model output for log-transformed data:
+```{r}
+fm3 <- lm(log(BoxOffice) ~ Score, data = movie)
+summary(fm3)
+
+plot(fm3)
+```
+
+Which transformation do you think is more appropriate?  Do the different transformations lead to different qualitative conclusions regarding the statistical significance of the relationship between reviewer rating and box office take?
+
+*Example 2*: Highway fuel efficiency (in mpg) vs. vehicle weight for 1999 model cars:
+
+```{r}
+cars <- read.table("data/cars.txt", head = T)
+
+with(cars, plot(mpghw ~ weight, xlab = "Vehicle weight (lbs)", ylab = "Highway mpg"))
+fm1 <- lm(mpghw ~ weight, data = cars)
+abline(fm1)
+
+plot(resid(fm1) ~ fitted(fm1), xlab = "Fitted value", ylab = "Residual")
+abline(h = 0,lty = "dashed")
+```
+
+The relationship between highway mpg and vehicle weight is clearly non-linear, although that is seen most clearly from the plot of residuals vs. fitted values.  We will discuss modeling non-linear relationships later.
+
+Here are some additional comments:
+
+1.  What about outliers?  The famous statistician George Box was fond of saying that outliers can be the most informative points in the data set.  If you have an outlier, try to figure out why that point is an outlier.  Discard outliers only if a good reason exists for doing so -- resist the temptation to ``scrub'' your data.  Doing so is tantamount to cheating.  If you absolutely must remove an outlier, at least report the model fits both with and without the outliers included.
+
+2. Be particularly wary of data points associated with extreme $x$-values.  These points can be unduly influential.  (See discussion in the multiple-regression installment of the notes on leverage, standardized residuals, and Cook's distance.) 
+
+3.  What about transforming the $x$-variable?  Remember that there are no assumptions about the distribution of the $x$-variable.  However, transformations of the $x$-variable can also make non-linear relationships into linear ones.  Remember though that transformations tend to lessen interpretability.
+
+4. Don't extrapolate the regression line beyond the range of the $x$-variable observed in the data.  Remember that statistical models are only valid to the extent that data exist to support them.
+
+5. Although it's often overlooked, remember that the standard regression model also assumes that the predictor is measured without error.  If there's error in the predictor as well as the response, then the estimated slope will be biased towards 0.  If the error in the predictor is comparable to the error in the response, then consider a regression model that allows for variability in the predictor.  These models go by multiple names, but they are most often called ``Model II regression''.
+
+<!-- {\em Example of an outlier with large influence on the regression relationship} -->
+
+<!-- The data below are from a 1981 British government survey relating household spending on tobacco products to household spending on alcoholic beverages, both in pounds per week.  One data point is shown for each of the 11 regions of the UK.  -->
+<!-- \begin{center} -->
+<!-- 	\includegraphics*[height=2.5in]{figures/sin} -->
+<!-- \end{center}  -->
+
+<!-- Clearly, there is one data point that does not fit the pattern, and has considerably less spending on alcohol.  Inspection of the data shows that this data point corresponds to Northern Ireland, while all other data points are from the island of Great Britain.  Eliminating the data point that corresponds to Northern Ireland from the regression model gives the linear fit shown with the dashed line.   -->
+
+## Prediction with regression models
+
+Consider a new value of the predictor $x^\star$.  There are two different types of predictions we could make:
+
+1. What is the average response of the population at $x^\star$?
+
+2. What is the value of a single future observation at $x^\star$?
+
+Point estimates (i.e., single best guesses) are the same for both predictions.  They are found by simply plugging $x^\star$ into the fitted regression equation.
+
+*Example*.  Suppose every grad student at NCSU drinks 2.5 beers.  What do we predict the average BAC of this population to be?
+\begin{align*}
+	\hat{y}^\star & =  \widehat{\beta }_{0} +\widehat{\beta }_{1} x^\star  \\ 
+	& =  -0.013 + 0.018 \times 2.5\\
+	& =  0.032
+\end{align*}
+
+Suppose Danny drinks 2.5 beers.  What do we predict Danny's BAC to be?
+$$
+\hat{y}^\star = 0.032
+$$
+
+However, the uncertainty in these two predictions is different.  Predictions of single future observations are more uncertain than predictions of population averages (why?).
+
+We quantify the uncertainty in prediction 1 with a confidence interval.  We quantify the uncertainty in prediction 2 with a prediction interval.  A prediction interval (PI) is just like a confidence interval in the sense that you get to choose the coverage level.  i.e., a 95\% prediction interval will contain a single new prediction 95\% of the time, while a 99\% prediction interval will contain a single new prediction 99\% of the time.  All else being equal, a 99\% prediction interval will be wider than a 95\% prediction interval.
+
+Both confidence intervals and prediction intervals follow the same general prescription of
+$$
+\mbox{estimate} \pm \mbox{critical value} \times \mbox{standard error}
+$$
+Both also use the same point estimate, $\hat{y}^\star$, and the same critical value (taken from a $t$-distribution with $n-2$ df).  However, the standard errors differ depending on whether we are predicting an average response or a single future observation.  If you find formulas helpful, you might derive some insight from the formulas for these two standard errors.  For an average population response, the standard error is
+$$
+s_{\varepsilon} \sqrt{\frac{1}{n} +\frac{\left(x^\star -\bar{x}\right)^{2} }{S_{xx} } } 
+$$ 
+while for a single future observation, the standard error is
+$$
+s_{\varepsilon} \sqrt{1+\frac{1}{n} +\frac{\left(x^\star -\bar{x}\right)^{2} }{S_{xx} } } 
+$$ 
+
+Thus, the width of a CI or PI depends on the following:
+
+\begin{enumerate}
+\item The type of interval (all else being equal, a PI is wider than a CI; note the extra '1' in the formula for the standard error of a single future observation).
+
+\item The coverage level (all else being equal, higher coverage requires a wider interval).
+
+\item The unexplained variability in the data (all else being equal, larger MSEs yield wider intervals).
+
+\item  The distance between $x^\star $ and the average predictor value, $\bar{x}$ (all else being equal, predictions are more uncertain further away from $\bar{x}$).
+\end{enumerate}
+
+The function \texttt{predict} can be used to calculate these intervals in R:
+\renewcommand{\baselinestretch}{1}
+\begin{verbatim}
+> new.data <- data.frame(Beers = 2.5)
+> predict(fm1, interval = "confidence", newdata = new.data)
+
+           fit        lwr        upr
+[1,] 0.0322088 0.01602159 0.04839601
+
+> predict(fm1, interval = "prediction", newdata = new.data)
+
+           fit         lwr        upr
+[1,] 0.0322088 -0.01452557 0.07894317
+
+> predict(fm1, interval = "prediction", newdata = new.data, level = 0.90)
+
+           fit          lwr        upr
+[1,] 0.0322088 -0.006169709 0.07058731
+\end{verbatim}
+\renewcommand{\baselinestretch}{1.5} 
+\begin{center}
+	\includegraphics*[height=2.5in]{figures/beer-predict}
+\end{center} 
+Regression (solid line), 95\% confidence intervals (dashed lines), and 95\% prediction intervals (dotted lines) for the beer data.  Note that both confidence and prediction intervals widen near the edges of the range of the predictor.
+
+\subsection{Regression design}
+
+Regression models can be used both for observational and experimental data.  In some experiments, the experimenter has control over the values of the predictor included in the experiment.  Gotelli \& Ellison (\textit{A Primer of Ecological Statistics}, pp. 167-9) give the following guidelines for a regression design with a single predictor:
+
+\begin{enumerate}
+\item Ensure that the range of values sampled for the predictor variable is large enough to capture the full range of responses by the response variable.
+
+\item Ensure that the distribution of predictor values is approximately uniform within the sampled range.
+\end{enumerate}
+ 
+Once the values of the predictor to be included in the experiment have been chosen, these values should be randomly assigned to the experimental units.  Note that randomization does \textit{not} require randomly choosing the values of the predictor to be included in the experiment!
+
 
 
 
