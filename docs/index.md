@@ -1,7 +1,7 @@
 --- 
 title: "ST 512 course notes"
 author: "Kevin Gross"
-date: "2022-01-20"
+date: "2022-05-16"
 output: bookdown::gitbook
 documentclass: book
 bibliography: [st512.bib]
@@ -17,7 +17,7 @@ knitr::opts_chunk$set(fig.width = 4, fig.height = 4, fig.align = "center")
 
 # Preface {-}
 
-These are course notes for ST 512, Statistical Methods for Researchers II, taught at North Carolina State University.  ST 512 is the second semester of a two-semester sequence in statistical methods.  These notes are a proto-textbook, and are available for use by anyone associated with NCSU.
+This is a test change just to make sure I remember how to do this.  These are course notes for ST 512, Statistical Methods for Researchers II, taught at North Carolina State University.  ST 512 is the second semester of a two-semester sequence in statistical methods.  These notes are a proto-textbook, and are available for use by anyone associated with NCSU.
 
 *Philosophy*
 
