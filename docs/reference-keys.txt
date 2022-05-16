@@ -4,7 +4,6 @@ fig:unnamed-chunk-4
 simple-linear-regression
 the-basics-of-slr
 least-squares-estimation
-sidebar-on-degrees-of-freedom
 inference-for-the-slope
 standard-errors
 confidence-intervals
