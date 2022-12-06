@@ -33,3 +33,8 @@ ranking-methods
 sequential-methods
 non-linear-regression
 leverage-influential-points-and-standardized-residuals
+one-factor-layout-and-the-analysis-of-variance
+one-factor-analysis-of-variance-anova
+one-factor-anova-for-testing-equality-of-group-means
+one-factor-anova
+one-factor-anova-the-basics

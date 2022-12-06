@@ -2,6 +2,7 @@
 
 
 
+
 ## Multiple regression for associating multiple predictor variables with a single response
 
 Just as SLR was used to characterize the relationship between a single predictor and a response, multiple regression can be used to characterize the relationship between several predictors and a response.
@@ -50,7 +51,7 @@ Note that to distinguish individual observations, we require a double subscripti
 There are a variety of ways to think about this model.  As in SLR, we can separate this model into a mean or signal component $\beta_0 +\beta_1 x_1 +\beta_2 x_2$ and an error component $\epsilon_i$.  Note that the mean component is now a function of two variables, and suggests that the relationship between the average response and either predictor is linear.  If we wish to make statistical inferences about the parameters $\beta_0$, $\beta_1$ and $\beta_2$ (which we do), then we need to place the standard assumptions on the error component: independence, constant variance, and normality.  In notation, $\epsilon_i \sim \mathcal{N}\left(0,\sigma_{\epsilon}^2 \right)$.
 
 We can also think about this model geometrically.  Recall that in SLR, we could interpret the SLR model as a line passing through a cloud of data points.  With 2 predictors, we are now fitting a plane to data points that "exist" in a three- dimensional data cloud. 
-<img src="images/regression-schematic.png" width="1332" />
+<img src="images/regression-schematic.png" width="1332" style="display: block; margin: auto;" />
 As in SLR, we use the least squares criteria to find the best-fitting parameter estimates.  That is to say, we will agree that the best estimates of the parameters $\beta_0$, $\beta_1$ and $\beta_2$ are the values that minimize
 \begin{eqnarray*}
 SSE & = & \sum_{i=1}^n e_i^2 \\
@@ -140,7 +141,7 @@ cheese <- read.table("data/cheese.txt", head = T, stringsAsFactors = T)
 pairs(cheese)
 ```
 
-<img src="02-MultipleRegression_files/figure-html/unnamed-chunk-6-1.png" width="672" />
+<img src="02-MultipleRegression_files/figure-html/unnamed-chunk-6-1.png" width="480" style="display: block; margin: auto;" />
 Let's entertain a model that uses all three predictors.  
 
 ```r
@@ -659,7 +660,7 @@ cars <- read.table("data/cars.txt", head = T, stringsAsFactors = T)
 with(cars, plot(mpghw ~ weight, xlab = "Vehicle weight (lbs)", ylab = "Highway mpg"))
 ```
 
-<img src="02-MultipleRegression_files/figure-html/unnamed-chunk-18-1.png" width="480" />
+<img src="02-MultipleRegression_files/figure-html/unnamed-chunk-18-1.png" width="480" style="display: block; margin: auto;" />
 
 To fit a quadratic model, we could manually create a predictor equal to weight-squared.  Or, in R, we could create the weight-squared predictor within the call to "lm" by using the following syntax:
 
@@ -740,14 +741,14 @@ quad.fit <- function(x) quad.coef[1] + quad.coef[2] * x + quad.coef[3] * x^2
 curve(quad.fit, from = min(cars$weight), to = max(cars$weight), add = TRUE, col = "red")
 ```
 
-<img src="02-MultipleRegression_files/figure-html/unnamed-chunk-21-1.png" width="672" />
+<img src="02-MultipleRegression_files/figure-html/unnamed-chunk-21-1.png" width="480" style="display: block; margin: auto;" />
 
 ```r
 plot(x = fitted(quad), y = resid(quad), xlab = "Fitted values", ylab = "Residuals")
 abline(h = 0, lty = "dashed")
 ```
 
-<img src="02-MultipleRegression_files/figure-html/unnamed-chunk-21-2.png" width="672" />
+<img src="02-MultipleRegression_files/figure-html/unnamed-chunk-21-2.png" width="480" style="display: block; margin: auto;" />
 
 Therefore, the quadratic model clearly provides the best low-order polynomial fit to these data.
 
@@ -788,7 +789,7 @@ with(subset(fish, site == "Bennett"), points(log(hg) ~ age, pch = "B"))
 with(subset(fish, site == "Waterville"), points(log(hg) ~ age, pch = "W"))
 ```
 
-<img src="02-MultipleRegression_files/figure-html/unnamed-chunk-22-1.png" width="480" />
+<img src="02-MultipleRegression_files/figure-html/unnamed-chunk-22-1.png" width="480" style="display: block; margin: auto;" />
 
 With these data, we would like to ask: after accounting for the effect of age, is there evidence that tissue mercury content in fish differs among the three lakes?  To do so, we will consider the model
 \[
@@ -1172,7 +1173,7 @@ puromycin <- read.table("data/puromycin.txt", head = T, stringsAsFactors = T)
 with(puromycin, plot(velocity ~ conc, xlab = "concentration", ylab = "velocity"))
 ```
 
-<img src="02-MultipleRegression_files/figure-html/unnamed-chunk-30-1.png" width="384" />
+<img src="02-MultipleRegression_files/figure-html/unnamed-chunk-30-1.png" width="384" style="display: block; margin: auto;" />
 
 It is hypothesized that these data can be described by the Michaelis-Menten model for puromycin kinetics.  The Michaelis-Menten model is:
 \[
@@ -1229,7 +1230,7 @@ with(puromycin, plot(velocity ~ conc, xlab = "concentration", ylab = "velocity")
 lines(xvals, predict(fm1, newdata = data.frame(conc = xvals)), col = "red")
 ```
 
-<img src="02-MultipleRegression_files/figure-html/unnamed-chunk-32-1.png" width="384" />
+<img src="02-MultipleRegression_files/figure-html/unnamed-chunk-32-1.png" width="384" style="display: block; margin: auto;" />
 
 It is instructive to compare the fit of this non-linear model with the fit from a few polynomial regressions.  Neither the quadratic nor the cubic models fits very well in this case.  Polynomial models often have a difficult time handling a data set with an asymptote.  In this case, the Michaelis-Menten model clearly seems preferable.
 
@@ -1250,7 +1251,7 @@ curve(cubic.fit, from = min(puromycin$conc), to = max(puromycin$conc), add = TRU
 legend(x = 0.6, y = 100, legend = c("quadratic", "cubic"), col = c("blue", "darkgreen"), lty = "solid", bty = "n")
 ```
 
-<img src="02-MultipleRegression_files/figure-html/unnamed-chunk-33-1.png" width="384" />
+<img src="02-MultipleRegression_files/figure-html/unnamed-chunk-33-1.png" width="384" style="display: block; margin: auto;" />
 
 ## Leverage, influential points, and standardized residuals
 
@@ -1314,6 +1315,6 @@ stdres(fm1)
 plot(fm1)
 ```
 
-<img src="02-MultipleRegression_files/figure-html/unnamed-chunk-37-1.png" width="672" /><img src="02-MultipleRegression_files/figure-html/unnamed-chunk-37-2.png" width="672" /><img src="02-MultipleRegression_files/figure-html/unnamed-chunk-37-3.png" width="672" /><img src="02-MultipleRegression_files/figure-html/unnamed-chunk-37-4.png" width="672" />
+<img src="02-MultipleRegression_files/figure-html/unnamed-chunk-37-1.png" width="480" style="display: block; margin: auto;" /><img src="02-MultipleRegression_files/figure-html/unnamed-chunk-37-2.png" width="480" style="display: block; margin: auto;" /><img src="02-MultipleRegression_files/figure-html/unnamed-chunk-37-3.png" width="480" style="display: block; margin: auto;" /><img src="02-MultipleRegression_files/figure-html/unnamed-chunk-37-4.png" width="480" style="display: block; margin: auto;" />
 Observations with large values of Cook's distance merit greater scrutiny.
 
