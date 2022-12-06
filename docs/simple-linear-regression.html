@@ -5,26 +5,26 @@
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>Chapter 1 Simple linear regression | ST 512 course notes</title>
-  <meta name="description" content="Course notes for ST 512, Statistical Methods for Researchers, taught at NCSU in Spring 2022." />
+  <meta name="description" content="Course notes for ST 512, Statistical Methods for Researchers II." />
   <meta name="generator" content="bookdown 0.22 and GitBook 2.6.7" />
 
   <meta property="og:title" content="Chapter 1 Simple linear regression | ST 512 course notes" />
   <meta property="og:type" content="book" />
   
   
-  <meta property="og:description" content="Course notes for ST 512, Statistical Methods for Researchers, taught at NCSU in Spring 2022." />
+  <meta property="og:description" content="Course notes for ST 512, Statistical Methods for Researchers II." />
   
 
   <meta name="twitter:card" content="summary" />
   <meta name="twitter:title" content="Chapter 1 Simple linear regression | ST 512 course notes" />
   
-  <meta name="twitter:description" content="Course notes for ST 512, Statistical Methods for Researchers, taught at NCSU in Spring 2022." />
+  <meta name="twitter:description" content="Course notes for ST 512, Statistical Methods for Researchers II." />
   
 
 <meta name="author" content="Kevin Gross" />
 
 
-<meta name="date" content="2022-05-16" />
+<meta name="date" content="2022-12-06" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -32,7 +32,7 @@
   
   
 <link rel="prev" href="index.html"/>
-<link rel="next" href="bibliography.html"/>
+<link rel="next" href="multiple-regression.html"/>
 <script src="libs/header-attrs-2.9/header-attrs.js"></script>
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
@@ -172,6 +172,34 @@ div.csl-indent {
 <li class="chapter" data-level="1.6" data-path="simple-linear-regression.html"><a href="simple-linear-regression.html#diagnostic-plots"><i class="fa fa-check"></i><b>1.6</b> Diagnostic plots</a></li>
 <li class="chapter" data-level="1.7" data-path="simple-linear-regression.html"><a href="simple-linear-regression.html#consequences-of-violating-model-assumptions-and-possible-fixes"><i class="fa fa-check"></i><b>1.7</b> Consequences of violating model assumptions, and possible fixes</a></li>
 <li class="chapter" data-level="1.8" data-path="simple-linear-regression.html"><a href="simple-linear-regression.html#prediction-with-regression-models"><i class="fa fa-check"></i><b>1.8</b> Prediction with regression models</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="multiple-regression.html"><a href="multiple-regression.html"><i class="fa fa-check"></i><b>2</b> Multiple regression</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="multiple-regression.html"><a href="multiple-regression.html#multiple-regression-for-associating-multiple-predictor-variables-with-a-single-response"><i class="fa fa-check"></i><b>2.1</b> Multiple regression for associating multiple predictor variables with a single response</a>
+<ul>
+<li class="chapter" data-level="2.1.1" data-path="multiple-regression.html"><a href="multiple-regression.html#sums-of-squares-decomposition-and-r2."><i class="fa fa-check"></i><b>2.1.1</b> Sums of squares decomposition and <span class="math inline">\(R^2\)</span>.</a></li>
+<li class="chapter" data-level="2.1.2" data-path="multiple-regression.html"><a href="multiple-regression.html#partial-regression-coefficients."><i class="fa fa-check"></i><b>2.1.2</b> Partial regression coefficients.</a></li>
+</ul></li>
+<li class="chapter" data-level="2.2" data-path="multiple-regression.html"><a href="multiple-regression.html#statistical-inference-for-partial-regression-coefficients"><i class="fa fa-check"></i><b>2.2</b> Statistical inference for partial regression coefficients</a>
+<ul>
+<li class="chapter" data-level="2.2.1" data-path="multiple-regression.html"><a href="multiple-regression.html#prediction"><i class="fa fa-check"></i><b>2.2.1</b> Prediction</a></li>
+</ul></li>
+<li class="chapter" data-level="2.3" data-path="multiple-regression.html"><a href="multiple-regression.html#indicator-variables"><i class="fa fa-check"></i><b>2.3</b> Indicator variables</a></li>
+<li class="chapter" data-level="2.4" data-path="multiple-regression.html"><a href="multiple-regression.html#the-mlr-model-in-matrix-notation"><i class="fa fa-check"></i><b>2.4</b> The MLR model in matrix notation</a></li>
+<li class="chapter" data-level="2.5" data-path="multiple-regression.html"><a href="multiple-regression.html#interactions-between-predictors"><i class="fa fa-check"></i><b>2.5</b> Interactions between predictors</a></li>
+<li class="chapter" data-level="2.6" data-path="multiple-regression.html"><a href="multiple-regression.html#polynomial-regression"><i class="fa fa-check"></i><b>2.6</b> Polynomial regression</a></li>
+<li class="chapter" data-level="2.7" data-path="multiple-regression.html"><a href="multiple-regression.html#testing-multiple-regression-coefficients-at-once"><i class="fa fa-check"></i><b>2.7</b> Testing multiple regression coefficients at once</a>
+<ul>
+<li class="chapter" data-level="2.7.1" data-path="multiple-regression.html"><a href="multiple-regression.html#model-utility-tests"><i class="fa fa-check"></i><b>2.7.1</b> Model utility tests</a></li>
+</ul></li>
+<li class="chapter" data-level="2.8" data-path="multiple-regression.html"><a href="multiple-regression.html#multi-collinearity"><i class="fa fa-check"></i><b>2.8</b> (Multi-)Collinearity</a></li>
+<li class="chapter" data-level="2.9" data-path="multiple-regression.html"><a href="multiple-regression.html#variable-selection-choosing-the-best-model"><i class="fa fa-check"></i><b>2.9</b> Variable selection: Choosing the best model</a>
+<ul>
+<li class="chapter" data-level="2.9.1" data-path="multiple-regression.html"><a href="multiple-regression.html#ranking-methods"><i class="fa fa-check"></i><b>2.9.1</b> Ranking methods</a></li>
+<li class="chapter" data-level="2.9.2" data-path="multiple-regression.html"><a href="multiple-regression.html#sequential-methods"><i class="fa fa-check"></i><b>2.9.2</b> Sequential methods</a></li>
+</ul></li>
+<li class="chapter" data-level="2.10" data-path="multiple-regression.html"><a href="multiple-regression.html#non-linear-regression"><i class="fa fa-check"></i><b>2.10</b> Non-linear regression</a></li>
+<li class="chapter" data-level="2.11" data-path="multiple-regression.html"><a href="multiple-regression.html#leverage-influential-points-and-standardized-residuals"><i class="fa fa-check"></i><b>2.11</b> Leverage, influential points, and standardized residuals</a></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="bibliography.html"><a href="bibliography.html"><i class="fa fa-check"></i>Bibliography</a></li>
 </ul>
@@ -340,8 +368,8 @@ In SLR, this test is so common that the value of the <span class="math inline">\
 <p>In the context of the test of <span class="math inline">\(H_0: \beta_1 = 0\)</span> vs. <span class="math inline">\(H_a: \beta_1 \ne 0\)</span> in SLR, this means finding the probability that a <span class="math inline">\(t\)</span>-statistic with <span class="math inline">\(n-2\)</span> df is at least as different from zero as the value observed. For a two-sided alternative hypothesis, we say ``different from zero’’ because the sign (positive vs. negative) of the <span class="math inline">\(t\)</span>-statistic is irrelevant. Be careful, though: for a one-sided alternative hypothesis, the sign of the observed <span class="math inline">\(t\)</span>-statistic is critical!</p>
 <p>For the BAC data, we find the area under the tail of a <span class="math inline">\(t\)</span>-distribution with 14 df that is greater than 7.48, and then (because the <span class="math inline">\(t\)</span>-distribution is symmetric) multiply by 2. That is,
 <span class="math display">\[\begin{align*}
-p &amp; = \Pr{ t_{14} &lt; -7.48} +\Pr{ t_{14} &gt; 7.48}  \\ 
-  &amp; = 2 \times \Pr{ t_{14} &gt;7.48  } \\
+p &amp; = \mathrm{Pr}\!\left\{ t_{14} &lt; -7.48\right\} +\mathrm{Pr}\!\left\{ t_{14} &gt; 7.48\right\}  \\ 
+  &amp; = 2 \times \mathrm{Pr}\!\left\{ t_{14} &gt;7.48  \right\} \\
   &amp; = 3\times 10^{-6}  
 \end{align*}\]</span>
 Thus, there is exceedingly strong evidence that BAC is related to the number of beers consumed.</p>
@@ -353,12 +381,12 @@ t=\dfrac{\widehat{\beta }_{1} -0}{s_{\widehat{\beta }_{1} } } =\dfrac{0.0180}{0.
 \]</span>
 However, because the alternative hypothesis is one-sided, to calculate a <span class="math inline">\(p\)</span>-value, we interpret ``equal to or more extreme than its observed value" as the probability of observing a test statistic  than 7.48, i.e.,
 <span class="math display">\[
-p=\Pr{ t_{14} &gt;7.48} =1.5\times 10^{-6} 
+p=\mathrm{Pr}\!\left\{ t_{14} &gt;7.48\right\} =1.5\times 10^{-6} 
 \]</span>
 We would then reject <span class="math inline">\(H_0: \beta_1 = 0\)</span> in favor of the one-sided alternative <span class="math inline">\(H_a: \beta_1 &gt; 0\)</span> at the <span class="math inline">\(\alpha = .05\)</span> significance level.</p>
 <p>Finally, although it doesn’t make much sense in terms of what we know about alcohol, we could consider testing <span class="math inline">\(H_0: \beta_1 = 0\)</span> vs. the one-sided alternative <span class="math inline">\(H_a: \beta_1 &lt; 0\)</span>. Again, the test statistic is the same (<span class="math inline">\(t\)</span> = 7.48), but now evidence against the null and in favor of the alternative is provided by negative values of the test statistic, so the p-value is the probability of observing a test statistic  than 7.48, i.e.,<br />
 <span class="math display">\[
-p=\Pr{ t_{14} &lt; 7.48} = 1 - \Pr{ t_{14} &gt; 7.48} \approx 0.9999.
+p=\mathrm{Pr}\!\left\{ t_{14} &lt; 7.48\right\} = 1 - \mathrm{Pr}\!\left\{ t_{14} &gt; 7.48\right\} \approx 0.9999.
 \]</span>
 Thus, there is no evidence that would allow us to reject <span class="math inline">\(H_0: \beta_1 = 0\)</span> in favor of the one-sided alternative <span class="math inline">\(H_a: \beta_1 &lt; 0\)</span>.</p>
 <p>One final note: Although it is rarely done, there is no reason why we must restrict ourselves to testing <span class="math inline">\(H_0: \beta_1 = 0\)</span>. We could in fact test any null hypothesis. For example, suppose conventional wisdom held that each additional beer consumed increased BAC by 0.02, and we were interested in asking if these data contain evidence that the conventional wisdom is false. Then we could test <span class="math inline">\(H_0: \beta_1 = 0.02\)</span> vs. <span class="math inline">\(H_a: \beta_1 \ne 0.02\)</span>, although we have to calculate the test statistic and <span class="math inline">\(p\)</span>-value manually instead of relying on computer output:
@@ -366,8 +394,8 @@ Thus, there is no evidence that would allow us to reject <span class="math inlin
 t &amp; = \dfrac{\hat{\beta}_1 -0.02}{s_{\hat{\beta}_1 }} \\
 &amp; = \dfrac{0.0180-0.02}{0.0024} \\
 &amp; =-0.83 \\ \\
-p &amp; =  \Pr{t_{14} &lt;-0.83} +\Pr{t_{14} &gt;0.83} \\
-&amp; = 2 \times \Pr{ t_{14} &gt;0.83}\\
+p &amp; =  \mathrm{Pr}\!\left\{t_{14} &lt;-0.83\right\} +\mathrm{Pr}\!\left\{t_{14} &gt;0.83\right\} \\
+&amp; = 2 \times \mathrm{Pr}\!\left\{ t_{14} &gt;0.83\right\}\\
 &amp; =  0.421. 
 \end{align*}\]</span>
 Thus, these data contain no evidence that would allow us to reject <span class="math inline">\(H_0: \beta_1 = 0.02\)</span> vs. <span class="math inline">\(H_a: \beta_1 \ne 0.02\)</span> at any reasonable significance level.</p>
@@ -665,7 +693,7 @@ Rubin, Donald B. 2005. <span>“Causal Inference Using Potential Outcomes: Desig
         </div>
       </div>
 <a href="index.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="bibliography.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="multiple-regression.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
