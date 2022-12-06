@@ -7,12 +7,38 @@ documentclass: book
 bibliography: [st512.bib]
 biblio-style: apalike
 link-citations: yes
-description: "Course notes for ST 512, Statistical Methods for Researchers, taught at NCSU in Spring 2022."
+description: "Course notes for ST 512, Statistical Methods for Researchers II."
 ---
 
 ```{r}
 knitr::opts_chunk$set(fig.width = 4, fig.height = 4, fig.align = "center") 
 ```
+
+<!-- To compile, go to R Console, set working directory to the directory that contains the index file, and type
+
+output: bookdown::gitbook
+
+> bookdown::render_book("index.Rmd", "bookdown::gitbook")
+
+To render a single chapter, use
+
+> bookdown::preview_chapter("02-MultipleRegression.Rmd", "bookdown::gitbook")
+
+See section 5.1 of Yihui Xie's bookdown book
+
+-->
+
+\renewcommand{\Pr}[1]{\mathrm{Pr}\!\left\{#1\right\}}
+\newcommand{\vecy}{\mathbf{Y}}
+\newcommand{\vecyhat}{\mathbf{\widehat{Y}}}
+\newcommand{\X}{\mathbf{X}}
+\newcommand{\vecx}{\mathbf{x}}
+\newcommand{\vecb}{\mathbf{\beta}}
+\newcommand{\vecbhat}{\hat{\mathbf{\beta}}}
+\newcommand{\veceps}{\bm{\epsilon}}
+\newcommand{\vece}{\mathbf{e}}
+\newcommand{\Exp}[1]{\mathrm{E}\left[#1\right]}
+\newcommand{\Var}[1]{\mbox{Var}\left(#1\right)}
 
 # Preface {-}
 
