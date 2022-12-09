@@ -2,7 +2,15 @@
 title: "ST 512 course notes"
 author: "Kevin Gross"
 date: "2022-12-09"
-output: bookdown::gitbook
+output:
+  bookdown::gitbook:
+    config:
+      toc:
+        collapse: section
+      fontsettings:
+        theme: white
+        family: serif
+        size: 2
 documentclass: book
 bibliography: [st512.bib]
 biblio-style: apalike
@@ -58,7 +66,7 @@ These notes take the following perspectives.
 *Statistics is nonintuitive.*
 When it comes to statistics, researchers cannot necessarily rely on their common sense to lead them towards correct answers.  Statistical reasoning is non-intuitive (@kahneman2011thinking), and the foundational ideas of statistics are elusive.  Therefore statistical literacy must be learned.  The primary goal of this course is to sharpen students' statistical literacy so that they may become more effective researchers.  
 
-*Statistical literacy is developed by studying basic methods in depth.*
+*The route to conceptual understanding is detailed study of basic methods.*
 However, one does not develop a deep conceptual understanding merely by discussing concepts.  Instead, conceptual understanding is honed in part by studying the details of particular methods to understand why those details matter.  When we study the details of a method, the expectation is not that the student will remember those details in perpetuity.  Indeed, practicing scientists are unlikely anyway to remember details about statistical methods that they do not use routinely.  (This is not a knock on practicing scientists, but is instead simply a statement about the limitations of human memory.)  Instead, the point of studying statistical methods in detail is to strengthen conceptual understanding by exploring statistical methods at a reasonably deep level.  Examining details now will also make those details more recognizable if and when one faces a future data-analysis task that requires re-engaging those details.  That said, the ultimate emphasis of this course is not on the details of the methods, but is instead on the ideas, concepts, and reasoning that underlie statistical thinking.  I hope that these notes will deepen readers' conceptual understanding of statistics and by doing so strengthen their effectiveness as scientists.
 
 *Simplicity in statistical analysis is a virtue.*

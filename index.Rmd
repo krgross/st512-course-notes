@@ -2,7 +2,15 @@
 title: "ST 512 course notes"
 author: "Kevin Gross"
 date: "`r Sys.Date()`"
-output: bookdown::gitbook
+output:
+  bookdown::gitbook:
+    config:
+      toc:
+        collapse: section
+      fontsettings:
+        theme: white
+        family: serif
+        size: 2
 documentclass: book
 bibliography: [st512.bib]
 biblio-style: apalike

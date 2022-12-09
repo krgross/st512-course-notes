@@ -6,11 +6,10 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>Chapter 1 Simple linear regression | ST 512 course notes</title>
   <meta name="description" content="Course notes for ST 512, Statistical Methods for Researchers II." />
-  <meta name="generator" content="bookdown 0.22 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.30 and GitBook 2.6.7" />
 
   <meta property="og:title" content="Chapter 1 Simple linear regression | ST 512 course notes" />
   <meta property="og:type" content="book" />
-  
   
   <meta property="og:description" content="Course notes for ST 512, Statistical Methods for Researchers II." />
   
@@ -33,8 +32,8 @@
   
 <link rel="prev" href="index.html"/>
 <link rel="next" href="bibliography.html"/>
-<script src="libs/header-attrs-2.9/header-attrs.js"></script>
-<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
@@ -50,9 +49,9 @@
 
 
 
-
-<link href="libs/anchor-sections-1.0.1/anchor-sections.css" rel="stylesheet" />
-<script src="libs/anchor-sections-1.0.1/anchor-sections.js"></script>
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
 
 
 <style type="text/css">
@@ -155,35 +154,35 @@ div.csl-indent {
       <nav role="navigation">
 
 <ul class="summary">
-<li><a href="index.html#preface" id="toc-preface">Preface</a>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Preface</a>
 <ul>
-<li><a href="index.html#philosophy" id="toc-philosophy">Philosophy</a></li>
-<li><a href="index.html#scope-and-coverage" id="toc-scope-and-coverage">Scope and coverage</a></li>
-<li><a href="index.html#mathematical-level" id="toc-mathematical-level">Mathematical level</a></li>
-<li><a href="index.html#computing" id="toc-computing">Computing</a></li>
-<li><a href="index.html#format-of-the-notes" id="toc-format-of-the-notes">Format of the notes</a></li>
-<li><a href="index.html#acknowledgments" id="toc-acknowledgments">Acknowledgments</a></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#philosophy"><i class="fa fa-check"></i>Philosophy</a></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#scope-and-coverage"><i class="fa fa-check"></i>Scope and coverage</a></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#mathematical-level"><i class="fa fa-check"></i>Mathematical level</a></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#computing"><i class="fa fa-check"></i>Computing</a></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#format-of-the-notes"><i class="fa fa-check"></i>Format of the notes</a></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#acknowledgments"><i class="fa fa-check"></i>Acknowledgments</a></li>
 </ul></li>
-<li><a href="simple-linear-regression.html#simple-linear-regression" id="toc-simple-linear-regression"><span class="toc-section-number">1</span> Simple linear regression</a>
+<li class="chapter" data-level="1" data-path="simple-linear-regression.html"><a href="simple-linear-regression.html"><i class="fa fa-check"></i><b>1</b> Simple linear regression</a>
 <ul>
-<li><a href="simple-linear-regression.html#the-basics-of-slr" id="toc-the-basics-of-slr"><span class="toc-section-number">1.1</span> The basics of SLR</a></li>
-<li><a href="simple-linear-regression.html#least-squares-estimation" id="toc-least-squares-estimation"><span class="toc-section-number">1.2</span> Least-squares estimation</a></li>
-<li><a href="simple-linear-regression.html#inference-for-the-slope" id="toc-inference-for-the-slope"><span class="toc-section-number">1.3</span> Inference for the slope</a>
+<li class="chapter" data-level="1.1" data-path="simple-linear-regression.html"><a href="simple-linear-regression.html#the-basics-of-slr"><i class="fa fa-check"></i><b>1.1</b> The basics of SLR</a></li>
+<li class="chapter" data-level="1.2" data-path="simple-linear-regression.html"><a href="simple-linear-regression.html#least-squares-estimation"><i class="fa fa-check"></i><b>1.2</b> Least-squares estimation</a></li>
+<li class="chapter" data-level="1.3" data-path="simple-linear-regression.html"><a href="simple-linear-regression.html#inference-for-the-slope"><i class="fa fa-check"></i><b>1.3</b> Inference for the slope</a>
 <ul>
-<li><a href="simple-linear-regression.html#standard-errors" id="toc-standard-errors"><span class="toc-section-number">1.3.1</span> Standard errors</a></li>
-<li><a href="simple-linear-regression.html#confidence-intervals" id="toc-confidence-intervals"><span class="toc-section-number">1.3.2</span> Confidence intervals</a></li>
-<li><a href="simple-linear-regression.html#statistical-hypothesis-tests" id="toc-statistical-hypothesis-tests"><span class="toc-section-number">1.3.3</span> Statistical hypothesis tests</a></li>
-<li><a href="simple-linear-regression.html#inference-for-the-intercept" id="toc-inference-for-the-intercept"><span class="toc-section-number">1.3.4</span> Inference for the intercept</a></li>
+<li class="chapter" data-level="1.3.1" data-path="simple-linear-regression.html"><a href="simple-linear-regression.html#standard-errors"><i class="fa fa-check"></i><b>1.3.1</b> Standard errors</a></li>
+<li class="chapter" data-level="1.3.2" data-path="simple-linear-regression.html"><a href="simple-linear-regression.html#confidence-intervals"><i class="fa fa-check"></i><b>1.3.2</b> Confidence intervals</a></li>
+<li class="chapter" data-level="1.3.3" data-path="simple-linear-regression.html"><a href="simple-linear-regression.html#statistical-hypothesis-tests"><i class="fa fa-check"></i><b>1.3.3</b> Statistical hypothesis tests</a></li>
+<li class="chapter" data-level="1.3.4" data-path="simple-linear-regression.html"><a href="simple-linear-regression.html#inference-for-the-intercept"><i class="fa fa-check"></i><b>1.3.4</b> Inference for the intercept</a></li>
 </ul></li>
-<li><a href="simple-linear-regression.html#sums-of-squares-decomposition-and-r2" id="toc-sums-of-squares-decomposition-and-r2"><span class="toc-section-number">1.4</span> Sums of squares decomposition and <span class="math inline">\(R^2\)</span></a></li>
-<li><a href="simple-linear-regression.html#fitting-the-slr-model-in-r" id="toc-fitting-the-slr-model-in-r"><span class="toc-section-number">1.5</span> Fitting the SLR model in R</a></li>
-<li><a href="simple-linear-regression.html#diagnostic-plots" id="toc-diagnostic-plots"><span class="toc-section-number">1.6</span> Diagnostic plots</a></li>
-<li><a href="simple-linear-regression.html#consequences-of-violating-model-assumptions-and-possible-fixes" id="toc-consequences-of-violating-model-assumptions-and-possible-fixes"><span class="toc-section-number">1.7</span> Consequences of violating model assumptions, and possible fixes</a></li>
-<li><a href="simple-linear-regression.html#prediction-with-regression-models" id="toc-prediction-with-regression-models"><span class="toc-section-number">1.8</span> Prediction with regression models</a></li>
-<li><a href="simple-linear-regression.html#regression-design" id="toc-regression-design"><span class="toc-section-number">1.9</span> Regression design</a></li>
-<li><a href="simple-linear-regression.html#slr-as-a-linear-algebra-problem" id="toc-slr-as-a-linear-algebra-problem"><span class="toc-section-number">1.10</span> *SLR as a linear algebra problem</a></li>
+<li class="chapter" data-level="1.4" data-path="simple-linear-regression.html"><a href="simple-linear-regression.html#sums-of-squares-decomposition-and-r2"><i class="fa fa-check"></i><b>1.4</b> Sums of squares decomposition and <span class="math inline">\(R^2\)</span></a></li>
+<li class="chapter" data-level="1.5" data-path="simple-linear-regression.html"><a href="simple-linear-regression.html#fitting-the-slr-model-in-r"><i class="fa fa-check"></i><b>1.5</b> Fitting the SLR model in R</a></li>
+<li class="chapter" data-level="1.6" data-path="simple-linear-regression.html"><a href="simple-linear-regression.html#diagnostic-plots"><i class="fa fa-check"></i><b>1.6</b> Diagnostic plots</a></li>
+<li class="chapter" data-level="1.7" data-path="simple-linear-regression.html"><a href="simple-linear-regression.html#consequences-of-violating-model-assumptions-and-possible-fixes"><i class="fa fa-check"></i><b>1.7</b> Consequences of violating model assumptions, and possible fixes</a></li>
+<li class="chapter" data-level="1.8" data-path="simple-linear-regression.html"><a href="simple-linear-regression.html#prediction-with-regression-models"><i class="fa fa-check"></i><b>1.8</b> Prediction with regression models</a></li>
+<li class="chapter" data-level="1.9" data-path="simple-linear-regression.html"><a href="simple-linear-regression.html#regression-design"><i class="fa fa-check"></i><b>1.9</b> Regression design</a></li>
+<li class="chapter" data-level="1.10" data-path="simple-linear-regression.html"><a href="simple-linear-regression.html#slr-as-a-linear-algebra-problem"><i class="fa fa-check"></i><b>1.10</b> *SLR as a linear algebra problem</a></li>
 </ul></li>
-<li><a href="bibliography.html#bibliography" id="toc-bibliography">Bibliography</a></li>
+<li class="chapter" data-level="" data-path="bibliography.html"><a href="bibliography.html"><i class="fa fa-check"></i>Bibliography</a></li>
 </ul>
 
       </nav>
@@ -201,8 +200,8 @@ div.csl-indent {
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="simple-linear-regression" class="section level1" number="1">
-<h1><span class="header-section-number">Chapter 1</span> Simple linear regression</h1>
+<div id="simple-linear-regression" class="section level1 hasAnchor" number="1">
+<h1><span class="header-section-number">Chapter 1</span> Simple linear regression<a href="simple-linear-regression.html#simple-linear-regression" class="anchor-section" aria-label="Anchor link to header"></a></h1>
 <p>In statistics, regression models are those that relate the distribution of an output variable to the value(s) of one or several input variables. Characterizing the relationships among input and output variables is central to much of science, and regression methods form the foundation for much of data analysis. We’ll have a lot to say about regression, but we’ll begin with so-called simple linear regression (SLR). SLR models are “simple” in the sense that they contain only one predictor.</p>
 <p>Because these notes are meant for the intermediate analyst, I’ll assume that you’ve seen SLR before. The purpose of our study here is twofold. First, we’ll use SLR as a familiar venue to review many of the foundational concepts of (frequentist) statistical inference. These ideas are often elusive, so it’s worth reviewing them again to solidify our understanding. Along the way, we’ll encounter some new (!) ideas for interpreting the outcomes of statistical hypothesis test that may improve upon the traditional convoluted definitions.</p>
 <p>Second, we’ll also introduce some more advanced regression ideas. These ideas will carry over into our study of regression models with several predictors, so it is helpful to study them here in a less complicated setting.</p>
@@ -210,17 +209,17 @@ div.csl-indent {
 <p><span style="color: gray;"> For such a fundamental technique, the name “regression” seems a bit odd. Why do we give this most central of tasks such an obscure moniker? The name traces back to Francis Galton’s late 19th century study of the relationship between the heights of individuals and their parents’ heights (<span class="citation">Galton (<a href="#ref-galton1886regression" role="doc-biblioref">1886</a>)</span>). Galton observed that while the children of taller-than-average or shorter-than-average parents also tend to be taller than average or shorter than average, respectively, the children’s heights tend to be closer to the average height than those of their parents. Galton termed this phenomenon “regression to mediocrity”; today, we don’t like to equate average-ness with mediocrity, so we now refer to the phenomenon as “regression to the mean”. In any case, to characterize this relationship statistically, Galton wrote down equations that were the precursors of the statistical model that we now know as regression. So, the statistical model of regression was first used to describe the empirical phenomenon of regression to the mean, even though statistical regression models are now used in a much broader variety of contexts.</span></p>
 <p><span style="color: gray;"> All that said, regression to the mean doesn’t just apply to people’s heights; instead, it appears in all sorts of everyday contexts. For example, it helps explains why students who do particularly well on a first exam tend not to do quite so well on a subsequent exam, or why repeating as a league champion is so rare in sports. For more coverage, see e.g. Ch. 17 of <span class="citation">Kahneman (<a href="#ref-kahneman2011thinking" role="doc-biblioref">2011</a>)</span>.</span></p>
 <hr />
-<div id="the-basics-of-slr" class="section level2" number="1.1">
-<h2><span class="header-section-number">1.1</span> The basics of SLR</h2>
+<div id="the-basics-of-slr" class="section level2 hasAnchor" number="1.1">
+<h2><span class="header-section-number">1.1</span> The basics of SLR<a href="simple-linear-regression.html#the-basics-of-slr" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>Simple linear regression characterizes the relationship between two variables: a predictor variable and a response variable. We will begin with a simple example for context.</p>
-<em>Example</em>: Individuals in this study consumed a certain number of beers, and their blood alcohol content (BAC) was measured. Data were obtained for <span class="math inline">\(n=16\)</span> individuals.<a href="bibliography.html#fn3" class="footnote-ref" id="fnref3"><sup>3</sup></a> Here is a scatter plot of the data:
-<div class="figure" style="text-align: center"><span id="fig:unnamed-chunk-2"></span>
+<em>Example</em>: Individuals in this study consumed a certain number of beers, and their blood alcohol content (BAC) was measured. Data were obtained for <span class="math inline">\(n=16\)</span> individuals.<a href="#fn3" class="footnote-ref" id="fnref3"><sup>3</sup></a> Here is a scatter plot of the data:
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:unnamed-chunk-2"></span>
 <img src="index_files/figure-html/unnamed-chunk-2-1.png" alt="BAC vs. beers consumed." width="384" />
 <p class="caption">
 Figure 1.1: BAC vs. beers consumed.
 </p>
 </div>
-<p>To begin, let’s observe that the two variables that a regression model associates are not on equal footing. One variable is designated as the “predictor” and the other variable is designated as the “response”. The predictor variable is denoted by the symbol <span class="math inline">\(x\)</span>, and the response variable is denoted by <span class="math inline">\(y\)</span>. In plotting, we almost always show the predictor on the horizontal axis and the response on the vertical axis.<a href="bibliography.html#fn4" class="footnote-ref" id="fnref4"><sup>4</sup></a> The predictor is also called the “independent” variable because, in a designed experiment, its values are determined by the investigator. The response is also called the “dependent” variable because its distribution depends on the value of the predictor variable, in a way that is determined by nature. For the BAC data, we will identify the number of beers consumed as the predictor and BAC as the response.</p>
+<p>To begin, let’s observe that the two variables that a regression model associates are not on equal footing. One variable is designated as the “predictor” and the other variable is designated as the “response”. The predictor variable is denoted by the symbol <span class="math inline">\(x\)</span>, and the response variable is denoted by <span class="math inline">\(y\)</span>. In plotting, we almost always show the predictor on the horizontal axis and the response on the vertical axis.<a href="#fn4" class="footnote-ref" id="fnref4"><sup>4</sup></a> The predictor is also called the “independent” variable because, in a designed experiment, its values are determined by the investigator. The response is also called the “dependent” variable because its distribution depends on the value of the predictor variable, in a way that is determined by nature. For the BAC data, we will identify the number of beers consumed as the predictor and BAC as the response.</p>
 <p>The regression model associates each value of the predictor variable with a distribution for the response variable. Indeed, the fact that the output of the model is a distribution is what makes this a statistical model, as opposed to some other flavor of mathematical model. A <em>simple linear regression</em> (SLR) is a simple statistical model in which the association between the value of the predictor and the distribution of the response takes a specific form. In particular, in a SLR, the distribution of the response variable is Gaussian (or normal) with a mean that depends linearly on the value of the predictor and a variance that is independent of the value of the predictor. When we plot the fit of a regression model, we typically only plot the regression line. However, the line merely shows how the average of the distribution of the response depends on the predictor. The model has more structure than a plot of the regression line suggests.</p>
 <p>In terms of an equation, we can write the model using the regression equation
 <span class="math display" id="eq:slr">\[\begin{equation}
@@ -241,11 +240,11 @@ In the mathematical equation above, the <em>i</em> subscript distinguishes indiv
 <p><span style="color: gray;">We might also note that the style of writing the regression model as the sum of the regression line (<span class="math inline">\(\beta_0 + \beta_1 x\)</span>) and an error term with mean zero (<span class="math inline">\(\varepsilon\)</span>) works because we have assumed that the errors have a normal distribution. A normal distribution has the special property that we can take a normally distributed quantity, add a constant to it, and the sum will still have a normal distribution. Most statistical distributions do not have this property; for example, a Poisson random variate plus a non-zero constant does not yield a Poisson distributed sum. Some authors find it more natural to write the SLR model as <span class="math inline">\(y \sim \mathcal{N}(\beta_0 + \beta_1 x, \sigma^2)\)</span>, to emphasize that the response has a Gaussian distribution and that the predictor only affects the mean of this distribution. We will use the style of eq. <a href="simple-linear-regression.html#eq:slr">(1.1)</a>, because this style lends itself more readily to mixed-effects models with multiple variance terms. However, the two styles of notation denote the same model. Feel free to use whichever style makes the most sense to you.</span></p>
 <hr />
 </div>
-<div id="least-squares-estimation" class="section level2" number="1.2">
-<h2><span class="header-section-number">1.2</span> Least-squares estimation</h2>
+<div id="least-squares-estimation" class="section level2 hasAnchor" number="1.2">
+<h2><span class="header-section-number">1.2</span> Least-squares estimation<a href="simple-linear-regression.html#least-squares-estimation" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>The parameters of an SLR model are estimated by the method of least-squares. That is, we find the values of the parameters that minimize the sum of the squared differences between the data points themselves and the line. The estimates are denoted by “hats”, i.e., <span class="math inline">\(\hat{\beta}_0\)</span> is the estimate of <span class="math inline">\(\beta_0\)</span>. Other authors use <span class="math inline">\(b\)</span>’s instead of <span class="math inline">\(\hat{\beta}\)</span>’s for parameter estimates in regression. Both types of notation commonly appear in the scientific literature.</p>
-<p>If we were inventing SLR from scratch, we might imagine many possible criteria that we could use to determine the parameter values that provide the best fit of the SLR model. For example, we might contemplate fitting the line that minimized the average absolute difference between the data points and the line. The reason why we favor the least-squares criterion is a direct consequence of the assumption that the errors take a Gaussian distribution.<a href="bibliography.html#fn5" class="footnote-ref" id="fnref5"><sup>5</sup></a></p>
-<p>In an introductory statistics course, you may have derived formulas for calculating the least-squares estimates <span class="math inline">\(\hat{\beta}_0\)</span> and <span class="math inline">\(\hat{\beta}_1\)</span> by hand. Here, we will rely on software for the necessary computations, although one might note that one could derive the formulas for <span class="math inline">\(\hat{\beta}_0\)</span> and <span class="math inline">\(\hat{\beta}_1\)</span> by using basic calculus tools to minimize the error sum-of squares. Using R, we obtain the least-squares fit of the regression model to the BAC data below.<a href="bibliography.html#fn6" class="footnote-ref" id="fnref6"><sup>6</sup></a></p>
+<p>If we were inventing SLR from scratch, we might imagine many possible criteria that we could use to determine the parameter values that provide the best fit of the SLR model. For example, we might contemplate fitting the line that minimized the average absolute difference between the data points and the line. The reason why we favor the least-squares criterion is a direct consequence of the assumption that the errors take a Gaussian distribution.<a href="#fn5" class="footnote-ref" id="fnref5"><sup>5</sup></a></p>
+<p>In an introductory statistics course, you may have derived formulas for calculating the least-squares estimates <span class="math inline">\(\hat{\beta}_0\)</span> and <span class="math inline">\(\hat{\beta}_1\)</span> by hand. Here, we will rely on software for the necessary computations, although one might note that one could derive the formulas for <span class="math inline">\(\hat{\beta}_0\)</span> and <span class="math inline">\(\hat{\beta}_1\)</span> by using basic calculus tools to minimize the error sum-of squares. Using R, we obtain the least-squares fit of the regression model to the BAC data below.<a href="#fn6" class="footnote-ref" id="fnref6"><sup>6</sup></a></p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="simple-linear-regression.html#cb2-1" aria-hidden="true" tabindex="-1"></a>fm1 <span class="ot">&lt;-</span> <span class="fu">with</span>(beer, <span class="fu">lm</span>(BAC <span class="sc">~</span> Beers))</span>
 <span id="cb2-2"><a href="simple-linear-regression.html#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(fm1)</span></code></pre></div>
 <pre><code>## 
@@ -269,7 +268,7 @@ In the mathematical equation above, the <em>i</em> subscript distinguishes indiv
 <p>The least-squares estimates of the intercept and slope for the BAC data are <span class="math inline">\(\hat{\beta}_0 = -0.013\)</span> and <span class="math inline">\(\hat{\beta}_1 = 0.018\)</span>, respectively. Here’s a picture of the scatter-plot with the least-squares line:</p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="simple-linear-regression.html#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">with</span>(beer, <span class="fu">plot</span>(BAC <span class="sc">~</span> Beers, <span class="at">xlab =</span> <span class="st">&quot;beers consumed&quot;</span>))</span>
 <span id="cb4-2"><a href="simple-linear-regression.html#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(fm1)</span></code></pre></div>
-<div class="figure" style="text-align: center"><span id="fig:unnamed-chunk-4"></span>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:unnamed-chunk-4"></span>
 <img src="index_files/figure-html/unnamed-chunk-4-1.png" alt="SLR fit of BAC vs. beers consumed." width="384" />
 <p class="caption">
 Figure 1.2: SLR fit of BAC vs. beers consumed.
@@ -305,8 +304,8 @@ For the BAC data, <span class="math inline">\(s_{\varepsilon} = \sqrt{0.0004} = 
 <hr />
 <!-- Some additional notation: In general, we'll use the notation $\mu \left(x\right)$ to denote the signal or mean component of the model.  In simple linear regression, the mean is simply a linear function of the predictor: $\mu \left(x\right) = \beta_0 +\beta_1 x$.  Although the notation $\mu \left(x\right)$ might seem like overkill for SLR, it will prove handy for more complicated models. -->
 </div>
-<div id="inference-for-the-slope" class="section level2" number="1.3">
-<h2><span class="header-section-number">1.3</span> Inference for the slope</h2>
+<div id="inference-for-the-slope" class="section level2 hasAnchor" number="1.3">
+<h2><span class="header-section-number">1.3</span> Inference for the slope<a href="simple-linear-regression.html#inference-for-the-slope" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>To draw statistical inferences about the slope parameter <span class="math inline">\(\beta_1\)</span>, we make the following assumptions:</p>
 <ol style="list-style-type: decimal">
 <li><p>Linearity: The average value of the response is a linear function of the predictor.</p></li>
@@ -317,8 +316,8 @@ For the BAC data, <span class="math inline">\(s_{\varepsilon} = \sqrt{0.0004} = 
 <!-- 5. The predictors are measured without error. -->
 <!-- This fifth assumption is usually not listed as one of the assumptions in SLR, but it is useful to keep in mind.  The predictor and the response are *not* placed on equal footing.  -->
 <p>Note that assumption number 1 deals with the mean component of the model, while assumptions 2–4 deal with the error component of the model.</p>
-<div id="standard-errors" class="section level3" number="1.3.1">
-<h3><span class="header-section-number">1.3.1</span> Standard errors</h3>
+<div id="standard-errors" class="section level3 hasAnchor" number="1.3.1">
+<h3><span class="header-section-number">1.3.1</span> Standard errors<a href="simple-linear-regression.html#standard-errors" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>As intelligent scientists, we realize that estimates are not exactly equal to the parameters that they seek to estimate. We can characterize the uncertainty in parameter estimates in different ways. One tool that we have for quantifying uncertainty in parameter estimates is to calculate a standard error. In general, a <em>standard error</em> quantifies the variability in an estimate that is attributable to random sampling. Most parameter estimates that we will encounter have known formulas for their standard errors. In most cases, these formulas are complicated, and we will rely on computers to calculate standard errors for us. However, the formula for the standard error of the slope parameter in SLR is interesting to examine because it contains a valuable insight that we can use when collecting data for a regression study. The standard error of <span class="math inline">\(\hat{\beta}_1\)</span>, denoted <span class="math inline">\(s_{\hat{\beta}_1}\)</span>, is given by the formula
 <span class="math display">\[
 s_{\hat{\beta}_1} = \dfrac{s_{\varepsilon}}{\sqrt{S_{xx} } }
@@ -328,19 +327,19 @@ where <span class="math inline">\(S_{xx} =\sum_{i}\left(x_{i} -\bar{x}\right)^2\
 <p>Thought question: Following this line of reasoning, is it a good idea to design a study so that half the individuals are assigned a very large value of the predictor, and the other half are assigned a very small value? Why or why not?</p>
 <p>For the BAC example, <span class="math inline">\(s_{\hat{\beta}_1} = 0.0024\)</span>. This tells us that, over many hypothetical repetitions of this same experiment, a typical difference between our estimate of the slope and its true value is 0.0024. This information sharpens our understanding of the precision of the estimate.</p>
 </div>
-<div id="confidence-intervals" class="section level3" number="1.3.2">
-<h3><span class="header-section-number">1.3.2</span> Confidence intervals</h3>
+<div id="confidence-intervals" class="section level3 hasAnchor" number="1.3.2">
+<h3><span class="header-section-number">1.3.2</span> Confidence intervals<a href="simple-linear-regression.html#confidence-intervals" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>A second way in which we can measure the uncertainty in a parameter estimate is to calculate a confidence interval (CI). Recall that the general formula for a confidence interval associated with a statistic is:
 <span class="math display">\[
 \mathrm{estimate} \pm  \mathrm{critical\ value} \times \mathrm{standard\ error}
 \]</span>
 Critical values are found either by consulting a table (and re-living the good old days) or using the internet or a computer program. Critical values depend on the <em>confidence level</em> that you want to associate with the CI. Although it seems a bit backwards, we typically denote the confidence level of a CI as <span class="math inline">\(100 \times \left(1-\alpha \right)\%\)</span>. Thus, for a 95% confidence interval (a common choice), <span class="math inline">\(\alpha = 0.05\)</span>. Alternatively, we might seek a 99% CI, in which case <span class="math inline">\(\alpha = 0.01\)</span>.</p>
 <p>To construct a CI for <span class="math inline">\(\beta_1\)</span> , we find the appropriate critical values from a <span class="math inline">\(t\)</span>-distribution with <span class="math inline">\(n - 2\)</span> df. For a <span class="math inline">\(100\times \left(1-\alpha \right)\%\)</span> CI, the critical value is the value that “cuts-off” an upper tail of <span class="math inline">\(\alpha / 2\)</span> %. For example, to calculate a 99% CI for <span class="math inline">\(\beta_{1}\)</span>, we need to find the critical value of a <span class="math inline">\(t\)</span>-distribution with 14 df that cuts-off an upper 0.5%-tail. Using an online calculator, or another tool, we find that this critical value is 2.977. Thus, a 99% CI is 0.018 <span class="math inline">\(\pm\)</span> 2.977 <span class="math inline">\(\times\)</span> 0.0024 = (0.011, 0.025).</p>
-<p>Recall that the appropriate interpretation of the confidence level a CI is fairly tricky. A proper interpretation is that, if we were to repeat this experiment a large number of times, and calculate a 99% CI for each experiment, in the long run 99% of those CIs would contain the true value of <span class="math inline">\(\beta_1\)</span>. Of course, in real life, we’ll only do the experiment once, and we don’t know if our experiment is one of the 99% in which the CI contains the true parameter value or not. It is often tempting to abbreviate this interpretation by saying that ``there is a 99% chance that <span class="math inline">\(\beta_1\)</span> is in the CI’’, although technically this interpretation is incorrect (because any single CI either contains the parameter or it doesn’t).<a href="bibliography.html#fn7" class="footnote-ref" id="fnref7"><sup>7</sup></a></p>
+<p>Recall that the appropriate interpretation of the confidence level a CI is fairly tricky. A proper interpretation is that, if we were to repeat this experiment a large number of times, and calculate a 99% CI for each experiment, in the long run 99% of those CIs would contain the true value of <span class="math inline">\(\beta_1\)</span>. Of course, in real life, we’ll only do the experiment once, and we don’t know if our experiment is one of the 99% in which the CI contains the true parameter value or not. It is often tempting to abbreviate this interpretation by saying that ``there is a 99% chance that <span class="math inline">\(\beta_1\)</span> is in the CI’’, although technically this interpretation is incorrect (because any single CI either contains the parameter or it doesn’t).<a href="#fn7" class="footnote-ref" id="fnref7"><sup>7</sup></a></p>
 <p>Note also that there is a trade-off between the confidence level and the width of the interval. If we wanted greater confidence that our interval contained the true parameter value, we could increase the confidence level. However, increasing the confidence level increases the width of the interval, and thus provides less information about the true parameter value in some sense. If we follow this argument to its (il)logical extreme, a 100% CI for <span class="math inline">\(\beta_1\)</span> covers the entire number line. Now we are fully confident that our interval contains <span class="math inline">\(\beta_1\)</span>, but at the cost of having no information whatsoever about the actual value of <span class="math inline">\(\beta_1\)</span>.</p>
 </div>
-<div id="statistical-hypothesis-tests" class="section level3" number="1.3.3">
-<h3><span class="header-section-number">1.3.3</span> Statistical hypothesis tests</h3>
+<div id="statistical-hypothesis-tests" class="section level3 hasAnchor" number="1.3.3">
+<h3><span class="header-section-number">1.3.3</span> Statistical hypothesis tests<a href="simple-linear-regression.html#statistical-hypothesis-tests" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>Finally, a third way to characterize the statistical uncertainty in <span class="math inline">\(\hat{\beta}_1\)</span> is to conduct a statistical hypothesis test. Recall that statistical hypotheses are statements about the values of unknown parameters, and a statistical hypothesis test is a way to measure the strength of evidence against a “null hypothesis”. In the context of SLR, we are almost always interested in testing the null hypothesis that the true value of the slope parameter is equal to zero. In notation, we write this as <span class="math inline">\(H_0: \beta_1 = 0\)</span>. Evidence against this null hypothesis is taken as evidence that the predictor is linearly related to the response.</p>
 <p>Recall that in statistical hypothesis testing, we must also specify an alternative hypothesis. In SLR, we are almost always interested in testing <span class="math inline">\(H_0: \beta_1 = 0\)</span> vs. the two-sided alternative <span class="math inline">\(H_a: \beta_1 \ne 0\)</span>. We conduct a statistical hypothesis test by first calculating a test statistic. In general, formulas for test statistics take the form:
 <span class="math display">\[
@@ -398,14 +397,14 @@ Thus, <span class="math inline">\(H_0: \beta_1 = 0.02\)</span> is reasonably pla
 </blockquote>
 <p>Thus, while a statistical hypothesis can often embody a scientific hypothesis, a scientific hypothesis does not always boil down to a statistical hypothesis.</p>
 </div>
-<div id="inference-for-the-intercept" class="section level3" number="1.3.4">
-<h3><span class="header-section-number">1.3.4</span> Inference for the intercept</h3>
+<div id="inference-for-the-intercept" class="section level3 hasAnchor" number="1.3.4">
+<h3><span class="header-section-number">1.3.4</span> Inference for the intercept<a href="simple-linear-regression.html#inference-for-the-intercept" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>Most statistical packages automatically provide the standard errors for the intercept, <span class="math inline">\(s_{\hat{\beta}_0}\)</span>, as well as a test of <span class="math inline">\(H_0: \beta_0 = 0\)</span> vs. <span class="math inline">\(H_a: \beta_0 \ne 0\)</span>. Sometimes this is a meaningful test, but usually it isn’t. The scientific context of the problem will determine whether or not it makes sense to pay attention to this test.</p>
 <p>There is a special type of regression called ``regression through the origin’’ that is appropriate when we can assume <span class="math inline">\(\beta_0 = 0\)</span> automatically. Should we use regression through the origin for the BAC example?</p>
 </div>
 </div>
-<div id="sums-of-squares-decomposition-and-r2" class="section level2" number="1.4">
-<h2><span class="header-section-number">1.4</span> Sums of squares decomposition and <span class="math inline">\(R^2\)</span></h2>
+<div id="sums-of-squares-decomposition-and-r2" class="section level2 hasAnchor" number="1.4">
+<h2><span class="header-section-number">1.4</span> Sums of squares decomposition and <span class="math inline">\(R^2\)</span><a href="simple-linear-regression.html#sums-of-squares-decomposition-and-r2" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>We have already seen that the SSE measures the unexplained variability in the response.<br />
 <span class="math display">\[
 {\rm SSE}=\sum _{i=1}^{n}e_{i}^{2} = \sum _{i=1}^{n}\left(y_{i} -\hat{y}_{i} \right)^{2}  
@@ -430,8 +429,8 @@ R^2 = \dfrac{{\rm SS(Regression)}}{{\rm SS(Total)}} = 1-\frac{{\rm SSE}}{{\rm SS
 <span class="math inline">\(R^2\)</span> is a nice metric because it quantifies how much of the variability in the response is explained by the predictor. Values of <span class="math inline">\(R^2\)</span> close to 1 indicate that the regression model explains much of the variability in the response, while values of <span class="math inline">\(R^2\)</span> close to 0 suggest the regression model explains little of the variability in the response. We’ll also see that <span class="math inline">\(R^2\)</span> is not limited to SLR and in fact has the same interpretation for more complicated regression models that we will examine later. For the BAC example, <span class="math inline">\(R^2\)</span> = 0.80, suggesting that variation in beers consumed explains roughly 80% of the variation in BAC.</p>
 <p>Mathematically, <span class="math inline">\(R^2\)</span> can also be computed as square of the (sample) correlation coefficient between the fitted values and the response. In SLR, the fitted values and the predictor are perfectly correlated with one another, so <span class="math inline">\(R^2\)</span> is also the square of the sample correlation coefficient between the predictor and the response.</p>
 </div>
-<div id="fitting-the-slr-model-in-r" class="section level2" number="1.5">
-<h2><span class="header-section-number">1.5</span> Fitting the SLR model in R</h2>
+<div id="fitting-the-slr-model-in-r" class="section level2 hasAnchor" number="1.5">
+<h2><span class="header-section-number">1.5</span> Fitting the SLR model in R<a href="simple-linear-regression.html#fitting-the-slr-model-in-r" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>The basic command in R for fitting a regression model is the function <code>lm</code>, short for [l]inear [m]odel. (As the name suggests, the `lm’ function can be used for more than just SLR.) The basic syntax is</p>
 <pre><code>&gt; lm(response ~ predictor)</code></pre>
 <p>where “response” and “predictor” would be replaced by the appropriate variable names. The <code>&gt;</code> is the R prompt, and is meant to show what you could type at the command line. Although the above command would work, it would fit the SLR and then forget the model fit. We want to keep the model fit around to analyze it, so we’ll store it in memory under a name of our choosing. Here, we’ll choose the name <code>fm1</code>, although any name would work. Anything proceeded by a pound sign (#) is a comment in R. We’ll assume that the BAC data have already been read into R and reside in memory, and that the variables in the BAC data are named <code>BAC</code> and <code>Beers</code>. Here is code for fitting a SLR model to these data:</p>
@@ -478,8 +477,8 @@ R^2 = \dfrac{{\rm SS(Regression)}}{{\rm SS(Total)}} = 1-\frac{{\rm SSE}}{{\rm SS
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
 <p>The <span class="math inline">\(F\)</span>-statistic is the model utility test, which we will examine in more detail when we study multiple regression.</p>
 </div>
-<div id="diagnostic-plots" class="section level2" number="1.6">
-<h2><span class="header-section-number">1.6</span> Diagnostic plots</h2>
+<div id="diagnostic-plots" class="section level2 hasAnchor" number="1.6">
+<h2><span class="header-section-number">1.6</span> Diagnostic plots<a href="simple-linear-regression.html#diagnostic-plots" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>We have seen that, in order to draw statistical inferences from a simple linear regression, we need to make several assumptions. Although in everyday life assumptions can get a bad rap, assumptions in statistics are necessary and appropriate. The statistician Don Rubin puts it nicely (<span class="citation">Rubin (<a href="#ref-rubin2005causal" role="doc-biblioref">2005</a>)</span>):</p>
 <blockquote>
 <p>Nothing is wrong with making assumptions … they are the strands that link statistics to science. It is the scientific quality of the assumptions, not their existence, that is critical.</p>
@@ -516,8 +515,8 @@ An alternative to histograms is a normal probability plot of residuals, also kno
 <span id="cb15-2"><a href="simple-linear-regression.html#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="fu">qqline</span>(<span class="fu">resid</span>(fm1))</span></code></pre></div>
 <p><img src="index_files/figure-html/unnamed-chunk-12-1.png" width="384" style="display: block; margin: auto;" /></p>
 </div>
-<div id="consequences-of-violating-model-assumptions-and-possible-fixes" class="section level2" number="1.7">
-<h2><span class="header-section-number">1.7</span> Consequences of violating model assumptions, and possible fixes</h2>
+<div id="consequences-of-violating-model-assumptions-and-possible-fixes" class="section level2 hasAnchor" number="1.7">
+<h2><span class="header-section-number">1.7</span> Consequences of violating model assumptions, and possible fixes<a href="simple-linear-regression.html#consequences-of-violating-model-assumptions-and-possible-fixes" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <ol style="list-style-type: decimal">
 <li>Linearity</li>
 </ol>
@@ -533,11 +532,11 @@ An alternative to histograms is a normal probability plot of residuals, also kno
 </ol>
 <p>Like violations of the independence assumption, violations of the constant-variance assumption cause inference about regression parameters is not trustworthy. Non-constant variance causes there to be more uncertainty in the parameters estimates than the default CIs or <span class="math inline">\(t\)</span>-tests suggest.</p>
 <p>There are two possible fixes for non-constant variance. If the non-constant variance arises because the response variable has a known, non-normal distribution, then one can use generalized linear models (such as logistic regression for binary data, or Poisson regression for count data). We will touch on generalized linear models briefly at the end of ST 512. Alternatively, if there is no obvious alternative distribution for the response, the usual approach is to transform the response variable to “stabilize” the variance.</p>
-<p>For better or worse, there used to be a bit of a cottage industry in statistics in developing variance-stabilizing transformations. Remember that transformations come with a cost of diminished interpretability, and be wary of exotic transformations. It is not uncommon to observe data where the variance increases as the mean response increases. Good transformations for this situation are either a log transformation or a square-root transformation.<a href="bibliography.html#fn8" class="footnote-ref" id="fnref8"><sup>8</sup></a> Another common non-constant variance problem arises when the response is a percentage or a proportion. In this case, the standard and appropriate transformation is the arcsin-square root transformation, i.e., if the observed response is 10%, the transformed response is <span class="math inline">\(\sin^{-1}(\sqrt{.1})=0.322\)</span>.</p>
+<p>For better or worse, there used to be a bit of a cottage industry in statistics in developing variance-stabilizing transformations. Remember that transformations come with a cost of diminished interpretability, and be wary of exotic transformations. It is not uncommon to observe data where the variance increases as the mean response increases. Good transformations for this situation are either a log transformation or a square-root transformation.<a href="#fn8" class="footnote-ref" id="fnref8"><sup>8</sup></a> Another common non-constant variance problem arises when the response is a percentage or a proportion. In this case, the standard and appropriate transformation is the arcsin-square root transformation, i.e., if the observed response is 10%, the transformed response is <span class="math inline">\(\sin^{-1}(\sqrt{.1})=0.322\)</span>.</p>
 <ol start="4" style="list-style-type: decimal">
 <li>Normality</li>
 </ol>
-<p>Perhaps surprisingly, the consequences of violating the normality assumption are minimal, unless departures from normality are severe (e.g., binary data).<a href="bibliography.html#fn9" class="footnote-ref" id="fnref9"><sup>9</sup></a> When one encounters decidedly non-normal data, the usual remedy is to entertain a so-called generalized linear models, i.e., logistic regression for binary data; Poisson regression for count data.</p>
+<p>Perhaps surprisingly, the consequences of violating the normality assumption are minimal, unless departures from normality are severe (e.g., binary data).<a href="#fn9" class="footnote-ref" id="fnref9"><sup>9</sup></a> When one encounters decidedly non-normal data, the usual remedy is to entertain a so-called generalized linear models, i.e., logistic regression for binary data; Poisson regression for count data.</p>
 <p>Here’s an example of another data set with residuals that are a bit more problematic. These data give the box office take (in millions of US$) vs. a composite rating score from critics’ reviews:</p>
 <div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="simple-linear-regression.html#cb16-1" aria-hidden="true" tabindex="-1"></a>movie <span class="ot">&lt;-</span> <span class="fu">read.table</span>(<span class="st">&quot;data/movie.txt&quot;</span>, <span class="at">head =</span> T, <span class="at">stringsAsFactors =</span> T)</span>
 <span id="cb16-2"><a href="simple-linear-regression.html#cb16-2" aria-hidden="true" tabindex="-1"></a></span>
@@ -625,8 +624,8 @@ Another commonly used transformation for right-skewed data is the log transforma
 <!-- \end{center}  -->
 <!-- Clearly, there is one data point that does not fit the pattern, and has considerably less spending on alcohol.  Inspection of the data shows that this data point corresponds to Northern Ireland, while all other data points are from the island of Great Britain.  Eliminating the data point that corresponds to Northern Ireland from the regression model gives the linear fit shown with the dashed line.   -->
 </div>
-<div id="prediction-with-regression-models" class="section level2" number="1.8">
-<h2><span class="header-section-number">1.8</span> Prediction with regression models</h2>
+<div id="prediction-with-regression-models" class="section level2 hasAnchor" number="1.8">
+<h2><span class="header-section-number">1.8</span> Prediction with regression models<a href="simple-linear-regression.html#prediction-with-regression-models" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>Regression models are regularly used for prediction. Consider a new value of the predictor <span class="math inline">\(x^\star\)</span>. There are two different types of predictions we could make:</p>
 <ol style="list-style-type: decimal">
 <li><p>What is the average response of the population at <span class="math inline">\(x^\star\)</span>?</p></li>
@@ -679,8 +678,8 @@ s_{\varepsilon} \sqrt{1+\frac{1}{n} +\frac{\left(x^\star -\bar{x}\right)^{2} }{S
 <p><img src="index_files/figure-html/unnamed-chunk-19-1.png" width="384" style="display: block; margin: auto;" />
 Regression (solid line), 95% confidence intervals (dashed lines), and 95% prediction intervals (dotted lines) for the beer data. Note that both confidence and prediction intervals widen near the edges of the range of the predictor.</p>
 </div>
-<div id="regression-design" class="section level2" number="1.9">
-<h2><span class="header-section-number">1.9</span> Regression design</h2>
+<div id="regression-design" class="section level2 hasAnchor" number="1.9">
+<h2><span class="header-section-number">1.9</span> Regression design<a href="simple-linear-regression.html#regression-design" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>Regression models can be used both for observational and experimental data. In some experiments, the experimenter has control over the values of the predictor included in the experiment. <span class="citation">Gotelli, Ellison, et al. (<a href="#ref-gotelli2004primer" role="doc-biblioref">2004</a>)</span> (pp. 167-9) give the following guidelines for a regression design with a single predictor:</p>
 <ol style="list-style-type: decimal">
 <li><p>Ensure that the range of values sampled for the predictor variable is large enough to capture the full range of responses by the response variable.</p></li>
@@ -688,8 +687,8 @@ Regression (solid line), 95% confidence intervals (dashed lines), and 95% predic
 </ol>
 <p>Once the values of the predictor to be included in the experiment have been chosen, these values should be randomly assigned to the experimental units. Note that randomization does <em>not</em> require randomly choosing the values of the predictor to be included in the experiment!</p>
 </div>
-<div id="slr-as-a-linear-algebra-problem" class="section level2" number="1.10">
-<h2><span class="header-section-number">1.10</span> *SLR as a linear algebra problem</h2>
+<div id="slr-as-a-linear-algebra-problem" class="section level2 hasAnchor" number="1.10">
+<h2><span class="header-section-number">1.10</span> *SLR as a linear algebra problem<a href="simple-linear-regression.html#slr-as-a-linear-algebra-problem" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>This section assumes familiarity with linear algebra.</p>
 <p>Ultimately, the linear statistical model (that encompasses regression and ANOVA) is a linear-algebra problem. In short, the least-squares estimates are found by projecting the data vector (an element of <span class="math inline">\(\mathcal{R}^n\)</span>) onto the linear subspace of <span class="math inline">\(\mathcal{R}^n\)</span> spanned by the predictors.</p>
 <p>In matrix notation, the SLR equations can be written compactly as
@@ -767,7 +766,7 @@ The matrix <span class="math inline">\(\mathbf{X}\left(\mathbf{X}&#39;\mathbf{X}
 
 </div>
 </div>
-<h3>Bibliography</h3>
+<h3>Bibliography<a href="bibliography.html#bibliography" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <div id="refs" class="references csl-bib-body hanging-indent">
 <div id="ref-dennis1994density" class="csl-entry">
 Dennis, Brian, and Mark L Taper. 1994. <span>“Density Dependence in Time Series Observations of Natural Populations: Estimation and Testing.”</span> <em>Ecological Monographs</em> 64 (2): 205–24.
@@ -794,6 +793,18 @@ Rubin, Donald B. 2005. <span>“Causal Inference Using Potential Outcomes: Desig
 Wasserstein, Ronald L, and Nicole A Lazar. 2016. <span>“The ASA Statement on p-Values: Context, Process, and Purpose.”</span> <em>The American Statistician</em> 70 (2): 129–33.
 </div>
 </div>
+<div class="footnotes">
+<hr />
+<ol start="3">
+<li id="fn3"><p>Regrettably, I’ve lost track of the original source of these data.<a href="simple-linear-regression.html#fnref3" class="footnote-back">↩︎</a></p></li>
+<li id="fn4"><p>This convention is so common that one often hears the horizontal axis referred to as the <span class="math inline">\(x\)</span>-axis and the vertical axis referred to as the <span class="math inline">\(y\)</span>-axis. If we wanted to be exceedingly careful we should only refer to the axes in this way when the variables that they show are in fact <span class="math inline">\(x\)</span> and <span class="math inline">\(y\)</span>, but few outside of mathematics find such care necessary.<a href="simple-linear-regression.html#fnref4" class="footnote-back">↩︎</a></p></li>
+<li id="fn5"><p>More precisely, the least-squares estimates of the intercept and slope are the <em>maximum likelihood</em> estimates, when we assume that the errors take a Gaussian distribution. Maximum likelihood will be discussed in later versions of these notes.<a href="simple-linear-regression.html#fnref5" class="footnote-back">↩︎</a></p></li>
+<li id="fn6"><p>A note on terminology: It is conventional to refer to a regression model as a regression of the response on, versus, or against the predictor. Thus, the BAC model could be described as a regression of BAC on the number of beers consumed, or alternatively as a regression of BAC against the number of beers consumed.<a href="simple-linear-regression.html#fnref6" class="footnote-back">↩︎</a></p></li>
+<li id="fn7"><p>Here’s another way to see why it is incorrect to interpret a the coverage level of a confidence interval as a statement about the probability that a random parameter falls in a fixed interval. Suppose we repeated the experiment with a new random sample drawn from the same population and calculated a new 99% confidence interval for <span class="math inline">\(\beta_1\)</span> based on this second experiment. Under the incorrect interpretation, we could immediately use the mathematics of probability to determine that the intersection (or overlap) of the two 99% confidence intervals must itself be a confidence interval with at least 98% coverage. But this can’t be true. Indeed, there is some chance that the two intervals won’t overlap at all! Thus our original premise of treating the coverage level as a statement about the probability that a random parameter is contained in a fixed interval must be wrong. The only way to interpret the situation correctly is to realize that confidence is a statement about the probability that a random interval contains a fixed parameter value.<a href="simple-linear-regression.html#fnref7" class="footnote-back">↩︎</a></p></li>
+<li id="fn8"><p>Note that a log transformation will not work if the data contain response values equal to 0. The usual approach in this case is either to take the <span class="math inline">\(\ln(y + 1)\)</span>, or to take <span class="math inline">\(\ln(y + c)\)</span>, where <span class="math inline">\(c\)</span> is one-half of the smallest non-zero response value in the data set. Note also that the base of the logarithm doesn’t matter when taking a log transformation. Natural log is the most common choice, but one can also use <span class="math inline">\(\log_2\)</span> or <span class="math inline">\(\log_{10}\)</span>.<a href="simple-linear-regression.html#fnref8" class="footnote-back">↩︎</a></p></li>
+<li id="fn9"><p>One of my instructors used to refer to normality of the residuals in a linear model as a “self-fulfilling prophecy”.<a href="simple-linear-regression.html#fnref9" class="footnote-back">↩︎</a></p></li>
+</ol>
+</div>
             </section>
 
           </div>
@@ -804,7 +815,6 @@ Wasserstein, Ronald L, and Nicole A Lazar. 2016. <span>“The ASA Statement on p
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
-<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
 <script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
 <script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
 <script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
@@ -828,7 +838,7 @@ gitbook.start({
 },
 "fontsettings": {
 "theme": "white",
-"family": "sans",
+"family": "serif",
 "size": 2
 },
 "edit": {
@@ -844,8 +854,12 @@ gitbook.start({
 "text": null
 },
 "download": null,
+"search": {
+"engine": "fuse",
+"options": null
+},
 "toc": {
-"collapse": "subsection"
+"collapse": "section"
 }
 });
 });
@@ -857,7 +871,7 @@ gitbook.start({
     var script = document.createElement("script");
     script.type = "text/javascript";
     var src = "true";
-    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
     if (location.protocol !== "file:")
       if (/^https?:/.test(src))
         src = src.replace(/^https?:/, '');
