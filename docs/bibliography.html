@@ -24,14 +24,14 @@
 <meta name="author" content="Kevin Gross" />
 
 
-<meta name="date" content="2022-12-06" />
+<meta name="date" content="2022-12-09" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   
-<link rel="prev" href="one-factor-anova.html"/>
+<link rel="prev" href="simple-linear-regression.html"/>
 
 <script src="libs/header-attrs-2.9/header-attrs.js"></script>
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
@@ -93,7 +93,7 @@ code span.al { color: #ff0000; font-weight: bold; } /* Alert */
 code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
 code span.at { color: #7d9029; } /* Attribute */
 code span.bn { color: #40a070; } /* BaseN */
-code span.bu { } /* BuiltIn */
+code span.bu { color: #008000; } /* BuiltIn */
 code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
 code span.ch { color: #4070a0; } /* Char */
 code span.cn { color: #880000; } /* Constant */
@@ -106,7 +106,7 @@ code span.er { color: #ff0000; font-weight: bold; } /* Error */
 code span.ex { } /* Extension */
 code span.fl { color: #40a070; } /* Float */
 code span.fu { color: #06287e; } /* Function */
-code span.im { } /* Import */
+code span.im { color: #008000; font-weight: bold; } /* Import */
 code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
 code span.kw { color: #007020; font-weight: bold; } /* Keyword */
 code span.op { color: #666666; } /* Operator */
@@ -155,57 +155,35 @@ div.csl-indent {
       <nav role="navigation">
 
 <ul class="summary">
-<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Preface</a></li>
-<li class="chapter" data-level="1" data-path="simple-linear-regression.html"><a href="simple-linear-regression.html"><i class="fa fa-check"></i><b>1</b> Simple linear regression</a>
+<li><a href="index.html#preface" id="toc-preface">Preface</a>
 <ul>
-<li class="chapter" data-level="1.1" data-path="simple-linear-regression.html"><a href="simple-linear-regression.html#the-basics-of-slr"><i class="fa fa-check"></i><b>1.1</b> The basics of SLR</a></li>
-<li class="chapter" data-level="1.2" data-path="simple-linear-regression.html"><a href="simple-linear-regression.html#least-squares-estimation"><i class="fa fa-check"></i><b>1.2</b> Least-squares estimation</a></li>
-<li class="chapter" data-level="1.3" data-path="simple-linear-regression.html"><a href="simple-linear-regression.html#inference-for-the-slope"><i class="fa fa-check"></i><b>1.3</b> Inference for the slope</a>
+<li><a href="index.html#philosophy" id="toc-philosophy">Philosophy</a></li>
+<li><a href="index.html#scope-and-coverage" id="toc-scope-and-coverage">Scope and coverage</a></li>
+<li><a href="index.html#mathematical-level" id="toc-mathematical-level">Mathematical level</a></li>
+<li><a href="index.html#computing" id="toc-computing">Computing</a></li>
+<li><a href="index.html#format-of-the-notes" id="toc-format-of-the-notes">Format of the notes</a></li>
+<li><a href="index.html#acknowledgments" id="toc-acknowledgments">Acknowledgments</a></li>
+</ul></li>
+<li><a href="simple-linear-regression.html#simple-linear-regression" id="toc-simple-linear-regression"><span class="toc-section-number">1</span> Simple linear regression</a>
 <ul>
-<li class="chapter" data-level="1.3.1" data-path="simple-linear-regression.html"><a href="simple-linear-regression.html#standard-errors"><i class="fa fa-check"></i><b>1.3.1</b> Standard errors</a></li>
-<li class="chapter" data-level="1.3.2" data-path="simple-linear-regression.html"><a href="simple-linear-regression.html#confidence-intervals"><i class="fa fa-check"></i><b>1.3.2</b> Confidence intervals</a></li>
-<li class="chapter" data-level="1.3.3" data-path="simple-linear-regression.html"><a href="simple-linear-regression.html#statistical-hypothesis-tests"><i class="fa fa-check"></i><b>1.3.3</b> Statistical hypothesis tests</a></li>
-<li class="chapter" data-level="1.3.4" data-path="simple-linear-regression.html"><a href="simple-linear-regression.html#inference-for-the-intercept"><i class="fa fa-check"></i><b>1.3.4</b> Inference for the intercept</a></li>
-</ul></li>
-<li class="chapter" data-level="1.4" data-path="simple-linear-regression.html"><a href="simple-linear-regression.html#sums-of-squares-decomposition-and-r2"><i class="fa fa-check"></i><b>1.4</b> Sums of squares decomposition and <span class="math inline">\(R^2\)</span></a></li>
-<li class="chapter" data-level="1.5" data-path="simple-linear-regression.html"><a href="simple-linear-regression.html#fitting-the-slr-model-in-r"><i class="fa fa-check"></i><b>1.5</b> Fitting the SLR model in R</a></li>
-<li class="chapter" data-level="1.6" data-path="simple-linear-regression.html"><a href="simple-linear-regression.html#diagnostic-plots"><i class="fa fa-check"></i><b>1.6</b> Diagnostic plots</a></li>
-<li class="chapter" data-level="1.7" data-path="simple-linear-regression.html"><a href="simple-linear-regression.html#consequences-of-violating-model-assumptions-and-possible-fixes"><i class="fa fa-check"></i><b>1.7</b> Consequences of violating model assumptions, and possible fixes</a></li>
-<li class="chapter" data-level="1.8" data-path="simple-linear-regression.html"><a href="simple-linear-regression.html#prediction-with-regression-models"><i class="fa fa-check"></i><b>1.8</b> Prediction with regression models</a></li>
-</ul></li>
-<li class="chapter" data-level="2" data-path="multiple-regression.html"><a href="multiple-regression.html"><i class="fa fa-check"></i><b>2</b> Multiple regression</a>
+<li><a href="simple-linear-regression.html#the-basics-of-slr" id="toc-the-basics-of-slr"><span class="toc-section-number">1.1</span> The basics of SLR</a></li>
+<li><a href="simple-linear-regression.html#least-squares-estimation" id="toc-least-squares-estimation"><span class="toc-section-number">1.2</span> Least-squares estimation</a></li>
+<li><a href="simple-linear-regression.html#inference-for-the-slope" id="toc-inference-for-the-slope"><span class="toc-section-number">1.3</span> Inference for the slope</a>
 <ul>
-<li class="chapter" data-level="2.1" data-path="multiple-regression.html"><a href="multiple-regression.html#multiple-regression-for-associating-multiple-predictor-variables-with-a-single-response"><i class="fa fa-check"></i><b>2.1</b> Multiple regression for associating multiple predictor variables with a single response</a>
-<ul>
-<li class="chapter" data-level="2.1.1" data-path="multiple-regression.html"><a href="multiple-regression.html#sums-of-squares-decomposition-and-r2."><i class="fa fa-check"></i><b>2.1.1</b> Sums of squares decomposition and <span class="math inline">\(R^2\)</span>.</a></li>
-<li class="chapter" data-level="2.1.2" data-path="multiple-regression.html"><a href="multiple-regression.html#partial-regression-coefficients."><i class="fa fa-check"></i><b>2.1.2</b> Partial regression coefficients.</a></li>
+<li><a href="simple-linear-regression.html#standard-errors" id="toc-standard-errors"><span class="toc-section-number">1.3.1</span> Standard errors</a></li>
+<li><a href="simple-linear-regression.html#confidence-intervals" id="toc-confidence-intervals"><span class="toc-section-number">1.3.2</span> Confidence intervals</a></li>
+<li><a href="simple-linear-regression.html#statistical-hypothesis-tests" id="toc-statistical-hypothesis-tests"><span class="toc-section-number">1.3.3</span> Statistical hypothesis tests</a></li>
+<li><a href="simple-linear-regression.html#inference-for-the-intercept" id="toc-inference-for-the-intercept"><span class="toc-section-number">1.3.4</span> Inference for the intercept</a></li>
 </ul></li>
-<li class="chapter" data-level="2.2" data-path="multiple-regression.html"><a href="multiple-regression.html#statistical-inference-for-partial-regression-coefficients"><i class="fa fa-check"></i><b>2.2</b> Statistical inference for partial regression coefficients</a>
-<ul>
-<li class="chapter" data-level="2.2.1" data-path="multiple-regression.html"><a href="multiple-regression.html#prediction"><i class="fa fa-check"></i><b>2.2.1</b> Prediction</a></li>
+<li><a href="simple-linear-regression.html#sums-of-squares-decomposition-and-r2" id="toc-sums-of-squares-decomposition-and-r2"><span class="toc-section-number">1.4</span> Sums of squares decomposition and <span class="math inline">\(R^2\)</span></a></li>
+<li><a href="simple-linear-regression.html#fitting-the-slr-model-in-r" id="toc-fitting-the-slr-model-in-r"><span class="toc-section-number">1.5</span> Fitting the SLR model in R</a></li>
+<li><a href="simple-linear-regression.html#diagnostic-plots" id="toc-diagnostic-plots"><span class="toc-section-number">1.6</span> Diagnostic plots</a></li>
+<li><a href="simple-linear-regression.html#consequences-of-violating-model-assumptions-and-possible-fixes" id="toc-consequences-of-violating-model-assumptions-and-possible-fixes"><span class="toc-section-number">1.7</span> Consequences of violating model assumptions, and possible fixes</a></li>
+<li><a href="simple-linear-regression.html#prediction-with-regression-models" id="toc-prediction-with-regression-models"><span class="toc-section-number">1.8</span> Prediction with regression models</a></li>
+<li><a href="simple-linear-regression.html#regression-design" id="toc-regression-design"><span class="toc-section-number">1.9</span> Regression design</a></li>
+<li><a href="simple-linear-regression.html#slr-as-a-linear-algebra-problem" id="toc-slr-as-a-linear-algebra-problem"><span class="toc-section-number">1.10</span> *SLR as a linear algebra problem</a></li>
 </ul></li>
-<li class="chapter" data-level="2.3" data-path="multiple-regression.html"><a href="multiple-regression.html#indicator-variables"><i class="fa fa-check"></i><b>2.3</b> Indicator variables</a></li>
-<li class="chapter" data-level="2.4" data-path="multiple-regression.html"><a href="multiple-regression.html#the-mlr-model-in-matrix-notation"><i class="fa fa-check"></i><b>2.4</b> The MLR model in matrix notation</a></li>
-<li class="chapter" data-level="2.5" data-path="multiple-regression.html"><a href="multiple-regression.html#interactions-between-predictors"><i class="fa fa-check"></i><b>2.5</b> Interactions between predictors</a></li>
-<li class="chapter" data-level="2.6" data-path="multiple-regression.html"><a href="multiple-regression.html#polynomial-regression"><i class="fa fa-check"></i><b>2.6</b> Polynomial regression</a></li>
-<li class="chapter" data-level="2.7" data-path="multiple-regression.html"><a href="multiple-regression.html#testing-multiple-regression-coefficients-at-once"><i class="fa fa-check"></i><b>2.7</b> Testing multiple regression coefficients at once</a>
-<ul>
-<li class="chapter" data-level="2.7.1" data-path="multiple-regression.html"><a href="multiple-regression.html#model-utility-tests"><i class="fa fa-check"></i><b>2.7.1</b> Model utility tests</a></li>
-</ul></li>
-<li class="chapter" data-level="2.8" data-path="multiple-regression.html"><a href="multiple-regression.html#multi-collinearity"><i class="fa fa-check"></i><b>2.8</b> (Multi-)Collinearity</a></li>
-<li class="chapter" data-level="2.9" data-path="multiple-regression.html"><a href="multiple-regression.html#variable-selection-choosing-the-best-model"><i class="fa fa-check"></i><b>2.9</b> Variable selection: Choosing the best model</a>
-<ul>
-<li class="chapter" data-level="2.9.1" data-path="multiple-regression.html"><a href="multiple-regression.html#ranking-methods"><i class="fa fa-check"></i><b>2.9.1</b> Ranking methods</a></li>
-<li class="chapter" data-level="2.9.2" data-path="multiple-regression.html"><a href="multiple-regression.html#sequential-methods"><i class="fa fa-check"></i><b>2.9.2</b> Sequential methods</a></li>
-</ul></li>
-<li class="chapter" data-level="2.10" data-path="multiple-regression.html"><a href="multiple-regression.html#non-linear-regression"><i class="fa fa-check"></i><b>2.10</b> Non-linear regression</a></li>
-<li class="chapter" data-level="2.11" data-path="multiple-regression.html"><a href="multiple-regression.html#leverage-influential-points-and-standardized-residuals"><i class="fa fa-check"></i><b>2.11</b> Leverage, influential points, and standardized residuals</a></li>
-</ul></li>
-<li class="chapter" data-level="3" data-path="one-factor-anova.html"><a href="one-factor-anova.html"><i class="fa fa-check"></i><b>3</b> One-factor ANOVA</a>
-<ul>
-<li class="chapter" data-level="3.1" data-path="one-factor-anova.html"><a href="one-factor-anova.html#one-factor-anova-the-basics"><i class="fa fa-check"></i><b>3.1</b> One-factor ANOVA: The basics</a></li>
-</ul></li>
-<li class="chapter" data-level="" data-path="bibliography.html"><a href="bibliography.html"><i class="fa fa-check"></i>Bibliography</a></li>
+<li><a href="bibliography.html#bibliography" id="toc-bibliography">Bibliography</a></li>
 </ul>
 
       </nav>
@@ -228,51 +206,60 @@ div.csl-indent {
 
 <div id="refs" class="references csl-bib-body hanging-indent">
 <div class="csl-entry">
-Bates, Douglas M, and Donald G Watts. 1988. <em>Nonlinear Regression Analysis and Its Applications</em>. Wiley.
-</div>
-<div class="csl-entry">
 Breiman, Leo. 2001. <span>“Statistical Modeling: The Two Cultures (with Comments and a Rejoinder by the Author).”</span> <em>Statistical Science</em> 16 (3): 199–231.
 </div>
 <div class="csl-entry">
 Dennis, Brian, and Mark L Taper. 1994. <span>“Density Dependence in Time Series Observations of Natural Populations: Estimation and Testing.”</span> <em>Ecological Monographs</em> 64 (2): 205–24.
 </div>
 <div class="csl-entry">
+Galton, Francis. 1886. <span>“Regression Towards Mediocrity in Hereditary Stature.”</span> <em>The Journal of the Anthropological Institute of Great Britain and Ireland</em> 15: 246–63.
+</div>
+<div class="csl-entry">
 Gelman, Andrew, Jennifer Hill, and Aki Vehtari. 2020. <em>Regression and Other Stories</em>. Cambridge University Press.
+</div>
+<div class="csl-entry">
+Gotelli, Nicholas J, Aaron M Ellison, et al. 2004. <em>A Primer of Ecological Statistics</em>. Vol. 1. Sinauer Associates Sunderland.
 </div>
 <div class="csl-entry">
 Kahneman, Daniel. 2011. <em>Thinking, Fast and Slow</em>. Macmillan.
 </div>
 <div class="csl-entry">
-Mas-Colell, Andreu, Michael Dennis Whinston, Jerry R Green, and others. 1995. <em>Microeconomic Theory</em>. Vol. 1. Oxford university press New York.
+Martin, Ryan. 2017. <span>“A Statistical Inference Course Based on p-Values.”</span> <em>The American Statistician</em> 71 (2): 128–36.
 </div>
 <div class="csl-entry">
-Moore, David S, and George P McCabe. 1989. <em>Introduction to the Practice of Statistics.</em> WH Freeman.
+R Core Team. 2021. <em>R: A Language and Environment for Statistical Computing</em>. Vienna, Austria: R Foundation for Statistical Computing. <a href="https://www.R-project.org/">https://www.R-project.org/</a>.
 </div>
 <div class="csl-entry">
 Rubin, Donald B. 2005. <span>“Causal Inference Using Potential Outcomes: Design, Modeling, Decisions.”</span> <em>Journal of the American Statistical Association</em> 100 (469): 322–31.
 </div>
+<div class="csl-entry">
+Wasserstein, Ronald L, and Nicole A Lazar. 2016. <span>“The ASA Statement on p-Values: Context, Process, and Purpose.”</span> <em>The American Statistician</em> 70 (2): 129–33.
+</div>
+<div class="csl-entry">
+Xie, Yihui. 2022. <em>Bookdown: Authoring Books and Technical Documents with r Markdown</em>. <a href="https://github.com/rstudio/bookdown">https://github.com/rstudio/bookdown</a>.
 </div>
 </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+</div>
+<div class="footnotes footnotes-end-of-document">
+<hr />
+<ol>
+<li id="fn1"><p>In this context, the term “observational data” is used to refer to data collected outside the context of a designed experiment. One might bicker that all data, even those data from designed experiments, must be “observed”, but this is the terminology that we have.<a href="index.html#fnref1" class="footnote-back">↩︎</a></p></li>
+<li id="fn2"><p>Indeed, we are probably not too far away from the rise of artificial intelligence-based statistical consulting, where anyone can upload a data set and answer a few questions about it in return for an AI’s analysis.<a href="index.html#fnref2" class="footnote-back">↩︎</a></p></li>
+<li id="fn3"><p>Regrettably, I’ve lost track of the original source of these data.<a href="simple-linear-regression.html#fnref3" class="footnote-back">↩︎</a></p></li>
+<li id="fn4"><p>This convention is so common that one often hears the horizontal axis referred to as the <span class="math inline">\(x\)</span>-axis and the vertical axis referred to as the <span class="math inline">\(y\)</span>-axis. If we wanted to be exceedingly careful we should only refer to the axes in this way when the variables that they show are in fact <span class="math inline">\(x\)</span> and <span class="math inline">\(y\)</span>, but few outside of mathematics find such care necessary.<a href="simple-linear-regression.html#fnref4" class="footnote-back">↩︎</a></p></li>
+<li id="fn5"><p>More precisely, the least-squares estimates of the intercept and slope are the <em>maximum likelihood</em> estimates, when we assume that the errors take a Gaussian distribution. Maximum likelihood will be discussed in later versions of these notes.<a href="simple-linear-regression.html#fnref5" class="footnote-back">↩︎</a></p></li>
+<li id="fn6"><p>A note on terminology: It is conventional to refer to a regression model as a regression of the response on, versus, or against the predictor. Thus, the BAC model could be described as a regression of BAC on the number of beers consumed, or alternatively as a regression of BAC against the number of beers consumed.<a href="simple-linear-regression.html#fnref6" class="footnote-back">↩︎</a></p></li>
+<li id="fn7"><p>Here’s another way to see why it is incorrect to interpret a the coverage level of a confidence interval as a statement about the probability that a random parameter falls in a fixed interval. Suppose we repeated the experiment with a new random sample drawn from the same population and calculated a new 99% confidence interval for <span class="math inline">\(\beta_1\)</span> based on this second experiment. Under the incorrect interpretation, we could immediately use the mathematics of probability to determine that the intersection (or overlap) of the two 99% confidence intervals must itself be a confidence interval with at least 98% coverage. But this can’t be true. Indeed, there is some chance that the two intervals won’t overlap at all! Thus our original premise of treating the coverage level as a statement about the probability that a random parameter is contained in a fixed interval must be wrong. The only way to interpret the situation correctly is to realize that confidence is a statement about the probability that a random interval contains a fixed parameter value.<a href="simple-linear-regression.html#fnref7" class="footnote-back">↩︎</a></p></li>
+<li id="fn8"><p>Note that a log transformation will not work if the data contain response values equal to 0. The usual approach in this case is either to take the <span class="math inline">\(\ln(y + 1)\)</span>, or to take <span class="math inline">\(\ln(y + c)\)</span>, where <span class="math inline">\(c\)</span> is one-half of the smallest non-zero response value in the data set. Note also that the base of the logarithm doesn’t matter when taking a log transformation. Natural log is the most common choice, but one can also use <span class="math inline">\(\log_2\)</span> or <span class="math inline">\(\log_{10}\)</span>.<a href="simple-linear-regression.html#fnref8" class="footnote-back">↩︎</a></p></li>
+<li id="fn9"><p>One of my instructors used to refer to normality of the residuals in a linear model as a “self-fulfilling prophecy”.<a href="simple-linear-regression.html#fnref9" class="footnote-back">↩︎</a></p></li>
+</ol>
+</div>
             </section>
 
           </div>
         </div>
       </div>
-<a href="one-factor-anova.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="simple-linear-regression.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
 
     </div>
   </div>
