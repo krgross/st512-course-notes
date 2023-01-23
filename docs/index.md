@@ -1,7 +1,7 @@
 --- 
 title: "ST 512 course notes"
 author: "Kevin Gross"
-date: "2022-12-09"
+date: "2023-01-23"
 output:
   bookdown::gitbook:
     config:
@@ -63,16 +63,25 @@ The primary purpose of this document is to serve as a set of course notes for ST
 
 These notes take the following perspectives.
 
-*Statistics is nonintuitive.*
+*Statistics is nonintuitive.*  
 When it comes to statistics, researchers cannot necessarily rely on their common sense to lead them towards correct answers.  Statistical reasoning is non-intuitive (@kahneman2011thinking), and the foundational ideas of statistics are elusive.  Therefore statistical literacy must be learned.  The primary goal of this course is to sharpen students' statistical literacy so that they may become more effective researchers.  
 
-*The route to conceptual understanding is detailed study of basic methods.*
+*The route to conceptual understanding is the detailed study of basic methods.*  
 However, one does not develop a deep conceptual understanding merely by discussing concepts.  Instead, conceptual understanding is honed in part by studying the details of particular methods to understand why those details matter.  When we study the details of a method, the expectation is not that the student will remember those details in perpetuity.  Indeed, practicing scientists are unlikely anyway to remember details about statistical methods that they do not use routinely.  (This is not a knock on practicing scientists, but is instead simply a statement about the limitations of human memory.)  Instead, the point of studying statistical methods in detail is to strengthen conceptual understanding by exploring statistical methods at a reasonably deep level.  Examining details now will also make those details more recognizable if and when one faces a future data-analysis task that requires re-engaging those details.  That said, the ultimate emphasis of this course is not on the details of the methods, but is instead on the ideas, concepts, and reasoning that underlie statistical thinking.  I hope that these notes will deepen readers' conceptual understanding of statistics and by doing so strengthen their effectiveness as scientists.
 
-*Simplicity in statistical analysis is a virtue.*
+*Except when it comes to sums-of-squares decompositions in ANOVA.*  
+The exception to the statement above is ANOVA and the associated sums-of-squares decompositions.  At this mathemtical level --- that is, without assuming a familiarity with linear algebra --- sums-of-squares decompositions and the associated ANOVA tables are poor vehicles for developing conceptual understanding.  Instead, they fill texts with inscrutable tables tethered to formulas that lack a compelling underlying logic.^[Again, to be clear, the formulas lack a compelling underlying logic because we are not engaging the linear algebra.  If we embraced the linear algebra foundations, then the underlying logic would be clear indeed.]  ANOVA is still worth learning --- especially for the analysis of designed experiments --- but unless the underlying linear algebra is engaged, ANOVA is more usefully approached as a special case of a regression model.  For this reason, these notes introduce regression modeling first and ANOVA second, reversing the path taken by most texts.
+
+*Confidence intervals deserve more emphasis, and hypothesis tests less.*  
+Hypothesis tests have become the primary route to inference in contemporary science, likely because they are the de facto evidentiary standard for announcing results in the scientific literature.  This is unfortunate, because statistical significance provides only the thinnest of summaries of pattern in data.  Confidence intervals, on the other hand (or even standard errors), are often relegated to a secondary role, even though they provide a richer basis for characterizing pattern and uncertainty.  In the fullness of time, these notes will seek to promote the reporting of confidence intervals or standard errors as opposed to hypothesis tests as the primary vehicle for inference.
+
+*Simplicity in statistical analysis is a virtue.*  
 Contemporary statistical software allows anyone to fit complex statistical models.  However, just because one can fit a complex model does not mean that one should.  For a statistical analysis to have scientific value, it must be understood by both the analyst and the analyst's audience.  Unfortunately, many contemporary statistical methods produce opaque analyses that are impossible for the informed reader to understand without a substantial and unusual investment of time and energy.  (It doesn't help that, in the scientific literature, the details of contemporary analyses are buried in supplementary material that escapes the scrutiny of most reviewers, but that's another matter.)  As a result, informed and well-intentioned readers of the scientific literature have little choice but to accept the analysis at face value without understanding the genesis of the announced results.  This state of affairs does not serve science well.  
 
 The time is nigh for the scientific community to ask whether complex but opaque statistical analyses are in the best interest of science.  For most scientific studies, a simple and transparent analysis provides a more trustworthy vehicle to understanding for both the analyst and the analyst's audience.  These notes will emphasize methods that, when studied, are transparent enough to promote such an understanding. 
+
+*Everyone is a visual learner.*  
+No one is convinced by a $p$-value in isolation, Or at least no one should be, given the ease of making errors in statistical analysis.  When an analysis suggests a pattern in data, the best way to understand the pattern is to visualize it with a thoughtfully constructed graphic.  Unfortunately, these notes in their current state are not as richly illustrated as they should be.  Eventually, I hope the notes will contain a full set of graphics that exemplify how to visualize patterns revealed by statistical analysis.
 
 ### Scope and coverage {-}
 
@@ -96,13 +105,16 @@ In this day and age, one might ask why it's necessary to understand the math at 
 
 The first portion of these notes (focused on regression) presents analyses in R, while the latter portion (focused on designed experiments) presents analyses in SAS.  In the fullness of time, I hope that these notes will include complete code for conducting analyses in both R and SAS, but that is a work in progress.  While the notes examine the R and SAS implementation of the methods that it presents, these notes are not intended as a complete guide for learning either R or SAS from square one.  The internet abounds with resources for learning the basics of R, and I would not be able to improve on those resources here.  In many cases I provide R code for the sake of illustration, but---especially when it comes to data wrangling and to graphics---the code is not meant to be authoritative. ST 512 students will receive instruction in R and SAS coding in the laboratory component fo the course.
 
-Readers interested in using R professionally would be well served by consulting Hadley Wickham's [tidyverse style guide](https://style.tidyverse.org/).  The ideas therein have helped me write substantially cleaner code, even if I haven't had the discipline to adhere to those ideas in all the code in these notes.  To my likely detriment, I have not yet mastered the data wrangling tools of the tidyverse ecosystem the style of writing R code with pipes, but this only reflects my own habits is not the result of an informed choice.
+Readers interested in using R professionally would be well served by consulting Hadley Wickham's [tidyverse style guide](https://style.tidyverse.org/).  The ideas therein have helped me write substantially cleaner code, even if I haven't had the discipline to adhere to those ideas in all the code in these notes.  
+
+That said, the R code in these notes does not fully embrace the piping style of the `tidyverse` ecosystem and the associated graphical facilities of `ggplot`.  I take this approach because the focus of these notes is on fitting and visualizing traditional statistical models, and it seems to me that the conventional style of R coding is still best suited for this purpose.  The piping style of the `tidyverse` seems better suited to data-science tasks such as wrangling with and visualizing large data sets.  As for `ggplot`, I prefer the style of coding in R's native graphical facilities, although `ggplot` can certainly produce high-quality graphics with relatively few lines of code.
 
 As a practical matter, these notes are prepared in `bookdown` (@xie2022bookdown).  While it is possible to compile both R and SAS code on the fly in `bookdown`, the extensive output produced by SAS does not serve these notes well.  As a consequence, SAS output is condensed to show only the most salient portions of the output.
 
+
 ### Format of the notes {-}
 
-Advanced sections are indicated by section titles that begin with asterisks (*). Shorter sidebars for enrichment appear in <span style="color: gray;"> gray text </span> and are offset by horizontal rules (like the one following the acknowledgments).  This material may be skipped without loss.  
+Advanced sections are indicated by section titles that begin with stars ($^\star$). Shorter sidebars for enrichment appear in <span style="color: gray;"> gray text </span> and are offset by horizontal rules (like the one following the acknowledgments).  This material may be skipped without loss.  
 
 <!-- This structure is inspired by @mascolell1995microeconomic's lovely text. -->
 
@@ -111,9 +123,11 @@ Advanced sections are indicated by section titles that begin with asterisks (*).
 <!-- Want to consult a more polished resource?  (I wouldn't blame you.)   -->
 
 
-### Acknowledgments {-}
+### Acknowledgments and license {-}
 
 I am deeply indebted to the R community (@r) for their project which has done no less than revolutionize data analysis in our times.  I also thank the developers of `bookdown` for providing the platform for these notes (@xie2022bookdown).
+
+These notes are provided under [version 3 of the GNU General Public License](https://www.gnu.org/licenses/gpl-3.0.en.html). 
 
 ---
 
@@ -165,13 +179,13 @@ Although they look similar, it is important to realize that $\beta_0$, $\beta_1$
 
 In contrast, the error term $\varepsilon$ is a random variable.  It does not have one single value, but instead takes a different value for every member of a population.  We describe the distribution of the errors across the members of the population using a probability distribution.  In simple linear regression, we assume that the random errors have a Gaussian (or normal, or bell-shaped) distribution with mean 0 and variance $\sigma_{\varepsilon}^{2}$.  We also assume that the random errors are independent among individuals in our sample.  A succinct way of stating this is to state that the errors are Gaussian and "independent and identically distributed" (abbreviated "iid").  In notation, we write $\varepsilon_{i} \stackrel{\text{iid}}{\sim} \mathcal{N}\left(0, \sigma_{\varepsilon }^2 \right)$, a statement which we would read as "the errors have a normal (or Gaussian) distribution with mean 0 and variance $\sigma^2_\varepsilon$".  The error variance $\sigma_{\varepsilon }^2$ is a parameter, and it measure of the variability in the response that is not explained by the predictor.  We will also discuss how to estimate $\sigma_{\varepsilon }^2$.  (It is also possible to draw statistical inferences for $\sigma_{\varepsilon }^2$, although we will not discuss how to do so in these notes.)
 
-Before moving on to discussing how to estimate the model parameters, let's reflect a bit on the slope, $\beta_1$, because this is the parameter that captures the linear association between the two variables.  I recently learned of a particularly nice way to interpret the slope, due to @gelman2020regression.  Their interpretation works like this.  Consider two values of the response $y_1$ and $y_2$, associated respectively with two values of the predictor $x_1$ and $x_2$.  The regression model says that, on average, the difference $y_1 - y_2$ will equal $\beta_1 \times (x_1 - x_2)$.  The "on average" part of this interpretation is important because we realize that any two actual observations will also include their respective errors, and so we don't expect these two observations to differ by exactly $\beta_1 \times (x_1 - x_2)$.  Second, this interpretation also makes it clear that the regression model predicts that the average difference between two responses will increase or decrease linearly as the difference between their two associated predictor values grows or shrinks.  Thus, if the SLR model is appropriate for the BAC data (something we have yet to verify), then the model suggests that the average BAC difference between two individuals who have consumed 1 vs.\ 2 beers is the same as the average BAC difference between two individuals who have consumed 4 vs.\ 5 beers, and that both of these differences are one-half as big as the average BAC difference between two individuals who have drank 2.5 vs.\ 4.5 beers.
+Before moving on to discussing how to estimate the model parameters, let's reflect a bit on the slope, $\beta_1$, because this is the parameter that captures the linear association between the two variables.  A particularly nice way to interpret the slope is due to @gelman2020regression.  Their interpretation works like this.  Consider two values of the response $y_1$ and $y_2$, associated respectively with two values of the predictor $x_1$ and $x_2$.  The regression model says that, on average, the difference $y_1 - y_2$ will equal $\beta_1 \times (x_1 - x_2)$.  The "on average" part of this interpretation is important because we realize that any two actual observations will also include their respective errors, and so we don't expect these two observations to differ by exactly $\beta_1 \times (x_1 - x_2)$.  Second, this interpretation also makes it clear that the regression model predicts that the average difference between two responses will increase or decrease linearly as the difference between their two associated predictor values grows or shrinks.  Thus, if the SLR model is appropriate for the BAC data (something we have yet to verify), then the model suggests that the average BAC difference between two individuals who have consumed 1 vs.\ 2 beers is the same as the average BAC difference between two individuals who have consumed 4 vs.\ 5 beers, and that both of these differences are one-half as big as the average BAC difference between two individuals who have drank 2.5 vs.\ 4.5 beers.
 
 ---
 
 <span style="color: gray;"> Our assumption of normally distributed errors has a deeper justification than may meet the eye.  If you've studied probability, you may have encountered an important result called the Central Limit Theorem.  For our purposes, the Central Limit Theorem tells us that if the error results from the combined effect of many small factors added together, then the error's distribution will be approximately normal.  (We will see that regression models are not sensitive to moderate departures from normality, so approximately normal errors are good enough.)  This result provides a strong justification for expecting normally distributed errors in many cases.  The normality assumption begins to break down when the errors are dominated by only a few factors, or when the factors that contribute to the error combine multiplicitavely.  This latter scenario --- errors that result from the product of many small influences as opposed to their sum --- frequently arises in biology when the response measures some form of population size.  Populations grow or shrink multiplicitavely, and so population sizes tend to have right-skewed distributions. </span>
 
-<span style="color: gray;">We might also note that the style of writing the regression model as the sum of the regression line ($\beta_0 + \beta_1 x$) and an error term with mean zero ($\varepsilon$) works because we have assumed that the errors have a normal distribution.  A normal distribution has the special property that we can take a normally distributed quantity, add a constant to it, and the sum will still have a normal distribution.  Most statistical distributions do not have this property; for example, a Poisson random variate plus a non-zero constant does not yield a Poisson distributed sum.  Some authors find it more natural to write the SLR model as $y \sim \mathcal{N}(\beta_0 + \beta_1 x, \sigma^2)$, to emphasize that the response has a Gaussian distribution and that the predictor only affects the mean of this distribution.  We will use the style of eq. \@ref(eq:slr), because this style lends itself more readily to mixed-effects models with multiple variance terms.  However, the two styles of notation denote the same model.  Feel free to use whichever style makes the most sense to you.</span>
+<span style="color: gray;">It's also worth noting that we can write the regression model as the sum of the regression line ($\beta_0 + \beta_1 x$) and an error term with mean zero ($\varepsilon$) because we have assumed that the errors have a normal distribution.  A normal distribution has the special property that we can take a normally distributed quantity, add a constant to it, and the sum will still have a normal distribution.  Most statistical distributions do not have this property; for example, a Poisson random variate plus a non-zero constant does not yield a Poisson distributed sum.  Some authors find it more natural to write the SLR model as $y \sim \mathcal{N}(\beta_0 + \beta_1 x, \sigma^2)$, to emphasize that the response has a Gaussian distribution and that the predictor only affects the mean of this distribution.  We will use the style of eq. \@ref(eq:slr), because this style lends itself more readily to mixed-effects models with multiple variance terms.  However, the two styles of notation denote the same model.  Feel free to use whichever style makes the most sense to you.</span>
 
 ---
 
@@ -225,15 +239,15 @@ abline(fm1)
 
 The best fitting line shows a positive relationship between BAC and beers consumed.  Using the interpretation that we introduced in the previous section, we would say that if we measure the BAC of two people, one of whom has consumed one more beer than the other, on average the BAC of the person who drank more beers will be 0.018 higher than the BAC of the persion who drank fewer beers.  Similarly, if we compare the BAC of two people, one of whom drank four more beers than the other, on average the BAC of the person who drank more beers will be $0.4 \times 0.018 = 0.072$ higher than the person who drank fewer beers, and so on.
 
-Evaluating the fitted regression line for a given value of the predictor generates a *fitted value* for each data point.  Fitted values are denoted $\hat{y}_i$.  In notation, $\hat{y}_i = \hat{\beta}_0 + \hat{\beta}_1 x_i$.  
+In a perfect world, we would always include units along with our parameter estimates.  In the BAC data, the units of the predictor are perfectly clear (the units are the number of beers), but the units of the response are a bit trickier.  The units of BAC are percent by volume, which is often just shortened to percent.  So, in the BAC regression model, the units of the intercept are $\hat{\beta}_0 = -0.013\%$, and the units of the slope are $\hat{\beta}_1 = 0.018$ percent per beer consumed.  Quoting units can get a bit repetitive, so we'll omit them on occasion, but identifying the units of parameters in your own analysis is a good way to deepen your understanding of what the numbers in the analysis mean.
 
-Why did the error term vanish in the equation for $\hat{y}_i$?
+Evaluating the fitted regression line for a given value of the predictor generates a *fitted value* for each data point.  Fitted values are denoted $\hat{y}_i$.  In notation, $\hat{y}_i = \hat{\beta}_0 + \hat{\beta}_1 x_i$.  (What are the units of fitted values?  And why did the error term vanish in the equation for $\hat{y}_i$?)
 
-The *residual* for observation $i$, denoted $e_i$, is the difference between the actual observation and the fitted value.  In notation, $e_i = y_i -\hat{y}_i$.  In terms of the data plot, the residuals can be thought of as the vertical differences between the actual data points and the fitted line.  In the figure below, the vertical line represents the residual for the individual who consumed 9 beers.
+The *residual* for observation $i$, denoted $e_i$, is the difference between the actual observation and the fitted value.  In notation, we write $e_i = y_i -\hat{y}_i$.  (What are the units of residuals?) In terms of the data plot, the residuals can be thought of as the vertical differences between the actual data points and the fitted line.  In the figure below, the vertical line represents the residual for the individual who consumed 9 beers.
 
 <img src="index_files/figure-html/unnamed-chunk-5-1.png" width="384" style="display: block; margin: auto;" />
 
-*Example*: The first individual in the data set drank $x_1 = 5$ beers and had a BAC of $y_1 = 0.1$.  Find the fitted value and residual for this data point.  Answer: $\hat{y}_1 = 0.077$, $e_1 = 0.023$.
+*Example*: The first individual in the data set drank $x_1 = 5$ beers and had a BAC of $y_1 = 0.1\%$.  Find the fitted value and residual for this data point.  Answer: $\hat{y}_1 = 0.077\%$, $e_1 = 0.023\%$.
 
 The *error sum of squares* (SSE) is the sum of the squared residuals.  Written as a formula, we would write
 $$
@@ -247,11 +261,11 @@ s_\varepsilon^2 = \dfrac{SSE}{n-2} = MSE
 $$
 We divide by $n - 2$ because there are $n - 2$ degrees of freedom (df) associated with the SSE.  When we divide an error sum-of-squares by its degrees of freedom, the resulting quotient is called the "mean-squared error" (MSE). For the BAC data, the SSE is 0.0058, yielding a MSE of $0.0058/(16-2) \approx 0.0004$.  See the gray text at the end of this section for an explanation of why the number of degrees of freedom is $n-2$.
 
-Variances are difficult to understand because they are on a squared scale.  Thus, the units of the error variance are the units of the response, squared.  To place this estimate on a more meaningful scale, we take the square root to obtain the estimate of the residual standard deviation $s_{\varepsilon}$:
+Variances are difficult to understand because they are on a squared scale. Thus, the units of the error variance are the units of the response, squared.  To place this estimate on a more meaningful scale, we take the square root to obtain the estimate of the residual standard deviation $s_{\varepsilon}$:
 $$
 s_{\varepsilon} =\sqrt{\dfrac{SSE}{n-2}} = \sqrt{MSE} 
 $$
-For the BAC data, $s_{\varepsilon} = \sqrt{0.0004} = 0.020$.  This is a more useful number, as it suggests that a typical deviation between an observed BAC and the corresponding fitted value is 0.020\%. (Take a look again at the magnitude of the residuals in the scatterplot of the BAC data, and convince yourself that 0.020\% is a reasonable guide to the magnitude of a typical residual.)         
+For the BAC data, $s_{\varepsilon} = \sqrt{0.0004} = 0.020$.  This is a more useful number, as it suggests that a typical deviation between an observed BAC and the corresponding fitted value is 0.020%. (Take a look again at the magnitude of the residuals in the scatterplot of the BAC data, and convince yourself that 0.020% is a reasonable guide to the magnitude of a typical residual.)  In the R `summary` of our model fit, the value of $s_{\varepsilon}$ is given by the portion of the output labeled "Residual standard error".^[Perhaps this reveals my own ignorance, but I can't figure out why the R `summary` of the linear model refers to $s_{\varepsilon}$ as the "Residual standard error".  It seems to me that $s_{\varepsilon}$ is the standard deviation of the residuals, and thus it would be better to call it the "Residual standard deviation".] 
 
 ---
 
@@ -290,16 +304,17 @@ Note that assumption number 1 deals with the mean component of the model, while 
 ### Standard errors
 
 As intelligent scientists, we realize that estimates are not exactly equal to the parameters that they seek to estimate.  We can characterize the uncertainty in parameter estimates in different ways.  One tool that we have for quantifying uncertainty in parameter estimates is to calculate a standard error.  In general, a *standard error* quantifies the variability in an estimate that is attributable to random sampling.  Most parameter estimates that we will encounter have known formulas for their standard errors.  In most cases, these formulas are complicated, and we will rely on computers to calculate standard errors for us.  However, the formula for the standard error of the slope parameter in SLR is interesting to examine because it contains a valuable insight that we can use when collecting data for a regression study.  The standard error of $\hat{\beta}_1$, denoted $s_{\hat{\beta}_1}$, is given by the formula
-$$
+\begin{equation}
 s_{\hat{\beta}_1} = \dfrac{s_{\varepsilon}}{\sqrt{S_{xx} } } 
-$$ 
+(\#eq:se-slope)
+\end{equation}
 where $S_{xx} =\sum_{i}\left(x_{i} -\bar{x}\right)^2$ quantifies the dispersion in the predictor variables.  
 
 Although this formula looks a bit daunting, there's some intuition to be gained here, and a lesson for experimental design.  Suppose we had designed a regression experiment in which all of the individuals were assigned similar values of the predictor.  In this case, $S_{xx}$ would be small, and consequently the standard error $s_{\hat{\beta}_1}$ would be large.  Conversely, if the values of the predictor were very different among individuals in the study, then $S_{xx}$ would be large and the standard error $s_{\hat{\beta}_1}$ would be small.  Thus, if we want a precise estimate of the slope, we should choose predictor values that span the range over which we want to learn.
 
 Thought question: Following this line of reasoning, is it a good idea to design a study so that half the individuals are assigned a very large value of the predictor, and the other half are assigned a very small value?  Why or why not?
 
-For the BAC example, $s_{\hat{\beta}_1} = 0.0024$.  This tells us that, over many hypothetical repetitions of this same experiment, a typical difference between our estimate of the slope and its true value is 0.0024.  This information sharpens our understanding of the precision of the estimate.
+For the BAC example, $s_{\hat{\beta}_1} = 0.0024$.  (The units are the same units as the slope, or percent per beer consumed for the BAC data.) This tells us that, over many hypothetical repetitions of this same experiment, a typical difference between our estimate of the slope and its true value is 0.0024.  This information sharpens our understanding of the precision of the estimate.^[If we wanted to be more precise, we should note that the value given by eq. \@ref(eq:se-slope) is actually an estimate of the standard error.  The true standard error of the slope is a parameter denoted by $\sigma_{\hat{\beta}_1}$ and given by the formula $\sigma_{\hat{\beta}_1} = \frac{\sigma_{\varepsilon}}{\sqrt{S_{xx} } }$, where $\sigma_{\varepsilon}$ is the (true) residual standard deviation.  Of course, we can never compute $\sigma_{\hat{\beta}_1}$, because we can never know $\sigma_{\varepsilon}$.  So, we do the sensible thing and substitute our estimate of the residual standard deviation $s_{\varepsilon}$ for its unknown counterpart $\sigma_{\varepsilon}$.  The resulting expression in eq. \@ref(eq:se-slope) gives us an estimate of the standard error of the slope.  It would be cumbersome to call $s_{\hat{\beta}_1}$ (and every estimated standard error) an "estimated standard error", so we usually just call it a "standard error".  That said, if we were to repeat the experiment with a different random sample of individuals, we would expect to obtain a different value for $s_{\hat{\beta}_1}$, because the value is an estimate.  (And, yes, because $s_{\hat{\beta}_1}$ is an estimate, it has its own standard error $\sigma_{s_{\hat{\beta}_1}}$ which we could estimate as $s_{s_{\hat{\beta}_1}}$, and so on to infinity.))]
 
 ### Confidence intervals
 
@@ -350,6 +365,58 @@ Thus, there is exceedingly strong evidence that BAC is related to the number of 
 
 <span style="color: gray;"> My NCSU colleague Ryan Martin suggests that we interpret the $p$-value as the *plausibility* of the null hypothesis (@martin2017statistical).  Thus, small $p$ values correspond to null hypotheses that are not plausible in light of the data, and large $p$ values (those nearer to 1) indicate that null hypothesis is plausible in light of the data.  The good news here is that "plausibility" in this context has a rigorous mathematical meaning, and that meaning is more or less exactly what the everyday definition of "plausibility" suggests.  The less good news is that understanding this meaning exactly requires the mathematics imprecise probability, which is beyond the scope of this and most statistics courses today.  Nevertheless, it strikes me as the best available option for interpreting $p$-values.</span>
 
+<span style="color: gray;"> Continuing in this vein, we can plot the $p$-value associated with the test of $H_0: \beta_1 = \beta_{1,0}$ vs.\ $H_a: \beta_1 \ne \beta_{1,0}$ for any parameter value $\beta_{1,0}$ that we might assume under the null.  This plot shows the $p$-value function, or, following along the lines of the interpretation above, what we might call the plausibility function.  Here is a look at the plausibility function for $\beta_1$ for the BAC data:</span>
+
+
+```r
+b1.hat <- 0.017964
+b1.se  <- 0.002402
+
+p_val <- function(b1) {
+
+  t.stat <- (b1.hat - b1) / b1.se
+  
+  pt(-abs(t.stat), df = 14, lower.tail = TRUE) +
+     pt(abs(t.stat), df = 14, lower.tail = FALSE)
+}
+
+curve(p_val, from = 0, to = 0.03, xlab = expression(beta[1]), ylab = "plausibility",
+      yaxt = "n")
+axis(2, at = c(0, 0.5, 1), las = 1)
+abline(v = b1.hat, lty = "dotted")
+axis(3, at = b1.hat, lab = expression(hat(beta)[1]))
+```
+
+<img src="index_files/figure-html/p-value-function-1.png" width="384" style="display: block; margin: auto;" />
+
+<span style="color: gray;"> Another nice feature of the $p$-value function is that we can find a $100 \times (1 - \alpha)\%$ confidence interval (or, more generally, a confidence region) by taking all those parameter values that are individually at least $\alpha\%$ plausible.  So, for example, a 90\% confidence interval consists of all those parameter values that are at least 10\% plausible.  For the BAC data, we can show this confidence interval as:</span>
+
+
+```r
+curve(p_val, from = 0, to = 0.03, xlab = expression(beta[1]), ylab = "plausibility",
+      yaxt = "n")
+axis(2, at = c(0, 0.5, 1), las = 1)
+axis(2, at = 0.1, col = "red", las = 1)
+abline(h = 0.1, col = "red", lty = "dashed")
+(conf.limits <- confint(fm1, level = 0.9))
+```
+
+```
+##                     5 %        95 %
+## (Intercept) -0.03495916 0.009557957
+## Beers        0.01373362 0.022193906
+```
+
+```r
+abline(v = conf.limits[2, ], col = "red", lty = "dotted")
+```
+
+<img src="index_files/figure-html/p-value-ci-1.png" width="384" style="display: block; margin: auto;" />
+
+<span style="color: gray;"> This graph nicely illustrates the tight connection between confidence intervals and hypothesis tests.  For example, a 90\% confidence interval consists of all those parameter values that we would fail to reject at the 10\% significance level.</span>  
+
+<span style="color: gray;">While $p$-value curves have been around a long time, statisticians have never agreed on what to do with them.  For that reason, they don't appear commonly in statistics texts.</span>
+
 ---
 
 The values above could be found by consulting a table, or by using statistical software such as R.  Because the test of $H_0: \beta_1 = 0$ vs.\ $H_a: \beta_1 \ne 0$ is sufficiently common in SLR, most computer packages will do this calculation for us.  
@@ -383,11 +450,17 @@ p & =  \Pr{t_{14} <-0.83} +\Pr{t_{14} >0.83} \\
 \end{align*}
 Thus, $H_0: \beta_1 = 0.02$ is reasonably plausible in light of these data.  
 
-Confusion alert: Do be mindful of the distinction between a statistical hypothesis and a scientific hypothesis.  The following excerpt from an article by B. Dennis and M.L. Taper (@dennis1994density) puts it nicely: 
+Do be mindful of the distinction between a statistical hypothesis and a scientific hypothesis.  The following excerpt from an article by B. Dennis and M.L. Taper (@dennis1994density) puts it nicely: 
 
 > A statistical hypothesis is an assumption about the form of a probability model, and a statistical hypothesis test is the use of data to make a decision between two probability models.  A scientific hypothesis, on the other hand, is an explanatory assertion about some aspect of nature.
 
 Thus, while a statistical hypothesis can often embody a scientific hypothesis, a scientific hypothesis does not always boil down to a statistical hypothesis.
+
+---
+
+<span style="color: gray;"> When the ideas of hypothesis testing were first being developed, there was stark disagreement about what the output of a hypothesis test should be.  R.A. Fisher argued that a hypothesis test should quantify how compatible the data are with the null hypothesis, relative to the universe of alternatives contained in the alternative hypothesis.  Fisher argued that the appropriate tool for this purpose was the $p$-value.  In contrast, Jerzy Neyman and Egon Pearson argued that the result of a hypothesis test should be a decision about whether or not to reject the null.  Of course, the two approaches can often be combined by specifying the rejection region (the set of outcomes that would cause the analyst to "reject" the null) in terms of the $p$-value.  While Fisher, Neyman, and Pearson argued vehemently, contemporary practice typically reports both a $p$-value and a reject / fail-to-reject decision, even if it may be difficult to articulate an entirely coherent rationale for doing so.</span>
+
+---
 
 ### Inference for the intercept
 
@@ -511,6 +584,18 @@ abline(h = 0, lty = "dotted")
 
 <img src="index_files/figure-html/unnamed-chunk-8-1.png" width="384" style="display: block; margin: auto;" />
 
+Perhaps the most common violation of the regression assumption occurs when the variance of a response increases as the fitted values increase.  The tell-tale signature of this violation is a "trumpeting" pattern in the plot of the residuals vs.\ the fitted values.  Indeed, an increasing variance is perhaps more the rule than the exception in some sciences, especially the life sciences.  To illustrate, here is a data set that we will study more closely when we study [ANCOVA].  For now, it suffices to say that this is a data set in which the response is the lifespan of a fruitfly, and there are several predictors.  Here is a residual plot of the ANCOVA model:
+
+<img src="index_files/figure-html/unnamed-chunk-9-1.png" width="384" style="display: block; margin: auto;" />
+
+Fruitflies that live longer clearly have more variable lifespans.
+
+---
+
+<span style="color: gray;"> Recall that the Central Limit Theorem gives us a good reason to expect normally distributed residuals when the many small influences that comprise the residual error add together.  There's a related explanation for why increasing variance is so common.  When the many small influences that comprise the residual error multiply together instead of adding together, then we tend to observe more variance in the response when the fitted value is larger.  Indeed, this is the usual explanation offered for why increasing variance is common in the life sciences, where many processes involve some form of multiplicative growth or decay.  This explanation also helps us understand why a log transformation is usually helpful as a remedy for increasing variance, because when we take a log of the response we are converting a multiplicative process into an additive one.</span>
+
+---
+
 2. Residuals vs. predictor.  We can use this plot to check for non-linear trends.  If we see a non-linear trend, like a hump-shaped pattern, it might suggest that the true relationship between predictor and response is actually non-linear.
 
 For the BAC data, you'll note that the plot below looks exactly like the plot of residuals vs. fitted values above.  This isn't just coincidence; in fact, residuals vs. fitted values and residuals vs. predictor will always generate exactly the same patterns in SLR.  (The reason is because in SLR the fitted value is just a linear function of the predictor.)  We want to get in the habit of checking both types of plots, however, because when we start entertaining multiple predictor variables in multiple regression, the plots will no longer be identical. 
@@ -520,7 +605,7 @@ plot(resid(fm1) ~ beer$Beers, xlab = "Beers", ylab = "Residuals")
 abline(h = 0, lty = "dotted")
 ```
 
-<img src="index_files/figure-html/unnamed-chunk-9-1.png" width="384" style="display: block; margin: auto;" />
+<img src="index_files/figure-html/unnamed-chunk-10-1.png" width="384" style="display: block; margin: auto;" />
 
 3. Residuals vs. variables not in the model, e.g., other predictors, observer, order of observation.  In the BAC data, the only other variable we have (for now at least) is the order in which the observations appear in the data set. Without knowing how the data were collected or recorded, it's impossible to say whether this variable is meaningful. However, the plot suggests a distinctive downward trend -- data points that appear early in the data set are associated with positive residuals, and data points that appear later in the data set are associated with negative residuals.  What do you think might have caused this trend?
 
@@ -529,7 +614,7 @@ plot(resid(fm1), xlab = "Order", ylab = "Residuals")
 abline(h = 0, lty = "dotted")
 ```
 
-<img src="index_files/figure-html/unnamed-chunk-10-1.png" width="384" style="display: block; margin: auto;" />
+<img src="index_files/figure-html/unnamed-chunk-11-1.png" width="384" style="display: block; margin: auto;" />
 
 4. An obvious way to check the normality assumption is to plot a histogram of the residuals.  While this is a straightforward idea, it suffers from the fact that the shape of the histogram depends strongly on how the residuals are grouped into bins.  Note how the two histograms below of the BAC residuals provide different impressions about the suitability of the normality assumption.
 
@@ -537,13 +622,13 @@ abline(h = 0, lty = "dotted")
 hist(resid(fm1), main = "Bin width = 0.01", xlab = "Residuals")
 ```
 
-<img src="index_files/figure-html/unnamed-chunk-11-1.png" width="384" style="display: block; margin: auto;" />
+<img src="index_files/figure-html/unnamed-chunk-12-1.png" width="384" style="display: block; margin: auto;" />
 
 ```r
 hist(resid(fm1), main = "Bin width = 0.02", xlab = "Residuals", breaks = 4)
 ```
 
-<img src="index_files/figure-html/unnamed-chunk-11-2.png" width="384" style="display: block; margin: auto;" />
+<img src="index_files/figure-html/unnamed-chunk-12-2.png" width="384" style="display: block; margin: auto;" />
 An alternative to histograms is a normal probability plot of residuals, also known as a quantile-quantile, or Q-Q, plot.  Q-Q plots calculate the empirical quantile of each residual, and compare this to the theoretical quantile from a normal distribution.  If the normality assumption is appropriate, the empirical and theoretical quantiles will change at the same rate, so when plotted against one another, they'll fall on a line.  If the normality assumption is not appropriate, the plot of empirical vs. theoretical quantiles will bend.
  
 As we'll see below, the normality assumption is the \textit{least} critical of the assumptions in regression.  Thus, unless the Q-Q plot shows big and dramatic bends, we won't concern ourselves with small bumps and wiggles.  The Q-Q plot for the BAC data below doesn't seem terribly problematic.
@@ -553,7 +638,7 @@ qqnorm(resid(fm1))
 qqline(resid(fm1))
 ```
 
-<img src="index_files/figure-html/unnamed-chunk-12-1.png" width="384" style="display: block; margin: auto;" />
+<img src="index_files/figure-html/unnamed-chunk-13-1.png" width="384" style="display: block; margin: auto;" />
 
 ## Consequences of violating model assumptions, and possible fixes
 
@@ -591,7 +676,7 @@ fm1 <- lm(BoxOffice ~ Score, data = movie)
 abline(fm1)
 ```
 
-<img src="index_files/figure-html/unnamed-chunk-13-1.png" width="384" style="display: block; margin: auto;" />
+<img src="index_files/figure-html/unnamed-chunk-14-1.png" width="384" style="display: block; margin: auto;" />
 
 The plots of residuals vs. fitted value show clear evidence of non-constant variance.  The Q-Q plot indicates right-skew.  Taking a square-root transformation of the response stabilizes the variance nicely:
 
@@ -600,14 +685,14 @@ plot(resid(fm1) ~ fitted(fm1), xlab = "Fitted value", ylab = "Residual")
 abline(h = 0,lty = "dashed")
 ```
 
-<img src="index_files/figure-html/unnamed-chunk-14-1.png" width="384" style="display: block; margin: auto;" />
+<img src="index_files/figure-html/unnamed-chunk-15-1.png" width="384" style="display: block; margin: auto;" />
 
 ```r
 qqnorm(resid(fm1),main = "QQ plot, movie data")
 qqline(resid(fm1))
 ```
 
-<img src="index_files/figure-html/unnamed-chunk-14-2.png" width="384" style="display: block; margin: auto;" />
+<img src="index_files/figure-html/unnamed-chunk-15-2.png" width="384" style="display: block; margin: auto;" />
 
 Let's try a square-root transformation of the response:
 
@@ -641,7 +726,7 @@ summary(fm2)
 plot(fm2)
 ```
 
-<img src="index_files/figure-html/unnamed-chunk-15-1.png" width="384" style="display: block; margin: auto;" /><img src="index_files/figure-html/unnamed-chunk-15-2.png" width="384" style="display: block; margin: auto;" /><img src="index_files/figure-html/unnamed-chunk-15-3.png" width="384" style="display: block; margin: auto;" /><img src="index_files/figure-html/unnamed-chunk-15-4.png" width="384" style="display: block; margin: auto;" />
+<img src="index_files/figure-html/unnamed-chunk-16-1.png" width="384" style="display: block; margin: auto;" /><img src="index_files/figure-html/unnamed-chunk-16-2.png" width="384" style="display: block; margin: auto;" /><img src="index_files/figure-html/unnamed-chunk-16-3.png" width="384" style="display: block; margin: auto;" /><img src="index_files/figure-html/unnamed-chunk-16-4.png" width="384" style="display: block; margin: auto;" />
 Another commonly used transformation for right-skewed data is the log transformation.  Here are residual plots and model output for log-transformed data:
 
 ```r
@@ -674,7 +759,7 @@ summary(fm3)
 plot(fm3)
 ```
 
-<img src="index_files/figure-html/unnamed-chunk-16-1.png" width="384" style="display: block; margin: auto;" /><img src="index_files/figure-html/unnamed-chunk-16-2.png" width="384" style="display: block; margin: auto;" /><img src="index_files/figure-html/unnamed-chunk-16-3.png" width="384" style="display: block; margin: auto;" /><img src="index_files/figure-html/unnamed-chunk-16-4.png" width="384" style="display: block; margin: auto;" />
+<img src="index_files/figure-html/unnamed-chunk-17-1.png" width="384" style="display: block; margin: auto;" /><img src="index_files/figure-html/unnamed-chunk-17-2.png" width="384" style="display: block; margin: auto;" /><img src="index_files/figure-html/unnamed-chunk-17-3.png" width="384" style="display: block; margin: auto;" /><img src="index_files/figure-html/unnamed-chunk-17-4.png" width="384" style="display: block; margin: auto;" />
 
 Which transformation do you think is more appropriate?  Do the different transformations lead to different qualitative conclusions regarding the statistical significance of the relationship between reviewer rating and box office take?
 
@@ -689,14 +774,14 @@ fm1 <- lm(mpghw ~ weight, data = cars)
 abline(fm1)
 ```
 
-<img src="index_files/figure-html/unnamed-chunk-17-1.png" width="384" style="display: block; margin: auto;" />
+<img src="index_files/figure-html/unnamed-chunk-18-1.png" width="384" style="display: block; margin: auto;" />
 
 ```r
 plot(resid(fm1) ~ fitted(fm1), xlab = "Fitted value", ylab = "Residual")
 abline(h = 0,lty = "dashed")
 ```
 
-<img src="index_files/figure-html/unnamed-chunk-17-2.png" width="384" style="display: block; margin: auto;" />
+<img src="index_files/figure-html/unnamed-chunk-18-2.png" width="384" style="display: block; margin: auto;" />
 
 The relationship between highway mpg and vehicle weight is clearly non-linear, although that is seen most clearly from the plot of residuals vs. fitted values.  We will discuss modeling non-linear relationships later.
 
@@ -800,7 +885,7 @@ predict(fm1, interval = "prediction", newdata = new.data, level = 0.90)
 ##         fit          lwr        upr
 ## 1 0.0322088 -0.006169709 0.07058731
 ```
-<img src="index_files/figure-html/unnamed-chunk-19-1.png" width="384" style="display: block; margin: auto;" />
+<img src="index_files/figure-html/unnamed-chunk-20-1.png" width="384" style="display: block; margin: auto;" />
 Regression (solid line), 95\% confidence intervals (dashed lines), and 95\% prediction intervals (dotted lines) for the beer data.  Note that both confidence and prediction intervals widen near the edges of the range of the predictor.
 
 ## Regression design
@@ -813,92 +898,83 @@ Regression models can be used both for observational and experimental data.  In 
  
 Once the values of the predictor to be included in the experiment have been chosen, these values should be randomly assigned to the experimental units.  Note that randomization does *not* require randomly choosing the values of the predictor to be included in the experiment!
 
-## *SLR as a linear algebra problem
+## $^\star$Centering the predictor {#centering-the-predictor}
 
-This section assumes familiarity with linear algebra.  
-
-Ultimately, the linear statistical model (that encompasses regression and ANOVA) is a linear-algebra problem.  In short, the least-squares estimates are found by projecting the data vector (an element of $\mathcal{R}^n$) onto the linear subspace of $\mathcal{R}^n$ spanned by the predictors.  
-
-In matrix notation, the SLR equations can be written compactly as 
+While it isn't essential, it can be useful to redefine the predictor in a regression as the difference between the observed value and the average value of the predictor.  For example, in the BAC data, we can define a centered version of the number of beers consumed by 
 \[
-\vecy = \X \vecb + \veceps
+x^{ctr} =x -\bar{x} 
 \] 
-where
-\[
-\vecy = \left[\begin{array}{c} y_1 \\ y_2 \\ \vdots  \\ y_n \end{array}\right],
-\]
-\[
-\X = \left[\begin{array}{cc} 1 & x_1 \\ 1 & x_2 \\ \vdots & \vdots  \\ 1 & x_n \end{array}\right],
-\]
-\[
-\vecb =\left[\begin{array}{c} \beta_0  \\ \beta_1  \end{array}\right],
-\]
-\[
-\veceps =\left[\begin{array}{c} \varepsilon_1 \\ \varepsilon_2  \\ \vdots \\ \varepsilon_n  \end{array}\right].
-\] 
-The most important component of the above equation is the $\X$ matrix, also called the design matrix.  The short of the long is that the vector of least-squares estimates can be found by the matrix equation
-\[
-\vecbhat = \left[\begin{array}{c} \hat{\beta_0} \\ \hat{\beta_1} \end{array} \right] = \left(\X'\X \right)^{-1} \X'\vecy
-\] 
-The power and beauty of the equation $\vecbhat = \left(\X'\X \right)^{-1} \X'\vecy$ is that it works for any regression or ANOVA model, not just SLR.  However, there's a crucially important but hidden subtle point, and that is that the matrix inverse $\left(\X'\X \right)^{-1}$ does not exist for every possible choice of $\X$ matrices.  Roughly, there are some pathological $\X$ matrices for which trying to find the matrix inverse $\left(\X'\X \right)^{-1}$ is equivalent to dividing by zero.  We will think more about this point in multiple regression, where it is harder to discover whether or not $\left(\X'\X \right)^{-1}$ exists.  In SLR, the only time $\left(\X'\X \right)^{-1}$ will not exist is if the value of the predictor variable is the same for every data point.  For example, suppose the design matrix were 
-\[
-\X = \left[\begin{array}{cc} {1} & {3} \\ {1} & {3} \\ {1} & {3} \\ {1} & {3} \end{array}\right].
-\] 
-Let's try to fit a SLR in R:
+Let's try regressing the response against the centered version of the predictor:
 
 ```r
-bad.data <- data.frame(x = c(3, 3, 3, 3),
-                       y = c(2, 1, 0, -5))
-summary(lm(y ~ x, data = bad.data))
+beer$beers.c <- beer$Beers - mean(beer$Beers)
+head(beer)
+```
+
+```
+##   Beers   BAC beers.c
+## 1     5 0.100  0.1875
+## 2     2 0.030 -2.8125
+## 3     9 0.190  4.1875
+## 4     8 0.120  3.1875
+## 5     3 0.040 -1.8125
+## 6     7 0.095  2.1875
+```
+
+```r
+beer_slr_ctr <- lm(BAC ~ beers.c, data = beer)
+summary(beer_slr_ctr)
 ```
 
 ```
 ## 
 ## Call:
-## lm(formula = y ~ x, data = bad.data)
+## lm(formula = BAC ~ beers.c, data = beer)
 ## 
 ## Residuals:
-##    1    2    3    4 
-##  2.5  1.5  0.5 -4.5 
+##       Min        1Q    Median        3Q       Max 
+## -0.027118 -0.017350  0.001773  0.008623  0.041027 
 ## 
-## Coefficients: (1 not defined because of singularities)
-##             Estimate Std. Error t value Pr(>|t|)
-## (Intercept)   -0.500      1.555  -0.322    0.769
-## x                 NA         NA      NA       NA
+## Coefficients:
+##             Estimate Std. Error t value Pr(>|t|)    
+## (Intercept) 0.073750   0.005110   14.43 8.47e-10 ***
+## beers.c     0.017964   0.002402    7.48 2.97e-06 ***
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 ## 
-## Residual standard error: 3.109 on 3 degrees of freedom
+## Residual standard error: 0.02044 on 14 degrees of freedom
+## Multiple R-squared:  0.7998,	Adjusted R-squared:  0.7855 
+## F-statistic: 55.94 on 1 and 14 DF,  p-value: 2.969e-06
 ```
+The main advantage of centering the predictors is that the intercept now has a nice interpretation. Namely, the intercept is now the value of the regression line when $x = x^{ctr}$, which happens to equal the average value of $y$ in the data set. Importantly, we have accomplished this without changing anything about the linear association between the predictor and the response, so our inference for the slope remains unchanged.  This is perhaps only a small victory, but it's a nice touch. Centering the predictor also eases the interpretation of regression parameters in more complicated models with [interactions](#regression-interactions), as we will see later.   
 
-We can go further by using using the theory of multivariate normal random variables.  The distributional assumptions of the regression model are encapsulated in the assumption that $\veceps$ has a multivariate normal distribution with mean $\mathbf{0}$ (a vector of 0's) and variance matrix $\sigma^2_\varepsilon \mathbf{I}$, where $\mathbf{I}$ is the ($n$-by-$n$) identity matrix.  (Recall that a variance matrix includes variances on the diagonal and covariances in the off-diagonal elements.  Thus, the statement $\bf{\Sigma} = \sigma^2_\varepsilon \mathbf{I}$ says that every component of $\veceps$ has variance $\sigma^2_\varepsilon$, and that the covariance between any two components is 0.)  Or, using $\mathcal{N}$ to denote a (univariate or multivariate) normal distribution, we can write
-\[
-\veceps \sim \mathcal{N}(\mathbf{0}, \sigma^2_\varepsilon \mathbf{I}).
-\]
-It then follows that
-\[
-\vecy \sim \mathcal{N}(\X \vecb, \sigma^2_\varepsilon \mathbf{I}).
-\]
-Let $\Exp{\cdot}$ and $\Var{\cdot}$ denote the expectation (mean) and variance of a random variable, respectively.  First, we can show that $\vecbhat$ is an ``unbiased'' estimate of $\vecb$, using the linearity of expectations:
-\begin{eqnarray*}
-\Exp{\vecbhat} & = & \Exp{\left(\X'\X \right)^{-1} \X'\vecy} \\
-& = & \left(\X'\X \right)^{-1} \X'\Exp{\vecy} \hspace{0.5in} \mbox{(linearity)}\\
-& = & \left(\X'\X \right)^{-1} \X' \X \vecb\\
-& = & \vecb.
-\end{eqnarray*}
-Next, we can find the variance of $\vecbhat$ using a result for the variance of linear combinations of random variables:
-\begin{eqnarray*}
-	\Var{\vecbhat} & = & \Var{\left(\X'\X \right)^{-1} \X'\vecy} \\
-	& = & \left(\X'\X \right)^{-1} \X' \Var{\vecy} \X \left(\X'\X \right)^{-1} \\
-	& = & \sigma^2_{\varepsilon} \left(\X'\X \right)^{-1} \X' \X \left(\X'\X \right)^{-1} \\
-	& = & \sigma^2_{\varepsilon} \left(\X'\X \right)^{-1}.
-\end{eqnarray*}
-The second equality above is a quadratic form, and uses the fact that $\left(\X'\X \right)^{-1}$ is symmetric (and thus equal to its transpose).  The final result, $\Var{\vecbhat} = \sigma^2_{\varepsilon} \left(\X'\X \right)^{-1}$, shows that the variances of the least squares estimates (and thus their standard errors) are proportional to the diagonal elements of $\left(\X'\X \right)^{-1}$.  This result will become important in multiple regression when we discuss multicollinearity.  
+## Appendix: Regression models in SAS PROC REG {-}
 
-Finally, let $\vecyhat$ be a vector of fitted values, i.e., $\vecyhat = \left[ \hat{y}_1, \hat{y_2}, \ldots, \hat{y_n} \right]'$.  We can find an experssion for $\vecyhat$ simply as:
-\begin{eqnarray*}
-\vecyhat & = & \X \vecbhat \\
- & = & \X \left(\X'\X \right)^{-1} \X' \vecy 
-\end{eqnarray*}
-The matrix $\X \left(\X'\X \right)^{-1} \X'$ (sometimes called the hat matrix, because it maps $\vecy$ to $\vecyhat$) is a projection matrix, and thus the fitted values are the orthogonal projection of $\vecy$ onto the columnspace of $\X$.  The right-triangle that results from the vectors $\vecy$ (the hypotenuse), $\vecyhat$, and $\vece = \vecy - \vecyhat$ gives rise to the sum-of-squares decomposition behind $R^2$.  
+There are two main procedures ('PROCs' for short) that can be used to fit regression models: PROC REG (for REGression) and PROC GLM (for General Linear Model).  As the names suggest, GLM is more versatile, but both can be used for regression.  
+
+Let's assume the BAC data have already been loaded into memory in a data set called 'beer', and the pertinent variables reside under the variable names 'bac' and 'beers'.  Here is sample code for fitting an SLR using PROC REG, and some edited output:
+```{}
+proc reg data = beer;
+  model bac = beers;  
+run;
+
+The SAS System                                                                                 
+The REG Procedure
+
+Root MSE              0.02044    R-Square     0.7998
+Dependent Mean        0.07375    Adj R-Sq     0.7855
+Coeff Var            27.71654
+
+                         Parameter Estimates
+
+                     Parameter       Standard
+Variable     DF       Estimate          Error    t Value      Pr>|t|
+Intercept     1       -0.01270        0.01264      -1.00      0.3320
+beers         1        0.01796        0.00240       7.48      <.0001
+``` 
+
+Note that even though the output is arranged differently, the parameter estimates and inference provided are exactly the same, regardless of whether one uses PROC REG, PROC GLM, or R.
+
 
 
 

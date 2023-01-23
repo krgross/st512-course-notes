@@ -1,0 +1,165 @@
+<!-- %% TO DO: ADD WHEAT DATA  FROM YATES (1935; DESCRIBED IN SECTION 6.11 OF VENABLES AND RIPLEY) AS AN EXAMPLE -->
+<!-- %% OF A SPLIT-PLOT WITH A RCBD AT THE WHOLE-PLOT LEVEL -->
+
+<!-- %% OR JUST ADD THE STRAWBERRY DATASET. PREPARED FOR THE PRACTICE SPRING 2020 FINAL -->
+
+
+# Split- and strip-plot designs
+
+```{r echo = FALSE}
+setwd("C:/Users/krgross/Documents/GitHub/st512-course-notes/")
+knitr::opts_chunk$set(fig.width = 5, fig.height = 4.5, fig.align = "center") 
+```
+
+## Split-plot designs
+
+A split-plot experiment combines the ideas of blocking and subsampling in a clever way.  The essential feature of a split-plot experiment is that there are at least two experimental factors, and the factors are randomized to different EUs.  For example, consider a hypothetical 
+experiment to evaluate the effect of 3 bacterial inoculation treatments applied to 2 grass cultivars (A vs.\ B).  The response variable is dry-weight yield.  Eight fields are available for the experiment. Suppose that the different inoculation treatments can be applied to different regions of the same field, but it is impossible to plant different cultivars in the same field.  Consequently,  cultivars are randomly assigned to fields as a balanced CRD.   Fields are then split into 3 thirds, and inoculation treatments are randomly assigned to each third.   Dry weight yield is then measured from each third for a total of 24 data points.  Here is an interaction plot of the means for each of the 6 treatment combinations:
+```{r echo = FALSE}
+par(las=1,bty='l')
+
+plot(c(-0.5,1.5),c(27,34),type="n",xlab="Culitvar",ylab="Yield",xaxt="n")
+axis(1,at=0:1,lab=c("A","B"))
+lines(c(0,1),c(27.9,28.025),col="red",lwd=2)
+lines(c(0,1),c(29.25,30.65),col="blue",lwd=2)
+lines(c(0,1),c(33.15,33.525),col="black",lwd=2)
+points(c(0,1),c(27.9,28.025),col="red",pch="C")
+points(c(0,1),c(29.25,30.65),col="blue",pch="D")
+points(c(0,1),c(33.15,33.525),col="black",pch="L")
+
+#add.bars<-function(x,y,se,...) segments(x,y-se,x,y+se,...)
+#add.bars(0,20,2.16/sqrt(20),col="red",lwd=2)
+#add.bars(1,18.8,1.58/sqrt(20),col="red",lwd=2)
+#add.bars(0,17.6,1.57/sqrt(20),col="blue",lwd=2)
+#add.bars(1,15.1,2.43/sqrt(20),col="blue",lwd=2)
+
+legend(1.1,32,col=c("red","blue","black"),lty=rep("solid",3),leg=c("CON","DEA","LIV"),lwd=2,bty="n")
+```
+In this experiment, the EU is different for the two experimental factors.  For the cultivar treatment, the field is the EU, and the thirds are subsamples.  For the bacterial inoculation treatment, however, the thirds are the EUs and the fields are blocks.  Split-plot experiments are advantageous when it is more convenient to apply one factor or factors to large EUs and other factor(s) to smaller EUs.  Split-plot experiments come with their own conventional terminology.  In the example above, the cultivar is the *whole-plot* factor, and the fields are the whole-plot EU.  The inoculation treatment is the *split-plot* factor, and the thirds are the split-plot EUs (subsamples of the whole-plot EUs).  
+
+Because the design contains two different EUs, the analysis must contain two error terms.  The critical piece of the analysis is to make sure that the statistical inferences about the whole-plot factor are drawn using the whole-plot error, and conversely inferences about the split-plot factor are drawn using the split-plot error.
+
+Here is an ANOVA model for this experiment:
+\[
+y_{ijk} = \mu + \alpha_i + \beta_j + (\alpha \beta)_{ij} + W_{k(i)} + \varepsilon_{ijk}
+\]
+where 
+
+* $i = 1, 2$ is an index for the grass cultivars
+* $j = 1, 2, 3$ is an index for the inoculation treatment
+* $k = 1, 2, \ldots, 4$ is an index for the replicate fields assigned to each cultivar
+* $\mu$ is a reference level
+* $\alpha_i$'s are the (fixed) effect parameters for cultvar $i$, subject to the usual constraints
+* $\beta_j$'s are the (fixed) effect parameters for bacterial inoculation $j$, subject to the usual constraints
+* $(\alpha \beta)_{ij}$'s are the (fixed) effect parameters for the cultivar-by-inoculation interaction, subject to the usual constraints
+* $W_{k(i)}$ is a random effect for the whole-plot error, $W_{k(i)} \sim \mathcal{N}\left(0, \sigma^2_W \right)$
+* $\varepsilon_{ijk}$ is residual (split-plot) error, $\varepsilon_{ijk} \sim \mathcal{N}\left(0, \sigma^2_{\varepsilon} \right)$
+
+
+As before, we can conduct an ANOVA sum-of-squares decomposition that will lead to $F$-tests of the factorial effects.  We'll prepare for this ANOVA by first partitioning the df among the various sums of squares.   How do we partition the df?
+
+* The random effect for the field will serve as the whole-plot error term.  Because each field is associated with one and only one cultivar, then field is nested within cultivar.
+* The random effect for the third will serve as the split-plot error term.  Because each third is associated with one and only one cultivar, with one and only one field, with one and only one inoculation treatment, and with one and only one cultivar-inoculation treatment combination, then the third is nested in all these other model terms. 
+
+The df for each term in the ANOVA will be:
+```{r echo = FALSE}
+grass_anova_table <- data.frame(cbind(sources = c("Cultivar", "Whole-plot error","Inocuolation", 
+                                                 "Cultivar*Inoculation", "Residual error", "Total"),
+                                      df = c(1, "6 (=8 - 1 - 1)", 2, 2, "12 \ (= 24 - 1 - 1 - 6 - 2 - 2)", 23)))
+
+colnames(grass_anova_table) = c("source", "df")
+                            
+knitr::kable(format="html",
+             grass_anova_table, 
+             escape = FALSE) 
+```
+
+Because this model has multiple random effects, we'll use PROC MIXED for our calculations.  As before, we can use the METHOD = TYPE3 option to see the ANOVA table, but we'll use METHOD = REML (the default) to obtain our estimates and F-tests of the fixed effects.  (With a balanced data set, both the TYPE3 and REML methods of estimation will yield identical results.)
+
+Here is the TYPE3 analysis first:
+
+```{}
+proc mixed method = type3;
+  class field cult inoc;
+  model drywt = cult|inoc;
+  random field(cult);
+run;
+
+                               Type 3 Analysis of Variance
+                               
+                           Sum of
+Source           DF       Squares   Mean Square  Expected Mean Square
+cult              1      2.406667      2.406667  Var(Residual) + 3 Var(field(cult))
+                                                 + Q(cult,cult*inoc)
+inoc              2    118.175833     59.087917  Var(Residual) + Q(inoc,cult*inoc)
+cult*inoc         2      1.825833      0.912917  Var(Residual) + Q(cult*inoc)
+field(cult)       6     34.800000      5.800000  Var(Residual) + 3 Var(field(cult))
+Residual         12      8.465000      0.705417  Var(Residual)
+```
+
+Note that we've coded the random-effect for the fields as FIELD(CULT), because field is nested within the cultivar treatment.  Now, here is the REML analysis (the default):
+
+```{}
+proc mixed;
+  class field cult inoc;
+  model drywt = cult|inoc;
+  random field(cult);
+run;
+
+Covariance Parameter Estimates
+
+Cov Parm        Estimate
+field(cult)       1.6982
+Residual          0.7054
+
+Type 3 Tests of Fixed Effects
+
+              Num     Den
+Effect         DF      DF    F Value    Pr > F
+cult            1       6       0.41    0.5433
+inoc            2      12      83.76    <.0001
+cult*inoc       2      12       1.29    0.3098
+```
+
+We see that there is evidence of a difference among the inoculation treatments, but no evidence of an interaction between the inoculation treatments and the cultivar, and no evidence of a difference among the cultivars.
+
+To explore the differences among the inoculation treatments, we'll use an LSMEANS statement using Tukey's HSD procedure:
+
+```{}
+proc mixed;
+  class field cult inoc;
+  model drywt = cult|inoc / ddfm=satterth;
+  random field(cult);
+  lsmeans inoc / pdiff adjust=tukey;
+run;
+
+                         Least Squares Means
+                         
+                              Standard
+Effect    inoc    Estimate       Error      DF    t Value    Pr > |t|
+inoc      con      27.9625      0.5481    9.01      51.01      <.0001
+inoc      dea      29.9500      0.5481    9.01      54.64      <.0001
+inoc      liv      33.3375      0.5481    9.01      60.82      <.0001
+                         
+                         
+                         Differences of Least Squares Means
+                         
+                               Standard
+Effect  inoc  _inoc  Estimate     Error    DF  t Value  Pr > |t|  Adjustment     Adj P
+inoc    con   dea     -1.9875    0.4199    12    -4.73    0.0005  Tukey-Kramer  0.0013
+inoc    con   liv     -5.3750    0.4199    12   -12.80    <.0001  Tukey-Kramer  <.0001
+inoc    dea   liv     -3.3875    0.4199    12    -8.07    <.0001  Tukey-Kramer  <.0001
+```
+
+Remarks:
+
+* The DDFM = SATTERTH option tells SAS to calculate df using a Satterthwaite approximation.  See below.
+* The LSMEANS statement calculates the average response for each inoculation treatment (the split-plot factor) averaging over the levels of the whole-plot factor, cultivar.  The PDIFF option provides pairwise comparisons, and the ADJUST=TUKEY option adjusts these p-values for multiple comparisons.
+\end{enumerate}
+Analysis and interpretation:  There is no evidence of an interaction between cultivar and inoculation treatment ($F_{2,12} = 1.29$, $p= 0.31$).  There is no evidence of a main effect of cultivar ($F_{1,6} = 0.41$, $p= 0.54$).  There is strong evidence of a main effect of inoculation treatment ($F_{2,12} = 83.76$, $p<.0001$).  Pairwise comparisons of LSMEANS suggest that all inoculation treatments are significantly different from one another.  Variance component estimates suggest that the experimental error associated with the whole-plot is roughly twice as great as the experimental error associated with the split-plot (1.70 vs. 0.70).
+
+### Satterthwaite approximation
+
+Standard errors of the LSMEANS for the split-plot factor (here, inoculation treatment) are functions of both the whole-plot error and the split-plot error.  Consequently, the df associated with these standard errors are intermediate between the df available for the whole-plot error (here, 6) and the df available for the split-plot error (12).  The Satterthwaite approximation is a computationally intensive method for approximating the appropriate df.  (It’s computationally intensive because it entails inverting a big matrix.)  With big models or small computers, calculating the Satterthwaite approximation may not be feasible.  See section 11.4 of Oehlert for a more detailed discussion of the Satterthwaite approximation.
+
+You may have already encountered the Satterthwaite approximation in the context of Welch's two-sample $t$-test.  (Recall that Welch's two-sample $t$-test can be used to compare the means of two samples when the variances of those two samples are not equal.  In that context, the standard error of the difference between the means blends two different variance estimates, and thus the Satterthwaite approximation is needed to calculate the associated df.  The key feature to both of these calculations is the presence of multiple variance estimates in the calculation of a standard error.)
