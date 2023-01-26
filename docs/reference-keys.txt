@@ -36,3 +36,6 @@ variable-selection-choosing-the-best-model
 ranking-methods
 sequential-methods
 leverage-influential-points-and-standardized-residuals
+leverage
+standardized-residuals
+cooks-distance

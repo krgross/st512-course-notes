@@ -23,7 +23,7 @@
 <meta name="author" content="Kevin Gross" />
 
 
-<meta name="date" content="2023-01-23" />
+<meta name="date" content="2023-01-26" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -193,7 +193,7 @@ div.csl-indent {
 <li class="chapter" data-level="2.1.4" data-path="regression-models-with-several-predictors.html"><a href="regression-models-with-several-predictors.html#statistical-inference-for-partial-regression-coefficients"><i class="fa fa-check"></i><b>2.1.4</b> Statistical inference for partial regression coefficients</a></li>
 <li class="chapter" data-level="2.1.5" data-path="regression-models-with-several-predictors.html"><a href="regression-models-with-several-predictors.html#prediction"><i class="fa fa-check"></i><b>2.1.5</b> Prediction</a></li>
 </ul></li>
-<li class="chapter" data-level="2.2" data-path="regression-models-with-several-predictors.html"><a href="regression-models-with-several-predictors.html#F-test"><i class="fa fa-check"></i><b>2.2</b> F-tests for several regression coefficients</a>
+<li class="chapter" data-level="2.2" data-path="regression-models-with-several-predictors.html"><a href="regression-models-with-several-predictors.html#F-test"><i class="fa fa-check"></i><b>2.2</b> <span class="math inline">\(F\)</span>-tests for several regression coefficients</a>
 <ul>
 <li class="chapter" data-level="2.2.1" data-path="regression-models-with-several-predictors.html"><a href="regression-models-with-several-predictors.html#model-utility-tests"><i class="fa fa-check"></i><b>2.2.1</b> Model utility tests</a></li>
 </ul></li>
@@ -205,7 +205,12 @@ div.csl-indent {
 <li class="chapter" data-level="2.6.1" data-path="regression-models-with-several-predictors.html"><a href="regression-models-with-several-predictors.html#ranking-methods"><i class="fa fa-check"></i><b>2.6.1</b> Ranking methods</a></li>
 <li class="chapter" data-level="2.6.2" data-path="regression-models-with-several-predictors.html"><a href="regression-models-with-several-predictors.html#sequential-methods"><i class="fa fa-check"></i><b>2.6.2</b> Sequential methods</a></li>
 </ul></li>
-<li class="chapter" data-level="2.7" data-path="regression-models-with-several-predictors.html"><a href="regression-models-with-several-predictors.html#leverage-influential-points-and-standardized-residuals"><i class="fa fa-check"></i><b>2.7</b> Leverage, influential points, and standardized residuals</a></li>
+<li class="chapter" data-level="2.7" data-path="regression-models-with-several-predictors.html"><a href="regression-models-with-several-predictors.html#leverage-influential-points-and-standardized-residuals"><i class="fa fa-check"></i><b>2.7</b> Leverage, influential points, and standardized residuals</a>
+<ul>
+<li class="chapter" data-level="2.7.1" data-path="regression-models-with-several-predictors.html"><a href="regression-models-with-several-predictors.html#leverage"><i class="fa fa-check"></i><b>2.7.1</b> Leverage</a></li>
+<li class="chapter" data-level="2.7.2" data-path="regression-models-with-several-predictors.html"><a href="regression-models-with-several-predictors.html#standardized-residuals"><i class="fa fa-check"></i><b>2.7.2</b> Standardized residuals</a></li>
+<li class="chapter" data-level="2.7.3" data-path="regression-models-with-several-predictors.html"><a href="regression-models-with-several-predictors.html#cooks-distance"><i class="fa fa-check"></i><b>2.7.3</b> Cook’s distance</a></li>
+</ul></li>
 <li class="chapter" data-level="" data-path="regression-models-with-several-predictors.html"><a href="regression-models-with-several-predictors.html#appendix-regression-as-a-linear-algebra-problem"><i class="fa fa-check"></i>Appendix: Regression as a linear algebra problem</a>
 <ul>
 <li class="chapter" data-level="" data-path="regression-models-with-several-predictors.html"><a href="regression-models-with-several-predictors.html#singular-or-pathological-design-matrices"><i class="fa fa-check"></i>Singular, or pathological, design matrices</a></li>
@@ -233,7 +238,7 @@ div.csl-indent {
 <div id="header">
 <h1 class="title">ST 512 course notes</h1>
 <p class="author"><em>Kevin Gross</em></p>
-<p class="date"><em>2023-01-23</em></p>
+<p class="date"><em>2023-01-26</em></p>
 </div>
 <div id="preface" class="section level1 unnumbered hasAnchor">
 <h1>Preface<a href="index.html#preface" class="anchor-section" aria-label="Anchor link to header"></a></h1>
@@ -252,7 +257,7 @@ The exception to the statement above is ANOVA and the associated sums-of-squares
 Hypothesis tests have become the primary route to inference in contemporary science, likely because they are the de facto evidentiary standard for announcing results in the scientific literature. This is unfortunate, because statistical significance provides only the thinnest of summaries of pattern in data. Confidence intervals, on the other hand (or even standard errors), are often relegated to a secondary role, even though they provide a richer basis for characterizing pattern and uncertainty. In the fullness of time, these notes will seek to promote the reporting of confidence intervals or standard errors as opposed to hypothesis tests as the primary vehicle for inference.</p>
 <p><em>Simplicity in statistical analysis is a virtue.</em><br />
 Contemporary statistical software allows anyone to fit complex statistical models. However, just because one can fit a complex model does not mean that one should. For a statistical analysis to have scientific value, it must be understood by both the analyst and the analyst’s audience. Unfortunately, many contemporary statistical methods produce opaque analyses that are impossible for the informed reader to understand without a substantial and unusual investment of time and energy. (It doesn’t help that, in the scientific literature, the details of contemporary analyses are buried in supplementary material that escapes the scrutiny of most reviewers, but that’s another matter.) As a result, informed and well-intentioned readers of the scientific literature have little choice but to accept the analysis at face value without understanding the genesis of the announced results. This state of affairs does not serve science well.</p>
-<p>The time is nigh for the scientific community to ask whether complex but opaque statistical analyses are in the best interest of science. For most scientific studies, a simple and transparent analysis provides a more trustworthy vehicle to understanding for both the analyst and the analyst’s audience. These notes will emphasize methods that, when studied, are transparent enough to promote such an understanding.</p>
+<p>It is high time for the scientific community to ask whether complex but opaque statistical analyses are in the best interest of science. For most scientific studies, a simple and transparent analysis provides a more trustworthy vehicle to understanding for both the analyst and the analyst’s audience. These notes will emphasize methods that, when studied, are transparent enough to promote such an understanding.</p>
 <p><em>Everyone is a visual learner.</em><br />
 No one is convinced by a <span class="math inline">\(p\)</span>-value in isolation, Or at least no one should be, given the ease of making errors in statistical analysis. When an analysis suggests a pattern in data, the best way to understand the pattern is to visualize it with a thoughtfully constructed graphic. Unfortunately, these notes in their current state are not as richly illustrated as they should be. Eventually, I hope the notes will contain a full set of graphics that exemplify how to visualize patterns revealed by statistical analysis.</p>
 </div>

@@ -185,7 +185,7 @@ predict(fm2, newdata = new.data, interval = "prediction")
 predict(fm2, newdata = new.data, interval = "confidence")
 ```
 
-## F-tests for several regression coefficients {#F-test}
+## $F$-tests for several regression coefficients {#F-test}
 
 Consider a general multiple regression model with $k$ predictors:
 \[
@@ -463,11 +463,11 @@ So far, we've learned how to construct and fit regression models that can potent
 
 First, we have to define what we mean by a "best" model.  What are the qualities of a good model?
 
-1. *Parsimony*. We seek a model that adequately captures the "signal" in the data, and no more.  There are both philosophical and statistical reasons for seeking a parsimonious model.  The statistical motivation is that a model with too many unnecessary predictors is too flexible, and prone to detect spurious patterns that would not appear in repeated samples from the same population.  We call this phenomenon "overfitting", or "fitting the noise".  In technical terms, fitting a model with too many unnecessary predictors increases the standard errors of the parameter estimates.
+1. *Parsimony*. We seek a model that adequately captures the "signal" in the data, and no more.  There are both philosophical and statistical reasons for seeking a parsimonious model.  The statistical motivation is that a model with too many unnecessary predictors is prone to detect spurious patterns that would not appear in repeated samples from the same population.  We call this phenomenon "overfitting" or "fitting the noise".  In technical terms, fitting a model with too many unnecessary predictors increases the standard errors of the parameter estimates.
 
-2. *Interpretability*.  We often want to use regression models to understand associations between predictors and the response, and to shed light on the data-generating process.  This argues for keeping models simple.  There are occasions where the sole goal of regression modeling is prediction, and in this case interpretability is less important.  This is often the case in so-called "big data" applications, where prediction is the primary goal, and understanding is only secondary.  
+2. *Interpretability*.  We often want to use regression models to understand associations between predictors and the response and to shed light on the data-generating process.  This argues for keeping models simple.  There are occasions where the sole goal of regression modeling is prediction and in this case interpretability is less important.  This is often the case in so-called "big data" applications, where prediction is the primary goal and understanding is only secondary.  
 
-3.*Statistical inference*.  As scientists, we are not interested merely in describing patterns in our data set.  Instead, we want to use the data to draw inferences about the population from which the sample was drawn.  Therefore, we want a model that meets the assumptions of regression, so that we can use regression theory to draw statistical inferences.
+3. *Statistical inference*.  As scientists, we are not interested merely in describing patterns in our data set.  Instead, we want to use the data to draw inferences about the population from which the sample was drawn.  Therefore, we want a model that meets the assumptions of regression so that we can use regression theory to draw statistical inferences.
 
 In statistical jargon, the process of choosing which predictors to include in a regression model and which to leave out is called *variable selection*.  More generally, beyond a regression context, the problem of identifying the best statistical model is called *model selection*.
 
@@ -484,25 +484,25 @@ Ranking methods work best when it is computationally feasible to fit every possi
 
 Throughout this section, we will refer to the number of predictors in a model, and denote this quantity by $k$.  To remove ambiguity, what we mean in this case is the number of partial regression coefficients to be estimated.  So, for example, we would say that the model $y = \beta_0 + \beta_1 x_1 + \beta_2 x_2 + \beta_3 x_1^2 + \beta_4 x_1 x_2 + \varepsilon$ has $k = 4$ predictors.
 
-Before beginning, we should note that $R^2$ is {\em not} a good choice for a ranking metric.  This is because adding a predictor will never decrease $R^2$.  Therefore, $R^2 $ can only be used to compare models that have the same number of predictors.
+Before beginning, we should note that $R^2$ is *not* a good choice for a ranking metric.  This is because adding a predictor will never decrease $R^2$.  Therefore, $R^2$ can only be used to compare models that have the same number of predictors.
 
 1. Adjusted $R^2$.  Adjusted $R^2$ is a penalized version of $R^2$ that imposes a penalty for each additional parameter added to the model.  The (rather opaque) formula for adjusted $R^2$ is
 	\[
 	{\rm Adj-}R^2 =1-\frac{n-1}{n-\left(k+1\right)} \left(1-R^2 \right)
 	\] 
-	The model with the largest Adj-$R^2 $ is considered best.
+	The model with the largest Adj-$R^2$ is considered best.
 	
 2. PRESS statistic (PRESS = PRedicted Sum of Squares)
 	
-	+ Step 1.Remove the first data point.
+	+ Step 1. Remove the first data point.
 		
 	+ Step 2: Fit the model to the remaining data.
 		
-  + Step 3. Use the model from step 2 to predict the removed data point, $\hat{y}_1^* $.
+  + Step 3. Use the model from step 2 to predict the removed data point, $\hat{y}_1^*$.
 		
-	+ Step 4.  Add the first data point back to the data set.  
+	+ Step 4. Add the first data point back to the data set.  
 		
-	+ Step 5.  Repeat steps 1-4 for each data point in turn.
+	+ Step 5. Repeat steps 1-4 for each data point in turn.
 	
 	The PRESS statistic is $\sum_{i=1}^n\left(y_i -\hat{y}_i^* \right)^2$.  The model with the smallest PRESS statistic is considered best.
 	
@@ -510,7 +510,7 @@ Before beginning, we should note that $R^2$ is {\em not} a good choice for a ran
 	
 3. AIC (Akaike's Information Criterion)
 	
-	AIC is also a penalized goodness-of-fit measure, like adjusted $R^2$.  AIC enjoys a bit more theoretical support than adjusted $R^2$, and is more versatile, although its derivation is a bit more opaque.  (As the name suggests, AIC has its roots in information theory.)  The general form of AIC involves math that is beyond the scope of ST 512, but we can write down the specific formula for regression models, which is
+	AIC is also a penalized goodness-of-fit measure, like adjusted $R^2$.  AIC enjoys a bit more theoretical support than adjusted $R^2$ and is more versatile, although its derivation is a bit more opaque.  (As the name suggests, AIC has its roots in information theory.)  The general form of AIC involves math that is beyond the scope of ST 512, but we can write down the specific formula for regression models, which is
 	\[
 	AIC=n\ln \left[\frac{SSE}{n} \right]+2\left(k+1\right)
 	\] 
@@ -533,20 +533,24 @@ Before beginning, we should note that $R^2$ is {\em not} a good choice for a ran
 
 Sequential methods work best for problems where the set of candidate models is so vast that fitting all the candidate models is not feasible.  Because computers are faster today than they were years ago, it is now feasible to fit a large number of candidate models quickly, and thus sequential methods are less necessary today than they were years ago.  Nevertheless, the ideas are straightforward.
 
-There are three different types of sequential methods, based on the direction in which the model is built.  In *forward selection*, we begin with the simplest possible model (namely, $y = \beta_0 + \varepsilon$), and grow the model by adding predictors to it.  In *backwards elimination*, we start with the most expansive possible model, and shrink it by removing unnecessary predictors.  In *stepwise selection*, we start with the simplest possible model (namely, $y = \beta_0 + \varepsilon$), and then merge forwards and backwards steps, either growing and shrinking the model until converging on one that cannot be improved.  Stepwise selection is used more often than the other two variants.  Each of the three procedures could possibly lead to a different best model.
+There are three different types of sequential methods, based on the direction in which the model is built.  In *forward selection*, we begin with the simplest possible model (namely, $y = \beta_0 + \varepsilon$), and grow the model by adding predictors to it.  In *backwards elimination*, we start with the most expansive possible model and shrink it by removing unnecessary predictors.  In *stepwise selection*, we start with the simplest possible model (namely, $y = \beta_0 + \varepsilon$) and then merge forwards and backwards steps, either growing and shrinking the model until converging on one that cannot be improved.  Stepwise selection is used more often than the other two variations.  Each of the three procedures could possibly lead to a different best model.
 
 Here is the algorithm for forward selection:
 
 1. Initiation step: Start with the model $y=\beta_0 +\varepsilon$.  This is the initial "working" model.
+
 2. Iteration step: Fit a set of candidate models, each of which differs from the working model by the inclusion of a single additional model term.  Be aware that the set of candidate models must abide our rules of thumb about hierarchy.  (That is, we wouldn't consider a model like $y = \beta_0 + \beta_1 x_1 x_2 + \varepsilon$.)
+
 3. Ask: Do any of the candidate models improve upon the working model?  
 	+ If the answer to this question is "yes", then choose the model that improves upon the working model the most.  Making this model the working model, and begin a new iteration (return to step 2).
 	+ (Termination step): If the answer to this question is "no", then stop.  The current working model is the final model. 
 
 The algorithm for backwards elimination is similar:
 
-1. Initiation step: Start with the most expansive possible model.  Usually, this will be the model with all possible predictors, and potentially with all possible first- (and conceivably second-)order interactions.  Note that we can consider a quadratic term to be an interaction of a predictor with itself in this context.  This is the initial "working" model.
+1. Initiation step: Start with the most expansive possible model.  Usually, this will be the model with all possible predictors, and potentially with all possible first- (and conceivably second-) order interactions.  Note that we can consider a quadratic term to be an interaction of a predictor with itself in this context.  This is the initial "working" model.
+
 2. Iteration step: Fit a set of candidate models, each of which differs from the working model by the elimination of a single model term.  Again, be aware that the set of candidate models must abide our rules of thumb about hierarchy, so (for example) we wouldn't consider a model that removes $x_1$ if the interaction $x_1 x_2$ is still in the model.
+
 3. (Same as forward selection.)  Ask: Do any of the candidate models improve upon the working model?  
 	+ If the answer to this question is "yes", then choose the model that improves upon the working model the most.  Making this model the working model, and begin a new iteration (return to step 2).
 	+ (Termination step): If the answer to this question is "no", then stop.  The current working model is the final model. 
@@ -569,20 +573,22 @@ There is no prescription for building models automatically.  (If there were, som
 
 3. Candidate model selection: Identify a model that includes relevant variables.  Use automated selection procedures if you wish.
 
-4: Assumption checking: Check (standardized) residuals.  Determine if polynomial terms or transformations may be needed.
+4. Assumption checking: Check (standardized) residuals.  Determine if polynomial terms or transformations may be needed.
 
-5: Examine collinearity diagnostics.  Inspect VIFs and pairwise correlations between variables.  Decide if some variables may be removed or added.
+5. Examine collinearity diagnostics.  Inspect VIFs and pairwise correlations between variables.  Decide if some variables may be removed or added.
 
-6: Revision.  Add or remove terms based on steps 4-5.  Return to step 3.
+6. Revision.  Add or remove terms based on steps 4-5.  Return to step 3.
 
-7: Prediction and testing: Consider validating the model with a sample that was not included in building the model.
+7. Prediction and testing: Consider validating the model with a sample that was not included in building the model.
 
 
 ## Leverage, influential points, and standardized residuals
 
+### Leverage
+
 Recall that in SLR, a data point can have undue influence on the regression model if the value of the predictor, $x$, is for away from $\bar{x}$.  The same notion applies in MLR: data points can be unduly influential if their combination of predictors lies far away from the "center of mass" of the other predictors.  However, with multiple predictors, it is harder to detect influential points visually.  The *leverage* of a data point is a measure of its distance from the center of mass of the predictors, and hence its influence.  The formula for calculating leverages is complicated, so we'll use a computer to calculate them.  Leverages are usually denoted with the letter $h$, so the leverage for the $i$th data point is $h_i$.  If we looked at the equation for a leverage, however, we would discover that leverages are strictly functions of the predictors, and do not depend on th response.
 
-To calculate leverages in R, first pass the regression model object to the function "influence.lm".  This function returns several diagnostic measures; the leverages are contained in the component called "hat".  To extract the leverages, use code like the following:
+To calculate leverages in R, first pass the regression model object to the function `influence.lm`.  This function returns several diagnostic measures; the leverages are contained in the component called `hat`.  To extract the leverages, use code like the following:
 
 ```{r}
 fm1 <- lm(BAC ~ weight + beers, data = beer)
@@ -595,9 +601,11 @@ head(cbind(beer, lev))
 ```
 Not surprisingly, the point with the greatest leverage is the 110-lb person who drank 9 beers.
 
-What qualifies as a large leverage?  Quinn \& Keough's text, p. 95, gives one possible rule of thumb:  "a useful criterion is that any observation with a leverage value greater than $2\left(k+1\right)/n$ should be checked (Hoaglin \& Welsch 1978)."  
+What qualifies as a large leverage? It can be shown that, in a regression model with $k$ predictors, the total of the leverages for all the data points must equal $k+1$. Therefore, a typical leverage value will be $(k+1)/n$.  
 
-{\em Standardized residuals}
+<!-- For what it's worth, @hoaglin1978hat suggest that data points with leverages greater than twice this value (that is, greater than $2\left(k+1\right)/n$) should be checked, although it is not abundantly clear what it means to check a data point in this context. -->
+
+### Standardized residuals
 
 Data points associated with large leverages tend to have smaller (raw) residuals.  A better choice than analyzing the raw residuals is to analyze the standardized residuals.  The formula for a standardized residual is:
 \[
@@ -606,13 +614,13 @@ e_i^{(s)} =\frac{e_i}{s_\varepsilon \sqrt{1-h_i} }
 
 The benefit of standardized residuals is that if our model assumptions are appropriate, then they should behave like an iid sample from a normal distribution with mean 0 and variance 1.  That is to say, most standardized residuals should be between -2 and +2, and only a few should be $< -3$ or $> +3$.  Some texts call these "studentized residuals" instead of standardized residuals.
 
-R does not have a built-in function for calculating standardized residuals.  However, there is a library of functions called the MASS library that contains the function "stdres".  (MASS is an acronym for \textit{Modern Applied Statistics with S-Plus}, which is one of the standard more advanced texts for using R.  It is written by W.N. Venables and B.D. Ripley.)
+R does not have a built-in function for calculating standardized residuals.  However, there is a library of functions called the `MASS` library that contains the function `stdres`.  (MASS is an acronym for \textit{Modern Applied Statistics with S-Plus}, which is one of the original advanced texts for using R.  It is written by W.N. Venables and B.D. Ripley.)
 ```{r}
-library(MASS)
-stdres(fm1)
+MASS::stdres(fm1)
 ```
 
-*Cook's distance.*  Leverages and standardized residuals can be combined into various quantities that measure the influence each observation has on the fitted regression line.  One of the most popular of these are Cook's distance, $D_i$.  In R, if you pass a regression model to the command "plot", it will produce four (rather sophisticated) diagnostic plots.  The last of these shows Cook's distance.
+### Cook's distance
+Leverages and standardized residuals can be combined into various quantities that measure the influence each observation has on the fitted regression line.  One of the most popular of these are Cook's distance, $D_i$.  In R, if you pass a regression model to the command `plot`, it will produce four (somewhat sophisticated) diagnostic plots.  The last of these shows Cook's distance.
 ```{r}
 plot(fm1)
 ```
