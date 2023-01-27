@@ -1,7 +1,7 @@
 --- 
 title: "ST 512 course notes"
 author: "Kevin Gross"
-date: "2023-01-26"
+date: "2023-01-27"
 output:
   bookdown::gitbook:
     config:
@@ -114,7 +114,7 @@ As a practical matter, these notes are prepared in `bookdown` (@xie2022bookdown)
 
 ### Format of the notes {-}
 
-Advanced sections are indicated by section titles that begin with stars ($^\star$). Shorter sidebars for enrichment appear in <span style="color: gray;"> gray text </span> and are offset by horizontal rules (like the one following the acknowledgments).  This material may be skipped without loss.  
+Advanced sections are indicated by section titles that begin with stars ($^\star$). Shorter sidebars for enrichment appear in <span style="color: gray;"> gray text </span> and are offset by horizontal rules (like the one following the acknowledgments).  This material may be skipped without loss. Sections that are in an early and rougher stage of development are indicated with section titles shown in *italics*.  
 
 <!-- This structure is inspired by @mascolell1995microeconomic's lovely text. -->
 

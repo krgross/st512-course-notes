@@ -10,11 +10,11 @@ In this chapter, we examine several methods for characterizing non-linear associ
 
 Polynomial regression uses the machinery of multiple regression to model non-linear relationships.   A $k^{th}$ order polynomial regression model is
 \[
-y=\beta_0 +\beta_1 x+\beta_2 x^2 +\beta_3 x^{3} +\ldots +\beta_k x^{k} +\epsilon 
+y=\beta_0 +\beta_1 x+\beta_2 x^2 +\beta_3 x^{3} +\ldots +\beta_k x^{k} +\varepsilon 
 \] 
 where the error term is subject to the standard regression assumptions.  In practice, the most commonly used models are quadratic ($k=2$) and cubic ($k=3$) polynomials.
 
-Before proceeding, a historical note is worthwhile.  It used to be that polynomial regression was the only way to accommodate non-linear relationships in regression models.  In the present day, non-linear regression (see the later section in these notes) allows us to fit a much richer set of non-linear models to data.  However, in complex models (especially complex ANOVA models for designed experiments), there are still cases where it is easier to add a quadratic term to accommodate a non-linear association than it is to adopt the machinery of non-linear regression.  Thus, it is still worthwhile to know a little bit about polynomial regression, but don't shoehorn every non-linear association into a polynomial regression if an alternative non-linear model is more suitable.
+Before proceeding, a historical note is worthwhile.  It used to be that polynomial regression was the only way to accommodate non-linear relationships in regression models.  In the present day, [non-linear least squares](#nls) allows us to fit a much richer set of non-linear models to data.  However, in complex models (especially complex ANOVA models for designed experiments), there are still cases where it is easier to add a quadratic term to accommodate a non-linear association than it is to adopt the machinery of non-linear least squares.  Thus, it is still worthwhile to know a little bit about polynomial regression, but don't shoehorn every non-linear association into a polynomial regression if an alternative non-linear model is more suitable.
 
 *Example.* In the cars data, the relationship between highway mpg and vehicle weight is clearly non-linear:
 ```{r fig.width = 5}
@@ -27,11 +27,11 @@ To fit a quadratic model, we could manually create a predictor equal to weight-s
 quad <- lm(mpghw ~ weight + I(weight^2), data = cars)
 summary(quad)
 ```
-In the quadratic regression $y=\beta_0 +\beta_1 x+\beta_2 x^2 +\epsilon$, the test of $H_0$: $\beta_2=0$ vs.\ $H_a$: $\beta_2 \ne 0$ is tantamount to a test of whether the quadratic model provides a significantly better fit than the linear model.  I this case, we can conclusively reject $H_0$: $\beta_2=0$ in favor of $H_a$: $\beta_2 \ne 0$ , and thus conclude that the quadratic model provides a significantly better fit than the linear model.
+In the quadratic regression $y=\beta_0 +\beta_1 x+\beta_2 x^2 +\varepsilon$, the test of $H_0$: $\beta_2=0$ vs.\ $H_a$: $\beta_2 \ne 0$ is tantamount to a test of whether the quadratic model provides a significantly better fit than the linear model.  In this case, we can conclusively reject $H_0$: $\beta_2=0$ in favor of $H_a$: $\beta_2 \ne 0$ , and thus conclude that the quadratic model provides a significantly better fit than the linear model.
 
-However, in the context of the quadratic model, the test of $H_0$: $\beta_1=0$ vs.\ $H_a$: $\beta_1 \ne 0$ doesn't give us much useful information.  In the context of the quadratic model, the null hypothesis $H_0$: $\beta_1=0$  is equivalent to the model  $y=\beta_0 +\beta_2 x^2 +\epsilon$.  This is a strange model, and there is no reason why we should consider it.  Thus, we disregard the inference for $\beta_1$, and (by similar logic) we disregard the inference for $\beta_0$ as well.\footnote{Another way to think of this is that the quadratic term $x^2$ is tantamount to an interaction of $x$ with itself.  Thus, in the same way that including an interaction changes the interpretation of $\beta_1$ and $\beta_2$ in the model $y=\beta_0 +\beta_1 x_1 +\beta_2 x_2 +\beta_3 x_1 x_2 +\epsilon$, including a quadratic term changes the interpretation of $\beta_1$ in the model $y=\beta_0 +\beta_1 x +\beta_2 x^2 +\epsilon$.}
+However, in the context of the quadratic model, the test of $H_0$: $\beta_1=0$ vs.\ $H_a$: $\beta_1 \ne 0$ doesn't give us much useful information.  In the context of the quadratic model, the null hypothesis $H_0$: $\beta_1=0$  is equivalent to the model  $y=\beta_0 +\beta_2 x^2 +\varepsilon$.  This is a strange model, and there is no reason why we should consider it.  Thus, we disregard the inference for $\beta_1$, and (by similar logic) we disregard the inference for $\beta_0$ as well.\footnote{Another way to think of this is that the quadratic term $x^2$ is tantamount to an interaction of $x$ with itself.  Thus, in the same way that including an interaction changes the interpretation of $\beta_1$ and $\beta_2$ in the model $y=\beta_0 +\beta_1 x_1 +\beta_2 x_2 +\beta_3 x_1 x_2 +\varepsilon$, including a quadratic term changes the interpretation of $\beta_1$ in the model $y=\beta_0 +\beta_1 x +\beta_2 x^2 +\varepsilon$.}
 
-If a quadratic model is good, will the cubic model $y=\beta_0 +\beta_1 x+\beta_2 x^2 +\beta_3 x^{3} +\epsilon$ be even better? Let's see:
+If a quadratic model is good, will the cubic model $y=\beta_0 +\beta_1 x+\beta_2 x^2 +\beta_3 x^{3} +\varepsilon$ be even better? Let's see:
 ```{r}
 cubic <- lm(mpghw ~ weight + I(weight^2) + I(weight^3), data = cars)
 summary(cubic)
@@ -39,9 +39,9 @@ summary(cubic)
 
 In the cubic model, the test of $H_0$: $\beta_3=0$ vs.\ $H_a$: $\beta_3 \ne 0$ is tantamount to a test of whether the cubic model provides a significantly better fit than the quadratic model.  The $p$-value associated with the cubic term suggests that the cubic model does not provide a statistically significant improvement in fit compared to the quadratic model.  
 
-At this point, you might wonder if we are limited only to comparing models of adjacent orders, that is, quadratic vs. linear, cubic vs. quadratic, etc.  The answer is no --- we can, for example, test whether a cubic model provides a significantly better fit than a linear model. To do so, we would have to test $H_0$: $\beta_2 = \beta_3 = 0$ in the cubic model.  We can test this null hypothesis with an $F$-test, which we will learn how to do later.
+At this point, you might wonder if we are limited only to comparing models of adjacent orders, that is, quadratic vs. linear, cubic vs. quadratic, etc.  The answer is no --- we can, for example, test whether a cubic model provides a significantly better fit than a linear model. To do so, we would have to test $H_0$: $\beta_2 = \beta_3 = 0$ in the cubic model.  We can test this null hypothesis with an $F$-test.
 
-Note that, even though as cubic model does not offer a significantly better fit than a quadratic model, we have not necessarily ruled out the possibility that a higher-order polynomial model might provide a significantly better fit.  However, higher-order polynomials (beyond a cubic) are typically difficult to justify on scientific grounds, and offend our sense of parsimony.  Plus, a plot of the quadratic model and the associated residuals suggest that a quadratic model captures the trend in the data well:
+Even though as cubic model does not offer a significantly better fit than a quadratic model, we have not necessarily ruled out the possibility that a higher-order polynomial model might provide a significantly better fit.  However, higher-order polynomials (beyond a cubic) are typically difficult to justify on scientific grounds, and offend our sense of parsimony.  Plus, a plot of the quadratic model and the associated residuals suggest that a quadratic model captures the trend in the data well:
 ```{r}
 with(cars, plot(mpghw ~ weight, xlab = "Vehicle weight (lbs)", ylab = "Highway mpg"))
   
@@ -60,7 +60,7 @@ Therefore, the quadratic model clearly provides the best low-order polynomial fi
 
 Finally, it doesn't make sense to consider models that include higher-order terms without lower-order terms.  For example, we wouldn't usually consider a cubic model without an intercept, or a quadratic model without a linear term.  Geometrically, these models are constrained in particular ways.  If such a constraint makes sense scientifically, entertaining the model may be warranted, but this situation arises only rarely.  Thus, our strategy for fitting polynomial models is to choose the lowest-order model that provides a reasonable fit to the data, and whose highest-order term is statistically significant.
 
-<!-- %[A word about terminology:  The term {\em linear} in MLR indicates that the mean component of the model is linear in the unknown model parameters (the $\beta$'s), not linear in the predictors.  The model  $y=\beta_0 +\beta_1 x+\beta_2 x^2 +\epsilon $ can be fit using MLR because the mean component $\beta_0 +\beta_1 x+\beta_2 x^2 $  is a linear function of its unknown parameters.  An example of a non-linear model that we wouldn't be able to estimate using MLR is $y=e^{\beta_1 x} +\epsilon $. ] -->
+<!-- %[A word about terminology:  The term {\em linear} in MLR indicates that the mean component of the model is linear in the unknown model parameters (the $\beta$'s), not linear in the predictors.  The model  $y=\beta_0 +\beta_1 x+\beta_2 x^2 +\varepsilon $ can be fit using MLR because the mean component $\beta_0 +\beta_1 x+\beta_2 x^2 $  is a linear function of its unknown parameters.  An example of a non-linear model that we wouldn't be able to estimate using MLR is $y=e^{\beta_1 x} +\varepsilon $. ] -->
 
 <!-- %## Variable selection in polynomial regression: The Goldilocks problem} -->
 <!-- % -->
@@ -68,7 +68,7 @@ Finally, it doesn't make sense to consider models that include higher-order term
 <!-- % -->
 <!-- %Polynomial regression provides a convenient framework to discuss the costs of making a model too "big" (i.e., having too many terms) or too "small" (too few terms).  Statisticians refer to the tension between models that are too big and models that are too small as a \textbf{bias-variance trade-off.} -->
 <!-- % -->
-<!-- %Each of the data sets below were generated with the model $y=20-4x+x^2 +\epsilon $.  There are three different data sets, one per column.  In the top row, the data are fitted with a linear regression.  In the middle row, the data are fitted with a quadratic regression.  In the bottom row, the data are fitted with a 5$^{th}$-order polynomial. -->
+<!-- %Each of the data sets below were generated with the model $y=20-4x+x^2 +\varepsilon $.  There are three different data sets, one per column.  In the top row, the data are fitted with a linear regression.  In the middle row, the data are fitted with a quadratic regression.  In the bottom row, the data are fitted with a 5$^{th}$-order polynomial. -->
 <!-- % -->
 <!-- %In the top row, the signal component of the statistical model is not sufficiently flexible to capture the quadratic relationship between the predictor and the response.  Thus, if we tried to use this model for prediction, predictions made at (say) \textit{x }= 2 would routinely be overestimates.  In the statistical jargon, we would say that these predictions are biased (in this case, they are negatively biased at \textit{x }= 2.) -->
 <!-- % -->
@@ -76,9 +76,9 @@ Finally, it doesn't make sense to consider models that include higher-order term
 <!-- % -->
 <!-- %This phenomenon is characteristic of all statistical models, not just polynomial regression.  In statistics, the tendency of models that are too "small" to be biased, and of models that are too "big" to lead to highly variable out-of-sample prediction is called the bias-variance trade-off.  There is a premium on finding a model that is neither too big nor too small, and thus properly partitions signal from noise.  Of course, this is not easy, because we never know what the true model actually is!  Techniques for choosing models that are neither too big nor too small are called model selection methods.  We will have more to say about model selection later. -->
 
-## Non-linear regression
+## Non-linear least squares {#nls}
 
-Today, software is readily available to fit non-linear models to data using the same least-squares criterion that we use to estimate parameters in the linear model.  The computation involved in fitting a non-linear model is fundamentally different from the computation involved in a linear model.  A primary difference is that there is no all-purpose formula like $\vecbhat=\left(\X'\X\right)^{-1} \X'\vecy$ available for the non-linear model.  Therefore, parameter estimates (and their standard errors) have to be found using a numerical algorithm.  (We'll see more about what this means in a moment.)  However, these algorithms are sufficiently well developed that they now appear in most common statistical software packages, such as R, SAS, or others.  In R, the command that we use to fit a non-linear model is `nls', for [n]on-linear [l]east [s]quares.   In SAS, non-linear models can be fit using PROC NLIN.
+Today, software is readily available to fit non-linear models to data using the same least-squares criterion that we use to estimate parameters in the linear model.  The computation involved in fitting a non-linear model is fundamentally different from the computation involved in a linear model.  A primary difference is that there is no all-purpose formula like $\vecbhat=\left(\X'\X\right)^{-1} \X'\vecy$ available for the non-linear model.  Therefore, parameter estimates (and their standard errors) have to be found using a numerical algorithm.  (We'll see more about what this means in a moment.)  However, these algorithms are sufficiently well developed that they now appear in most common statistical software packages, such as R, SAS, or others.  In R, the command that we use to fit a non-linear model is `nls`, for [n]on-linear [l]east [s]quares.   In SAS, non-linear models can be fit using PROC NLIN.
 
 *Ex. Puromycin.*  This example is taken directly from the text \textit{Nonlinear regression analysis and its applications}, by D.M. Bates and D.G. Watts @bates1988nonlinear.  The data themselves are from Treloar (1974, MS Thesis, Univ of Toronto), who studied the relationship between the velocity of an enzymatic reaction (the response, measured in counts / minute$^2$) vs. the concentration of a particular substrate (the predictor, measured in parts per million).  The experiment was conducted in the presence of the puromycin Puromycin.  The data are shown below.
 ```{r fig.width = 4}
@@ -88,9 +88,9 @@ with(puromycin, plot(velocity ~ conc, xlab = "concentration", ylab = "velocity")
 
 It is hypothesized that these data can be described by the Michaelis-Menten model for puromycin kinetics.  The Michaelis-Menten model is:
 \[
-y=\frac{\theta_1 x}{\theta_2 +x} +\epsilon 
+y=\frac{\theta_1 x}{\theta_2 +x} +\varepsilon 
 \] 
-We continue to assume that the errors are iid normal with mean 0 and unknown but constant variance, i.e., $\epsilon_i \sim \mathcal{N}\left(0,\sigma_{\epsilon}^2 \right)$. 
+We continue to assume that the errors are iid normal with mean 0 and unknown but constant variance, i.e., $\varepsilon_i \sim \mathcal{N}\left(0,\sigma_{\varepsilon}^2 \right)$. 
 
 With non-linear models, it is helpful if one can associate each of the parameters with a particular feature of the best-fitting curve.  With these data, it seems that the best fitting curve is one that will increase at a decelerating rate until it approaches an asymptote.  A little algebra shows that we can interpret $\theta_1$ directly as the asymptote (that is, the limiting value of the curve as $x$ gets large), and $\theta_2$ as the value of the predictor at which the fitted curve reaches one-half of its asymptotic value.  
 
@@ -102,14 +102,14 @@ However, unlike with the linear model, there is no formula that can be solved di
 
 While we can trust that the numerical minimization routine implemented by R or SAS is a reasonably good one, all numerical minimization routines rely critically on finding a good set of starting values for the parameters.  That is, unlike in a linear model, we must initiate the algorithm with a reasonable guess of the parameter values that is in the ballpark of the least-squares estimates.  Here is where it is especially beneficial to have direct interpretations of the model parameters.  Based on our previous analysis, we might choose a starting values of (say) $\theta_1 = 200$ and $\theta_2 = 0.1$.  (Note that R will try to find starting values if they aren't provided.  However, the documentation to nls says that these starting values are a "very cheap guess".)
 
-Equipped with our choice of starting values, we are ready to find the least-squares estimates using 'nls':
+Equipped with our choice of starting values, we are ready to find the least-squares estimates using `nls`:
 ```{r}
 fm1 <- nls(velocity ~ theta1 * conc / (theta2 + conc), data = puromycin, 
              start = list(theta1 = 200, theta2 = 0.1))
 summary(fm1)
 ```
 
-In the call to 'nls', the first argument is a formula where we specify the non-linear model that we wish to fit.  In this data set, "velocity" is the response and "conc" is the predictor.  The last argument to nls is a list of starting values.  The list contains one starting value for each parameter in the model.   (R note: In R, `lists' are like vectors, except that lists can contain things other than numbers.)
+In the call to `nls`, the first argument is a formula where we specify the non-linear model that we wish to fit.  In this data set, "velocity" is the response and "conc" is the predictor.  The last argument to `nls` is a list of starting values.  The list contains one starting value for each parameter in the model.   (In R, "lists" are like vectors, except that lists can contain things other than numbers.)
 
 The output shows that the least squares estimates are $\hat{\theta}_1 =212.7$ and $\hat{\theta}_2 =0.064$.  We also get estimated standard errors for each of the parameters, as well as $t$-tests of $H_0$: $\theta =0$ vs.\ $H_a$: $\theta \ne 0$.  Note that the $t$-tests are not particularly useful in this case --- there's no reason why we would entertain the possibility that either $\theta_1$ or $\theta_2$ are equal to 0.
 
@@ -117,9 +117,9 @@ The last portion of the output from nls tells us about the performance of the nu
 
 We can examine the model fit by overlaying a fitted curve:
 ```{r fig.width = 4}
-xvals <- seq(from = min(puromycin$conc), to = max(puromycin$conc), length = 100)
 with(puromycin, plot(velocity ~ conc, xlab = "concentration", ylab = "velocity"))
-lines(xvals, predict(fm1, newdata = data.frame(conc = xvals)), col = "red")
+mm.fit <- function(x) (212.7 * x) / (0.06412 + x)
+curve(mm.fit, from = min(puromycin$conc), to = max(puromycin$conc), col = "red", add = TRUE)
 ```
 
 It is instructive to compare the fit of this non-linear model with the fit from a few polynomial regressions.  Neither the quadratic nor the cubic models fits very well in this case.  Polynomial models often have a difficult time handling a data set with an asymptote.  In this case, the Michaelis-Menten model clearly seems preferable.
@@ -140,13 +140,13 @@ curve(cubic.fit, from = min(puromycin$conc), to = max(puromycin$conc), add = TRU
 legend(x = 0.6, y = 100, legend = c("quadratic", "cubic"), col = c("blue", "darkgreen"), lty = "solid", bty = "n")
 ```
 
-## *Smoothing methods
+## *$^\star$Smoothing methods*
 
-Sometimes, all we want to do is to generate a curve that characterizes the relationship between two variables, and we don't necessarily care about describing that curve with a parameterized equation.  This section describes several methods for doing so.
+Sometimes, all we want to do is to generate a curve that characterizes the relationship between two variables, and we don't necessarily care about describing that curve with a parameterized equation.  This section describes several methods for doing so.  The contents of this section are in an early stage of development.
 
 ### Loess smoothers
 
-We will illustrate LOESS smoothers with the bioluminescence data found in the ISIT data set.  These data can be found by visiting the webpage for the book ``Mixed Effects Models and Extensions in Ecology with R'' by Zuur et al. (2009).  A link to this webpage appears on the course website.
+We will illustrate LOESS smoothers with the bioluminescence data found in the ISIT data set.  These data can be found by visiting the webpage for the book "Mixed Effects Models and Extensions in Ecology with R" by Zuur et al. (2009)(@zuur2009mixed).  
 
 ```{r}
 ## download the data from the book's website
@@ -384,9 +384,9 @@ y = \beta_0 + s(x_1) +s(x_2) + \varepsilon
 $$
 where $s(\cdot)$ represents a spline.  We continue to assume that, conditional on the covariate effects, the responses are normally distributed with constant variance $\sigma^2_\varepsilon$.  
 
-We will illustrate additive modeling using the bird data found in Appendix A of Zuur et al. (2009).  Zuur et al. report that these data originally appeared in Loyn (1987) and were featured in Quinn & Keough (2002)'s text.  Zuur et al. describe these data in the following way:
+We will illustrate additive modeling using the bird data found in Appendix A of @zuur2009mixed.  Zuur et al. report that these data originally appeared in Loyn (1987) and were featured in Quinn & Keough (2002)'s text.  Zuur et al. describe these data in the following way:
 
-"Forest bird densities were measured in 56 forest patches in south-eastern Victoria, Australia. The aim of the study was to relate bird densities to six habitat variables; size of the forest patch, distance to the nearest patch, distance to the nearest larger patch, mean altitude of the patch, year of isolation by clearing, and an index of stock grazing history (1 = light, 5 = intensive)."
+> Forest bird densities were measured in 56 forest patches in south-eastern Victoria, Australia. The aim of the study was to relate bird densities to six habitat variables; size of the forest patch, distance to the nearest patch, distance to the nearest larger patch, mean altitude of the patch, year of isolation by clearing, and an index of stock grazing history (1 = light, 5 = intensive).
 
 We first read the data and perform some light exploratory analysis and housekeeping.
 

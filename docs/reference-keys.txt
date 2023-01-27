@@ -19,7 +19,7 @@ consequences-of-violating-model-assumptions-and-possible-fixes
 prediction-with-regression-models
 regression-design
 centering-the-predictor
-regression-models-with-several-predictors
+multiple-regression
 multiple-regression-basics
 the-multiple-regression-model
 sums-of-squares-decomposition-and-r2.
@@ -39,3 +39,10 @@ leverage-influential-points-and-standardized-residuals
 leverage
 standardized-residuals
 cooks-distance
+non-linear-regression-models
+polynomial-regression
+nls
+starsmoothing-methods
+loess-smoothers
+splines
+generalized-additive-models-gams

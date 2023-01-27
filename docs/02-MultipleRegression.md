@@ -1,4 +1,4 @@
-# Regression models with several predictors
+# Multiple regression
 
 
 
