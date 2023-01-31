@@ -584,7 +584,46 @@ anova(fish_model_full)
 ```
 The `anova` command also gives an $F$-test for the null hypothesis of no association between age and the response when comparing fish from the same lake, that is, that $\beta_1 = 0$.  This $F$-test gives the same result as the $t$-test provided in the earlier `summary`, because the two tests are identical.  Arguably, for single regression coefficients, the output from `summary` is more useful, because it gives us the estimate of $\beta_1$, while the  `anova` output only gives us an $F$-test.
 
-Finally, now that we have established that there are significant differences among the sites when comparing fish of the same age, we can go back and make sense of the estimates of $\beta_2$ and $\beta_3$ in the full model.  The partial regression coefficients associated with an indicator variable quantify the difference between the level that the variable is an indicator for and the reference.  In other words, for the fish data, the value $\hat{\beta}_2 = 0.071$ tells us that if we compare two fish of the same age, then a fish from Bennett will have a response that is on average 0.071 larger than a fish from Adger (the reference site).  The value $\hat{\beta}_3 = -0.261$ tells us that, on average, a fish from Waterville will have a response that is 0.261 less than a similarly aged-fish from Adger.  Note that these values also give us enough information to compute the average difference in $y$ between two similarly aged fish from Bennett and Waterville, even though that value isn't directly included in the output.  
+Finally, now that we have established that there are significant differences among the sites when comparing fish of the same age, we can go back and make sense of the estimates of $\beta_2$ and $\beta_3$ in the full model.  The partial regression coefficients associated with an indicator variable quantify the difference between the level that the variable is an indicator for and the reference.  In other words, for the fish data, the value $\hat{\beta}_2 = 0.071$ tells us that if we compare two fish of the same age, then a fish from Bennett will have a response that is on average 0.071 larger than a fish from Adger (the reference site).  The value $\hat{\beta}_3 = -0.261$ tells us that, on average, a fish from Waterville will have a response that is 0.261 less than a similarly aged-fish from Adger.  Note that these values also give us enough information to compute the average difference in $y$ between two similarly aged fish from Bennett and Waterville, even though that value isn't directly included in the output.
+
+---
+
+<span style="color: gray;"> Indicator variables may seem like a bit of an awkward device.  Why can't we just fit a model with a separate intercept for each lake?  In fact, we can.  In `R`, the program `lm` includes the intercept $\beta_0$ in any model by default, because most regression models include it.  However, if we instruct `lm` to omit the baseline intercept $\beta_0$, then the program will parameterize the model by the lake-specific intercepts.  We instruct `lm` to omit the intercept by including a `-1` on the right-hand side of the model formula as follows:</span>
+
+
+```r
+fish_model_alt <- lm(log(hg) ~ age + site - 1, data = fish)
+summary(fish_model_alt)
+```
+
+```
+## 
+## Call:
+## lm(formula = log(hg) ~ age + site - 1, data = fish)
+## 
+## Residuals:
+##      Min       1Q   Median       3Q      Max 
+## -0.47117 -0.08896  0.03796  0.13910  0.31327 
+## 
+## Coefficients:
+##                Estimate Std. Error t value Pr(>|t|)    
+## age             0.14309    0.01967   7.276 6.66e-07 ***
+## siteAdger      -1.80618    0.15398 -11.730 3.80e-10 ***
+## siteBennett    -1.73511    0.09440 -18.381 1.47e-13 ***
+## siteWaterville -2.06723    0.16351 -12.643 1.07e-10 ***
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Residual standard error: 0.2084 on 19 degrees of freedom
+## Multiple R-squared:  0.9721,	Adjusted R-squared:  0.9662 
+## F-statistic: 165.2 on 4 and 19 DF,  p-value: 1.781e-14
+```
+
+<span style="color: gray;"> The model is now parameterized by the lake-specific intercepts and the common slope.  While this parameterization is more straightforward, note that the $R^2$ value is now wrong.  This is because the software's routine for calculating $R^2$ assumes that the intercept $\beta_0$ will be present in the model.  Of course, it's easy to use our original parameterization to get the correct $R^2$ value and use the alternative parameterization to get the lake-specific slopes.  We just have to be careful with regard to the rest of the output when the baseline intercept is omitted.</span>
+
+<span style="color: gray;"> None of this behavior is unique to `R`.  In SAS, PROC GLM has a similar option for reparameterizing the model without the common intercept, but it will cause the computation of $R^2$ to break there as well.</span>
+
+---
 
 ## Interactions between predictors {#regression-interactions}
 

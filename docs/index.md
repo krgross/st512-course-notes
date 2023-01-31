@@ -1,7 +1,7 @@
 --- 
 title: "ST 512 course notes"
 author: "Kevin Gross"
-date: "2023-01-27"
+date: "2023-01-31"
 output:
   bookdown::gitbook:
     config:
@@ -130,6 +130,8 @@ I am deeply indebted to the R community (@r) for their project which has done no
 These notes are provided under [version 3 of the GNU General Public License](https://www.gnu.org/licenses/gpl-3.0.en.html). 
 
 ---
+
+# (PART\*) Part I: Regression modeling {-}
 
 # Simple linear regression
 

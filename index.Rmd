@@ -130,6 +130,8 @@ These notes are provided under [version 3 of the GNU General Public License](htt
 
 ---
 
+# (PART\*) Part I: Regression modeling {-}
+
 # Simple linear regression
 
 In statistics, regression models are those that relate the distribution of an output variable to the value(s) of one or several input variables.  Characterizing the relationships among input and output variables is central to much of science, and regression methods form the foundation for much of data analysis.  We'll have a lot to say about regression, but we'll begin with so-called simple linear regression (SLR).  SLR models are "simple" in the sense that they contain only one predictor.  
