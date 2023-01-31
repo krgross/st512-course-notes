@@ -619,11 +619,28 @@ summary(fish_model_alt)
 ## F-statistic: 165.2 on 4 and 19 DF,  p-value: 1.781e-14
 ```
 
-<span style="color: gray;"> The model is now parameterized by the lake-specific intercepts and the common slope.  While this parameterization is more straightforward, note that the $R^2$ value is now wrong.  This is because the software's routine for calculating $R^2$ assumes that the intercept $\beta_0$ will be present in the model.  Of course, it's easy to use our original parameterization to get the correct $R^2$ value and use the alternative parameterization to get the lake-specific slopes.  We just have to be careful with regard to the rest of the output when the baseline intercept is omitted.</span>
+<span style="color: gray;"> The model is now parameterized by the lake-specific intercepts and the common slope.  While this parameterization is more straightforward, note that the $R^2$ value and the model utility test are now wrong.  The software's routine for calculating $R^2$ and the model utility test assumes that the intercept $\beta_0$ will be present in the model.  Of course, it's easy to use our original parameterization to get the correct $R^2$ value (and model utility test) and use the alternative parameterization to get the lake-specific slopes.  We just have to be careful with regard to the rest of the output when the baseline intercept is omitted.</span>
 
-<span style="color: gray;"> None of this behavior is unique to `R`.  In SAS, PROC GLM has a similar option for reparameterizing the model without the common intercept, but it will cause the computation of $R^2$ to break there as well.</span>
+<span style="color: gray;"> None of this behavior is unique to `R`.  In SAS, PROC GLM has a similar option for reparameterizing the model without the common intercept, but it will cause the computation of $R^2$ and the model utility test to break there as well.</span>
 
 ---
+
+Models that combine a single numerical predictor and a single categorical predictor can be visualized by plotting the trend lines for each level of the categorical predictor.  In making this plot, it is easier to use the alternative parameterization of the model described in the gray text above.
+
+
+
+```r
+with(fish, plot(log(hg) ~ age, xlab = "age (years)", ylab = "log(tissue Hg)", type = "n"))
+with(subset(fish, site == "Adger"), points(log(hg) ~ age, pch = "A", col = "forestgreen"))
+with(subset(fish, site == "Bennett"), points(log(hg) ~ age, pch = "B", col = "red"))  
+with(subset(fish, site == "Waterville"), points(log(hg) ~ age, pch = "W", col = "blue"))
+abline(a = fish_model_alt$coefficients[2], b = fish_model_alt$coefficients[1], col = "forestgreen")
+abline(a = fish_model_alt$coefficients[3], b = fish_model_alt$coefficients[1], col = "red")
+abline(a = fish_model_alt$coefficients[4], b = fish_model_alt$coefficients[1], col = "blue")
+legend("topleft", legend = c("Lake A", "Lake B", "Lake W"), pch = 16, col = c("forestgreen", "red", "blue"))
+```
+
+<img src="02-MultipleRegression_files/figure-html/unnamed-chunk-19-1.png" width="480" style="display: block; margin: auto;" />
 
 ## Interactions between predictors {#regression-interactions}
 
@@ -1060,7 +1077,7 @@ Leverages and standardized residuals can be combined into various quantities tha
 plot(fm1)
 ```
 
-<img src="02-MultipleRegression_files/figure-html/unnamed-chunk-27-1.png" width="480" style="display: block; margin: auto;" /><img src="02-MultipleRegression_files/figure-html/unnamed-chunk-27-2.png" width="480" style="display: block; margin: auto;" /><img src="02-MultipleRegression_files/figure-html/unnamed-chunk-27-3.png" width="480" style="display: block; margin: auto;" /><img src="02-MultipleRegression_files/figure-html/unnamed-chunk-27-4.png" width="480" style="display: block; margin: auto;" />
+<img src="02-MultipleRegression_files/figure-html/unnamed-chunk-28-1.png" width="480" style="display: block; margin: auto;" /><img src="02-MultipleRegression_files/figure-html/unnamed-chunk-28-2.png" width="480" style="display: block; margin: auto;" /><img src="02-MultipleRegression_files/figure-html/unnamed-chunk-28-3.png" width="480" style="display: block; margin: auto;" /><img src="02-MultipleRegression_files/figure-html/unnamed-chunk-28-4.png" width="480" style="display: block; margin: auto;" />
 Observations with large values of Cook's distance merit greater scrutiny.
 
 ## Appendix: Regression as a linear algebra problem {-}
