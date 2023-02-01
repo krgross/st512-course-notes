@@ -403,60 +403,30 @@ head(beer)
 fm3 <- lm(BAC ~ beers.c * weight.c, data = beer)
 summary(fm3)
 ```
-Note that centering the predictors does not change the estimated interaction or its statistical significance.  The main advantage of centering the predictors is that the partial regression coefficients associated with the centered versions of the predictors have a nice interpretation.  Now, the partial regression coefficients associated with the main effects quantify the relationship between the predictor and the response when the other predictor involved in the interaction equals its average value.   
+Note that centering the predictors does not change the estimated interaction or its statistical significance.  The main advantage of centering the predictors is that the partial regression coefficients associated with the centered versions of the predictors have a nice interpretation.  Now, the partial regression coefficients associated with the main effects quantify the relationship between the predictor and the response when the other predictor involved in the interaction equals its average value.  
 
-<!-- Perhaps there is an interaction between gender and the number of beers consumed, with respect to their effect on BAC.^[Of course, we haven't yet found a statistically significant difference between the BAC of men vs.\ women in these data, but it is still edifying to work through this model.]   We test for such an association by including an interaction between the indicator for `male' and the number of beers consumed.  The model equation is: -->
-<!-- \[ -->
-<!-- y=\beta_0 +\beta_1 x_1 +\beta_2 x_2 +\beta_3 x_3 + \beta_4 x_1 x_3 +\varepsilon  -->
-<!-- \]  -->
-<!-- Compare this model for males: -->
-<!-- \[ -->
-<!-- y=\left(\beta_0 +\beta_3 \right)+\left(\beta_1 +\beta_4 \right)x_1 +\beta_2 x_2 +\varepsilon  -->
-<!-- \]  -->
-<!-- and females: -->
-<!-- \[ -->
-<!-- y=\beta_0 +\beta_1 x_1 +\beta_2 x_2 +\varepsilon  -->
-<!-- \]  -->
-<!-- Thus, we see that the coefficient $\beta_4$ will quantify how the relationship between beers consumed and BAC differs for men vs.\ women (after accounting for the effect of weight).  We fit the model in R: -->
+While we're at it, we can also return to the fish data to ask if fish accumulate mercury in their tissues at different rates in the three lakes.
+```{r}
+fish_model_interaction <- lm(log(hg) ~ age * site, data = fish)
+fish_model_additive <- lm(log(hg) ~ age + site, data = fish)
+anova(fish_model_additive, fish_model_interaction)
+```
+The interaction between age and lake is not significant ($F_{2, 17} = 0.81$, $p=0.46$).  There is no evidence that the rate at which fish accumulate mercury in their tissues differs among the three lakes.
 
-<!-- ```{r eval = FALSE} -->
-<!-- fm4 <- lm(BAC ~ beers + weight + gender + beers:gender, data = beer) -->
-<!-- summary(fm4) -->
-<!-- ``` -->
+Just for fun, we can plot the model with the interaction to see how the plot differs from the additive model that we considered earlier.  As we did before, we'll use the trick of fitting the model without the baseline intercept to make it easier to extract the slopes and intercepts of the lake-specific trend lines.
+```{r}
+fish_model_alt <- lm(log(hg) ~ site + age:site - 1, data = fish)
+with(fish, plot(log(hg) ~ age, xlab = "age (years)", ylab = "log(tissue Hg)", type = "n"))
+with(subset(fish, site == "Adger"), points(log(hg) ~ age, pch = "A", col = "forestgreen"))
+with(subset(fish, site == "Bennett"), points(log(hg) ~ age, pch = "B", col = "red"))  
+with(subset(fish, site == "Waterville"), points(log(hg) ~ age, pch = "W", col = "blue"))
+abline(a = fish_model_alt$coefficients[1], b = fish_model_alt$coefficients[4], col = "forestgreen")
+abline(a = fish_model_alt$coefficients[2], b = fish_model_alt$coefficients[5], col = "red")
+abline(a = fish_model_alt$coefficients[3], b = fish_model_alt$coefficients[6], col = "blue")
+legend("topleft", legend = c("Lake A", "Lake B", "Lake W"), pch = 16, col = c("forestgreen", "red", "blue"))
+```
 
-<!-- (Note that we usually don't center indicator variables.)  Thus, we see that after controlling for the effect of weight, there is no evidence for an interaction between beers consumed and gender ($t_{11} =-1.67$, $p = 0.12$).  We could interpret this to mean that the relationship between beers consumed and BAC is the same for men and women, or to mean that the difference in BAC between men and women doesn't depend on the number of beers consumed. -->
-
-<!-- Note: When we included the beer:gender interaction in the model, we also included the indicator male.id alone.  To not have done so would have constrained the model to have the same intercept for men and women, despite the fact that the slopes with respect to the number of beers consumed could have differed.  Such a constraint makes little sense.  This is an example of a general rule of thumb, which is:  If a model includes an interaction between two predictors, it must include each of the individual predictors as well. -->
-
-<!-- %{\em Example:} Amanieu et al. (1989; {\em Oceanologica Acta} 12: 189-199) studied 20 sites in the Thau lagoon in southern France, and at each site measured concentrations of two types of bacteria and three environmental variables.  Here, we focus on the relationship between the concentration between one type of bacteria (`bna', as measured by the concentration of colonies grown on nutrient-rich agar) and two predictors: the total DNA production of all bacteria (`bact'), and the east-west position of the sites, as measured by a location variable `x'.  (Although it isn't entirely clear from the data, one would assume that more negative values of x correspond to more westerly locations, and more positive values of x correspond to more easterly locations.)  The first few records of the data set are: -->
-<!-- % -->
-<!-- %\renewcommand{\baselinestretch}{1} -->
-<!-- %\begin{verbatim} -->
-<!-- %    bna  bact     x -->
-<!-- %    1 4.615 0.274 -8.75 -->
-<!-- %    2 5.226 0.213 -6.75 -->
-<!-- %    3 5.081 0.134 -5.75 -->
-<!-- %    4 5.278 0.177 -5.75 -->
-<!-- %    5 5.756 0.091 -3.75 -->
-<!-- %    6 5.328 0.272 -2.75 -->
-<!-- %    ... -->
-<!-- %\end{verbatim} -->
-<!-- %\renewcommand{\baselinestretch}{1.5} -->
-<!-- %A model with both predictors and an interaction suggest that the effect of bacterial productivity on the response changes as one moves from west to east: -->
-<!-- %\renewcommand{\baselinestretch}{1} -->
-<!-- %\begin{verbatim} -->
-<!-- %Coefficients: -->
-<!-- % -->
-<!-- %            Estimate Std. Error t value Pr(>|t|)     -->
-<!-- %(Intercept)  5.94209    0.17113  34.723 9.56e-16 *** -->
-<!-- %bact        -2.48767    0.57673  -4.313 0.000615 *** -->
-<!-- %x           -0.01395    0.03768  -0.370 0.716323     -->
-<!-- %bact:x       0.32766    0.13222   2.478 0.025583 *   -->
-<!-- %\end{verbatim} -->
-<!-- %\renewcommand{\baselinestretch}{1.5} -->
-
-<!-- %% Add visualization here? -->
-
+A picture may be worth a thousand words, but it isn't worth a test!  The plot of the model suggests that fish in lake W accumulate mercury more slowly than fish in the other two lakes, but the differences among the slopes are no more greater we would have expected from random variation.
 
 ## (Multi-)Collinearity {#collinearity}
 

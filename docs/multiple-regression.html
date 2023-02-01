@@ -23,7 +23,7 @@
 <meta name="author" content="Kevin Gross" />
 
 
-<meta name="date" content="2023-01-31" />
+<meta name="date" content="2023-02-01" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -789,52 +789,30 @@ We then fit the model with the interaction, using the centered predictors instea
 ## Multiple R-squared:  0.9521, Adjusted R-squared:  0.9402 
 ## F-statistic: 79.57 on 3 and 12 DF,  p-value: 3.453e-08</code></pre>
 <p>Note that centering the predictors does not change the estimated interaction or its statistical significance. The main advantage of centering the predictors is that the partial regression coefficients associated with the centered versions of the predictors have a nice interpretation. Now, the partial regression coefficients associated with the main effects quantify the relationship between the predictor and the response when the other predictor involved in the interaction equals its average value.</p>
-<!-- Perhaps there is an interaction between gender and the number of beers consumed, with respect to their effect on BAC.^[Of course, we haven't yet found a statistically significant difference between the BAC of men vs.\ women in these data, but it is still edifying to work through this model.]   We test for such an association by including an interaction between the indicator for `male' and the number of beers consumed.  The model equation is: -->
-<!-- \[ -->
-<!-- y=\beta_0 +\beta_1 x_1 +\beta_2 x_2 +\beta_3 x_3 + \beta_4 x_1 x_3 +\varepsilon  -->
-<!-- \]  -->
-<!-- Compare this model for males: -->
-<!-- \[ -->
-<!-- y=\left(\beta_0 +\beta_3 \right)+\left(\beta_1 +\beta_4 \right)x_1 +\beta_2 x_2 +\varepsilon  -->
-<!-- \]  -->
-<!-- and females: -->
-<!-- \[ -->
-<!-- y=\beta_0 +\beta_1 x_1 +\beta_2 x_2 +\varepsilon  -->
-<!-- \]  -->
-<!-- Thus, we see that the coefficient $\beta_4$ will quantify how the relationship between beers consumed and BAC differs for men vs.\ women (after accounting for the effect of weight).  We fit the model in R: -->
-<!-- ```{r eval = FALSE} -->
-<!-- fm4 <- lm(BAC ~ beers + weight + gender + beers:gender, data = beer) -->
-<!-- summary(fm4) -->
-<!-- ``` -->
-<!-- (Note that we usually don't center indicator variables.)  Thus, we see that after controlling for the effect of weight, there is no evidence for an interaction between beers consumed and gender ($t_{11} =-1.67$, $p = 0.12$).  We could interpret this to mean that the relationship between beers consumed and BAC is the same for men and women, or to mean that the difference in BAC between men and women doesn't depend on the number of beers consumed. -->
-<!-- Note: When we included the beer:gender interaction in the model, we also included the indicator male.id alone.  To not have done so would have constrained the model to have the same intercept for men and women, despite the fact that the slopes with respect to the number of beers consumed could have differed.  Such a constraint makes little sense.  This is an example of a general rule of thumb, which is:  If a model includes an interaction between two predictors, it must include each of the individual predictors as well. -->
-<!-- %{\em Example:} Amanieu et al. (1989; {\em Oceanologica Acta} 12: 189-199) studied 20 sites in the Thau lagoon in southern France, and at each site measured concentrations of two types of bacteria and three environmental variables.  Here, we focus on the relationship between the concentration between one type of bacteria (`bna', as measured by the concentration of colonies grown on nutrient-rich agar) and two predictors: the total DNA production of all bacteria (`bact'), and the east-west position of the sites, as measured by a location variable `x'.  (Although it isn't entirely clear from the data, one would assume that more negative values of x correspond to more westerly locations, and more positive values of x correspond to more easterly locations.)  The first few records of the data set are: -->
-<!-- % -->
-<!-- %\renewcommand{\baselinestretch}{1} -->
-<!-- %\begin{verbatim} -->
-<!-- %    bna  bact     x -->
-<!-- %    1 4.615 0.274 -8.75 -->
-<!-- %    2 5.226 0.213 -6.75 -->
-<!-- %    3 5.081 0.134 -5.75 -->
-<!-- %    4 5.278 0.177 -5.75 -->
-<!-- %    5 5.756 0.091 -3.75 -->
-<!-- %    6 5.328 0.272 -2.75 -->
-<!-- %    ... -->
-<!-- %\end{verbatim} -->
-<!-- %\renewcommand{\baselinestretch}{1.5} -->
-<!-- %A model with both predictors and an interaction suggest that the effect of bacterial productivity on the response changes as one moves from west to east: -->
-<!-- %\renewcommand{\baselinestretch}{1} -->
-<!-- %\begin{verbatim} -->
-<!-- %Coefficients: -->
-<!-- % -->
-<!-- %            Estimate Std. Error t value Pr(>|t|)     -->
-<!-- %(Intercept)  5.94209    0.17113  34.723 9.56e-16 *** -->
-<!-- %bact        -2.48767    0.57673  -4.313 0.000615 *** -->
-<!-- %x           -0.01395    0.03768  -0.370 0.716323     -->
-<!-- %bact:x       0.32766    0.13222   2.478 0.025583 *   -->
-<!-- %\end{verbatim} -->
-<!-- %\renewcommand{\baselinestretch}{1.5} -->
-<!-- %% Add visualization here? -->
+<p>While we’re at it, we can also return to the fish data to ask if fish accumulate mercury in their tissues at different rates in the three lakes.</p>
+<div class="sourceCode" id="cb93"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb93-1"><a href="multiple-regression.html#cb93-1" aria-hidden="true" tabindex="-1"></a>fish_model_interaction <span class="ot">&lt;-</span> <span class="fu">lm</span>(<span class="fu">log</span>(hg) <span class="sc">~</span> age <span class="sc">*</span> site, <span class="at">data =</span> fish)</span>
+<span id="cb93-2"><a href="multiple-regression.html#cb93-2" aria-hidden="true" tabindex="-1"></a>fish_model_additive <span class="ot">&lt;-</span> <span class="fu">lm</span>(<span class="fu">log</span>(hg) <span class="sc">~</span> age <span class="sc">+</span> site, <span class="at">data =</span> fish)</span>
+<span id="cb93-3"><a href="multiple-regression.html#cb93-3" aria-hidden="true" tabindex="-1"></a><span class="fu">anova</span>(fish_model_additive, fish_model_interaction)</span></code></pre></div>
+<pre><code>## Analysis of Variance Table
+## 
+## Model 1: log(hg) ~ age + site
+## Model 2: log(hg) ~ age * site
+##   Res.Df     RSS Df Sum of Sq      F Pr(&gt;F)
+## 1     19 0.82529                           
+## 2     17 0.75322  2   0.07207 0.8133 0.4599</code></pre>
+<p>The interaction between age and lake is not significant (<span class="math inline">\(F_{2, 17} = 0.81\)</span>, <span class="math inline">\(p=0.46\)</span>). There is no evidence that the rate at which fish accumulate mercury in their tissues differs among the three lakes.</p>
+<p>Just for fun, we can plot the model with the interaction to see how the plot differs from the additive model that we considered earlier. As we did before, we’ll use the trick of fitting the model without the baseline intercept to make it easier to extract the slopes and intercepts of the lake-specific trend lines.</p>
+<div class="sourceCode" id="cb95"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb95-1"><a href="multiple-regression.html#cb95-1" aria-hidden="true" tabindex="-1"></a>fish_model_alt <span class="ot">&lt;-</span> <span class="fu">lm</span>(<span class="fu">log</span>(hg) <span class="sc">~</span> site <span class="sc">+</span> age<span class="sc">:</span>site <span class="sc">-</span> <span class="dv">1</span>, <span class="at">data =</span> fish)</span>
+<span id="cb95-2"><a href="multiple-regression.html#cb95-2" aria-hidden="true" tabindex="-1"></a><span class="fu">with</span>(fish, <span class="fu">plot</span>(<span class="fu">log</span>(hg) <span class="sc">~</span> age, <span class="at">xlab =</span> <span class="st">&quot;age (years)&quot;</span>, <span class="at">ylab =</span> <span class="st">&quot;log(tissue Hg)&quot;</span>, <span class="at">type =</span> <span class="st">&quot;n&quot;</span>))</span>
+<span id="cb95-3"><a href="multiple-regression.html#cb95-3" aria-hidden="true" tabindex="-1"></a><span class="fu">with</span>(<span class="fu">subset</span>(fish, site <span class="sc">==</span> <span class="st">&quot;Adger&quot;</span>), <span class="fu">points</span>(<span class="fu">log</span>(hg) <span class="sc">~</span> age, <span class="at">pch =</span> <span class="st">&quot;A&quot;</span>, <span class="at">col =</span> <span class="st">&quot;forestgreen&quot;</span>))</span>
+<span id="cb95-4"><a href="multiple-regression.html#cb95-4" aria-hidden="true" tabindex="-1"></a><span class="fu">with</span>(<span class="fu">subset</span>(fish, site <span class="sc">==</span> <span class="st">&quot;Bennett&quot;</span>), <span class="fu">points</span>(<span class="fu">log</span>(hg) <span class="sc">~</span> age, <span class="at">pch =</span> <span class="st">&quot;B&quot;</span>, <span class="at">col =</span> <span class="st">&quot;red&quot;</span>))  </span>
+<span id="cb95-5"><a href="multiple-regression.html#cb95-5" aria-hidden="true" tabindex="-1"></a><span class="fu">with</span>(<span class="fu">subset</span>(fish, site <span class="sc">==</span> <span class="st">&quot;Waterville&quot;</span>), <span class="fu">points</span>(<span class="fu">log</span>(hg) <span class="sc">~</span> age, <span class="at">pch =</span> <span class="st">&quot;W&quot;</span>, <span class="at">col =</span> <span class="st">&quot;blue&quot;</span>))</span>
+<span id="cb95-6"><a href="multiple-regression.html#cb95-6" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">a =</span> fish_model_alt<span class="sc">$</span>coefficients[<span class="dv">1</span>], <span class="at">b =</span> fish_model_alt<span class="sc">$</span>coefficients[<span class="dv">4</span>], <span class="at">col =</span> <span class="st">&quot;forestgreen&quot;</span>)</span>
+<span id="cb95-7"><a href="multiple-regression.html#cb95-7" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">a =</span> fish_model_alt<span class="sc">$</span>coefficients[<span class="dv">2</span>], <span class="at">b =</span> fish_model_alt<span class="sc">$</span>coefficients[<span class="dv">5</span>], <span class="at">col =</span> <span class="st">&quot;red&quot;</span>)</span>
+<span id="cb95-8"><a href="multiple-regression.html#cb95-8" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">a =</span> fish_model_alt<span class="sc">$</span>coefficients[<span class="dv">3</span>], <span class="at">b =</span> fish_model_alt<span class="sc">$</span>coefficients[<span class="dv">6</span>], <span class="at">col =</span> <span class="st">&quot;blue&quot;</span>)</span>
+<span id="cb95-9"><a href="multiple-regression.html#cb95-9" aria-hidden="true" tabindex="-1"></a><span class="fu">legend</span>(<span class="st">&quot;topleft&quot;</span>, <span class="at">legend =</span> <span class="fu">c</span>(<span class="st">&quot;Lake A&quot;</span>, <span class="st">&quot;Lake B&quot;</span>, <span class="st">&quot;Lake W&quot;</span>), <span class="at">pch =</span> <span class="dv">16</span>, <span class="at">col =</span> <span class="fu">c</span>(<span class="st">&quot;forestgreen&quot;</span>, <span class="st">&quot;red&quot;</span>, <span class="st">&quot;blue&quot;</span>))</span></code></pre></div>
+<p><img src="02-MultipleRegression_files/figure-html/unnamed-chunk-25-1.png" width="480" style="display: block; margin: auto;" /></p>
+<p>A picture may be worth a thousand words, but it isn’t worth a test! The plot of the model suggests that fish in lake W accumulate mercury more slowly than fish in the other two lakes, but the differences among the slopes are no more greater we would have expected from random variation.</p>
 </div>
 <div id="collinearity" class="section level2 hasAnchor" number="2.5">
 <h2><span class="header-section-number">2.5</span> (Multi-)Collinearity<a href="multiple-regression.html#collinearity" class="anchor-section" aria-label="Anchor link to header"></a></h2>
@@ -948,8 +926,8 @@ The smallest value of AIC is best. (Smaller here means algebraically smaller —
 <p>The algorithm for stepwise selection initiates the algorithm with <span class="math inline">\(y=\beta_0 +\varepsilon\)</span>, and then forms a set of candidate models that differ from the working model by either the addition or elimination of a single model term. The algorithm proceeds until the working model cannot be improved either by a single addition or elimination.</p>
 <p>So far, we have been silent about how we determine whether a candidate model improves on the working model, and if so, how to find the candidate model that offers the most improvement. We can use any of our ranking methods at this step. Historically, <span class="math inline">\(p\)</span>-values have often been used to determine whether a candidate model improves on the working model, though this practice has largely been discontinued. The argument against it is that using <span class="math inline">\(p\)</span>-values for variable selection destroys their interpretation in the context of hypothesis testing. This being said, <em>any</em> statistical tests can only be regarded as descriptive if the tests occur in the context of a model that has been identified by model selection. Statistical tests only have their advertised properties if decisions about which predictors to include are made <em>before</em> looking at the data.</p>
 <p>The `step’ routine in R uses AIC as its default criterion for adding or dropping terms in stepwise selection. Here is an example of stepwise selection with the cheese data, considering only models without interactions or polynomial terms.</p>
-<div class="sourceCode" id="cb93"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb93-1"><a href="multiple-regression.html#cb93-1" aria-hidden="true" tabindex="-1"></a>fm0 <span class="ot">&lt;-</span> <span class="fu">lm</span>(taste <span class="sc">~</span> <span class="dv">1</span>, <span class="at">data =</span> cheese)  <span class="co"># the initial model y = b0 + eps</span></span>
-<span id="cb93-2"><a href="multiple-regression.html#cb93-2" aria-hidden="true" tabindex="-1"></a><span class="fu">step</span>(fm0, taste <span class="sc">~</span> Acetic <span class="sc">+</span> H2S <span class="sc">+</span> Lactic, <span class="at">data =</span> cheese)  </span></code></pre></div>
+<div class="sourceCode" id="cb96"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb96-1"><a href="multiple-regression.html#cb96-1" aria-hidden="true" tabindex="-1"></a>fm0 <span class="ot">&lt;-</span> <span class="fu">lm</span>(taste <span class="sc">~</span> <span class="dv">1</span>, <span class="at">data =</span> cheese)  <span class="co"># the initial model y = b0 + eps</span></span>
+<span id="cb96-2"><a href="multiple-regression.html#cb96-2" aria-hidden="true" tabindex="-1"></a><span class="fu">step</span>(fm0, taste <span class="sc">~</span> Acetic <span class="sc">+</span> H2S <span class="sc">+</span> Lactic, <span class="at">data =</span> cheese)  </span></code></pre></div>
 <pre><code>## Start:  AIC=168.29
 ## taste ~ 1
 ## 
@@ -1001,11 +979,11 @@ The smallest value of AIC is best. (Smaller here means algebraically smaller —
 <h3><span class="header-section-number">2.7.1</span> Leverage<a href="multiple-regression.html#leverage" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>Recall that in SLR, a data point can have undue influence on the regression model if the value of the predictor, <span class="math inline">\(x\)</span>, is for away from <span class="math inline">\(\bar{x}\)</span>. The same notion applies in MLR: data points can be unduly influential if their combination of predictors lies far away from the “center of mass” of the other predictors. However, with multiple predictors, it is harder to detect influential points visually. The <em>leverage</em> of a data point is a measure of its distance from the center of mass of the predictors, and hence its influence. The formula for calculating leverages is complicated, so we’ll use a computer to calculate them. Leverages are usually denoted with the letter <span class="math inline">\(h\)</span>, so the leverage for the <span class="math inline">\(i\)</span>th data point is <span class="math inline">\(h_i\)</span>. If we looked at the equation for a leverage, however, we would discover that leverages are strictly functions of the predictors, and do not depend on th response.</p>
 <p>To calculate leverages in R, first pass the regression model object to the function <code>influence.lm</code>. This function returns several diagnostic measures; the leverages are contained in the component called <code>hat</code>. To extract the leverages, use code like the following:</p>
-<div class="sourceCode" id="cb96"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb96-1"><a href="multiple-regression.html#cb96-1" aria-hidden="true" tabindex="-1"></a>fm1 <span class="ot">&lt;-</span> <span class="fu">lm</span>(BAC <span class="sc">~</span> weight <span class="sc">+</span> beers, <span class="at">data =</span> beer)</span>
-<span id="cb96-2"><a href="multiple-regression.html#cb96-2" aria-hidden="true" tabindex="-1"></a>fm1.diagnostics <span class="ot">&lt;-</span> <span class="fu">lm.influence</span>(fm1)</span>
-<span id="cb96-3"><a href="multiple-regression.html#cb96-3" aria-hidden="true" tabindex="-1"></a>lev <span class="ot">&lt;-</span> fm1.diagnostics<span class="sc">$</span>hat</span></code></pre></div>
+<div class="sourceCode" id="cb99"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb99-1"><a href="multiple-regression.html#cb99-1" aria-hidden="true" tabindex="-1"></a>fm1 <span class="ot">&lt;-</span> <span class="fu">lm</span>(BAC <span class="sc">~</span> weight <span class="sc">+</span> beers, <span class="at">data =</span> beer)</span>
+<span id="cb99-2"><a href="multiple-regression.html#cb99-2" aria-hidden="true" tabindex="-1"></a>fm1.diagnostics <span class="ot">&lt;-</span> <span class="fu">lm.influence</span>(fm1)</span>
+<span id="cb99-3"><a href="multiple-regression.html#cb99-3" aria-hidden="true" tabindex="-1"></a>lev <span class="ot">&lt;-</span> fm1.diagnostics<span class="sc">$</span>hat</span></code></pre></div>
 <p>Here is a look at some of the leverage values for the BAC data:</p>
-<div class="sourceCode" id="cb97"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb97-1"><a href="multiple-regression.html#cb97-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(<span class="fu">cbind</span>(beer, lev))</span></code></pre></div>
+<div class="sourceCode" id="cb100"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb100-1"><a href="multiple-regression.html#cb100-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(<span class="fu">cbind</span>(beer, lev))</span></code></pre></div>
 <pre><code>##     BAC weight beers beers.c weight.c       lev
 ## 1 0.100    132     5  0.1875 -39.5625 0.1118535
 ## 2 0.030    128     2 -2.8125 -43.5625 0.1948842
@@ -1025,7 +1003,7 @@ e_i^{(s)} =\frac{e_i}{s_\varepsilon \sqrt{1-h_i} }
 \]</span></p>
 <p>The benefit of standardized residuals is that if our model assumptions are appropriate, then they should behave like an iid sample from a normal distribution with mean 0 and variance 1. That is to say, most standardized residuals should be between -2 and +2, and only a few should be <span class="math inline">\(&lt; -3\)</span> or <span class="math inline">\(&gt; +3\)</span>. Some texts call these “studentized residuals” instead of standardized residuals.</p>
 <p>R does not have a built-in function for calculating standardized residuals. However, there is a library of functions called the <code>MASS</code> library that contains the function <code>stdres</code>. (MASS is an acronym for , which is one of the original advanced texts for using R. It is written by W.N. Venables and B.D. Ripley.)</p>
-<div class="sourceCode" id="cb99"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb99-1"><a href="multiple-regression.html#cb99-1" aria-hidden="true" tabindex="-1"></a>MASS<span class="sc">::</span><span class="fu">stdres</span>(fm1)</span></code></pre></div>
+<div class="sourceCode" id="cb102"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb102-1"><a href="multiple-regression.html#cb102-1" aria-hidden="true" tabindex="-1"></a>MASS<span class="sc">::</span><span class="fu">stdres</span>(fm1)</span></code></pre></div>
 <pre><code>##          1          2          3          4          5          6          7 
 ##  0.8307561 -0.3611695  1.4198337 -1.0767727  0.2664003  0.6708175  1.6189097 
 ##          8          9         10         11         12         13         14 
@@ -1036,8 +1014,8 @@ e_i^{(s)} =\frac{e_i}{s_\varepsilon \sqrt{1-h_i} }
 <div id="cooks-distance" class="section level3 hasAnchor" number="2.7.3">
 <h3><span class="header-section-number">2.7.3</span> Cook’s distance<a href="multiple-regression.html#cooks-distance" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>Leverages and standardized residuals can be combined into various quantities that measure the influence each observation has on the fitted regression line. One of the most popular of these are Cook’s distance, <span class="math inline">\(D_i\)</span>. In R, if you pass a regression model to the command <code>plot</code>, it will produce four (somewhat sophisticated) diagnostic plots. The last of these shows Cook’s distance.</p>
-<div class="sourceCode" id="cb101"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb101-1"><a href="multiple-regression.html#cb101-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(fm1)</span></code></pre></div>
-<p><img src="02-MultipleRegression_files/figure-html/unnamed-chunk-28-1.png" width="480" style="display: block; margin: auto;" /><img src="02-MultipleRegression_files/figure-html/unnamed-chunk-28-2.png" width="480" style="display: block; margin: auto;" /><img src="02-MultipleRegression_files/figure-html/unnamed-chunk-28-3.png" width="480" style="display: block; margin: auto;" /><img src="02-MultipleRegression_files/figure-html/unnamed-chunk-28-4.png" width="480" style="display: block; margin: auto;" />
+<div class="sourceCode" id="cb104"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb104-1"><a href="multiple-regression.html#cb104-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(fm1)</span></code></pre></div>
+<p><img src="02-MultipleRegression_files/figure-html/unnamed-chunk-30-1.png" width="480" style="display: block; margin: auto;" /><img src="02-MultipleRegression_files/figure-html/unnamed-chunk-30-2.png" width="480" style="display: block; margin: auto;" /><img src="02-MultipleRegression_files/figure-html/unnamed-chunk-30-3.png" width="480" style="display: block; margin: auto;" /><img src="02-MultipleRegression_files/figure-html/unnamed-chunk-30-4.png" width="480" style="display: block; margin: auto;" />
 Observations with large values of Cook’s distance merit greater scrutiny.</p>
 </div>
 </div>
@@ -1077,10 +1055,10 @@ The most important component of the above equation is the <span class="math inli
 \mathbf{X}=\left[\begin{array}{ccc} {1} &amp; {5} &amp; {41} \\ {1} &amp; {10} &amp; {50} \\ {1} &amp; {15} &amp; {59} \\ {1} &amp; {20} &amp; {68} \end{array}\right]
 \]</span>
 where the predictor in the 2<span class="math inline">\(^{nd}\)</span> column is degrees Centigrade and the predictor in the 3<span class="math inline">\(^{rd}\)</span> column is degrees Fahrenheit. Let’s try to fit a regression model in R for some made up values of <span class="math inline">\(y\)</span>:</p>
-<div class="sourceCode" id="cb102"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb102-1"><a href="multiple-regression.html#cb102-1" aria-hidden="true" tabindex="-1"></a>bad.data <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">y    =</span> <span class="fu">c</span>(<span class="fl">2.4</span>, <span class="fl">6.1</span>, <span class="fl">4.4</span>, <span class="fl">7.0</span>),</span>
-<span id="cb102-2"><a href="multiple-regression.html#cb102-2" aria-hidden="true" tabindex="-1"></a>                       <span class="at">degC =</span> <span class="fu">c</span>(<span class="dv">5</span>, <span class="dv">10</span>, <span class="dv">15</span>, <span class="dv">20</span>),</span>
-<span id="cb102-3"><a href="multiple-regression.html#cb102-3" aria-hidden="true" tabindex="-1"></a>                       <span class="at">degF =</span> <span class="fu">c</span>(<span class="dv">41</span>, <span class="dv">50</span>, <span class="dv">59</span>, <span class="dv">68</span>))</span>
-<span id="cb102-4"><a href="multiple-regression.html#cb102-4" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(<span class="fu">lm</span>(y <span class="sc">~</span> degC <span class="sc">+</span> degF, <span class="at">data =</span> bad.data))</span></code></pre></div>
+<div class="sourceCode" id="cb105"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb105-1"><a href="multiple-regression.html#cb105-1" aria-hidden="true" tabindex="-1"></a>bad.data <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">y    =</span> <span class="fu">c</span>(<span class="fl">2.4</span>, <span class="fl">6.1</span>, <span class="fl">4.4</span>, <span class="fl">7.0</span>),</span>
+<span id="cb105-2"><a href="multiple-regression.html#cb105-2" aria-hidden="true" tabindex="-1"></a>                       <span class="at">degC =</span> <span class="fu">c</span>(<span class="dv">5</span>, <span class="dv">10</span>, <span class="dv">15</span>, <span class="dv">20</span>),</span>
+<span id="cb105-3"><a href="multiple-regression.html#cb105-3" aria-hidden="true" tabindex="-1"></a>                       <span class="at">degF =</span> <span class="fu">c</span>(<span class="dv">41</span>, <span class="dv">50</span>, <span class="dv">59</span>, <span class="dv">68</span>))</span>
+<span id="cb105-4"><a href="multiple-regression.html#cb105-4" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(<span class="fu">lm</span>(y <span class="sc">~</span> degC <span class="sc">+</span> degF, <span class="at">data =</span> bad.data))</span></code></pre></div>
 <pre><code>## 
 ## Call:
 ## lm(formula = y ~ degC + degF, data = bad.data)
