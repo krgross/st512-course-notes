@@ -804,29 +804,170 @@ A picture may be worth a thousand words, but it isn't worth a test!  The plot of
 
 ## (Multi-)Collinearity {#collinearity}
 
-*What is collinearity?* To quote the Quinn \& Keough text (p. 127), "One important issue in multiple linear regression analysis, and one that seems to be ignored by many biologists who fit multiple regression models to their data, is the impact of correlated predictor variables on the estimates of parameters and hypothesis tests.  If the predictors are correlated, then the data are said to be effected by (multi)collinearity. ... Lack of collinearity is also very difficult to meet with real biological data"
+Collinearity (or what is sometimes also called multi-collinearity) refers to correlations among predictors, or among weighted sums of predictors.  In a designed experiment, collinearity should not be an issue: The experimenter should be able to assign predictors in such a way that predictors are not strongly correlated with one another, or even better, are perfectly uncorrelated.^[Indeed, if the predictors are perfectly uncorrelated with one another, then the multiple regression coefficients will be identical to the slopes from individual simple regression models.]  With observational data, however, collinearity is often the rule more than the exception.  This is especially true when the number of predictors becomes large relative to the number of data points.  For example, the problem is especially acute in genomic studies, in which one may seek to find genetic correlates of phenotypic differences with a sample of a few dozen genomes, each of which contains genotypes at several thousand or more loci.  In this section, we will explain what collinearity is, how it affects regression modeling, how it can be measured, and what (if anything) can be done about it.
 
-Perfect collinearity occurs when there is a linear dependency in the design matrix.  That is to say, one of the predictors is exactly equal to a linear combination of the other predictors.  Assuming that you are on your toes, you should be able to detect and avoid perfect collinearity.  However, if predictors are strongly (but nor perfectly) correlated, trouble still lurks.  Even worse, when there are many predictors relative to the number of data points, collinearity is nearly inevitable.
+To illustrate, we'll use a data set that details the tar content, nicotine content, weight, and carbon monoxide content of a couple dozen brands of cigarettes.  I found these data in @mcintyre1994using, who offers the following context:
 
-Mathematically, calculating $\left(\X'\X\right)^{-1}$ with strong (but not perfect) collinearity is numerically unstable, and tends to magnify rounding errors (think of dividing by a number very close to, but not equal to zero).  Geometrically, the "plane" that we are trying to fit to the cloud of data points is not well anchored.  It is unstable, in the sense that small changes in the data can have large impacts on the estimated regression coefficients.  As Quinn \& Keough say in their text (p.\ 127): "Small changes in data or adding or deleting one of the predictor variables can change the estimated regression coefficients considerably, even changing their sign (Bowerman \& O'Connell 1990)".  This instability is not the hallmark of a trustworthy model.  As a consequence of this instability, the standard errors of the partial regression coefficients can be large.  This makes it difficult, if not impossible, to have confidence in our inferences about the estimated partial regression coefficients. 
+> The Federal Trade Commission annually rates varieties of domestic cigarettes according to their tar, nicotine, and carbon monoxide content. The United States Surgeon General considers each of these substances hazardous to a smoker's health. Past studies have shown that increases in the tar and nicotine content of a cigarette are accompanied by an increase in the carbon monoxide emitted from the cigarette smoke.
 
-Collinearity is *not* a problem for prediction, however.  Quoting Quinn \& Keough once more (p. 127) "as long as we are not extrapolating beyond the range of our predictor variables and we are making predictions from data with a similar pattern of collinearity as the data to which we fitted our model, collinearity doesn't necessarily prevent us from estimating a regression model that fits the data well and has good predictive power (Rawlings et al. 1998).  It does, however, mean that we are not confident in our estimates of the model parameters.  A different sample from the same population of observations, even using the same values of the predictor variables, might produce very different parameter estimates."
+> The dataset presented here contains measurements of weight and tar, nicotine, and carbon monoxide (CO) content for 25 brands of cigarettes. The data were taken from @mendenhall1992statistics. The original source of the data is the Federal Trade Commission.”
 
-Collinearity is usually assessed by a variance inflation factor (VIF).  A separate VIF is calculated for each predictor in the model.  To calculate the VIF for predictor $x_j$, do the following:
+
+```r
+cig <- read.table("data/cigarettes.txt", head = T)
+head(cig)
+```
+
+```
+##           Brand  tar nicotine weight   co
+## 1        Alpine 14.1     0.86 0.9853 13.6
+## 2 Benson&Hedges 16.0     1.06 1.0938 16.6
+## 3    BullDurham 29.8     2.03 1.1650 23.5
+## 4   CamelLights  8.0     0.67 0.9280 10.2
+## 5       Carlton  4.1     0.40 0.9462  5.4
+## 6  Chesterfield 15.0     1.04 0.8885 15.0
+```
+
+(Note that the first variable in the data set is a character string that gives the brand name of each cigarette.  In this case, we do not want to treat this as a categorical predictor, so we exclude the `stringsAsFactors = T` argument from the `read.table` command.)
+
+Here is a pairs plot of the data:
+
+```r
+pairs(cig[, 2:5])
+```
+
+<img src="02-MultipleRegression_files/figure-html/unnamed-chunk-27-1.png" width="480" style="display: block; margin: auto;" />
+
+We wish to use tar content, nicotine content, and weight to build a predictive model of carbon monoxide content.^[Another feature of these data that immediately catches the eye is that there is one cigarette --- Bull Durham brand --- that has noticeably larger values of all variables.  There is also a brand --- Now brand --- that has noticeably lower values of all variables.  These two data points will have large leverage, and we might wonder to what extent the fit will be driven by these two data points alone.  That's a fair question, and one that we should ask in a complete analysis of these data.  But it's beside the point for the present purposes, so we won't engage with it here.]  Let's first observe that, when considered on their own, both tar content and nicotine content have strongly significant associations with carbon monoxide content, as the pairs plot suggests.
+
+```r
+summary(lm(co ~ tar, data = cig))
+```
+
+```
+## 
+## Call:
+## lm(formula = co ~ tar, data = cig)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -3.1124 -0.7167 -0.3754  1.0091  2.5450 
+## 
+## Coefficients:
+##             Estimate Std. Error t value Pr(>|t|)    
+## (Intercept)  2.74328    0.67521   4.063 0.000481 ***
+## tar          0.80098    0.05032  15.918 6.55e-14 ***
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Residual standard error: 1.397 on 23 degrees of freedom
+## Multiple R-squared:  0.9168,	Adjusted R-squared:  0.9132 
+## F-statistic: 253.4 on 1 and 23 DF,  p-value: 6.552e-14
+```
+
+```r
+summary(lm(co ~ nicotine, data = cig))
+```
+
+```
+## 
+## Call:
+## lm(formula = co ~ nicotine, data = cig)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -3.3273 -1.2228  0.2304  1.2700  3.9357 
+## 
+## Coefficients:
+##             Estimate Std. Error t value Pr(>|t|)    
+## (Intercept)   1.6647     0.9936   1.675    0.107    
+## nicotine     12.3954     1.0542  11.759 3.31e-11 ***
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Residual standard error: 1.828 on 23 degrees of freedom
+## Multiple R-squared:  0.8574,	Adjusted R-squared:  0.8512 
+## F-statistic: 138.3 on 1 and 23 DF,  p-value: 3.312e-11
+```
+
+Yet in a model that includes all three predictors, only tar content seems to be statistically significant:
+
+```r
+cig.model <- lm(co ~ tar + nicotine + weight, data = cig)
+summary(cig.model)
+```
+
+```
+## 
+## Call:
+## lm(formula = co ~ tar + nicotine + weight, data = cig)
+## 
+## Residuals:
+##      Min       1Q   Median       3Q      Max 
+## -2.89261 -0.78269  0.00428  0.92891  2.45082 
+## 
+## Coefficients:
+##             Estimate Std. Error t value Pr(>|t|)    
+## (Intercept)   3.2022     3.4618   0.925 0.365464    
+## tar           0.9626     0.2422   3.974 0.000692 ***
+## nicotine     -2.6317     3.9006  -0.675 0.507234    
+## weight       -0.1305     3.8853  -0.034 0.973527    
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Residual standard error: 1.446 on 21 degrees of freedom
+## Multiple R-squared:  0.9186,	Adjusted R-squared:  0.907 
+## F-statistic: 78.98 on 3 and 21 DF,  p-value: 1.329e-11
+```
+
+The multiple regression model suggests that if we compare cigarettes with the same nicotine content (and weight), then there will be a (strongly) significant statistical association between tar content and carbon monoxide content.   On the other hand, if we compare cigarettes with the same tar content (and weight), then there will not be a significant association between the nicotine content and the carbon monoxide content.  This seems like a strong distinction.  Do we trust it?
+
+The issue here is that tar and nicotine content are strongly correlated with one another, raising legitimate questions about whether we can separate the associations between one of the predictors and the response from the other.  Indeed, in light of the strong correlation between tar content and nicotine content, does our comparative interpretation of the regression coefficients even make sense?  If two cigarettes have the same nicotine content and weight, then by how much can their tar content differ?
+
+This is the issue of collinearity.  Perfect collinearity occurs when two predictors are perfectly correlated with one another.  Perfect collinearity is rare (unless the number of predictors exceeds the number of data points, in which case it is inevitable).  However, if predictors are strongly (but nor perfectly) correlated, trouble still lurks.  Indeed, collinearity is not just caused by strong correlations between pairs of predictors: It can also be caused by strong correlations between weighted sums of predictors.  For this reason, when there are many predictors relative to the number of data points, collinearity is nearly inevitable.
+
+<!-- Mathematically, calculating $\left(\X'\X\right)^{-1}$ with strong (but not perfect) collinearity is numerically unstable, and tends to magnify rounding errors (think of dividing by a number very close to, but not equal to zero).  Geometrically, the "plane" that we are trying to fit to the cloud of data points is not well anchored.  It is unstable, in the sense that small changes in the data can have large impacts on the estimated regression coefficients.   -->
+
+The usual guidance is that collinearity makes the estimated regression coefficients unreliable or unstable, in the sense that small changes in the data set can trigger large changes in the model fit (@bowerman1990linear).  This sensitivity to small changes makes it difficult, if not impossible, to have confidence in our inferences about the estimated partial regression coefficients. 
+
+Collinearity is not a problem for prediction, however.  As @quinn2002experimental (p. 127) say:
+
+> As long as we are not extrapolating beyond the range of our predictor variables and we are making predictions from data with a similar pattern of collinearity as the data to which we fitted our model, collinearity doesn't necessarily prevent us from estimating a regression model that fits the data well and has good predictive power (@rawlings1998applied).  It does, however, mean that we are not confident in our estimates of the model parameters.  A different sample from the same population of observations, even using the same values of the predictor variables, might produce very different parameter estimates.
+
+In other words, we can still use our regression model for prediction, as long as we supply values of tar content and nicotine content that are consistent with the strong correlation between those two variables in the original data set.
+
+Collinearity is usually assessed by a variance inflation factor (VIF).  The VIF is so named because it measures the amount by which the correlations among the predictors increase the standard error (and thus the variance) of the estimated regression coefficients.  A separate VIF can be calculated for each predictor in the model.  There is a relatively simple recipe for calculating VIFs that is somewhat edifying, although it's easier to let the software compute the VIFs for you.  Here's the recipe if you are interested:
+
+To calculate the VIF for predictor $x_j$, do the following:
 
 1. Regress $x_j$ against all other predictors.  That is, fit a new regression model in which $x_j$ is the response.  Note that the actual response $y$ is not included in this model.
-	
+
 2. Calculate $R^2$.
-	
-3.  The VIF associated with predictor $x_j$ is 
-\[
-1/\left(1-R^2 \right)
-\] 
-The usual rule of thumb is that a VIF $\geq$ 10 indicates strong enough collinearity that additional measures should be taken.  As always, don't take the bright-line aspect of this rule too seriously; a VIF of 9.9 is not meaningfully different from a VIF of 10.1.^[Students often wonder why the VIF is calculated as $1/\left(1-R^2 \right)$.  Why not just use the $R^2$ value directly?  This is an understandable question.  The reason for using the VIF is that collinearity really does inflate the variance of the sampling distribution of $\beta_j$, and it inflates it by a factor equal to the VIF.  It just so happens that the VIF can be expressed in terms of the $R^2$ from a regression model in which $x_j$ is the response.  This provides a bit of a computational short-cut, and also helps develop intuition regarding the circumstances that are likely to produce a large VIF.]
 
-There is no magic solution to collinearity.  If two predictors and a response vary in concert, then it is difficult (if not impossible) to tease apart the effect of one predictor on the response from the effect of the other predictor with a statistical model.  Each of the following techniques tries to stabilize the estimated partial regression coefficients at the expense of accepting a (hopefully) small bias.^[Here, we use "bias" in its technical sense, meaning the difference between the average of a sampling distribution of an estimate, and the parameter we are trying to estimate.  All else being equal, we prefer estimators that are unbiased.  However, sometimes a small amount of bias may be acceptable if it leads to big improvements in other properties of the estimator.]
+3.  The VIF associated with predictor $x_j$ is $1/\left(1-R^2 \right)$.
 
-1. Omit predictors that are highly correlated with other predictors in the model.  The justification usually offered here is that highly correlated predictors may just be redundant measures of the same thing.  As an example, if we are studying lakes, the amount of sediment in the water and the clarity of the water may be two different variables that are measuring the same characteristic.  If this is true, there is little to be gained by including both variables as predictors in a regression model.
+The interesting feature of the recipe is that it depends only on the values of the predictors --- the response $y$ plays no part.  The recipe also has a certain logic, in the sense that if a predictor is strongly collinear with the other predictors in the model, then we should be able to predict that predictor well using the other predictors in the model. The reason why the VIF is calculated as $1/\left(1-R^2 \right)$ in the last step is a bit of a mystery, and has to do with the fact that VIFs were originally developed to measure the increase in the variance of the regression coefficients caused by the collinearity.
+
+Here, we'll use the `vif` function found in the `car` package to compute the VIFs for the cigarette model:
+
+```r
+car::vif(cig.model)
+```
+
+```
+##       tar  nicotine    weight 
+## 21.630706 21.899917  1.333859
+```
+
+Larger values of VIF indicate stronger collinearity.  For the cigarette data, the VIFs tell us that both tar and nicotine are strongly collinear with the other predictors in the model, but weight is not strongly collinear with tar and nicotine.
+
+So that's the good news: that collinearity is readily measured.  The bad news is two-fold.  First, VIFs are a continuous measure.  The natural question is how large the VIF needs to be before one needs to worry about it.  There's no bright line to be found here. Most texts suggests that a VIF $\geq$ 10 indicates strong enough collinearity that additional measures should be taken.  As always, don't take the bright-line aspect of this rule too seriously; a VIF of 9.9 is not meaningfully different from a VIF of 10.1.
+
+The second half of the bad news is that there's no easy fix for collinearity.  In some sense, this is just a statement of common sense:  If two predictors and a response vary together, then it is difficult (if not impossible) to tease apart the effect of one predictor on the response from the effect of the other predictor with a statistical model.  With the cigarette data, for example, if we really wanted to characterize the effects of tar and nicotine content separately, then we'd need to find some cigarettes with high tar content and low nicotine content, or vice versa.
+
+The usual recommendations for coping with collinearity attempt to stabilize the estimated partial regression coefficients at the expense of accepting a (hopefully) small bias.^[Here, we use "bias" in its technical sense, meaning the difference between the average of a sampling distribution of an estimate, and the parameter we are trying to estimate.  All else being equal, we prefer estimators that are unbiased.  However, sometimes a small amount of bias may be acceptable if it leads to big improvements in other properties of the estimator.]  Here are two:
+
+1. Omit predictors that are highly correlated with other predictors in the model.  The rationale here is that highly correlated predictors may just be redundant measures of the same thing.  As an example, in the cigarette data, tar content and nicotine content may both be driven by the same underlying features of the cigarette's ingredients.  If this is true, there is little to be gained by including both variables as predictors in a regression model.
 
 2. Use principal components analysis (PCA) to reduce the number of predictors, and use principal components as predictors.  PCA is a multivariate statistical method that takes several variables and produces a smaller number of new variables (the "principal components") that contain the majority of the information in the original variables.  The advantage of using a principal component as a predictor is that different principal components are guaranteed to be independent of one another, by virtue of how they are calculated.  The major disadvantage of using principal components is that the newly created predictors (the principal components) are amalgams of the original variables, and thus it is more difficult to assign a scientific interpretation to the partial regression coefficients associated with each.  So, using PCA to find new predictors yields a more robust statistical model, albeit at the expense of reduced interpretability. 
 
@@ -1061,7 +1202,7 @@ Leverages and standardized residuals can be combined into various quantities tha
 plot(fm1)
 ```
 
-<img src="02-MultipleRegression_files/figure-html/unnamed-chunk-30-1.png" width="480" style="display: block; margin: auto;" /><img src="02-MultipleRegression_files/figure-html/unnamed-chunk-30-2.png" width="480" style="display: block; margin: auto;" /><img src="02-MultipleRegression_files/figure-html/unnamed-chunk-30-3.png" width="480" style="display: block; margin: auto;" /><img src="02-MultipleRegression_files/figure-html/unnamed-chunk-30-4.png" width="480" style="display: block; margin: auto;" />
+<img src="02-MultipleRegression_files/figure-html/unnamed-chunk-35-1.png" width="480" style="display: block; margin: auto;" /><img src="02-MultipleRegression_files/figure-html/unnamed-chunk-35-2.png" width="480" style="display: block; margin: auto;" /><img src="02-MultipleRegression_files/figure-html/unnamed-chunk-35-3.png" width="480" style="display: block; margin: auto;" /><img src="02-MultipleRegression_files/figure-html/unnamed-chunk-35-4.png" width="480" style="display: block; margin: auto;" />
 Observations with large values of Cook's distance merit greater scrutiny.
 
 ## Appendix: Regression as a linear algebra problem {-}

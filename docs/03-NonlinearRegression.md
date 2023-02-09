@@ -228,7 +228,7 @@ Sometimes, all we want to do is to generate a curve that characterizes the relat
 
 ### Loess smoothers
 
-We will illustrate LOESS smoothers with the bioluminescence data found in the ISIT data set.  These data can be found by visiting the webpage for the book "Mixed Effects Models and Extensions in Ecology with R" by Zuur et al. (2009)(@zuur2009mixed).  
+"Loess" is an acronym for [lo]cal regr[ess]ion.  Nomenclature can be a bit frustrating with loess models. As we will see later, some versions of loess models use weighted least squares instead of ordinary least squares, and are called "lowess" models to emphasize the use of weighted least squares.   However, the basic `R` routine for fitting lo(w)ess models is called `loess`, but uses the weighted least-squares fitting with its default factory settings.  We will illustrate loess smoothers with the bioluminescence data found in the ISIT data set.  These data can be found by visiting the webpage for the book "Mixed Effects Models and Extensions in Ecology with R" by Zuur et al. (@zuur2009mixed).  
 
 
 ```r
