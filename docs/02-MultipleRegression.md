@@ -1006,23 +1006,7 @@ Before beginning, we should note that $R^2$ is *not* a good choice for a ranking
 	\] 
 	The model with the largest Adj-$R^2$ is considered best.
 	
-2. PRESS statistic (PRESS = PRedicted Sum of Squares)
-	
-	+ Step 1. Remove the first data point.
-		
-	+ Step 2: Fit the model to the remaining data.
-		
-  + Step 3. Use the model from step 2 to predict the removed data point, $\hat{y}_1^*$.
-		
-	+ Step 4. Add the first data point back to the data set.  
-		
-	+ Step 5. Repeat steps 1-4 for each data point in turn.
-	
-	The PRESS statistic is $\sum_{i=1}^n\left(y_i -\hat{y}_i^* \right)^2$.  The model with the smallest PRESS statistic is considered best.
-	
-	The PRESS statistic is interesting because it is an example of a more general idea called *cross-validation*.  The idea of cross-validation is to remove one or more points from a data set, fit the model to the remaining data, and use the fitted model to predict the data point(s) that were removed.  A good model should accurately predict the removed data point(s).  There are many variations on the idea of cross-validation, including schemes that remove a subset of the data instead of just a single data point.  The removed data are often called the "testing data", and the data to which the model are fit (i.e., the data that are not removed) are called the "training data". 
-	
-3. AIC (Akaike's Information Criterion)
+2. AIC (Akaike's Information Criterion)
 	
 	AIC is also a penalized goodness-of-fit measure, like adjusted $R^2$.  AIC enjoys a bit more theoretical support than adjusted $R^2$ and is more versatile, although its derivation is a bit more opaque.  (As the name suggests, AIC has its roots in information theory.)  The general form of AIC involves math that is beyond the scope of ST 512, but we can write down the specific formula for regression models, which is
 	\[
@@ -1042,6 +1026,18 @@ Before beginning, we should note that $R^2$ is *not* a good choice for a ranking
 <!-- 	H2S, lactic & .6517 & \textbf{\underbar{.626}} & 2510 & \textbf{\underbar{140.6}} \\ \hline  -->
 <!-- 	acetic, H2S, lactic & .6518 & .612 & \textbf{\underbar{2471}} & 142.6 \\ \hline  -->
 <!-- \end{tabular}\end{center} -->
+
+### Cross-validation
+
+Cross validation is a type of ranking method that is popular in the machine learning community.  The appeal of cross validation is that it doesn't rely on any abstract statistical ideas; instead, the ideas flow directly from common sense.  The difficulty lies in the fact that implementing a cross-validation procedure requires a small bit of programming chops.  As of this writing, the `R` package `caret` (an acronym for classification and regression training) includes routines that do most of the hard programming work for you.  Cross-validation is most compelling when we wish to use our regression model primarily for prediction.
+
+The basic idea of cross-validation is that a good regression model (especially a good predictive mode) should make accurate predictions.  At first, this may not seem like a useful observation: it's usually hard to collect new data that we can use to evaluate how well our candidate models make predictions.  The genius of cross-validation is that if we have enough data to begin with, we don't have to collect new data to evaluate predictive performance.  Instead, we can mimic the collection of new data by splitting our data into two subsets, fitting the model to the first subset, and then using that fit to predict the responses in the second subset.  Hence the name "cross-validation": we are validating our model by seeing how well it predicts data that we already have in hand.
+
+The important point to note here is that we do *not* use the same data both for fitting and for prediction.  Doing so would be circular and would exaggerate the predictive ability of the model.  Of course a model should make good predictions for the data that were used to fit the model in the first place!  
+
+When we split the data, the subset to which the data are fit is called the training subset, and the subset which are held out for prediction is called the testing subset.  Usually the training subset is larger than the testing subset.  Of course, if we can split the data once, then we can split it many times, and we obtain a better idea of how well our model makes predictions by averaging its predictive performance over many splits.  To quantify predictive performance at each split, we can use any sensible measure of predictive accuracy such as the mean-squared error of the predictions (or more commonly the square root of the mean squared error) or mean absolute error of the predictions.  The averaged predictive performance over many splits provides a measure of prediction accuracy that we can use to rank candidate models.
+
+There are many variations on this theme.  $K$-fold cross-validation splits the data into $k$ different subsets (or folds) of roughly equal size, and then uses each fold once as the testing subset, for a total of $k$ different splits.  Leave-one-out cross validation is $k$-fold cross validation with $k=n$ folds.  In other words, the testing subset in each split consists of a single data point.  As it happens, leave-one-out cross validation combined with the use the sum of squared prediction errors as the measure of predictive performance produces a special statistic called the PRESS statistic (an acronym for [pre]dicted [s]um of [s]quares).  The PRESS statistic is handy because it can be calculated with some clever math and a single fit to the entire data set; it doesn't actually require going to the trouble of splitting the data and re-fitting the model $n$ times. The PRESS statistic was popular before the advent of machine learning, and you'll find software routines that are able to compute it.
 
 ### Sequential methods
 

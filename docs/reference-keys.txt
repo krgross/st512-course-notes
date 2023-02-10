@@ -34,6 +34,7 @@ regression-interactions
 collinearity
 variable-selection-choosing-the-best-model
 ranking-methods
+cross-validation
 sequential-methods
 leverage-influential-points-and-standardized-residuals
 leverage

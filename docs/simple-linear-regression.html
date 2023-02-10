@@ -23,7 +23,7 @@
 <meta name="author" content="Kevin Gross" />
 
 
-<meta name="date" content="2023-02-09" />
+<meta name="date" content="2023-02-10" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -204,7 +204,8 @@ div.csl-indent {
 <li class="chapter" data-level="2.6" data-path="multiple-regression.html"><a href="multiple-regression.html#variable-selection-choosing-the-best-model"><i class="fa fa-check"></i><b>2.6</b> Variable selection: Choosing the best model</a>
 <ul>
 <li class="chapter" data-level="2.6.1" data-path="multiple-regression.html"><a href="multiple-regression.html#ranking-methods"><i class="fa fa-check"></i><b>2.6.1</b> Ranking methods</a></li>
-<li class="chapter" data-level="2.6.2" data-path="multiple-regression.html"><a href="multiple-regression.html#sequential-methods"><i class="fa fa-check"></i><b>2.6.2</b> Sequential methods</a></li>
+<li class="chapter" data-level="2.6.2" data-path="multiple-regression.html"><a href="multiple-regression.html#cross-validation"><i class="fa fa-check"></i><b>2.6.2</b> Cross-validation</a></li>
+<li class="chapter" data-level="2.6.3" data-path="multiple-regression.html"><a href="multiple-regression.html#sequential-methods"><i class="fa fa-check"></i><b>2.6.3</b> Sequential methods</a></li>
 </ul></li>
 <li class="chapter" data-level="2.7" data-path="multiple-regression.html"><a href="multiple-regression.html#leverage-influential-points-and-standardized-residuals"><i class="fa fa-check"></i><b>2.7</b> Leverage, influential points, and standardized residuals</a>
 <ul>
@@ -586,7 +587,7 @@ R^2 = \dfrac{{\rm SS(Regression)}}{{\rm SS(Total)}} = 1-\frac{{\rm SSE}}{{\rm SS
 <span id="cb15-2"><a href="simple-linear-regression.html#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">h =</span> <span class="dv">0</span>, <span class="at">lty =</span> <span class="st">&quot;dotted&quot;</span>)</span></code></pre></div>
 <p><img src="index_files/figure-html/unnamed-chunk-10-1.png" width="384" style="display: block; margin: auto;" /></p>
 <ol start="3" style="list-style-type: decimal">
-<li>Residuals vs. variables not in the model, e.g., other predictors, observer, order of observation. In the BAC data, the only other variable we have (for now at least) is the order in which the observations appear in the data set. Without knowing how the data were collected or recorded, it’s impossible to say whether this variable is meaningful. However, the plot suggests a distinctive downward trend – data points that appear early in the data set are associated with positive residuals, and data points that appear later in the data set are associated with negative residuals. What do you think might have caused this trend?</li>
+<li>Residuals vs. variables not in the model, e.g., other predictors, observer, order of observation, spatial coordinates. In the BAC data, the only other variable we have (for now at least) is the order in which the observations appear in the data set. Without knowing how the data were collected or recorded, it’s impossible to say whether this variable is meaningful. However, the plot suggests a distinctive downward trend – data points that appear early in the data set are associated with positive residuals, and data points that appear later in the data set are associated with negative residuals. What do you think might have caused this trend?</li>
 </ol>
 <div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="simple-linear-regression.html#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">resid</span>(fm1), <span class="at">xlab =</span> <span class="st">&quot;Order&quot;</span>, <span class="at">ylab =</span> <span class="st">&quot;Residuals&quot;</span>)</span>
 <span id="cb16-2"><a href="simple-linear-regression.html#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">h =</span> <span class="dv">0</span>, <span class="at">lty =</span> <span class="st">&quot;dotted&quot;</span>)</span></code></pre></div>

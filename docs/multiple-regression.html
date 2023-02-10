@@ -23,7 +23,7 @@
 <meta name="author" content="Kevin Gross" />
 
 
-<meta name="date" content="2023-02-09" />
+<meta name="date" content="2023-02-10" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -204,7 +204,8 @@ div.csl-indent {
 <li class="chapter" data-level="2.6" data-path="multiple-regression.html"><a href="multiple-regression.html#variable-selection-choosing-the-best-model"><i class="fa fa-check"></i><b>2.6</b> Variable selection: Choosing the best model</a>
 <ul>
 <li class="chapter" data-level="2.6.1" data-path="multiple-regression.html"><a href="multiple-regression.html#ranking-methods"><i class="fa fa-check"></i><b>2.6.1</b> Ranking methods</a></li>
-<li class="chapter" data-level="2.6.2" data-path="multiple-regression.html"><a href="multiple-regression.html#sequential-methods"><i class="fa fa-check"></i><b>2.6.2</b> Sequential methods</a></li>
+<li class="chapter" data-level="2.6.2" data-path="multiple-regression.html"><a href="multiple-regression.html#cross-validation"><i class="fa fa-check"></i><b>2.6.2</b> Cross-validation</a></li>
+<li class="chapter" data-level="2.6.3" data-path="multiple-regression.html"><a href="multiple-regression.html#sequential-methods"><i class="fa fa-check"></i><b>2.6.3</b> Sequential methods</a></li>
 </ul></li>
 <li class="chapter" data-level="2.7" data-path="multiple-regression.html"><a href="multiple-regression.html#leverage-influential-points-and-standardized-residuals"><i class="fa fa-check"></i><b>2.7</b> Leverage, influential points, and standardized residuals</a>
 <ul>
@@ -957,22 +958,6 @@ We then fit the model with the interaction, using the centered predictors instea
 {\rm Adj-}R^2 =1-\frac{n-1}{n-\left(k+1\right)} \left(1-R^2 \right)
 \]</span>
 The model with the largest Adj-<span class="math inline">\(R^2\)</span> is considered best.</p></li>
-<li><p>PRESS statistic (PRESS = PRedicted Sum of Squares)</p>
-<ul>
-<li><p>Step 1. Remove the first data point.</p></li>
-<li><p>Step 2: Fit the model to the remaining data.</p></li>
-</ul></li>
-</ol>
-<ul>
-<li><p>Step 3. Use the model from step 2 to predict the removed data point, <span class="math inline">\(\hat{y}_1^*\)</span>.</p>
-<ul>
-<li><p>Step 4. Add the first data point back to the data set.</p></li>
-<li><p>Step 5. Repeat steps 1-4 for each data point in turn.</p></li>
-</ul>
-<p>The PRESS statistic is <span class="math inline">\(\sum_{i=1}^n\left(y_i -\hat{y}_i^* \right)^2\)</span>. The model with the smallest PRESS statistic is considered best.</p>
-<p>The PRESS statistic is interesting because it is an example of a more general idea called <em>cross-validation</em>. The idea of cross-validation is to remove one or more points from a data set, fit the model to the remaining data, and use the fitted model to predict the data point(s) that were removed. A good model should accurately predict the removed data point(s). There are many variations on the idea of cross-validation, including schemes that remove a subset of the data instead of just a single data point. The removed data are often called the “testing data”, and the data to which the model are fit (i.e., the data that are not removed) are called the “training data”.</p></li>
-</ul>
-<ol start="3" style="list-style-type: decimal">
 <li><p>AIC (Akaike’s Information Criterion)</p>
 <p>AIC is also a penalized goodness-of-fit measure, like adjusted <span class="math inline">\(R^2\)</span>. AIC enjoys a bit more theoretical support than adjusted <span class="math inline">\(R^2\)</span> and is more versatile, although its derivation is a bit more opaque. (As the name suggests, AIC has its roots in information theory.) The general form of AIC involves math that is beyond the scope of ST 512, but we can write down the specific formula for regression models, which is
 <span class="math display">\[
@@ -993,8 +978,16 @@ The smallest value of AIC is best. (Smaller here means algebraically smaller —
 <!--    acetic, H2S, lactic & .6518 & .612 & \textbf{\underbar{2471}} & 142.6 \\ \hline  -->
 <!-- \end{tabular}\end{center} -->
 </div>
-<div id="sequential-methods" class="section level3 hasAnchor" number="2.6.2">
-<h3><span class="header-section-number">2.6.2</span> Sequential methods<a href="multiple-regression.html#sequential-methods" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div id="cross-validation" class="section level3 hasAnchor" number="2.6.2">
+<h3><span class="header-section-number">2.6.2</span> Cross-validation<a href="multiple-regression.html#cross-validation" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Cross validation is a type of ranking method that is popular in the machine learning community. The appeal of cross validation is that it doesn’t rely on any abstract statistical ideas; instead, the ideas flow directly from common sense. The difficulty lies in the fact that implementing a cross-validation procedure requires a small bit of programming chops. As of this writing, the <code>R</code> package <code>caret</code> (an acronym for classification and regression training) includes routines that do most of the hard programming work for you. Cross-validation is most compelling when we wish to use our regression model primarily for prediction.</p>
+<p>The basic idea of cross-validation is that a good regression model (especially a good predictive mode) should make accurate predictions. At first, this may not seem like a useful observation: it’s usually hard to collect new data that we can use to evaluate how well our candidate models make predictions. The genius of cross-validation is that if we have enough data to begin with, we don’t have to collect new data to evaluate predictive performance. Instead, we can mimic the collection of new data by splitting our data into two subsets, fitting the model to the first subset, and then using that fit to predict the responses in the second subset. Hence the name “cross-validation”: we are validating our model by seeing how well it predicts data that we already have in hand.</p>
+<p>The important point to note here is that we do <em>not</em> use the same data both for fitting and for prediction. Doing so would be circular and would exaggerate the predictive ability of the model. Of course a model should make good predictions for the data that were used to fit the model in the first place!</p>
+<p>When we split the data, the subset to which the data are fit is called the training subset, and the subset which are held out for prediction is called the testing subset. Usually the training subset is larger than the testing subset. Of course, if we can split the data once, then we can split it many times, and we obtain a better idea of how well our model makes predictions by averaging its predictive performance over many splits. To quantify predictive performance at each split, we can use any sensible measure of predictive accuracy such as the mean-squared error of the predictions (or more commonly the square root of the mean squared error) or mean absolute error of the predictions. The averaged predictive performance over many splits provides a measure of prediction accuracy that we can use to rank candidate models.</p>
+<p>There are many variations on this theme. <span class="math inline">\(K\)</span>-fold cross-validation splits the data into <span class="math inline">\(k\)</span> different subsets (or folds) of roughly equal size, and then uses each fold once as the testing subset, for a total of <span class="math inline">\(k\)</span> different splits. Leave-one-out cross validation is <span class="math inline">\(k\)</span>-fold cross validation with <span class="math inline">\(k=n\)</span> folds. In other words, the testing subset in each split consists of a single data point. As it happens, leave-one-out cross validation combined with the use the sum of squared prediction errors as the measure of predictive performance produces a special statistic called the PRESS statistic (an acronym for [pre]dicted [s]um of [s]quares). The PRESS statistic is handy because it can be calculated with some clever math and a single fit to the entire data set; it doesn’t actually require going to the trouble of splitting the data and re-fitting the model <span class="math inline">\(n\)</span> times. The PRESS statistic was popular before the advent of machine learning, and you’ll find software routines that are able to compute it.</p>
+</div>
+<div id="sequential-methods" class="section level3 hasAnchor" number="2.6.3">
+<h3><span class="header-section-number">2.6.3</span> Sequential methods<a href="multiple-regression.html#sequential-methods" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>Sequential methods work best for problems where the set of candidate models is so vast that fitting all the candidate models is not feasible. Because computers are faster today than they were years ago, it is now feasible to fit a large number of candidate models quickly, and thus sequential methods are less necessary today than they were years ago. Nevertheless, the ideas are straightforward.</p>
 <p>There are three different types of sequential methods, based on the direction in which the model is built. In <em>forward selection</em>, we begin with the simplest possible model (namely, <span class="math inline">\(y = \beta_0 + \varepsilon\)</span>), and grow the model by adding predictors to it. In <em>backwards elimination</em>, we start with the most expansive possible model and shrink it by removing unnecessary predictors. In <em>stepwise selection</em>, we start with the simplest possible model (namely, <span class="math inline">\(y = \beta_0 + \varepsilon\)</span>) and then merge forwards and backwards steps, either growing and shrinking the model until converging on one that cannot be improved. Stepwise selection is used more often than the other two variations. Each of the three procedures could possibly lead to a different best model.</p>
 <p>Here is the algorithm for forward selection:</p>

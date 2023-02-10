@@ -1,7 +1,7 @@
 --- 
 title: "ST 512 course notes"
 author: "Kevin Gross"
-date: "2023-02-09"
+date: "2023-02-10"
 output:
   bookdown::gitbook:
     config:
@@ -609,7 +609,7 @@ abline(h = 0, lty = "dotted")
 
 <img src="index_files/figure-html/unnamed-chunk-10-1.png" width="384" style="display: block; margin: auto;" />
 
-3. Residuals vs. variables not in the model, e.g., other predictors, observer, order of observation.  In the BAC data, the only other variable we have (for now at least) is the order in which the observations appear in the data set. Without knowing how the data were collected or recorded, it's impossible to say whether this variable is meaningful. However, the plot suggests a distinctive downward trend -- data points that appear early in the data set are associated with positive residuals, and data points that appear later in the data set are associated with negative residuals.  What do you think might have caused this trend?
+3. Residuals vs. variables not in the model, e.g., other predictors, observer, order of observation, spatial coordinates.  In the BAC data, the only other variable we have (for now at least) is the order in which the observations appear in the data set. Without knowing how the data were collected or recorded, it's impossible to say whether this variable is meaningful. However, the plot suggests a distinctive downward trend -- data points that appear early in the data set are associated with positive residuals, and data points that appear later in the data set are associated with negative residuals.  What do you think might have caused this trend?
 
 ```r
 plot(resid(fm1), xlab = "Order", ylab = "Residuals")
