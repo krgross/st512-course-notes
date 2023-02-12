@@ -1,7 +1,7 @@
 --- 
 title: "ST 512 course notes"
 author: "Kevin Gross"
-date: "2023-02-10"
+date: "2023-02-11"
 output:
   bookdown::gitbook:
     config:
