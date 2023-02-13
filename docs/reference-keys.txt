@@ -33,6 +33,7 @@ categorical-predictors
 regression-interactions
 collinearity
 variable-selection-choosing-the-best-model
+model-selection-and-inference
 ranking-methods
 cross-validation
 sequential-methods
