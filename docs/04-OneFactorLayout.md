@@ -1058,7 +1058,7 @@ Barnard.KS - Stafford.K      -0.34933    -0.49317 -0.20550  ***
 	 + If the $F$-test provides evidence of a treatment effect, also report tests of contrasts or multiple comparisons.
 	 
 	 
-## Advanced topic: Power and sample-size determination in ANOVA
+## $^\star$Power and sample-size determination in ANOVA
 In the course of proposing or designing an experiment, it is often helpful to have some guidance regarding how many data points are needed to obtain the statistical precision that we desire.  This sort of information comes from a power calculation.  As we’ll see, power calculations require specifying parameter values that are unknown.  (If we knew the parameter values, we wouldn’t need to do the experiment!).  Often, even having some small amount of pilot data that can be used to make educated guesses about these unknown parameters is superior to taking blind stabs at those values.  As a last resort, blind stabs are better than foregoing a power analysis altogether.
 
 A power analysis can be focused on one of two particular questions:
@@ -1083,7 +1083,7 @@ To make sense of these charts, one needs to be able to calculate something calle
 \]
 As the non-centrality parameter increases, power also increases.  Thus, we see that power increases as either the sample sizes increase, the differences among the group means increase, or the error variance decreases.
 
-## Advanced topic: Orthogonal contrasts
+## $^\star$Orthogonal contrasts
 
 We have already seen that if several contrasts are not (completely) redundant, they are called *linearly independent}.  Linearly independent contrasts might still share some information, however.  For example, the contrasts $\theta_1 = \mu_1 - \mu_2$ and $\theta_2 = \mu_1 - \mu_3$ are linearly independent, but they both depend in the same way on $\mu_1$.  Thus, if we happen to draw a sample from group 1 that is unusual in some regard, the event of drawing that sample will affect our tests of both $H_0$: $\theta_1 = 0$ and $H_0$: $\theta_2 = 0$ in the same way.
 
@@ -1127,7 +1127,7 @@ The natural question that arises is: When should we expect orthogonality?  One d
 	
 	3. Experiments in which the treatment groups are formed by different levels of a quantitative variable.  We study this scenario in more depth below.
 
-## Advanced topic: Polynomial trends
+## $^\star$Polynomial trends
 
 Consider the following data set.  Pott (1992) conducted an experiment to investigate the effect of added dietary molybdenum (Mo) on the molybdenum concentrations of sheep kidneys.  Twenty (20) sheep were randomly assigned to one of four diets, where the diets differed only in the amount of supplementary molybdenum (0, 15, 30 and 45 ppm).  Five sheep were assigned to each diet, and the Mo concentration in the kidney was measured after 14 days.  The data are shown below:
 

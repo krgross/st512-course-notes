@@ -1,9 +1,6 @@
 # Factorial experiments
 
-```{r echo = FALSE}
-setwd("C:/Users/krgross/Documents/GitHub/st512-course-notes/")
-knitr::opts_chunk$set(fig.width = 5, fig.height = 4.5, fig.align = "center") 
-```
+
 
 In this section, we consider experiments where the treatment structure involves multiple experimental factors.
 
@@ -13,7 +10,7 @@ Consider the following two experiments
 
 *Experiment 1.*  (A hypothetical experiment based on example 15.8 in Ott \& Longnecker):
 
-A citrus orchard contains 3 different varieties of citrus trees.  Eight trees of each variety are randomly selected from the orchard.  Four different pesticides are randomly assigned to two trees of each variety and applied according to recommended levels.  The same four pesticides are used for each variety.  Yields of fruit (in bushels per tree) are recorded at the end of the growing season.  The data are: 
+A citrus orchard contains 3 different varieties of citrus trees.  Eight trees of each variety are randomly selected from the orchard.  Four different pesticides are randomly assigned to two trees of each variety and applied according to recommended levels.  The same four pesticides are used for each variety.  Yields of fruit (in bushels per tree) are recorded at the end of the growing season.  
 
 <!-- \begin{center}\begin{tabular}{|p{0.9in}|p{0.9in}|p{0.9in}|p{0.9in}|p{0.9in}|} \hline  -->
 <!--  & Pesticide 1 & Pesticide 2 & Pesticide 3 & Pesticide 4 \\ \hline  -->
@@ -36,10 +33,10 @@ A citrus orchard contains 3 different varieties of citrus trees.  Eight trees of
 <!-- \end{tabular} -->
 <!-- \end{center} -->
 
-In both experiments, there are two experimental factors --- variety and pesticide in experiment 1, and consultant and ranch in experiment 2.  Each unique combination of factors forms a separate *treatment combination*.  In experiment 1, the treatment combinations are formed by crossing the two experimental factors.  That is to say, every level of the first factor (variety) is combined with every level of the second factor (pesticide).  This is an example of a *factorial* or *crossed design*.  In experiment 2, each level of one factor (ranch) is only combined with one single level of the other factor (consultant).  This is an example of a *hierarchical design*, and we would say that ranch is ``nested'' within the consultant.  
+In both experiments, there are two experimental factors --- variety and pesticide in experiment 1, and consultant and ranch in experiment 2.  Each unique combination of factors forms a separate *treatment combination*.  In experiment 1, the treatment combinations are formed by crossing the two experimental factors.  That is to say, every level of the first factor (variety) is combined with every level of the second factor (pesticide).  This is an example of a *factorial* or *crossed design*.  In experiment 2, each level of one factor (ranch) is only combined with one single level of the other factor (consultant).  This is an example of a *hierarchical design*, and we would say that ranch is nested within the consultant.  
 
 
-Terminology:  The treatment structure in experiment 1 above could be alternatively called a *two-factor classification*, or a *two-way factorial* treatment structure, or a *4 x 3 factorial* treatment structure.  Generically, we will call the two factors in a two-way factorial design factors "A" and "B".
+The treatment structure in experiment 1 above could be alternatively called a *two-factor classification*, or a *two-way factorial* treatment structure, or a *4 x 3 factorial* treatment structure.  Generically, we will call the two factors in a two-way factorial design factors "A" and "B".
 
 The scientific questions of most interest in a two-factor design are:
 
@@ -52,9 +49,9 @@ The scientific questions of most interest in a two-factor design are:
  
 ## Simple effects, main effects, and interaction effects
 
-In a factorial experiment, we typically analyze three types of effects: simple effects, main effects and interaction effects.  We can illustrate these effects with the following hypothetical experiment:  A food scientist wants to know how the shelf-life of a product is affected by the temperature at which the product is packed (low vs.\ high temperature) and the wrapping material (foil vs.\ plastic).  S/he conducts a balanced 2 x 2 factorial experiment to investigate the effect of temperature and wrapping material on shelf life.
+In a factorial experiment, we typically analyze three types of effects: simple effects, main effects and interaction effects.  We can illustrate these effects with the following hypothetical experiment:  A food scientist wants to know how the shelf-life of a product is affected by the temperature at which the product is packed (low vs.\ high temperature) and the wrapping material (foil vs.\ plastic).  They conduct a balanced 2 x 2 factorial experiment to investigate the effect of temperature and wrapping material on shelf life.
 
-Notation: Let temperature be factor "A", and let $i$ be an index that distinguishes the two temperatures.  That is, let $i = 1$ indicate low temperature and $i = 2$ indicate high temperature.  Let material be factor "B", and let $j$ be an index that distinguishes the two materials.  That is, let  $j = 1$ indicate foil and $j = 2$ indicate plastic.
+In notation, let temperature be factor "A", and let $i$ be an index that distinguishes the two temperatures.  That is, let $i = 1$ indicate low temperature and $i = 2$ indicate high temperature.  Let material be factor "B", and let $j$ be an index that distinguishes the two materials.  That is, let  $j = 1$ indicate foil and $j = 2$ indicate plastic.
 
 Suppose for a moment that we actually know what the actual means (in units of days) are for each treatment combination.  (Remember, in real life the means for each treatment combination are parameters that have to be estimated.)  Let $\mu_{ij}$ denote the true mean response for the treatment combination formed by temperature $i$ and material $j$.
 <!-- \begin{center} -->
@@ -67,7 +64,7 @@ Suppose for a moment that we actually know what the actual means (in units of da
 <!-- \end{center} -->
 Each of the four means above are called *cell means*, because they provide the average response for each 'cell' in the factorial table.  More generally, cell means are the average response for each unique treatment combination.
 
-In addition to cell means, we can define {\em marginal means} as the averages of cell means.  That is, the marginal mean for level $i$ of factor A is the average of each of the cell means associated with level $i$, where the average is taken over all the levels of factor B.  In a 2 $\times$ 2 design, the two marginal means for factor A are 
+In addition to cell means, we can define *marginal means* as the averages of cell means.  That is, the marginal mean for level $i$ of factor A is the average of each of the cell means associated with level $i$, where the average is taken over all the levels of factor B.  In a 2 $\times$ 2 design, the two marginal means for factor A are 
 \[
 \bar{\mu}_{1+} =\frac{\mu_{11} +\mu_{12} }{2} 
 \] 
@@ -112,27 +109,11 @@ Sometimes the grand mean is placed in the lower right-hand corner of the table o
 <!-- \end{center} -->
 
 Let's visualize the structure of these cell means with an interaction plot.  (Other authors call these profile plots.)  To construct an interaction plot, write the levels of one factor along the horizontal axis, and use the vertical axis to denote the response.  Draw lines on the plot for each level of the other experimental factor.   Two possible interaction plots for the above means are:
-```{r echo = FALSE, fig.width = 8}
-par(oma=rep(0,4),mar=c(5,5,0,0),mfrow=c(1,2),las=1,bty='l')
+<img src="05-FactorialExperiments_files/figure-html/unnamed-chunk-2-1.png" width="768" style="display: block; margin: auto;" />
 
-plot(c(-0.5,1.5),c(1,6),type="n",xlab="Material",ylab="Shelf life",xaxt="n")
-axis(1,at=0:1,lab=c("F","P"))
-lines(c(0,1),c(2,4))
-lines(c(0,1),c(3,5),lty="dashed")
-points(c(0,1),c(2,4),pch="L")
-points(c(0,1),c(3,5),pch="H")
+Note that regardless of which factor we choose to place on the horizontal axis, the lines above are parallel.  This indicates that the effects of the two factors do not depend on one another.  When the effects of two (or more) factors do not depend on one another, we say that the effects of those factors are *additive*.  
 
-plot(c(-0.5,1.5),c(1,6),type="n",xlab="Temperature",ylab="Shelf life",xaxt="n")
-axis(1,at=0:1,lab=c("L","H"))
-lines(c(0,1),c(2,3))
-lines(c(0,1),c(4,5),lty="dashed")
-points(c(0,1),c(2,3),pch="F")
-points(c(0,1),c(4,5),pch="P")
-```
-
-Note that regardless of which factor we choose to place on the horizontal axis, the lines above are parallel.  This indicates that the effects of the two factors do not depend on one another.  When the effects of two (or more) factors do not depend on one another, we say that the effects of those factors are {\em additive}.  
-
-We can also express this idea mathematically.  The {\bf simple-effects comparisons} (or just simple effects) for a factor describe the differences among cell means associated with that factor at a single level of the other factor(s).  In a 2 $\times$ 2 factorial design, simple effects can be expressed as simple differences.  For example, to calculate the simple effect of temperature on food products wrapped in foil, simply calculate the difference $\mu_{21} -\mu_{11} =3-2=1$.  This difference means that for food products wrapped in foil, products packed at high temperature last 1 day longer than products wrapped at low temperature.  (Note that we could also define the simple effect as $\mu_{11} -\mu_{21} =2-3=-1$ , indicating that foods packed at low temperature last 1 day less than products wrapped at high temperature.  Either way, we come to the same conclusion. We just have to be careful to remember how the simple effect has been defined, so that we can interpret the sign of the effect correctly.)
+We can also express this idea mathematically.  The *simple-effects comparisons* (or just simple effects) for a factor describe the differences among cell means associated with that factor at a single level of the other factor(s).  In a 2 $\times$ 2 factorial design, simple effects can be expressed as simple differences.  For example, to calculate the simple effect of temperature on food products wrapped in foil, simply calculate the difference $\mu_{21} -\mu_{11} =3-2=1$.  This difference means that for food products wrapped in foil, products packed at high temperature last 1 day longer than products wrapped at low temperature.  
 
 Similarly, we could calculate:
 
@@ -148,7 +129,7 @@ Similarly, we could calculate:
 
 In this case, the effect of temperature on shelf life does not depend on the type of material in which the food was wrapped.  Similarly, the effect of material does not depend on the temperature at which the food was packed.  This is a more precise expression of what we mean when we say that the effects of each factor do not depend on one another.
 
-We can also define {\bf main-effects comparisons} (or just main effects) for each experimental factor.  Main effects describe differences among the marginal means associated with each level of an experimental factor.  In a 2 $\times$ 2 design, main effects can be expressed as simple differences.  In the example above, we could quantify the main effect of temperature as the difference
+We can also define *main-effects comparisons* (or just main effects) for each experimental factor.  Main effects describe differences among the marginal means associated with each level of an experimental factor.  In a 2 $\times$ 2 design, main effects can be expressed as simple differences.  In the example above, we could quantify the main effect of temperature as the difference
 \[\bar{\mu}_{2+} -\bar{\mu}_{1+} =4-3=1.\] 
 Similarly, we can quantify the main effect of material as the difference
 \[\bar{\mu}_{+2} -\bar{\mu}_{+1} =4.5-2.5=2.\] 
@@ -166,23 +147,7 @@ Now, suppose that instead the means for each treatment combination are
 <!-- \end{center} -->
 
 Again, let's visualize the structure of these means with an interaction plot:
-```{r echo = FALSE, fig.width = 8}
-par(oma=rep(0,4),mar=c(5,5,0,0),mfrow=c(1,2),las=1,bty='l')
-
-plot(c(-0.5,1.5),c(1,6.5),type="n",xlab="Material",ylab="Shelf life",xaxt="n")
-axis(1,at=0:1,lab=c("F","P"))
-lines(c(0,1),c(2,4))
-lines(c(0,1),c(3,6),lty="dashed")
-points(c(0,1),c(2,4),pch="L")
-points(c(0,1),c(3,6),pch="H")
-
-plot(c(-0.5,1.5),c(1,6.5),type="n",xlab="Temperature",ylab="Shelf life",xaxt="n")
-axis(1,at=0:1,lab=c("L","H"))
-lines(c(0,1),c(2,3))
-lines(c(0,1),c(4,6),lty="dashed")
-points(c(0,1),c(2,3),pch="F")
-points(c(0,1),c(4,6),pch="P")
-```
+<img src="05-FactorialExperiments_files/figure-html/unnamed-chunk-3-1.png" width="768" style="display: block; margin: auto;" />
 
 Note that the lines above are no longer parallel.  This is a visual indication that the effects of the two factors depend on one another.  Or, to put it another way, there is an interaction between the two factors.
 
@@ -221,7 +186,7 @@ Alternatively, we could calculate the difference between the simple effects of m
 \[
 \left(\mu_{22} -\mu_{21} \right)-\left(\mu_{12} -\mu_{11} \right)=\left(6-3\right)-\left(4-2\right)=3-2=1
 \] 
-Each of the above calculations are measures of an {\bf interaction effect}.  In a 2 $\times$ 2 factorial design, an interaction effect is a ``difference of differences'', or a measure of how one factor effects the simple effects of the other factor.  It is not just coincidence that the two measures of the interaction above produce the same number (=1).  In fact, as we will show in a moment, in a 2 $\times$ 2 factorial design, there is only a single free difference (or degree of freedom) for the interaction effect.  Because there is only a single degree of freedom, the two differences of differences above must be equal.  (You might also be able to verify this with a little algebra.)
+Each of the above calculations are measures of an *interaction effect*.  In a 2 $\times$ 2 factorial design, an interaction effect is a ``difference of differences'', or a measure of how one factor effects the simple effects of the other factor.  It is not just coincidence that the two measures of the interaction above produce the same number (=1).  In fact, as we will show in a moment, in a 2 $\times$ 2 factorial design, there is only a single free difference (or degree of freedom) for the interaction effect.  Because there is only a single degree of freedom, the two differences of differences above must be equal.  (You might also be able to verify this with a little algebra.)
 
 **Perhaps the single greatest conceptual pitfall in the analysis of factorial designs is appreciating the difficulty of interpreting main effects when the experimental factors interact.**  When the two factors in an experiment interact, we can still define main effects mathematically.  In the example above, the main effect of temperature is now
 \[\bar{\mu}_{2+} -\bar{\mu}_{1+} =4.5-3=1.5\] 
@@ -237,23 +202,7 @@ Are these differences meaningful?  The answer usually depends on the scientific 
 <!-- \multicolumn{2}{|p{1in}|}{} & $\bar{\mu}_{1+} =3$ & $\bar{\mu}_{2+} =3$ & $\bar{\mu}_{++} =3$ \\ \hline  -->
 <!-- \end{tabular} -->
 <!-- \end{center} -->
-```{r echo = FALSE, fig.width = 8}
-par(oma=rep(0,4),mar=c(5,5,0,0),mfrow=c(1,2),las=1,bty='l')
-
-plot(c(-0.5,1.5),c(0.5,5.5),type="n",xlab="Material",ylab="Shelf life",xaxt="n")
-axis(1,at=0:1,lab=c("F","P"))
-lines(c(0,1),c(2,4))
-lines(c(0,1),c(5,1),lty="dashed")
-points(c(0,1),c(2,4),pch="L")
-points(c(0,1),c(5,1),pch="H")
-
-plot(c(-0.5,1.5),c(0.5,5.5),type="n",xlab="Temperature",ylab="Shelf life",xaxt="n")
-axis(1,at=0:1,lab=c("L","H"))
-lines(c(0,1),c(2,5))
-lines(c(0,1),c(4,1),lty="dashed")
-points(c(0,1),c(2,5),pch="F")
-points(c(0,1),c(4,1),pch="P")
-```
+<img src="05-FactorialExperiments_files/figure-html/unnamed-chunk-4-1.png" width="768" style="display: block; margin: auto;" />
 
 In this case, the simple effects of temperature are equal and opposite.  (High temperature increases shelf life by 3 days for foods packed in foil, but decreases shelf life by 3 days for foods packed in plastic.)  Thus, the main effect of temperature is zero!  Certainly, it would be erroneous to conclude that temperature has no effect on shelf life based on the fact that the marginal means for the two temperature treatments are equal.  In this case, the only way to appropriately characterize the effects of temperature is to consider the simple effects.  The main effects are downright misleading.
 
@@ -263,7 +212,7 @@ Thus, the conventional approach to analyzing two-way factorial classifications i
 
 ### Example: Weight gain in rats
 
-In real life, cell means need to be estimated with data.  Consider the following example taken from Sokal \& Rohlf's {\em Biometry} text.  This experiment was designed to examine differences in food consumption among rats.  6 male rats and 6 female rats were used in the experiment.  Half the rats were fed fresh lard, and half the rats were fed rancid lard.  The response is total food consumption (in grams) over 73 days.  This is a 2 $\times$ 2 factorial design with a CRD.  The experiment is balanced.  The data are:
+In real life, cell means need to be estimated with data.  Consider the following example taken from @sokal1995biometry.  This experiment was designed to examine differences in food consumption among rats.  6 male rats and 6 female rats were used in the experiment.  Half the rats were fed fresh lard, and half the rats were fed rancid lard.  The response is total food consumption (in grams) over 73 days.  This is a 2 $\times$ 2 factorial design with a CRD.  The experiment is balanced.  
 
 <!-- \begin{center} -->
 <!-- \begin{tabular}{|p{1.1in}|p{1.1in}|p{1.1in}|p{1.1in}|} \hline  -->
@@ -287,7 +236,7 @@ Here is some notation that we will use for two-factor experiments:
 
 + $k = 1, 2, \ldots, n_{ij}$: an index to distinguish the different observations within each treatment combination
 
-+ $y_{ijk}$:  {\em k}th observation from the combination of level $i$ of factor A and level $j$ of factor B.
++ $y_{ijk}$:  $k$th observation from the combination of level $i$ of factor A and level $j$ of factor B.
 
 + $n_T =\sum _{i=1}^{a}\sum _{j=1}^{b}n_{ij}$ : total sample size
 
@@ -296,26 +245,7 @@ Here is some notation that we will use for two-factor experiments:
 + $\mu_{ij}$ : unknown population mean for the combination of level $i$ of factor A and level $j$ of factor B
 
 First, let's examine an interaction plot for the sample means in the rat diet data:
-```{r echo = FALSE}
-male.fresh <- c(709,679,699)
-male.rancid <- c(592,538,476)
-female.fresh <- c(657,594,677)
-female.rancid <- c(508,505,539)
-
-plot(c(-0.5,1.5),c(500,700),type="n",xlab="Fat type",ylab="Weight gain",xaxt="n")
-axis(1,at=0:1,lab=c("Fresh","Rancid"))
-lines(c(0,1)-.02,c(mean(male.fresh),mean(male.rancid)),col="blue",lwd=2)
-lines(c(0,1)+.02,c(mean(female.fresh),mean(female.rancid)),col="red",lwd=2)
-points(c(0,1)-.02,c(mean(male.fresh),mean(male.rancid)),pch="M",lwd=2)
-points(c(0,1)+.02,c(mean(female.fresh),mean(female.rancid)),pch="F",lwd=2)
-
-#legend(0,35,leg=c("Control","Treated"),col=c("blue","red"),pch=c("C","T"))
-add.bars<-function(x,y,se,...) segments(x,y-se,x,y+se,...)
-add.bars(0-.02,mean(male.fresh),sqrt(var(male.fresh))/sqrt(3),col="blue",lwd=2)
-add.bars(1-.02,mean(male.rancid),sqrt(var(male.rancid))/sqrt(3),col="blue",lwd=2)
-add.bars(0+.02,mean(female.fresh),sqrt(var(female.fresh))/sqrt(3),col="red",lwd=2)
-add.bars(1+.02,mean(female.rancid),sqrt(var(female.rancid))/sqrt(3),col="red",lwd=2)
-```
+<img src="05-FactorialExperiments_files/figure-html/unnamed-chunk-5-1.png" width="480" style="display: block; margin: auto;" />
 
 We might think that the above plot suggests an interaction, because the lines are not parallel.  However, even if there weren't an interaction, experimental error would probably cause the lines to be non-parallel.  Thus, while interaction plots are useful for visualizing the data from a factorial design, they are not suitable for determining statistical significance.  Instead, we need a statistical test to determine whether the apparent interaction is statistically significant.
 
@@ -325,9 +255,8 @@ Similarly, tests for the main effects of factor B are tests of whether the margi
 
 It is a bit more difficult to write down the specific hypotheses associated with the test of the interaction.  Remember that in the absence of an interaction, the effects of the two experimental factors are additive.  In mathematical terms, this means that the difference $\mu_{ij} -\bar{\mu}_{++}$ is equal to sum of the differences $\bar{\mu}_{i+} -\bar{\mu}_{++}$ and $\bar{\mu}_{+j} -\bar{\mu}_{++}$.  In equations, then, the test for the interaction effects is a test of 
 \[
-H_0: \ \ \mu_{ij} -\bar{\mu}_{++} =\bar{\mu}_{+i} -\bar{\mu}_{++} +\bar{\mu}_{+j} -\bar{\mu}_{++}
+H_0: \ \ \mu_{ij} -\bar{\mu}_{++} =\bar{\mu}_{+i} -\bar{\mu}_{++} +\bar{\mu}_{+j} -\bar{\mu}_{++}.
 \]
-vs.\ the alternative that the null is not true.
 
 Just as with a one-factor ANOVA, we can conduct each of these hypothesis tests using a sum-of-squares decomposition.  We'll begin by partitioning the sum-of-squares into sum-of-squares attributable to variation among the treatment groups and variation within the treatment groups:
 \begin{eqnarray*}
@@ -350,38 +279,68 @@ SS_{Groups} = SS[A] + SS[B] + SS[AB]
 \]
 Again, each sum-of-squares is calculated on the basis of a certain number of free differences.  To place the sum-of-squares on equal footing, we need to know how these df are partitioned among the sum-of-squares.  For a $a \times b$ factorial design, the number of df used to calculate each sum-of-squares breaks down in the following way:
 
-```{r echo = FALSE}
-options(knitr.kable.NA = '') 
-
-sources <- c("Factor A", "Factor B", "A*B interaction", "Error", "Total")
-
-df <- c("$a-1$", "$b-1$", "$(a-1)(b-1)$", "$n_T-ab$", "$n_T-1$")
-
-two_factor_anova_table <- data.frame(cbind(sources, df))
-
-colnames(two_factor_anova_table) = c("source", "df")
-                            
-knitr::kable(format="html",
-             two_factor_anova_table, 
-             escape = FALSE) 
-```
+<table>
+ <thead>
+  <tr>
+   <th style="text-align:left;"> source </th>
+   <th style="text-align:left;"> df </th>
+  </tr>
+ </thead>
+<tbody>
+  <tr>
+   <td style="text-align:left;"> Factor A </td>
+   <td style="text-align:left;"> $a-1$ </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Factor B </td>
+   <td style="text-align:left;"> $b-1$ </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> A*B interaction </td>
+   <td style="text-align:left;"> $(a-1)(b-1)$ </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Error </td>
+   <td style="text-align:left;"> $n_T-ab$ </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Total </td>
+   <td style="text-align:left;"> $n_T-1$ </td>
+  </tr>
+</tbody>
+</table>
 
 For the rat weight-gain example, the df accounting is
-```{r echo = FALSE}
-options(knitr.kable.NA = '') 
-
-sources <- c("Sex", "Fat", "Sex*Fat", "Error", "Total")
-
-df <- c("$1$", "$1$", "$1$", "$8$", "$11$")
-
-two_factor_anova_table <- data.frame(cbind(sources, df))
-
-colnames(two_factor_anova_table) = c("source", "df")
-                            
-knitr::kable(format="html",
-             two_factor_anova_table, 
-             escape = FALSE) 
-```
+<table>
+ <thead>
+  <tr>
+   <th style="text-align:left;"> source </th>
+   <th style="text-align:left;"> df </th>
+  </tr>
+ </thead>
+<tbody>
+  <tr>
+   <td style="text-align:left;"> Sex </td>
+   <td style="text-align:left;"> $1$ </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Fat </td>
+   <td style="text-align:left;"> $1$ </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Sex*Fat </td>
+   <td style="text-align:left;"> $1$ </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Error </td>
+   <td style="text-align:left;"> $8$ </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Total </td>
+   <td style="text-align:left;"> $11$ </td>
+  </tr>
+</tbody>
+</table>
 
 To compare the sum-of-squares on equal footing, we need to calculate mean squares (MS), which are just equal to each sum-of-squares divided by its corresponding df.  Here's a sum-of-squares decomposition for the rat data:
 
@@ -426,9 +385,9 @@ s_{\hat{\theta}} & = & \sqrt{\left\{\frac{c_{11}^2}{n_{11}} +\frac{c_{12}^2}{n_{
 & = & \sqrt{\left\{\frac{\left(-1/2\right)^2 }{3} +\frac{\left(1/2\right)^2 }{3} +\frac{\left(-1/2\right)^2 }{3} +\frac{\left(1/2\right)^2 }{3} \right\}1458}  \\ 
 & = & 22.0 
 \end{eqnarray*}
-Finally, if we wanted a 95\% CI for this linear combination, we could form one by taking the appropriate critical values from a t-distribution with 8 df.  (Here, 8 df because the MSE is calculated based on 8 df).  Here, the appropriate critical value is 2.306, so a 95\% CI for the main effect of fat is -143g $\pm$ 2.306 $\times$ (22.0g) = (-92g, -194g).
+Finally, if we wanted a 95\% CI for this linear combination, we could form one by taking the appropriate critical values from a t-distribution with 8 df.  (Here, 8 df because the MSE is calculated based on 8 df).  Here, the appropriate critical value is 2.306, so a 95\% CI for the main effect of fat is -143g $\pm$ 2.306 $\times$ 22.0g = (-92g, -194g).
 
-### Computer implementation using PROC GLM in SAS
+### Analysis using PROC GLM in SAS
 
 We can have SAS do these calculations for us.  In PROC GLM, we can obtain these calculations with the code:
 
@@ -454,7 +413,8 @@ fat                          1     61204.08333     61204.08333      41.97    0.0
 sex*fat                      1       918.75000       918.75000       0.63    0.4503
 ```
 
-Notes:
+Let's note the following:
+
 1. In the model statement, we can use a vertical bar as shorthand for including both main effects and interactions.  The code below would produce identical output to the code above:
 	
 ```{}
@@ -464,9 +424,9 @@ proc glm data=rat;
 run;
 ```
 	
-2. SAS PROC GLM provides two tables.  The first is the sum-of-squares breakdown and associated ANOVA F-test if we were just treating the data as a one-factor ANOVA.  That is, the $F$-test in the first table is a test of $H_0$: $\mu_{11} =\mu_{12} =\mu_{21} =...=\mu_{ab}$. (This is equivalent to a model-utility test in multiple regression.)  The second table of output provides $F$-tests for the main and interaction effects.
+2. PROC GLM provides two tables.  The first is the sum-of-squares breakdown and associated ANOVA F-test if we were just treating the data as a one-factor ANOVA.  That is, the $F$-test in the first table is a test of $H_0$: $\mu_{11} =\mu_{12} =\mu_{21} =...=\mu_{ab}$. (This is equivalent to a model-utility test in multiple regression.)  The second table of output provides $F$-tests for the main and interaction effects.
 	
-3. SAS provides two sum-of-squares decompositions, one which it calls Type I and another which it calls Type III.  Type I and Type III sum-of-squares are identical for balanced factorial designs.  They are not identical for unbalanced designs.  We will discuss the differences for unbalanced designs later.
+3. PROC GLM provides two sum-of-squares decompositions, one which it calls Type I and another which it calls Type III.  Type I and Type III sum-of-squares are identical for balanced factorial designs.  They are not identical for unbalanced designs.  We will discuss the differences for unbalanced designs later.
 
 We can also have PROC GLM calculate linear combinations of cell means for us.  To do so, though, we need to understand the *effects-model* coding that PROC GLM uses to represent the two-factor ANOVA model.
 
@@ -474,15 +434,15 @@ We can also have PROC GLM calculate linear combinations of cell means for us.  T
 
 For a two-factor ANOVA, we extend our effects-model notation in the following way: 
 \[
-y_{ijk} =\mu +\alpha_i +\beta_j +\left(\alpha \beta \right)_{ij} +\varepsilon _{ijk} 
+\mu_{ij} =\mu +\alpha_i +\beta_j +\left(\alpha \beta \right)_{ij}
 \] 
 Here, $\mu$ is the reference level, $\alpha_i$ is the "effect" of level $i$ of factor A, $\beta_j$ is the "effect" of level $j$ of factor B, and $\left(\alpha \beta \right)_{ij}$ is the interaction between level $i$ of factor A and level $j$ of factor B.  In one-factor ANOVA, we saw that it was not possible to estimate all the $\alpha_i$'s uniquely, so we had to impose a constraint.  A similar phenomenon prevails in the two-factor model.  How many constraints do we need?  The key equivalence is that the number of effects parameters that we can estimate is equal to the number of df for each effect in the df accounting.
 
-Here are the rules for dfs and constraints in the 2 $\times$ 2 factorial design.  For the main effects of factor A, there are 2 parameters and 1 df, so we must constrain one of the $\alpha_i$'s to be equal to 0.  For the main effects of factor B, there are also 2 parameters and 1 df, so we must constrain one of the $\beta_j$'s to be equal to 0.  For the interaction effects, there are 4 interaction parameters $\left(\alpha \beta \right)_{11} ,\left(\alpha \beta \right)_{12} ,\left(\alpha \beta \right)_{21} ,\left(\alpha \beta \right)_{22}$, but only 1 df for the interaction, so we must constrain 3 of the interaction effects to be equal to zero.
+<!-- Here are the rules for dfs and constraints in the 2 $\times$ 2 factorial design.  For the main effects of factor A, there are 2 parameters and 1 df, so we must constrain one of the $\alpha_i$'s to be equal to 0.  For the main effects of factor B, there are also 2 parameters and 1 df, so we must constrain one of the $\beta_j$'s to be equal to 0.  For the interaction effects, there are 4 interaction parameters $\left(\alpha \beta \right)_{11} ,\left(\alpha \beta \right)_{12} ,\left(\alpha \beta \right)_{21} ,\left(\alpha \beta \right)_{22}$, but only 1 df for the interaction, so we must constrain 3 of the interaction effects to be equal to zero. -->
 
-Another way to think about the set-to-zero constraints is to relate the two-factor ANOVA model to regression with indicators.  More information about this equivalence can be found in a later section in this chapter of the notes.
+<!-- Another way to think about the set-to-zero constraints is to relate the two-factor ANOVA model to regression with indicators.  More information about this equivalence can be found in a later section in this chapter of the notes. -->
 
-Again, SAS uses set-to-zero constraints.  We can see the constraints by calling for SAS's parameter estimates with the SOLUTION option to the MODEL statement in PROC GLM:
+Again, PROC GLM uses set-to-zero constraints.  We can see the constraints by calling for SAS's parameter estimates with the SOLUTION option to the MODEL statement in PROC GLM:
 
 ```{}
 proc glm data=rat;
@@ -565,7 +525,7 @@ H_{0} :\left(\alpha \beta \right)_{11} =\left(\alpha \beta \right)_{12} =...=\le
 
 ### A second example
 
-This example is taken from Steel, Torrie and Dickey 3e (1997).  In their words, 
+This example is taken from @steel1997principles.  In their words, 
 
 > Wilkinson (1954) reports the results of an experiment to study the influence of time of bleeding and diethylstilbestrol (an estrogenic compound) on plasma phospholipid in lambs.  Five lambs were assigned at random to each of four treatment groups; treatment combinations are for morning and afternoon bleeding and with and without diethylstilbestrol treatment.
 
@@ -580,23 +540,9 @@ This example is taken from Steel, Torrie and Dickey 3e (1997).  In their words,
 <!-- \end{center} -->
 
 An interaction plot of the data is shown below.
-```{r}
-plot(c(-0.5,1.5),c(10,40),type="n",xlab="Time of bleeding",ylab="Plasma phospholipid",xaxt="n")
-axis(1,at=0:1,lab=c("AM","PM"))
-lines(c(0,1),c(13.3,36.5),col="blue",lwd=2)
-lines(c(0,1),c(19.4,27.8),col="red",lwd=2)
-points(c(0,1),c(13.3,36.5),pch="C",lwd=2)
-points(c(0,1),c(19.4,27.8),pch="T",lwd=2)
+<img src="05-FactorialExperiments_files/figure-html/unnamed-chunk-8-1.png" width="480" style="display: block; margin: auto;" />
 
-legend(-0.2,35,leg=c("Control","Treated"),col=c("blue","red"),pch=c("C","T"), )
-add.bars<-function(x,y,se,...) segments(x,y-se,x,y+se,...)
-add.bars(0,13.3,4.5/sqrt(5),col="blue",lwd=2)
-add.bars(1,36.5,7.7/sqrt(5),col="blue",lwd=2)
-add.bars(0,19.4,1.8/sqrt(5),col="red",lwd=2)
-add.bars(1,27.8,3.3/sqrt(5),col="red",lwd=2)
-```
-
-Here is the output of a two-factor ANOVA model in PROC GLM:
+Here is the output of a two-factor ANOVA model using PROC GLM:
 ```{}
 proc glm data=sheep;
   class time drug trt;
@@ -634,7 +580,7 @@ Simple effect of drug, time=AM        6.0820000      3.08189585       1.97      
 Simple effect of drug, time=PM       -8.7220000      3.08189585      -2.83      0.0121
 ```
 
-Here is a partial interpretation of these contrasts.  Sheep bled in the afternoon have more plasma phospholipid than sheep bled in the morning, regardless of whether the sheep were given the drug.  However, the magnitude of the effect of timing is smaller on sheep given the drug (estimated effect = 8.5 units, s.e. = 3.1) than it is on sheep not given the drug (estimated effect = 23.3 units, s.e.=3.1).  For sheep bled in the afternoon, the drug decreases plasma phospholipid relative to the control (estimated effect = 8.7 units less with the drug, s.e. = 3.1).  For sheep bled in the morning, there is only weak evidence that the drug has an effect on plasma phospholipid (estimated effect = 6.1 units more with the drug, s.e. = 3.1, $p=0.066$).
+Here is a partial interpretation of these contrasts.  Sheep with blood drawn in the afternoon have more plasma phospholipid than sheep with blood drawn in the morning, regardless of whether the sheep were given the drug.  However, the magnitude of the effect of timing is smaller on sheep given the drug (estimated effect = 8.5 units, s.e. = 3.1) than it is on sheep not given the drug (estimated effect = 23.3 units, s.e.=3.1).  For sheep with blood drawn in the afternoon, the drug decreases plasma phospholipid relative to the control (estimated effect = 8.7 units less with the drug, s.e. = 3.1).  For sheep with blood drawn in the morning, there is only weak evidence that the drug has an effect on plasma phospholipid (estimated effect = 6.1 units more with the drug, s.e. = 3.1, $p=0.066$).
 
 <!-- ## The 2 $\times$ 2 factorial design with unbalanced data -->
 
@@ -725,7 +671,7 @@ Here is a partial interpretation of these contrasts.  Sheep bled in the afternoo
 
 ### Example without a significant interaction
 
-Oehlert (problem 8.5) reports the following data.  Low and Bin Mohd. Ali ({\em Malaysian Forester}, 1985) studied the collection of pine oleoresin by tapping the trunks of pine trees. Tapping involves cutting a hole in the tree trunk and collecting resin that seeps out. This experiment compared four shapes of holes (circle, diagonal, check, or rectangle) and the efficacy of acid (added vs.\ control) in collecting resin. Twenty-four pine trees were selected from a plantation and were randomly assigned to each of the 8 possible combinations of hole shape and acid. The response is total grams of resin collected from the hole.  These are not the actual data below, but are instead a hypothetical data set for the same design.
+Oehlert (problem 8.5) reports the following data.  @low1985experimental studied the collection of pine oleoresin by tapping the trunks of pine trees. Tapping involves cutting a hole in the tree trunk and collecting resin that seeps out. This experiment compared four shapes of holes (circle, diagonal, check, or rectangle) and the efficacy of acid (added vs.\ control) in collecting resin. Twenty-four pine trees were selected from a plantation and were randomly assigned to each of the 8 possible combinations of hole shape and acid. The response is total grams of resin collected from the hole.  The data that we will work with are not the actual data but are instead a hypothetical data set for the same design.
 <!-- \begin{center} -->
 <!-- 	\begin{tabular}{|p{0.9in}|p{0.9in}|p{0.9in}|p{0.9in}|p{0.9in}|} \hline  -->
 <!-- 		& Circle ($i=1$) & Diagonal ($i=2$) & Check ($i=3$) & Rectangle ($i=4$) \\ \hline  -->
@@ -733,33 +679,49 @@ Oehlert (problem 8.5) reports the following data.  Low and Bin Mohd. Ali ({\em M
 <!-- 		Acid added ($j=2$) & 15, 13, 20  & 66, 58, 73  & 75, 78, 90  & 97, 108, 99  \\ \hline  -->
 <!-- 	\end{tabular} -->
 <!-- \end{center} -->
-This is a balanced, replicated 4$\times$2 factorial experiment with treatment combinations assigned in a CRD.  We'll extend our ideas from the analysis of the 2 $\times$ 2 factorial experiments to this 4$\times$2 factorial experiment.   First, visualize the effects of the two factors with an interaction plot:
-```{r echo = FALSE}
-plot(c(-0.5,3.5),c(10,110),type="n",xlab="Shape",ylab="Resin (g)",xaxt="n")
-axis(1,at=0:3,lab=c("Circle","Diagonal","Check","Rectangle"))
-lines(0:3,c(11.3,49.3,65,79.3),col="blue",lwd=2)
-lines(0:3,c(16,65.7,81.0,101.3),col="red",lwd=2)
-points(0:3,c(11.3,49.3,65,79.3),pch="C",lwd=2)
-points(0:3,c(16,65.7,81.0,101.3),pch="A",lwd=2)
-
-legend(-0.25,100,leg=c("Control","Acid added"),col=c("blue","red"),pch=c("C","A"),bty="n")
-```
+This is a balanced, replicated 4 $\times$ 2 factorial experiment with treatment combinations assigned in a CRD.  We'll extend our ideas from the analysis of the 2 $\times$ 2 factorial experiments to this 4 $\times$ 2 factorial experiment.   First, visualize the effects of the two factors with an interaction plot:
+<img src="05-FactorialExperiments_files/figure-html/unnamed-chunk-9-1.png" width="480" style="display: block; margin: auto;" />
 Our notation here will be similar to the 2 $\times$ 2 factorial design, except that now we'll allow an arbitrary number of levels for the two crossed experimental factors.  Our strategy for analyzing data from a $a \times b$ factorial design will still be to use a sum-of-squares decomposition to test for interaction effects and/or main effects of the two factors.  As with a 2 $\times$ 2 design, when the data are balanced, the sum-of-squares for the groups can be exactly partitioned into the three components using the formulas that we introduced before:
 \[
 SS_{Groups} = SS[A] + SS[B] + SS[AB]
 \]
 For the oleoresin data, this decomposition is
-```{r echo = FALSE}
-resin_anova_table <- data.frame(cbind(sources = c("Shape", "Acid", "Shape*Acid", "Error", "Total"),
-                                      df = c(3, 1, 3, 16, 23),
-                                      SS = c(19407, 1305, 237, 721, 21672)))
-
-colnames(resin_anova_table) = c("source", "df", "SS")
-                            
-knitr::kable(format="html",
-             resin_anova_table, 
-             escape = FALSE) 
-```
+<table>
+ <thead>
+  <tr>
+   <th style="text-align:left;"> source </th>
+   <th style="text-align:left;"> df </th>
+   <th style="text-align:left;"> SS </th>
+  </tr>
+ </thead>
+<tbody>
+  <tr>
+   <td style="text-align:left;"> Shape </td>
+   <td style="text-align:left;"> 3 </td>
+   <td style="text-align:left;"> 19407 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Acid </td>
+   <td style="text-align:left;"> 1 </td>
+   <td style="text-align:left;"> 1305 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Shape*Acid </td>
+   <td style="text-align:left;"> 3 </td>
+   <td style="text-align:left;"> 237 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Error </td>
+   <td style="text-align:left;"> 16 </td>
+   <td style="text-align:left;"> 721 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Total </td>
+   <td style="text-align:left;"> 23 </td>
+   <td style="text-align:left;"> 21672 </td>
+  </tr>
+</tbody>
+</table>
 Now, we can use this sum-of-squares breakdown to test for the statistical significance of the interaction and/or the main effects.  As before, although we can always define these tests mathematically, the tests of the main effects will only be meaningful if the interaction is not significant.  Also, as before, tests of the main and interaction effects are $F$-tests that compare the mean-square for the effect of interest to the mean squared error.  That is, the $F$-statistic to test for the interaction is
 \[
 F = MS[AB] / MSE 
@@ -773,20 +735,60 @@ and
 F = MS[B] / MSE.
 \]
 In the usual way, all $F$-tests yield one-tailed $p$-values.  All of the information for these tests can be compiled into an ANOVA table:
-```{r echo = FALSE}
-resin_anova_table <- data.frame(cbind(sources = c("Shape", "Acid", "Shape*Acid", "Error", "Total"),
-                                      df = c(3, 1, 3, 16, 23),
-                                      SS = c(19407, 1305, 237, 721, 21672),
-                                      MS = c(6469, 1305, 79.2, 45.1, NA),
-                                      Fstat = c(143.5, 29.0, 1.76, NA, NA),
-                                      pval = c("<0.0001", "<0.0001", 0.1961, NA, NA)))
-
-colnames(resin_anova_table) = c("source", "df", "SS", "MS", "$F$", "$p$")
-                            
-knitr::kable(format="html",
-             resin_anova_table, 
-             escape = FALSE) 
-```
+<table>
+ <thead>
+  <tr>
+   <th style="text-align:left;"> source </th>
+   <th style="text-align:left;"> df </th>
+   <th style="text-align:left;"> SS </th>
+   <th style="text-align:left;"> MS </th>
+   <th style="text-align:left;"> $F$ </th>
+   <th style="text-align:left;"> $p$ </th>
+  </tr>
+ </thead>
+<tbody>
+  <tr>
+   <td style="text-align:left;"> Shape </td>
+   <td style="text-align:left;"> 3 </td>
+   <td style="text-align:left;"> 19407 </td>
+   <td style="text-align:left;"> 6469 </td>
+   <td style="text-align:left;"> 143.5 </td>
+   <td style="text-align:left;"> <0.0001 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Acid </td>
+   <td style="text-align:left;"> 1 </td>
+   <td style="text-align:left;"> 1305 </td>
+   <td style="text-align:left;"> 1305 </td>
+   <td style="text-align:left;"> 29 </td>
+   <td style="text-align:left;"> <0.0001 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Shape*Acid </td>
+   <td style="text-align:left;"> 3 </td>
+   <td style="text-align:left;"> 237 </td>
+   <td style="text-align:left;"> 79.2 </td>
+   <td style="text-align:left;"> 1.76 </td>
+   <td style="text-align:left;"> 0.1961 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Error </td>
+   <td style="text-align:left;"> 16 </td>
+   <td style="text-align:left;"> 721 </td>
+   <td style="text-align:left;"> 45.1 </td>
+   <td style="text-align:left;">  </td>
+   <td style="text-align:left;">  </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Total </td>
+   <td style="text-align:left;"> 23 </td>
+   <td style="text-align:left;"> 21672 </td>
+   <td style="text-align:left;">  </td>
+   <td style="text-align:left;">  </td>
+   <td style="text-align:left;">  </td>
+  </tr>
+</tbody>
+</table>
 
 Thus, this two-factor ANOVA shows that there is no statistical evidence of an interaction ($F_{3, 16} = 1.76$, $p = 0.20$).  Because the interaction is not significant, it makes sense to analyze main effects.  There is very strong evidence of a main effect of shape ($F_{3, 16} = 143.5$, $p < 0.0001$) and a main effect of the acid treatment ($F_{1, 16}$ = 29.0, $p <  0.0001$). 
 
@@ -853,7 +855,7 @@ Thus, all of the shapes are significantly different from one another.
 
 ### Example with a significant interaction
 
-Here's a second example of a $a \times b$ factorial design where the interaction is significant (based off of exercise 15.24 in Ott \& Longnecker):  An experiment was performed to compare the effect of soil pH and calcium additives on trunk diameters of orange trees.  36 trees were selected at random from an orange grove.  Experimental treatments were arranged in a factorial design, with 4 levels of soil pH and 3 levels of calcium supplement.  Treatment combinations were assigned to trees at random in a balanced CRD, with three trees per treatment combination.  
+Here's a second example of a $a \times b$ factorial design where the interaction is significant (based off of exercise 15.24 in @ott2015introduction):  An experiment was performed to compare the effect of soil pH and calcium additives on trunk diameters of orange trees.  36 trees were selected at random from an orange grove.  Experimental treatments were arranged in a factorial design, with 4 levels of soil pH and 3 levels of calcium supplement.  Treatment combinations were assigned to trees at random in a balanced CRD, with three trees per treatment combination.  
 
 <!-- The data are: -->
 <!-- \begin{center} -->
@@ -864,18 +866,7 @@ Here's a second example of a $a \times b$ factorial design where the interaction
 <!-- 	Calcium = 300 ($j$=3) & 6.3, 6.7, 6.1 & 7.3, 7.5, 7.2 & 7.2, 7.3, 7.0 & 6.8, 6.6, 6.4 \\ \hline  -->
 <!-- \end{tabular} -->
 <!-- \end{center} -->
-```{r echo = FALSE}
-plot(c(-0.5,3.5),c(5,8),type="n",xlab="pH",ylab="Tree Diameter",xaxt="n")
-axis(1,at=0:3,lab=c("pH4","pH5","pH6","pH7"))
-lines(0:3,c(5.8,7.33,7.4,7.3),col="blue",lwd=2)
-lines(0:3,c(7.3,7.27,7.63,7.1),col="red",lwd=2)
-lines(0:3,c(6.4,7.33,7.17,6.6),lwd=2)
-points(0:3,c(5.8,7.33,7.4,7.3),pch="1",lwd=2)
-points(0:3,c(7.3,7.27,7.63,7.1),pch="2",lwd=2)
-points(0:3,c(6.4,7.33,7.17,6.6),pch="3",lwd=2)
-
-legend(1.5,6,leg=c("Ca=100","Ca=200","Ca=300"),col=c("blue","red","black"),pch=c("1","2","3"))
-```
+<img src="05-FactorialExperiments_files/figure-html/unnamed-chunk-12-1.png" width="480" style="display: block; margin: auto;" />
 Here is a two-factor ANOVA analysis in SAS:
 
 ```{}
@@ -964,21 +955,36 @@ Ca100 vs Ca200 when pH=4     -1.53333333      0.21256807      -7.21      <.0001
 ## Unreplicated factorial designs
 
 Consider an experiment with 5 levels of factor A, 3 levels of factor B, and a single observation for each treatment combination.  This is called an unreplicated design because there is only a single replicate for each treatment combination.  Let's try a df accounting for a model that includes main effects of both factors and an interaction:
-```{r echo = FALSE}
-options(knitr.kable.NA = '') 
-
-sources <- c("Factor A", "Factor B", "A*B interaction", "Error", "Total")
-
-df <- c(4, 2, 8, 0, 14)
-
-two_factor_anova_table <- data.frame(cbind(sources, df))
-
-colnames(two_factor_anova_table) = c("source", "df")
-                            
-knitr::kable(format="html",
-             two_factor_anova_table, 
-             escape = FALSE) 
-```
+<table>
+ <thead>
+  <tr>
+   <th style="text-align:left;"> source </th>
+   <th style="text-align:left;"> df </th>
+  </tr>
+ </thead>
+<tbody>
+  <tr>
+   <td style="text-align:left;"> Factor A </td>
+   <td style="text-align:left;"> 4 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Factor B </td>
+   <td style="text-align:left;"> 2 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> A*B interaction </td>
+   <td style="text-align:left;"> 8 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Error </td>
+   <td style="text-align:left;"> 0 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Total </td>
+   <td style="text-align:left;"> 14 </td>
+  </tr>
+</tbody>
+</table>
 
 This model has no df remaining to estimate the experimental error.  Consequently, we cannot estimate $MS_{Error}$ and hence we cannot conduct $F$-tests of the treatment effects.
 
@@ -987,21 +993,32 @@ One option with unreplicated designs is to assume that there is no interaction b
 y_{ijk} =\mu +\alpha_i +\beta_j +\varepsilon _{ijk} 
 \] 
 With an additive model, we use the df that had been allocated to the interaction to estimate the experimental error instead:  
-```{r echo = FALSE}
-options(knitr.kable.NA = '') 
-
-sources <- c("Factor A", "Factor B", "Error", "Total")
-
-df <- c(4, 2, 8, 14)
-
-two_factor_anova_table <- data.frame(cbind(sources, df))
-
-colnames(two_factor_anova_table) = c("source", "df")
-                            
-knitr::kable(format="html",
-             two_factor_anova_table, 
-             escape = FALSE) 
-```
+<table>
+ <thead>
+  <tr>
+   <th style="text-align:left;"> source </th>
+   <th style="text-align:left;"> df </th>
+  </tr>
+ </thead>
+<tbody>
+  <tr>
+   <td style="text-align:left;"> Factor A </td>
+   <td style="text-align:left;"> 4 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Factor B </td>
+   <td style="text-align:left;"> 2 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Error </td>
+   <td style="text-align:left;"> 8 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Total </td>
+   <td style="text-align:left;"> 14 </td>
+  </tr>
+</tbody>
+</table>
 
 The additive model can be used to test for effects of factors A and B.  Obviously, these tests are only trustworthy if the assumption of no interactions is appropriate.  In biology, it is usually risky to assume that there are no interactions between experimental factors.  Additive models for unreplicated designs are more common in industrial statistics.
 
@@ -1089,7 +1106,7 @@ Then we average the cell means, so that the LSMEAN for males is (709 + 535.3)/2 
 
 All of these ideas can be extended to factorial experiments with more than two factors. 
 
-Example (based off of an example in P. V. Rao, {\em Statistical Research Methods in the Life Sciences}):  An investigator is interested in understanding the effects of water temperature (cold vs.\ lukewarm vs.\ warm), light (low vs.\ high), and water movement (still vs.\ flowing) on weight gain in fish.  S/he has 24 aquaria to serve as experimental units.  Each of the 3 x 2 x 2 = 12 treatment combinations are randomly assigned to 2 of the 24 aqauria, and the average weight gain of the fish in each aquaria is measured.  This is a balanced three-way factorial design with a CRD randomization structure.
+Example (based off of an example in @rao1998statistical):  An investigator is interested in understanding the effects of water temperature (cold vs.\ lukewarm vs.\ warm), light (low vs.\ high), and water movement (still vs.\ flowing) on weight gain in fish.  She has 24 aquaria to serve as experimental units.  Each of the 3 x 2 x 2 = 12 treatment combinations are randomly assigned to 2 of the 24 aqauria, and the average weight gain of the fish in each aquaria is measured.  This is a balanced three-way factorial design with a CRD randomization structure.
 
 <!-- The averages of the two replicates for each treatment combination are: -->
 
@@ -1106,47 +1123,10 @@ Example (based off of an example in P. V. Rao, {\em Statistical Research Methods
 <!-- 	\end{tabular} -->
 <!-- \end{center} -->
 As a first attempt to get a handle on these data, let's make three different interaction plots, one for each water temperature:
-```{r echo = FALSE}
-par(mfrow= c(1,3),las=1,bty='l')
-
-plot(c(-0.5,1.5),c(3,7),type="n",xlab="Movement",ylab="Weight gain",xaxt="n",main="Temp=cold")
-axis(1,at=0:1,lab=c("Still","Flowing"))
-lines(c(0,1),c(4.6,3.2))
-lines(c(0,1),c(5.6,4.1),lty="dashed")
-points(c(0,1),c(4.6,3.2),pch="L")
-points(c(0,1),c(5.6,4.1),pch="H")
-
-plot(c(-0.5,1.5),c(3,7),type="n",xlab="Movement",ylab="Weight gain",xaxt="n",main="Temp=lukewarm")
-axis(1,at=0:1,lab=c("Still","Flowing"))
-lines(c(0,1),c(5.6,5.3))
-lines(c(0,1),c(6.1,5.0),lty="dashed")
-points(c(0,1),c(5.6,5.3),pch="L")
-points(c(0,1),c(6.1,5.0),pch="H")
-
-plot(c(-0.5,1.5),c(3,7),type="n",xlab="Movement",ylab="Weight gain",xaxt="n",main="Temp=warm")
-axis(1,at=0:1,lab=c("Still","Flowing"))
-lines(c(0,1),c(4.8,6.0))
-lines(c(0,1),c(6.4,5.6),lty="dashed")
-points(c(0,1),c(4.8,6.0),pch="L")
-points(c(0,1),c(6.4,5.6),pch="H")
-```
+<img src="05-FactorialExperiments_files/figure-html/unnamed-chunk-15-1.png" width="768" style="display: block; margin: auto;" />
 The interaction plot suggests that for some water temperatures, there is an interaction between light levels and water movement.  Thus, the way in which the effect of light depends on water movement depends in turn on temperature.  Yikes!  This is a three-factor interaction. We need a test to see if this interaction is statistically significant, or if it can be attributed to experimental error.
 
-Here is some notation for a three-factor ANOVA model:
-
-	+ $y_{ijkl}$:  observation $l$ from the combination of level $i$ of factor A, level $j$ of factor B, and level $k$ of factor C
-	
-	+ $n_{ijk}$:  sample size for the combination of level $i$ of factor A, he $j$th level of factor B, and level $k$ of factor C
-	
-	+ $a$: number of levels of factor A
-	
-	+ $b$: number of levels of factor B
-	
-	+ $c$: number of levels of factor C
-	
-	<!-- %{\em $\bar{y}_{ijk+} =\frac{1}{n_{ijk} } \sum_{l=1}^{n_{ijk} }y_{ijkl}  $}:  sample mean for the combination of level $i$ of factor A, level $j$ of factor B, and the {\em k}th level of factor C{\em  } -->
-	
-	+ $\mu_{ijk} $: unknown population mean for the combination of level $i$ of factor A, level $j$ of factor B, and level $k$ of factor C
+To develop notation for the three-factor model, we'll extend our ideas from two factor models.  For example, $\mu_{ijk}$ will denote the unknown population mean for the combination of level $i$ of factor A, level $j$ of factor B, and level $k$ of factor C.
 	
 With three factors, there are two possible types of interactions:
 
@@ -1174,13 +1154,11 @@ For example, in this experiment the first-order interaction between light level 
 <!-- \end{center} -->
 Note that the rules for determining the df associated with higher-order interactions are the same as for first-order interactions: the df are always equal to the product of the df associated with each constituent factor.  (Think of this in terms of regression with indicator variables again.)
 
-In effects notation, we can write this model as
+In effects notation, we can write the cell means as 
 \[
-y_{ijkl} =\mu +\alpha_i +\beta_j +\gamma _{k} +\left(\alpha \beta \right)_{ij} +\left(\alpha \gamma \right)_{ik} +\left(\beta \gamma \right)_{jk} +\left(\alpha \beta \gamma \right)_{ijk} +\varepsilon _{ijkl} 
+\mu_{ijkl} =\mu +\alpha_i +\beta_j +\gamma _{k} +\left(\alpha \beta \right)_{ij} +\left(\alpha \gamma \right)_{ik} +\left(\beta \gamma \right)_{jk} +\left(\alpha \beta \gamma \right)_{ijk} 
 \] 
-Here, $\mu$ is the reference level, $\alpha_i$ is the "effect" of level $i$ of factor A, $\beta_j$ is the "effect" of level $j$ of factor B, $\gamma _{k} $ is the ``effect'' of level $k$ of factor C, $\left(\alpha \beta \right)_{ij}$ is the interaction between the level $i$ of factor A and level $j$ of factor B, $\left(\alpha \gamma \right)_{ik}$  is the interaction between the level $i$ of factor A and level $k$ of factor C, $\left(\beta \gamma \right)_{jk}$ is the interaction between level $j$ of factor B and level $k$ of factor C, and $\left(\alpha \beta \gamma \right)_{ijk}$ is the second-order interaction between the level $i$ of factor A, level $j$ of factor B and level $k$ of factor C.
-
-The df table tells is how many of each of the above terms need to be constrained to zero.  For example, there are 3 x 2 x 2 = 12 possible combinations of $i$, $j$, and $k$, so there are 12 different second-order interaction terms implied by the effects model.  However, there are only 2 df available for the second-order interaction, so 12-2=10 of these $\left(\alpha \beta \gamma \right)_{ijk} $ terms must be constrained to zero.
+Here, the parameters denoted by $\left(\alpha \beta \gamma \right)_{ijk}$ capture the second-order interaction among the three factors.
 
 
 ```{}
