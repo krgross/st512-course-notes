@@ -1011,10 +1011,18 @@ The natural question that arises is: When should we expect orthogonality?  One d
 
 Consider the following data set.  Pott (1992) conducted an experiment to investigate the effect of added dietary molybdenum (Mo) on the molybdenum concentrations of sheep kidneys.  Twenty (20) sheep were randomly assigned to one of four diets, where the diets differed only in the amount of supplementary molybdenum (0, 15, 30 and 45 ppm).  Five sheep were assigned to each diet, and the Mo concentration in the kidney was measured after 14 days.  The data are shown below:
 ```{r}
-molybdenum <- read.table("data/molybdenum.txt", head = T)
+molybdenum <- read.csv("data/molybdenum.csv", head = T)
 with(molybdenum, stripchart(conc ~ diet, method = "jitter", pch = 16))
 ```
-Should we model these data with an ANOVA or a regression?  In this case, the treatment groups are formed by different values of a quantitative variable --- in this case, the amount of supplementary molybdenum in the diet.  Many experiments form treatment groups in this way.  Often, the data exhibit a clear trend with respect to the quantitative variable, as the sheep example does.  When this happens, we can essentially have our cake and eat it too, by using polynomial contrasts to characterize the underlying trend within the context of an ANOVA.
+Should we model these data with an ANOVA or a regression?  In this case, the treatment groups are formed by different values of a quantitative variable --- in this case, the amount of supplementary molybdenum in the diet.  Many experiments form treatment groups in this way.  Often, the data exhibit a clear trend with respect to the quantitative variable, as the sheep example does.  This is easier to see if we plot the molybdenum variable on the horizontal axis, as we would if this were a regression design:
+```{r}
+with(molybdenum, plot(conc ~ diet, xlab = "molybdenum addition (ppm)", ylab = "kidney Mo", pch = 16))
+```
+THis plot makes it clear that, as with much biological data, the variance increases as the average response increases.  We should analyze the log of the response to stabilize the variance.
+```{r}
+with(molybdenum, plot(log(conc) ~ diet, xlab = "molybdenum addition (ppm)", ylab = "log(kidney Mo)", pch = 16))
+```
+Now we can essentially have our cake and eat it too, by using polynomial contrasts to characterize the underlying trend within the context of an ANOVA.
 
 Our strategy is to decompose the $SS_{Groups}$ into sums-of-squares that capture the polynomial component of the underlying trend.  That is, with four treatment groups (such as we have with the sheep data), we can partition the $SS_{Groups}$ as
 \[
@@ -1033,7 +1041,7 @@ where $\mu_1$, $\mu_2$, $\mu_3$, and $\mu_4$ are the means for the treatment gro
 ```
 proc glm data = sheep;
   class diet;
-  model conc = diet;
+  model logy = diet;
   contrast 'Linear' diet -3 -1 1 3;
   contrast 'Quadratic' diet 1 -1 -1 1;
   contrast 'Cubic' diet -1 3 -3 1;
@@ -1044,14 +1052,14 @@ Dependent Variable: conc
 
                                         Sum of
 Source                      DF         Squares     Mean Square    F Value    Pr > F
-Model                        3     119.6508950      39.8836317       8.62    0.0012
-Error                       16      74.0601600       4.6287600
-Corrected Total             19     193.7110550
+Model                        3      2.89623371      0.96541124      12.26    0.0002
+Error                       16      1.26006314      0.07875395
+Corrected Total             19      4.15629685
 
 Contrast                    DF     Contrast SS     Mean Square    F Value    Pr > F
-Linear                       1     100.7012250     100.7012250      21.76    0.0003
-Quadratic                    1      17.6156450      17.6156450       3.81    0.0688
-Cubic                        1       1.3340250       1.3340250       0.29    0.5988
+Linear                       1      2.63828807      2.63828807      33.50    <.0001
+Quadratic                    1      0.24832056      0.24832056       3.15    0.0948
+Cubic                        1      0.00962508      0.00962508       0.12    0.7312
 ```
 Thus we see that the linear trend is statistically significant (i.e., we can reject $H_0$: $\theta_1 = 0$), but neither the quadratic nor the cubic trends are statistically significant.
 
@@ -1059,37 +1067,30 @@ Our usual hope is that we can explain the trend in the group means parsimoniousl
 ```
 proc glm data = sheep;
   class diet;
-  model conc = diet;
+  model logy = diet;
   contrast 'Linear' diet -3 -1 1 3;
   contrast 'Lack-of-fit' diet 1 -1 -1 1,
                          diet -1 3 -3 1;
 run; 
 
-The GLM Procedure
-Dependent Variable: conc
-
-                                        Sum of
-Source                      DF         Squares     Mean Square    F Value    Pr > F
-Model                        3     119.6508950      39.8836317       8.62    0.0012
-Error                       16      74.0601600       4.6287600
-Corrected Total             19     193.7110550
-
 Contrast                    DF     Contrast SS     Mean Square    F Value    Pr > F
-Linear                       1     100.7012250     100.7012250      21.76    0.0003
-Lack-of-fit                  2      18.9496700       9.4748350       2.05    0.1616
+Linear                       1      2.63828807      2.63828807      33.50    <.0001
+Lack-of-fit                  2      0.25794564      0.12897282       1.64    0.2254
 ```
 We conclude that there is strong evidence that the treatment groups differ, and the differences among the treatment groups are parsimoniously explained by a linear trend.  As before, it makes for a nice touch to combine this all into one ANOVA table:
 ```
                                         Sum of
 Source                      DF         Squares     Mean Square    F Value    Pr > F
-Groups                       3     119.6508950      39.8836317       8.62    0.0012
-  Linear                       1     100.7012250   100.7012250      21.76    0.0003
-  Lack-of-fit                  2      18.9496700     9.4748350       2.05    0.1616
-Error                       16      74.0601600       4.6287600
-Total                       19     193.7110550
+Groups                       3      2.89623371      0.96541124      12.26    0.0002
+  Linear                       1      2.63828807    2.63828807      33.50    <.0001
+  Lack-of-fit                  2      0.25794564    0.12897282       1.64    0.2254
+Error                       16      1.26006314      0.07875395
+Total                       19      4.15629685
 ```
 
-Tables of orthogonal polynomial contrasts are nice, but the requirements for balanced data and equally spaced groups seem quite restrictive.  What can we do when these conditions are not met?  It is possible to use specialized software to find the coefficients for orthogonal polynomial contrasts when the data are not balanced, and/or when the treatment groups are not equally spaced.  However, a *much* easier alternative is to find the sums-of-squares for each contrasts by fitting polynomial regression models.  The key here is that the sum-of-squares for a polynomial regression model is equal to the sum of the sums-of-squares for the respective polynomial contrasts.  That is, with four or more treatment groups,
+Tables of orthogonal polynomial contrasts are nice, but the requirements for balanced data and equally spaced groups seem quite restrictive.  What can we do when these conditions are not met?  It is possible to use specialized software to find the coefficients for orthogonal polynomial contrasts when the data are not balanced, and/or when the treatment groups are not equally spaced.  
+
+However, an easier alternative is to find the sums-of-squares for each contrasts by fitting polynomial regression models.  The key here is that the sum-of-squares for a polynomial regression model is equal to the sum of the sums-of-squares for the respective polynomial contrasts.  That is, with four or more treatment groups,
 \begin{eqnarray*}
 	SS(\mbox{Linear regression}) & = & SS(\theta_1) \\
 	SS(\mbox{Quadratic regression}) & = & SS(\theta_1) + SS(\theta_2) \\
@@ -1098,7 +1099,7 @@ Tables of orthogonal polynomial contrasts are nice, but the requirements for bal
 and so on.  So, let's suppose we've misplaced our table of orthogonal polynomial contrasts.  We can still calculate the sum-of-squares for each polynomial contrast by fitting a series of polynomial regression models.  For example, to find $SS(\theta_1)$, we fit a linear regression to the sheep data:
 ```
 proc glm data = sheep;
-  model conc = diet;
+  model logy = diet;
 run; 
 
 The GLM Procedure
@@ -1106,14 +1107,15 @@ Dependent Variable: conc
 
                                         Sum of
 Source                      DF         Squares     Mean Square    F Value    Pr > F
-Model                        1     100.7012250     100.7012250      19.49    0.0003
-Error                       18      93.0098300       5.1672128
-Corrected Total             19     193.7110550
+Model                        1      2.63828807      2.63828807      31.28    <.0001
+Error                       18      1.51800878      0.08433382
+Corrected Total             19      4.15629685
+
 ```
-(Note the absence of a CLASS statement in the PROC GLM program above.  Without a CLASS statement, PROC GLM interprets `conc' as a quantitative predictor.)   To find $SS(\theta_1)$, we simply use $SS(\theta_1) = SS(\mbox{Linear regression}) = 100.70$.  Now, to find $SS(\theta_2)$, we need to fit a quadratic regression:
+(Note the absence of a CLASS statement in the PROC GLM program above.  Without a CLASS statement, PROC GLM interprets `conc' as a quantitative predictor.)   To find $SS(\theta_1)$, we simply use $SS(\theta_1) = SS(\mbox{Linear regression}) = 2.638$.  Now, to find $SS(\theta_2)$, we need to fit a quadratic regression:
 ```
 proc glm data = sheep;
-  model conc = diet diet*diet;
+  model logy = diet diet*diet;
 run; 
 
 The GLM Procedure
@@ -1121,14 +1123,14 @@ Dependent Variable: conc
 
                                         Sum of
 Source                      DF         Squares     Mean Square    F Value    Pr > F
-Model                        2     118.3168700      59.1584350      13.34    0.0003
-Error                       17      75.3941850       4.4349521
-Corrected Total             19     193.7110550
+Model                        2      2.88660863      1.44330432      19.32    <.0001
+Error                       17      1.26968822      0.07468754
+Corrected Total             19      4.15629685
 ```
-Now, $SS(\theta_2) = SS(\mbox{Quadratic regression}) - SS(\mbox{Linear regression}) = 118.32 - 100.70 = 17.62$.  Finally, to find $SS(\theta_3)$, we could fit a cubic regression:
+Now, $SS(\theta_2) = SS(\mbox{Quadratic regression}) - SS(\mbox{Linear regression}) = 2.889 - 2.638 = 0.248$.  Finally, to find $SS(\theta_3)$, we could fit a cubic regression:
 ```
 proc glm data = sheep;
-  model conc = diet diet*diet diet*diet*diet;
+  model logy = diet diet*diet diet*diet*diet;
 run; 
 
 
@@ -1137,8 +1139,9 @@ Dependent Variable: conc
 
                                         Sum of
 Source                      DF         Squares     Mean Square    F Value    Pr > F
-Model                        3     119.6508950      39.8836317       8.62    0.0012
-Error                       16      74.0601600       4.6287600
-Corrected Total             19     193.7110550
+Model                        3      2.89623371      0.96541124      12.26    0.0002
+Error                       16      1.26006314      0.07875395
+Corrected Total             19      4.15629685
+
 ```
-or we could have just recognized that $SS(\mbox{Cubic regression}) = SS_{Groups}$.  In either case, we now have $SS(\theta_3) = SS(\mbox{Cubic regression}) - SS(\mbox{Quadratic regression}) = 119.65 - 118.32 = 1.33$.   We have thus found the sums-of-squares associated with each polynomial contrasts without having to use the table in Oehlert.  Thankfully, this method of finding the sums-of-squares associated with each polynomial contrasts will work any time the treatment groups are formed by different levels of a quantitative variable, and does not require either balance or equally spaced treatment groups.
+or we could have just recognized that $SS(\mbox{Cubic regression}) = SS_{Groups}$.  In either case, we now have $SS(\theta_3) = SS(\mbox{Cubic regression}) - SS(\mbox{Quadratic regression}) = 2.896 - 2.887 = 0.009$.   We have thus found the sums-of-squares associated with each polynomial contrasts without having to use the table in Oehlert.  Thankfully, this method of finding the sums-of-squares associated with each polynomial contrasts will work any time the treatment groups are formed by different levels of a quantitative variable, and does not require either balance or equally spaced treatment groups.
