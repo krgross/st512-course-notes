@@ -90,3 +90,13 @@ example-with-a-significant-interaction
 unreplicated-factorial-designs
 missing-cells
 more-than-two-factors
+ancova
+random-effects
+fixed-vs.-random-effects-the-big-picture
+random-effects-models
+subsampling
+equal-subsamples-per-eu
+a-second-look-analysis-with-a-mixed-effects-model
+mathematical-foundations
+probability-refresher
+application-to-models-with-random-effects

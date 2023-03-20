@@ -284,6 +284,21 @@ div.csl-indent {
 <li class="chapter" data-level="5.6" data-path="factorial-experiments.html"><a href="factorial-experiments.html#missing-cells"><i class="fa fa-check"></i><b>5.6</b> Missing cells</a></li>
 <li class="chapter" data-level="5.7" data-path="factorial-experiments.html"><a href="factorial-experiments.html#more-than-two-factors"><i class="fa fa-check"></i><b>5.7</b> More than two factors</a></li>
 </ul></li>
+<li class="chapter" data-level="6" data-path="ancova.html"><a href="ancova.html"><i class="fa fa-check"></i><b>6</b> ANCOVA</a></li>
+<li class="chapter" data-level="7" data-path="random-effects.html"><a href="random-effects.html"><i class="fa fa-check"></i><b>7</b> Random effects</a>
+<ul>
+<li class="chapter" data-level="7.1" data-path="random-effects.html"><a href="random-effects.html#fixed-vs.-random-effects-the-big-picture"><i class="fa fa-check"></i><b>7.1</b> Fixed vs. random effects: the big picture</a></li>
+<li class="chapter" data-level="7.2" data-path="random-effects.html"><a href="random-effects.html#random-effects-models"><i class="fa fa-check"></i><b>7.2</b> Random-effects models</a></li>
+<li class="chapter" data-level="7.3" data-path="random-effects.html"><a href="random-effects.html#subsampling"><i class="fa fa-check"></i><b>7.3</b> Subsampling</a>
+<ul>
+<li class="chapter" data-level="7.3.1" data-path="random-effects.html"><a href="random-effects.html#equal-subsamples-per-eu"><i class="fa fa-check"></i><b>7.3.1</b> Equal subsamples per EU</a></li>
+</ul></li>
+<li class="chapter" data-level="7.4" data-path="random-effects.html"><a href="random-effects.html#mathematical-foundations"><i class="fa fa-check"></i><b>7.4</b> Mathematical foundations</a>
+<ul>
+<li class="chapter" data-level="7.4.1" data-path="random-effects.html"><a href="random-effects.html#probability-refresher"><i class="fa fa-check"></i><b>7.4.1</b> Probability refresher</a></li>
+<li class="chapter" data-level="7.4.2" data-path="random-effects.html"><a href="random-effects.html#application-to-models-with-random-effects"><i class="fa fa-check"></i><b>7.4.2</b> Application to models with random effects</a></li>
+</ul></li>
+</ul></li>
 <li class="chapter" data-level="" data-path="bibliography.html"><a href="bibliography.html"><i class="fa fa-check"></i>Bibliography</a></li>
 </ul>
 
@@ -627,7 +642,7 @@ R^2 = \dfrac{{\rm SS(Regression)}}{{\rm SS(Total)}} = 1-\frac{{\rm SSE}}{{\rm SS
 <div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="simple-linear-regression.html#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">resid</span>(fm1) <span class="sc">~</span> <span class="fu">fitted</span>(fm1), <span class="at">xlab =</span> <span class="st">&quot;Fitted Values&quot;</span>, <span class="at">ylab =</span> <span class="st">&quot;Residuals&quot;</span>)</span>
 <span id="cb14-2"><a href="simple-linear-regression.html#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">h =</span> <span class="dv">0</span>, <span class="at">lty =</span> <span class="st">&quot;dotted&quot;</span>)</span></code></pre></div>
 <p><img src="index_files/figure-html/unnamed-chunk-8-1.png" width="384" style="display: block; margin: auto;" /></p>
-<p>Perhaps the most common violation of the regression assumption occurs when the variance of a response increases as the fitted values increase. The tell-tale signature of this violation is a “trumpeting” pattern in the plot of the residuals vs. the fitted values. Indeed, an increasing variance is perhaps more the rule than the exception in some sciences, especially the life sciences. To illustrate, here is a data set that we will study more closely when we study [ANCOVA]. For now, it suffices to say that this is a data set in which the response is the lifespan of a fruitfly, and there are several predictors. Here is a residual plot of the ANCOVA model:</p>
+<p>Perhaps the most common violation of the regression assumption occurs when the variance of a response increases as the fitted values increase. The tell-tale signature of this violation is a “trumpeting” pattern in the plot of the residuals vs. the fitted values. Indeed, an increasing variance is perhaps more the rule than the exception in some sciences, especially the life sciences. To illustrate, here is a data set that we will study more closely when we study <a href="ancova.html#ancova">ANCOVA</a>. For now, it suffices to say that this is a data set in which the response is the lifespan of a fruitfly, and there are several predictors. Here is a residual plot of the ANCOVA model:</p>
 <p><img src="index_files/figure-html/unnamed-chunk-9-1.png" width="384" style="display: block; margin: auto;" /></p>
 <p>Fruitflies that live longer clearly have more variable lifespans.</p>
 <hr />

@@ -497,7 +497,7 @@ In all other respects, the analysis of unbalanced data would proceed identically
 
 A final comment on subsampling: Often it is more expensive to have more EUs and is easier to have more subsamples.  The extent to which increasing the number of subsamples will increase statistical power depends on the relative magnitudes of the variability among EUs and the variability among subsamples.   If the variability among EUs is large relative to the variability among subsamples (as might be the case with the grip strength example, for instance), then adding subsamples does little to increase statistical precision.  But if the variability among subsamples is of the same or greater magnitude than the variability among EUs (as in the rose example), then adding subsamples can increase precision and statistical power.
 
-## Mathematical foundations
+## $^\star$Mathematical foundations
 
 In this section, we introduce formal mathematical arguments for how random effects induce correlations among grouped responses.  This section makes heavy uses of the mathematics of probability.  Before proceeding, we will need to review several key probability concepts
 
