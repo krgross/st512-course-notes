@@ -24,7 +24,7 @@ mean of x mean of y
 298.6552  281.0621 
 ```
 
-The two-sample t-test is the wrong test for these data because it fails to account for the fact that the data are paired.  The correct way to analyze these data is to calculate the difference in grip strength for each individual, and then to treat the sample of $n=145$ differences as a single random sample from a population of differences.  We then test the null hypothesis that the average of this population of differences is = 0 vs the alternative hypothesis that the difference is $\neq$ 0.
+The two-sample t-test is the wrong test for these data because it fails to account for the fact that the data are paired.  The correct way to analyze these data is to calculate the difference in grip strength for each individual, and then to treat the sample of $n=145$ differences as a single random sample from a population of differences.  We then test the null hypothesis that the average of this population of differences is equals 0 against the alternative that the average difference is different from 0.
 
 ```{}
 > with(grip, t.test(x = Dominant - Off))
@@ -43,7 +43,7 @@ mean of x
 17.5931
 ```
 
-The paired analysis estimates the average difference in grip strength more precisely, resulting in a more narrow CI and a smaller p-value.  The paired analysis is more precise because the experimental error has been reduced by removing person-to-person variability.
+The paired analysis estimates the average difference in grip strength more precisely, resulting in a narrower CI and a smaller $p$-value.  The paired analysis is more precise because the experimental error has been reduced by removing person-to-person variability.
 
 Taking differences only works when we are comparing two treatments.  When we are comparing more than two treatments, we need a more general strategy.  *Blocking* is a technique that reduces experimental error (and hence increases precision) by grouping heterogeneous experimental units into blocks of homogeneous EUs.  Remember that statistical tests boil down to comparing the magnitude of the treatment effect to the precision with which that effect is estimated.  We can’t do anything about the magnitude of the treatment effect --- that’s set by nature.  Blocking is a technique that increases statistical power by reducing experimental error and thus increasing precision.
 
@@ -58,9 +58,9 @@ The canonical example of blocking comes from agriculture.  Suppose we want to co
 <!-- 		\end{tabular} -->
 <!-- \end{center} -->
 
-This is a randomized complete block design (RCBD).   A RCBD consists of $q$ blocks, each of which is divided into $p$ homogeneous EUs.  Treatments are randomly assigned to EUs within each block.  This is a "complete" block design because each level of the experimental treatment is represented at least once in every block.  (In contrast, an "incomplete" block design is one in which not all experimental treatments are represented in every block.)  A standard RCBD is one in which every treatment (or every treatment combination) is assigned to exactly one EU in each block.
+This is a randomized complete block design (RCBD).   A RCBD consists of $q$ blocks, each of which is divided into $p$ homogeneous EUs.  Treatments are randomly assigned to EUs within each block.  This is a "complete" block design because each level of the experimental treatment is represented at least once in every block.  In contrast, an "incomplete" block design is one in which not all experimental treatments are represented in every block.  A standard RCBD is one in which every treatment (or every treatment combination) is assigned to exactly one EU in each block.
 
-One way to analyze data from an RCBD is with a two-way ANOVA, where "block" is one of the two factors.  Example: For the grip strength data, treat "subject" (the person) as a blocking factor.
+The classical way to analyze data from an RCBD is to include the block as an additional factor in the ANOVA, albeit a factor that is not engaged in interactions with the treatment factors.  Example: For the grip strength data, we would treat "subject" (the person) as a blocking factor.
 
 
 ```r
@@ -84,10 +84,12 @@ anova(fm1)
 Observe that the $p$-value for testing an effect of "hand" is exactly the same as the $p$-value from the paired $t$-test.  This is not a coincidence.  These are alternative ways of writing the same model.  
 
 Remarks:
-*  We have fit an additive model that does not include a person-by-hand interaction.  This is because the design is unreplicated with respect to the person-by-hand interaction.  Although we said that biologists typically frown on using an additive model with an unreplicated two-way factorial treatment structure, it is much more common (and accepted) to use an additive model for an RCBD, thus assuming that there is no block-by-treatment interaction.
+
+*  We have fit an additive model that does not include a person-by-hand interaction.  In a RCBD, it is common to assume that there is no block-by-treatment interaction.
+
 * Typically we are not interested in the $F$-test associated with the block effect.  Even if the block effect is not significant, we do not remove it from the model.  Doing so would be tantamount to treating the design as a CRD, which does not account for the restricted randomization.
 
-Here is an example of a standard RCBD with one experimental factor, described in the SAS documentation for PROC GLM: Stenstrom (1940) investigated how $p = 7$ soil types affect the growth of snapdragons.  To control for local fertility variations, the soils were grouped into $q = 3$ blocks.  Average stem length of the snapdragons in each EU was recorded.  The data are:
+Here is an example of a standard RCBD with one experimental factor, described in the SAS documentation for PROC GLM: @stenstrom40 investigated how $p = 7$ soil types affect the growth of snapdragons.  To control for local fertility variations, the soils were grouped into $q = 3$ blocks.  Average stem length of the snapdragons in each EU was recorded.  The data are:
 
 ```{}
     	        Block
@@ -108,10 +110,6 @@ Here is an analysis with PROC GLM:
 proc glm;
   class Block Type;
   model StemLength = Block Type;
-  /*---------------------------------clrn-cltn-knox-onel-cpst-wbsh-wstr */
-  contrast 'Compost vs. others'  Type  -1   -1   -1   -1    6   -1   -1 / e; 
-  contrast 'Glacial vs. drift'   Type  -1    0    1    1    0    0   -1 / e; 
-  contrast 'Clarion vs. Webster' Type  -1    0    0    0    0    0    1 / e; 
   means Type / tukey;
 run;
 
@@ -126,11 +124,6 @@ Corrected Total             20     161.9314286
 Source                      DF     Type III SS     Mean Square    F Value    Pr > F
 blk                          2      39.0371429      19.5185714      11.86    0.0014
 type                         6     103.1514286      17.1919048      10.45    0.0004
-
-Contrast                    DF     Contrast SS     Mean Square    F Value    Pr > F
-Compost vs. others           1     29.24198413     29.24198413      17.77    0.0012
-Glacial vs. drift            1     22.14083333     22.14083333      13.46    0.0032
-Clarion vs. Webster          1      1.70666667      1.70666667       1.04    0.3285
 
 Tukey's Studentized Range (HSD) Test for StemLength
 
@@ -158,18 +151,6 @@ B    D    C        32.167      3    Clarion
 Here is an example of a standard RCBD with a 2 $\times$ 2 factorial treatment structure, described in the on-line SAS documentation.  The description of the data there reads: "The data, from Neter, Wasserman, and Kutner (1990, p. 941), are from an experiment examining the effects of codeine and acupuncture on post-operative dental pain in male subjects. Both treatment factors have two levels. The codeine levels are a codeine capsule or a sugar capsule. The acupuncture levels are two inactive acupuncture points or two active acupuncture points. There are four distinct treatment combinations due to the factorial treatment structure. The 32 subjects are assigned to eight blocks of four subjects each based on an assessment of pain tolerance."
 
 As with any factorial experiment, it is helpful to inspect an interaction plot of the treatment means first:
-
-```r
-plot(c(-0.5,1.5),c(0.5,2),type="n",xlab="Acupuncture",ylab="Relief score",xaxt="n")
-axis(1,at=0:1,lab=c("No","Yes"))
-lines(c(0,1),c(0.6,1.175),col="blue",lwd=2)
-lines(c(0,1),c(1.06,1.79),col="red",lwd=2)
-points(c(0,1),c(0.6,1.175),pch="P",lwd=2)
-points(c(0,1),c(1.06,1.79),pch="T",lwd=2)
-
-legend(0,1.8,leg=c("Placebo","Treated"),col=c("blue","red"),pch=c("P","T"))
-```
-
 <img src="08-BlockedDesigns_files/figure-html/unnamed-chunk-4-1.png" width="480" style="display: block; margin: auto;" />
 Here is how we might analyze these data with SAS PROC GLM:
 
@@ -324,8 +305,11 @@ type      Webster     31.1000      1.1830      12      26.29      <.0001
 
 
 Remarks:
+
 * The Type III $F$-tests for the type effect are the same in both analyses.  This is true because the data are balanced.  If the data are not balanced, treating the block as a random vs. fixed effect can have a small effect on the Type III $F$-tests.
+
 * The standard error of the LSMEAN for each type is larger when we treat the block as a random effect.  This makes sense, because if we want to expand our scope of inference to the population of blocks from which these blocks were selected (instead of restricting focus to these particular blocks), we incur a cost of greater uncertainty.
+
 * The model with block as a random effect is a mixed model, because it includes both a fixed effect (type) and a random effect (block).  An equation for this model is
 	\[
 	y_{ij} = \mu + \alpha_i + B_j + \varepsilon_{ij} 

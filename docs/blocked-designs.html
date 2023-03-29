@@ -344,7 +344,7 @@ alternative hypothesis: true difference in means is not equal to 0
 sample estimates:
 mean of x mean of y 
 298.6552  281.0621 </code></pre>
-<p>The two-sample t-test is the wrong test for these data because it fails to account for the fact that the data are paired. The correct way to analyze these data is to calculate the difference in grip strength for each individual, and then to treat the sample of <span class="math inline">\(n=145\)</span> differences as a single random sample from a population of differences. We then test the null hypothesis that the average of this population of differences is = 0 vs the alternative hypothesis that the difference is <span class="math inline">\(\neq\)</span> 0.</p>
+<p>The two-sample t-test is the wrong test for these data because it fails to account for the fact that the data are paired. The correct way to analyze these data is to calculate the difference in grip strength for each individual, and then to treat the sample of <span class="math inline">\(n=145\)</span> differences as a single random sample from a population of differences. We then test the null hypothesis that the average of this population of differences is equals 0 against the alternative that the average difference is different from 0.</p>
 <pre><code>&gt; with(grip, t.test(x = Dominant - Off))
 
 One Sample t-test
@@ -359,7 +359,7 @@ alternative hypothesis: true mean is not equal to 0
 sample estimates:
 mean of x 
 17.5931</code></pre>
-<p>The paired analysis estimates the average difference in grip strength more precisely, resulting in a more narrow CI and a smaller p-value. The paired analysis is more precise because the experimental error has been reduced by removing person-to-person variability.</p>
+<p>The paired analysis estimates the average difference in grip strength more precisely, resulting in a narrower CI and a smaller <span class="math inline">\(p\)</span>-value. The paired analysis is more precise because the experimental error has been reduced by removing person-to-person variability.</p>
 <p>Taking differences only works when we are comparing two treatments. When we are comparing more than two treatments, we need a more general strategy. <em>Blocking</em> is a technique that reduces experimental error (and hence increases precision) by grouping heterogeneous experimental units into blocks of homogeneous EUs. Remember that statistical tests boil down to comparing the magnitude of the treatment effect to the precision with which that effect is estimated. We can’t do anything about the magnitude of the treatment effect — that’s set by nature. Blocking is a technique that increases statistical power by reducing experimental error and thus increasing precision.</p>
 <p>The canonical example of blocking comes from agriculture. Suppose we want to compare the effects of 3 different fertilizers (call them A, B, and C) on crop yield. Suppose a field can be divided into 12 plots (EUs), and there is a known east-west elevation slope to the field. In a CRD, treatments are randomly assigned to EUs. CRDs are appropriate when EUs are homogeneous. Here, we know that there is a difference between EUs based on where they lie along the east-west gradient. Consequently, a better design is to block against slope by grouping EUs into blocks of plots at similar locations along the east-west gradient. Treatments are then randomly assigned within blocks.</p>
 <!-- One such randomization might be: -->
@@ -370,8 +370,8 @@ mean of x
 <!--        B & A & C & B \\ \hline  -->
 <!--        \end{tabular} -->
 <!-- \end{center} -->
-<p>This is a randomized complete block design (RCBD). A RCBD consists of <span class="math inline">\(q\)</span> blocks, each of which is divided into <span class="math inline">\(p\)</span> homogeneous EUs. Treatments are randomly assigned to EUs within each block. This is a “complete” block design because each level of the experimental treatment is represented at least once in every block. (In contrast, an “incomplete” block design is one in which not all experimental treatments are represented in every block.) A standard RCBD is one in which every treatment (or every treatment combination) is assigned to exactly one EU in each block.</p>
-<p>One way to analyze data from an RCBD is with a two-way ANOVA, where “block” is one of the two factors. Example: For the grip strength data, treat “subject” (the person) as a blocking factor.</p>
+<p>This is a randomized complete block design (RCBD). A RCBD consists of <span class="math inline">\(q\)</span> blocks, each of which is divided into <span class="math inline">\(p\)</span> homogeneous EUs. Treatments are randomly assigned to EUs within each block. This is a “complete” block design because each level of the experimental treatment is represented at least once in every block. In contrast, an “incomplete” block design is one in which not all experimental treatments are represented in every block. A standard RCBD is one in which every treatment (or every treatment combination) is assigned to exactly one EU in each block.</p>
+<p>The classical way to analyze data from an RCBD is to include the block as an additional factor in the ANOVA, albeit a factor that is not engaged in interactions with the treatment factors. Example: For the grip strength data, we would treat “subject” (the person) as a blocking factor.</p>
 <div class="sourceCode" id="cb268"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb268-1"><a href="blocked-designs.html#cb268-1" aria-hidden="true" tabindex="-1"></a>grip <span class="ot">&lt;-</span> <span class="fu">read.table</span>(<span class="st">&quot;data/gripall-long.txt&quot;</span>, <span class="at">head =</span> T, <span class="at">stringsAsFactors =</span> T)</span>
 <span id="cb268-2"><a href="blocked-designs.html#cb268-2" aria-hidden="true" tabindex="-1"></a>fm1 <span class="ot">&lt;-</span> <span class="fu">lm</span>(strength <span class="sc">~</span> subject <span class="sc">+</span> hand, <span class="at">data =</span> grip)</span>
 <span id="cb268-3"><a href="blocked-designs.html#cb268-3" aria-hidden="true" tabindex="-1"></a><span class="fu">anova</span>(fm1)</span></code></pre></div>
@@ -385,10 +385,12 @@ mean of x
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
 <p>Observe that the <span class="math inline">\(p\)</span>-value for testing an effect of “hand” is exactly the same as the <span class="math inline">\(p\)</span>-value from the paired <span class="math inline">\(t\)</span>-test. This is not a coincidence. These are alternative ways of writing the same model.</p>
-<p>Remarks:
-* We have fit an additive model that does not include a person-by-hand interaction. This is because the design is unreplicated with respect to the person-by-hand interaction. Although we said that biologists typically frown on using an additive model with an unreplicated two-way factorial treatment structure, it is much more common (and accepted) to use an additive model for an RCBD, thus assuming that there is no block-by-treatment interaction.
-* Typically we are not interested in the <span class="math inline">\(F\)</span>-test associated with the block effect. Even if the block effect is not significant, we do not remove it from the model. Doing so would be tantamount to treating the design as a CRD, which does not account for the restricted randomization.</p>
-<p>Here is an example of a standard RCBD with one experimental factor, described in the SAS documentation for PROC GLM: Stenstrom (1940) investigated how <span class="math inline">\(p = 7\)</span> soil types affect the growth of snapdragons. To control for local fertility variations, the soils were grouped into <span class="math inline">\(q = 3\)</span> blocks. Average stem length of the snapdragons in each EU was recorded. The data are:</p>
+<p>Remarks:</p>
+<ul>
+<li><p>We have fit an additive model that does not include a person-by-hand interaction. In a RCBD, it is common to assume that there is no block-by-treatment interaction.</p></li>
+<li><p>Typically we are not interested in the <span class="math inline">\(F\)</span>-test associated with the block effect. Even if the block effect is not significant, we do not remove it from the model. Doing so would be tantamount to treating the design as a CRD, which does not account for the restricted randomization.</p></li>
+</ul>
+<p>Here is an example of a standard RCBD with one experimental factor, described in the SAS documentation for PROC GLM: <span class="citation">Stenstrom (<a href="#ref-stenstrom40" role="doc-biblioref">1940</a>)</span> investigated how <span class="math inline">\(p = 7\)</span> soil types affect the growth of snapdragons. To control for local fertility variations, the soils were grouped into <span class="math inline">\(q = 3\)</span> blocks. Average stem length of the snapdragons in each EU was recorded. The data are:</p>
 <pre><code>                Block
 Type        A    B    C
 Clarion  32.7 32.3 31.5 
@@ -402,10 +404,6 @@ Webster  32.5 31.1 29.7 </code></pre>
 <pre><code>proc glm;
   class Block Type;
   model StemLength = Block Type;
-  /*---------------------------------clrn-cltn-knox-onel-cpst-wbsh-wstr */
-  contrast &#39;Compost vs. others&#39;  Type  -1   -1   -1   -1    6   -1   -1 / e; 
-  contrast &#39;Glacial vs. drift&#39;   Type  -1    0    1    1    0    0   -1 / e; 
-  contrast &#39;Clarion vs. Webster&#39; Type  -1    0    0    0    0    0    1 / e; 
   means Type / tukey;
 run;
 
@@ -420,11 +418,6 @@ Corrected Total             20     161.9314286
 Source                      DF     Type III SS     Mean Square    F Value    Pr &gt; F
 blk                          2      39.0371429      19.5185714      11.86    0.0014
 type                         6     103.1514286      17.1919048      10.45    0.0004
-
-Contrast                    DF     Contrast SS     Mean Square    F Value    Pr &gt; F
-Compost vs. others           1     29.24198413     29.24198413      17.77    0.0012
-Glacial vs. drift            1     22.14083333     22.14083333      13.46    0.0032
-Clarion vs. Webster          1      1.70666667      1.70666667       1.04    0.3285
 
 Tukey&#39;s Studentized Range (HSD) Test for StemLength
 
@@ -448,16 +441,8 @@ B    D    C        32.167      3    Clarion
      D    C        30.300      3    Clinton
      D             29.667      3    Compost</code></pre>
 <p>Here is an example of a standard RCBD with a 2 <span class="math inline">\(\times\)</span> 2 factorial treatment structure, described in the on-line SAS documentation. The description of the data there reads: “The data, from Neter, Wasserman, and Kutner (1990, p. 941), are from an experiment examining the effects of codeine and acupuncture on post-operative dental pain in male subjects. Both treatment factors have two levels. The codeine levels are a codeine capsule or a sugar capsule. The acupuncture levels are two inactive acupuncture points or two active acupuncture points. There are four distinct treatment combinations due to the factorial treatment structure. The 32 subjects are assigned to eight blocks of four subjects each based on an assessment of pain tolerance.”</p>
-<p>As with any factorial experiment, it is helpful to inspect an interaction plot of the treatment means first:</p>
-<div class="sourceCode" id="cb272"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb272-1"><a href="blocked-designs.html#cb272-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">c</span>(<span class="sc">-</span><span class="fl">0.5</span>,<span class="fl">1.5</span>),<span class="fu">c</span>(<span class="fl">0.5</span>,<span class="dv">2</span>),<span class="at">type=</span><span class="st">&quot;n&quot;</span>,<span class="at">xlab=</span><span class="st">&quot;Acupuncture&quot;</span>,<span class="at">ylab=</span><span class="st">&quot;Relief score&quot;</span>,<span class="at">xaxt=</span><span class="st">&quot;n&quot;</span>)</span>
-<span id="cb272-2"><a href="blocked-designs.html#cb272-2" aria-hidden="true" tabindex="-1"></a><span class="fu">axis</span>(<span class="dv">1</span>,<span class="at">at=</span><span class="dv">0</span><span class="sc">:</span><span class="dv">1</span>,<span class="at">lab=</span><span class="fu">c</span>(<span class="st">&quot;No&quot;</span>,<span class="st">&quot;Yes&quot;</span>))</span>
-<span id="cb272-3"><a href="blocked-designs.html#cb272-3" aria-hidden="true" tabindex="-1"></a><span class="fu">lines</span>(<span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">1</span>),<span class="fu">c</span>(<span class="fl">0.6</span>,<span class="fl">1.175</span>),<span class="at">col=</span><span class="st">&quot;blue&quot;</span>,<span class="at">lwd=</span><span class="dv">2</span>)</span>
-<span id="cb272-4"><a href="blocked-designs.html#cb272-4" aria-hidden="true" tabindex="-1"></a><span class="fu">lines</span>(<span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">1</span>),<span class="fu">c</span>(<span class="fl">1.06</span>,<span class="fl">1.79</span>),<span class="at">col=</span><span class="st">&quot;red&quot;</span>,<span class="at">lwd=</span><span class="dv">2</span>)</span>
-<span id="cb272-5"><a href="blocked-designs.html#cb272-5" aria-hidden="true" tabindex="-1"></a><span class="fu">points</span>(<span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">1</span>),<span class="fu">c</span>(<span class="fl">0.6</span>,<span class="fl">1.175</span>),<span class="at">pch=</span><span class="st">&quot;P&quot;</span>,<span class="at">lwd=</span><span class="dv">2</span>)</span>
-<span id="cb272-6"><a href="blocked-designs.html#cb272-6" aria-hidden="true" tabindex="-1"></a><span class="fu">points</span>(<span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">1</span>),<span class="fu">c</span>(<span class="fl">1.06</span>,<span class="fl">1.79</span>),<span class="at">pch=</span><span class="st">&quot;T&quot;</span>,<span class="at">lwd=</span><span class="dv">2</span>)</span>
-<span id="cb272-7"><a href="blocked-designs.html#cb272-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb272-8"><a href="blocked-designs.html#cb272-8" aria-hidden="true" tabindex="-1"></a><span class="fu">legend</span>(<span class="dv">0</span>,<span class="fl">1.8</span>,<span class="at">leg=</span><span class="fu">c</span>(<span class="st">&quot;Placebo&quot;</span>,<span class="st">&quot;Treated&quot;</span>),<span class="at">col=</span><span class="fu">c</span>(<span class="st">&quot;blue&quot;</span>,<span class="st">&quot;red&quot;</span>),<span class="at">pch=</span><span class="fu">c</span>(<span class="st">&quot;P&quot;</span>,<span class="st">&quot;T&quot;</span>))</span></code></pre></div>
-<p><img src="08-BlockedDesigns_files/figure-html/unnamed-chunk-4-1.png" width="480" style="display: block; margin: auto;" />
+<p>As with any factorial experiment, it is helpful to inspect an interaction plot of the treatment means first:
+<img src="08-BlockedDesigns_files/figure-html/unnamed-chunk-4-1.png" width="480" style="display: block; margin: auto;" />
 Here is how we might analyze these data with SAS PROC GLM:</p>
 <pre><code>proc glm data=dental;
   class block codeine acupuncture;
@@ -589,19 +574,24 @@ type      Knox        34.9000      1.1830      12      29.50      &lt;.0001
 type      O&#39;Neill     33.8000      1.1830      12      28.57      &lt;.0001
 type      Wabash      35.9667      1.1830      12      30.40      &lt;.0001
 type      Webster     31.1000      1.1830      12      26.29      &lt;.0001</code></pre>
-<p>Remarks:
-* The Type III <span class="math inline">\(F\)</span>-tests for the type effect are the same in both analyses. This is true because the data are balanced. If the data are not balanced, treating the block as a random vs. fixed effect can have a small effect on the Type III <span class="math inline">\(F\)</span>-tests.
-* The standard error of the LSMEAN for each type is larger when we treat the block as a random effect. This makes sense, because if we want to expand our scope of inference to the population of blocks from which these blocks were selected (instead of restricting focus to these particular blocks), we incur a cost of greater uncertainty.
-* The model with block as a random effect is a mixed model, because it includes both a fixed effect (type) and a random effect (block). An equation for this model is
+<p>Remarks:</p>
+<ul>
+<li><p>The Type III <span class="math inline">\(F\)</span>-tests for the type effect are the same in both analyses. This is true because the data are balanced. If the data are not balanced, treating the block as a random vs. fixed effect can have a small effect on the Type III <span class="math inline">\(F\)</span>-tests.</p></li>
+<li><p>The standard error of the LSMEAN for each type is larger when we treat the block as a random effect. This makes sense, because if we want to expand our scope of inference to the population of blocks from which these blocks were selected (instead of restricting focus to these particular blocks), we incur a cost of greater uncertainty.</p></li>
+<li><p>The model with block as a random effect is a mixed model, because it includes both a fixed effect (type) and a random effect (block). An equation for this model is
 <span class="math display">\[
-    y_{ij} = \mu + \alpha_i + B_j + \varepsilon_{ij}
-    \]</span>
-where <span class="math inline">\(\mu\)</span> is the reference level or intercept, <span class="math inline">\(\alpha_i\)</span> are the (fixed) effects parameters for the snapdragon type, <span class="math inline">\(B_j \sim \mathcal{N}\left(0, \sigma^2_B \right)\)</span> are the random block effects, and <span class="math inline">\(\varepsilon_{ij} \sim \mathcal{N}\left(0, \sigma^2_\varepsilon \right)\)</span> are the residual errors (also a random effect).</p>
+  y_{ij} = \mu + \alpha_i + B_j + \varepsilon_{ij}
+  \]</span>
+where <span class="math inline">\(\mu\)</span> is the reference level or intercept, <span class="math inline">\(\alpha_i\)</span> are the (fixed) effects parameters for the snapdragon type, <span class="math inline">\(B_j \sim \mathcal{N}\left(0, \sigma^2_B \right)\)</span> are the random block effects, and <span class="math inline">\(\varepsilon_{ij} \sim \mathcal{N}\left(0, \sigma^2_\varepsilon \right)\)</span> are the residual errors (also a random effect).</p></li>
+</ul>
 
 </div>
 </div>
 <h3>Bibliography<a href="bibliography.html#bibliography" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <div id="refs" class="references csl-bib-body hanging-indent">
+<div id="ref-stenstrom40" class="csl-entry">
+Stenstrom, F. H. 1940. <span>“The Growth of Snapdragons, Stocks, Cinerarias, and Carnations on Six Iowa Soils.”</span> Master’s thesis, Iowa State College.
+</div>
 <div id="ref-taniguchi1995net" class="csl-entry">
 Taniguchi, K, GB Huntington, and BP Glenn. 1995. <span>“Net Nutrient Flux by Visceral Tissues of Beef Steers Given Abomasal and Ruminal Infusions of Casein and Starch.”</span> <em>Journal of Animal Science</em> 73 (1): 236–49.
 </div>
