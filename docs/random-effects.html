@@ -23,7 +23,7 @@
 <meta name="author" content="Kevin Gross" />
 
 
-<meta name="date" content="2023-03-10" />
+<meta name="date" content="2023-03-29" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -31,7 +31,7 @@
   
   
 <link rel="prev" href="ancova.html"/>
-<link rel="next" href="bibliography.html"/>
+<link rel="next" href="blocked-designs.html"/>
 <script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
@@ -293,11 +293,17 @@ div.csl-indent {
 <ul>
 <li class="chapter" data-level="7.3.1" data-path="random-effects.html"><a href="random-effects.html#equal-subsamples-per-eu"><i class="fa fa-check"></i><b>7.3.1</b> Equal subsamples per EU</a></li>
 </ul></li>
-<li class="chapter" data-level="7.4" data-path="random-effects.html"><a href="random-effects.html#mathematical-foundations"><i class="fa fa-check"></i><b>7.4</b> Mathematical foundations</a>
+<li class="chapter" data-level="7.4" data-path="random-effects.html"><a href="random-effects.html#starmathematical-foundations"><i class="fa fa-check"></i><b>7.4</b> <span class="math inline">\(^\star\)</span>Mathematical foundations</a>
 <ul>
 <li class="chapter" data-level="7.4.1" data-path="random-effects.html"><a href="random-effects.html#probability-refresher"><i class="fa fa-check"></i><b>7.4.1</b> Probability refresher</a></li>
 <li class="chapter" data-level="7.4.2" data-path="random-effects.html"><a href="random-effects.html#application-to-models-with-random-effects"><i class="fa fa-check"></i><b>7.4.2</b> Application to models with random effects</a></li>
 </ul></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="blocked-designs.html"><a href="blocked-designs.html"><i class="fa fa-check"></i><b>8</b> Blocked designs</a>
+<ul>
+<li class="chapter" data-level="8.1" data-path="blocked-designs.html"><a href="blocked-designs.html#randomized-complete-block-designs"><i class="fa fa-check"></i><b>8.1</b> Randomized complete block designs</a></li>
+<li class="chapter" data-level="8.2" data-path="blocked-designs.html"><a href="blocked-designs.html#latin-squares-designs"><i class="fa fa-check"></i><b>8.2</b> Latin-squares designs</a></li>
+<li class="chapter" data-level="8.3" data-path="blocked-designs.html"><a href="blocked-designs.html#should-a-blocking-factor-be-a-fixed-or-random-effect"><i class="fa fa-check"></i><b>8.3</b> *Should a blocking factor be a fixed or random effect?</a></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="bibliography.html"><a href="bibliography.html"><i class="fa fa-check"></i>Bibliography</a></li>
 </ul>
@@ -332,7 +338,10 @@ div.csl-indent {
 <div id="random-effects-models" class="section level2 hasAnchor" number="7.2">
 <h2><span class="header-section-number">7.2</span> Random-effects models<a href="random-effects.html#random-effects-models" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>Models with no fixed effects (except for the intercept) are called random-effects models. Pure random-effects models are not frequently encountered in the life sciences, but they are occasionally useful for characterizing hierarchical variability.</p>
-<p>Example (from the on-line SAS documentation): ``In the following example from Snedecor &amp; Cochran (1976), an experiment is conducted to study the variability of calcium concentration in turnip greens. Four plants are selected at random; then three leaves are randomly selected from each plant. Two 100-mg samples are taken from each leaf. The amount of calcium is determined by microchemical methods.’’</p>
+<p>This example is taken from the on-line SAS documentation. The description given there reads</p>
+<blockquote>
+<p>In the following example from <span class="citation">Snedecor and Cochran (<a href="#ref-snedecor67" role="doc-biblioref">1967</a>)</span>, an experiment is conducted to study the variability of calcium concentration in turnip greens. Four plants are selected at random; then three leaves are randomly selected from each plant. Two 100-mg samples are taken from each leaf. The amount of calcium is determined by microchemical methods.</p>
+</blockquote>
 <!-- The data are: -->
 <!-- \begin{center} -->
 <!--    \begin{tabular}{c|c|c|c|c|c|c|} -->
@@ -344,33 +353,34 @@ div.csl-indent {
 <!--        4 & 3.78 &  3.87 &  4.07 &  4.12 &  3.31 &  3.31 \\   \hline -->
 <!--    \end{tabular} -->
 <!-- \end{center} -->
-<p>With these data, we may want to ask: how does sample-to-sample variation within a leaf compare to leaf-to-leaf variation within a plant, and how do each of these sources of variation compare to plant-to-plant variation?</p>
-<p>We can answer these questions with a random-effects model. Importantly, our goal here is to quantify the sources of variation that contribute to variation among the samples. We are not interested in quantifying the differences among these particular four plants, or among these particular leaves on these particular plants, or among these particular subsamples on these particular leaves. Instead, each factor in our experiment — plant, leaf and sample — contains levels that are regarded as a random sample from a population of levels. If we were to repeat the experiment, we might choose different plants, or different leaves, or different samples.</p>
-<p>Let <span class="math inline">\(y_{ijk}\)</span> be the response for sample <span class="math inline">\(k\)</span> from leaf <span class="math inline">\(j\)</span> of pant <span class="math inline">\(i\)</span>. Let us try the model:
+<p>A partial data listing is shown here:</p>
+<pre><code>plant   leaf    y
+p1    l1      3.28
+p1    l1      3.09
+p1    l2      3.52
+p1    l2      3.48
+...
+p2    l1      2.46
+p2    l1      2.44
+...
+p4    l3      3.31
+p4    l3      3.31</code></pre>
+<p>With these data, we may want to ask: how does sample-to-sample variation within a leaf compare to lea<span class="math inline">\(F\)</span>-to-leaf variation within a plant, and how do each of these sources of variation compare to plant-to-plant variation?</p>
+<p>We can answer these questions with a random-effects model. Our goal here is to quantify the sources of variation that contribute to variation among the samples. We are not interested in quantifying the differences among these particular four plants, or among these particular leaves on these particular plants, or among these particular subsamples on these particular leaves. Instead, each factor in our experiment — plant, leaf and sample — contains levels that are regarded as a random sample from a population of levels. If we were to repeat the experiment, we might choose different plants, or different leaves, or different samples.</p>
+<p>Let <span class="math inline">\(y_{ijk}\)</span> be the response for sample <span class="math inline">\(k\)</span> from leaf <span class="math inline">\(j\)</span> of pant <span class="math inline">\(i\)</span>. Let’s try the model:
 <span class="math display">\[
-y_{ijk} = \mu + P_i + L_{j(i)} + \varepsilon_{ijk}
+y_{ijk} = \mu + P_i + L_{ij} + \varepsilon_{ijk}
 \]</span>
-where <span class="math inline">\(\mu\)</span> is the reference level, <span class="math inline">\(P_i\)</span> is a random effect associated with plant <span class="math inline">\(i\)</span>, <span class="math inline">\(L_{j(i)}\)</span> is a random effect associated with leaf <span class="math inline">\(j\)</span> of plant <span class="math inline">\(i\)</span>, and <span class="math inline">\(\varepsilon_{ijk}\)</span> is the residual error . Because the plants and leaves have been randomly selected from populations of plants and leaves, we assume
+where <span class="math inline">\(\mu\)</span> is the reference level, <span class="math inline">\(P_i\)</span> is a random effect associated with plant <span class="math inline">\(i\)</span>, <span class="math inline">\(L_{ij}\)</span> is a random effect associated with leaf <span class="math inline">\(j\)</span> of plant <span class="math inline">\(i\)</span>, and <span class="math inline">\(\varepsilon_{ijk}\)</span> is the residual error . Because the plants and leaves have been randomly selected from populations of plants and leaves, we assume
 <span class="math display">\[\begin{eqnarray*}
 P_i &amp; \sim &amp; \mathcal{N}\left(0, \sigma^2_P \right) \\
-L_{j(i)} &amp; \sim &amp; \mathcal{N}\left(0, \sigma^2_L \right) \\
+L_{ij} &amp; \sim &amp; \mathcal{N}\left(0, \sigma^2_L \right) \\
 \varepsilon_{ijk} &amp; \sim &amp; \mathcal{N}\left(0, \sigma^2_{\varepsilon} \right)
 \end{eqnarray*}\]</span></p>
-<p>In words, each of the random effects are (independently) drawn from normal distributions with distinct variances. Note that we can think of the residual <span class="math inline">\(\varepsilon_{ijk}\)</span> as the random effect associated with sample <span class="math inline">\(k\)</span> from leaf <span class="math inline">\(j\)</span> of plant <span class="math inline">\(i\)</span>.
-There’s something else going on with this experiment. Namely, the “leaf” factor and the “plant” factor are not crossed. That is, leaf “1” does not appear on each of the four plants. Instead, each leaf is associated with one and only one plant. Thus, the “leaf” factor is nested within the “plant” factor. To emphasize this nesting, we have used the convention of writing the subscript for the leaf factor as <span class="math inline">\(j(i)\)</span>, to emphasize that level <span class="math inline">\(j\)</span> of the leaf factor represents a different leaf for each level of the plant factor.</p>
-<p>You may also observe that the samples are nested within leaves. Thus, to be consistent, perhaps we should have written the error terms as <span class="math inline">\(\varepsilon_{k(ij)}\)</span>. While this is true, it is true of every experiment that we have considered so far. (For example, in the hotdog data, replicate 1 of the ‘beef’ hotdogs was different from replicate “1” of the meat hotdogs.) Because the replicates are always nested within the individual treatment combinations, the parenthetical notation for the subscripts is superfluous for the error term.</p>
-<p>In a random effects model, our goals are not to estimate the individual <span class="math inline">\(P_i\)</span>’s or <span class="math inline">\(L_{j(i)}\)</span>’s themselves. Instead, our goal is to estimate the variance parameters (aka variance components) <span class="math inline">\(\sigma^2_P\)</span>, <span class="math inline">\(\sigma^2_L\)</span> and <span class="math inline">\(\sigma^2_{\varepsilon}\)</span> . These parameters quantify the plant-to-plant variability, the leaf-to-leaf variability within each plant, and the sample-to-sample variability within each leaf, respectively. Here is an analysis within PROC MIXED:</p>
-<pre><code>data Turnip;
-  input Plant Leaf Sample Calcium;
-  datalines;
-  1 1 1 3.28
-  1 1 2 3.09
-  1 2 1 3.52
-  ...
-  4 3 2 3.31
-; 
-
-proc mixed; 
+<p>In words, each of the random effects are (independently) drawn from normal distributions with distinct variances. Note that we can think of the residual <span class="math inline">\(\varepsilon_{ijk}\)</span> as the random effect associated with sample <span class="math inline">\(k\)</span> from leaf <span class="math inline">\(j\)</span> of plant <span class="math inline">\(i\)</span>. There’s something else going on with this experiment. Namely, the “leaf” factor and the “plant” factor are not crossed. That is, each leaf is associated with one and only one plant. Thus, the “leaf” factor is nested within the “plant” factor. Similarly, each subsample is associated with one and only one leaf, so the subsample is nested within the leaf.<a href="#fn23" class="footnote-ref" id="fnref23"><sup>23</sup></a></p>
+<!-- You may also observe that the samples are nested within leaves.  Thus, to be consistent, perhaps we should have written the error terms as $\varepsilon_{k(ij)}$.  While this is true, it is true of every experiment that we have considered so far.   (For example, in the hotdog data, replicate 1 of the 'beef' hotdogs was different from replicate "1" of the meat hotdogs.)  Because the replicates are always nested within the individual treatment combinations, the parenthetical notation for the subscripts is superfluous for the error term. -->
+<p>In a random effects model, our goals are not to estimate the individual <span class="math inline">\(P_i\)</span>’s or <span class="math inline">\(L_{ij}\)</span>’s themselves. Instead, our goal is to estimate the variance parameters (or variance components) <span class="math inline">\(\sigma^2_P\)</span>, <span class="math inline">\(\sigma^2_L\)</span> and <span class="math inline">\(\sigma^2_{\varepsilon}\)</span> . These parameters quantify the plant-to-plant variability, the lea<span class="math inline">\(F\)</span>-to-leaf variability within each plant, and the sample-to-sample variability within each leaf, respectively. Here is an analysis within PROC MIXED:</p>
+<pre><code>proc mixed; 
   class Plant Leaf; 
   model Calcium = ;
   random Plant Leaf(Plant); 
@@ -383,15 +393,61 @@ Cov Parm        Estimate
 Plant             0.3652
 Leaf(Plant)       0.1611
 Residual        0.006654</code></pre>
-<p>In PROC MIXED, we only list fixed effects on the right-hand side of the equals sign in the MODEL statement. In this model, there are no fixed effects, so nothing is placed on the right-hand side of the equals sign. (The reference level is a fixed effect, but it is included in every model, so it is never specified.) In the RANDOM statement, we list the random effects. Here, we request random effects for the individual plants, and for the leaves nested within plants. Note that SAS uses the parenthetical notation to denote nesting as well, so that we write LEAF(PLANT) to tell SAS that the leaf factor is nested within the plant factor. We do not have to specify a random effect for the sample error, because the sample error is equivalent to the residual error, and this is always included in the model as well.</p>
-<p>Our parameter estimates are <span class="math inline">\(\hat{\sigma}^2_P = 0.3652\)</span>, <span class="math inline">\(\hat{\sigma}^2_L = 0.1611\)</span>, and <span class="math inline">\(\hat{\sigma}^2_{\varepsilon} = 0.0067\)</span>. Thus, we conclude that plant-to-plant variation is roughly twice as large as leaf-to-leaf variation within plants, and that both of these are much larger than sample-to-sample variation within leaves.</p>
-It is possible to generate an ANOVA table for the random-effects model. We could define sums-of-squares for each of the model terms in the following way:
+<p>In PROC MIXED, we only list fixed effects on the right-hand side of the equals sign in the MODEL statement. In this model, there are no fixed effects, so nothing is placed on the right-hand side of the equals sign. (The reference level is a fixed effect, but it is included in every model, so it is never specified.) In the RANDOM statement, we list the random effects. Here, we include random effects for the individual plants and for the leaves nested within plants. Note that SAS uses the parenthetical notation to denote nesting as well, so that we write LEAF(PLANT) to tell SAS that the leaf factor is nested within the plant factor. We do not have to specify a random effect for the sample error, because the sample error is equivalent to the residual error, and this is always included in the model as well.</p>
+<p>Our parameter estimates are <span class="math inline">\(\hat{\sigma}^2_P = 0.3652\)</span>, <span class="math inline">\(\hat{\sigma}^2_L = 0.1611\)</span>, and <span class="math inline">\(\hat{\sigma}^2_{\varepsilon} = 0.0067\)</span>. Thus, we conclude that plant-to-plant variation is roughly twice as large as lea<span class="math inline">\(F\)</span>-to-leaf variation within plants, and that both of these are much larger than sample-to-sample variation within leaves.</p>
+<p>It is possible to generate an ANOVA table for the random-effects model. We could define sums-of-squares for each of the model terms in the following way:
 <span class="math display">\[\begin{eqnarray*}
 SS(Plant) &amp; = &amp; \sum_{i=1}^4 \sum_{j=1}^3 \sum_{k=1}^2 \left( \bar{y}_{i++} - \bar{y}_{+++} \right)^2 \\
 SS(Leaf(Plant)) &amp; = &amp; \sum_{i=1}^4 \sum_{j=1}^3 \sum_{k=1}^2 \left( \bar{y}_{ij+} - \bar{y}_{i++} \right)^2 \\
 SS(Error) &amp; = &amp; \sum_{i=1}^4 \sum_{j=1}^3 \sum_{k=1}^2 \left( \bar{y}_{ijk} - \bar{y}_{ij+} \right)^2 \\
 \end{eqnarray*}\]</span>
-Each sum-of-squares is associated with a certain number of df:
+Each sum-of-squares is associated with a certain number of df:</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left;">
+source
+</th>
+<th style="text-align:left;">
+df
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+Plant
+</td>
+<td style="text-align:left;">
+3 (= 4 - 1)
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Leaf(Plant)
+</td>
+<td style="text-align:left;">
+8 (= 12 - 1- 3)
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Error
+</td>
+<td style="text-align:left;">
+12 (= 24 - 1- 3 - 8)
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Total
+</td>
+<td style="text-align:left;">
+23
+</td>
+</tr>
+</tbody>
+</table>
 <p>Something different has happened here. Because leaf is nested within plant, we have to deduct the df for the SS(Plant)from the df for SS(Leaf(Plant)). This is the general rule for nested factors. If factor ‘B’ is nested in factor ‘A’, then the df for SS(A) are subtracted from the df for SS(B(A)). (In fact, this explains why we’ve been deducting df for factorial effects from the df for error all along. The replicates are always nested within the factorial treatments, even though we haven’t thought of it in this way until now.)</p>
 <p>In models in which the residual error is the only random effect, we have learned that the estimate of that error, <span class="math inline">\(\hat{\sigma}^2_{\varepsilon}\)</span>, is just equal to the MSE. Does this mean that we can equate MS(Plant) and MS(Leaf(Plant)) with <span class="math inline">\(\hat{\sigma}^2_P\)</span> and <span class="math inline">\(\hat{\sigma}^2_L\)</span>, respectively? Unfortunately, in this case life isn’t that simple. As it turns out, there is a relationship between each of the mean squares and each of the variance components, but it’s complicated. One way to generate an ANOVA and learn about this relationship in SAS is to use the METHOD = TYPE3 option in PROC MIXED:</p>
 <pre><code>proc mixed data = turnip method = type3;
@@ -549,16 +605,15 @@ trt                          5     368.7555556      73.7511111      10.38    &lt
 <p>To keep things from getting too complicated, we won’t look here at an example with an unequal number of subsamples per EU, but will instead consider an alternative analysis of the rose data above. This analysis can be easily modified to accommodate unequal numbers of subsamples per EU.</p>
 <p>Here is a model that we can use that models the data for the individual stems explicitly. This model will work regardless of whether we have the same number of stems in each vase. Let be the lifetime of the kth stem from the jth vase assigned to the ith treatment. Consider the model
 <span class="math display">\[
-y_{ijk} = \mu + \alpha_i + V_{j(i)} + \varepsilon_{ijk}
+y_{ijk} = \mu_i + V_{ij} + \varepsilon_{ijk}
 \]</span>
 where</p>
 <ul>
 <li><span class="math inline">\(i = 1, 2, \ldots, 6\)</span> is an index for the treatment</li>
 <li><span class="math inline">\(j = 1, 2, \ldots, 5\)</span> is an index for the vase in each treatment</li>
 <li><span class="math inline">\(k = 1, 2, 3\)</span> is an index for the stem in each vase</li>
-<li><span class="math inline">\(\mu\)</span> is a reference level</li>
-<li><span class="math inline">\(\alpha_i\)</span> is the effect parameter for treatment <span class="math inline">\(i\)</span></li>
-<li><span class="math inline">\(V_{j(i)}\)</span> is a random effect for vase <span class="math inline">\(j\)</span> from treatment <span class="math inline">\(i\)</span>, <span class="math inline">\(V_{j(i)} \sim \mathcal{N}\left(0, \sigma^2_V \right)\)</span></li>
+<li><span class="math inline">\(\mu_i\)</span> is the average response for treatment <span class="math inline">\(i\)</span></li>
+<li><span class="math inline">\(V_{ij}\)</span> is a random effect for vase <span class="math inline">\(j\)</span> from treatment <span class="math inline">\(i\)</span>, <span class="math inline">\(V_{ij} \sim \mathcal{N}\left(0, \sigma^2_V \right)\)</span></li>
 <li><span class="math inline">\(\varepsilon_{ijk}\)</span> is subsample (residual) error for stem <span class="math inline">\(k\)</span> from vase <span class="math inline">\(j\)</span> of treatment <span class="math inline">\(i\)</span>, <span class="math inline">\(\varepsilon_{ijk} \sim \mathcal{N}\left(0, \sigma^2_{\varepsilon} \right)\)</span></li>
 </ul>
 <p>The key feature of the model above is that it includes two random effects: one for the vase-to-vase error within treatments, and a second for the stem-to-stem error within vases. We assume that the random effects for the vases are drawn from a normal distribution with mean 0 and variance <span class="math inline">\(\sigma^2_V\)</span>, and that the random effects for the stems are drawn from a normal distribution with mean 0 and variance <span class="math inline">\(\sigma^2_{\varepsilon}\)</span>.</p>
@@ -629,11 +684,15 @@ Type 3 Tests of Fixed Effects
               Num     Den
 Effect         DF      DF    F Value    Pr &gt; F
 trt             5      24       9.88    &lt;.0001</code></pre>
-<p>Remarks:
-* The MODEL statement in PROC MIXED only contains the fixed effects. In this model, the only fixed effects are the different treatments (vase solutions).
-* The RANDOM statement specifies the random effects to be included in the model. The residual (= the error term for the subsample) is always included by default, so a separate term for <code>stem'' did not need to be specified. * We use the parenthetical syntax VASE(TRT) to tell SAS that VASE is nested within TRT.    * The portion of the output labeled</code>Covariance Parameter Estimates’’ provides the estimates for <span class="math inline">\(\sigma^2_V\)</span> and <span class="math inline">\(\sigma^2_{\varepsilon}\)</span>. In this case, they are <span class="math inline">\(\sigma^2_V = 0.165\)</span> and <span class="math inline">\(\sigma^2_{\varepsilon} = 6.97\)</span>. Although these estimates are not the primary focus of our analysis, they are still informative. In this case, they tell us that the stem-to-stem variability among stems in the same vase is much greater than the vase-to-vase variability among vases receiving the same treatment.
-* The portion of the output labeled ``Type 3 Tests of Fixed Effects’’ provides F-tests of the fixed effects. With REML estimation, PROC MIXED does not present the full ANOVA table. Note that the F-test for the treatment effect is identical to the F-test that we obtained by averaging subsamples within EUs. These two tests are identical because in this case we have the same number of stems per vase.
-* Note that the F-test for the treatment effects has the correct ndf and ddf. Unless we specify otherwise, PROC MIXED uses the “containment” method for determining the appropriate error terms. In this case, the fixed-effects for TRT are contained within the random effect for VASE(TRT) (this is another way of saying that the vases are nested within the treatement), and so PROC MIXED uses the MSE for VASE(TRT) to test for the TRT fixed effects. The df for the F-tests can be used as a check to make sure that you’ve coded the model correctly.</p>
+<p>Remarks:</p>
+<ul>
+<li><p>The MODEL statement in PROC MIXED only contains the fixed effects. In this model, the only fixed effects are the different treatments (vase solutions).</p></li>
+<li><p>The RANDOM statement specifies the random effects to be included in the model. The residual (= the error term for the subsample) is always included by default, so a separate term for “stem” did not need to be specified.</p></li>
+<li><p>We use the parenthetical syntax VASE(TRT) to tell SAS that VASE is nested within TRT.</p></li>
+<li><p>The portion of the output labeled “Covariance Parameter Estimates” provides the estimates for <span class="math inline">\(\sigma^2_V\)</span> and <span class="math inline">\(\sigma^2_{\varepsilon}\)</span>. In this case, they are <span class="math inline">\(\sigma^2_V = 0.165\)</span> and <span class="math inline">\(\sigma^2_{\varepsilon} = 6.97\)</span>. Although these estimates are not the primary focus of our analysis, they are still informative. In this case, they tell us that the stem-to-stem variability among stems in the same vase is much greater than the vase-to-vase variability among vases receiving the same treatment.</p></li>
+<li><p>The portion of the output labeled “Type 3 Tests of Fixed Effects” provides <span class="math inline">\(F\)</span>-tests of the fixed effects. With REML estimation, PROC MIXED does not present the full ANOVA table. Note that the <span class="math inline">\(F\)</span>-test for the treatment effect is identical to the <span class="math inline">\(F\)</span>-test that we obtained by averaging subsamples within EUs. These two tests are identical because in this case we have the same number of stems per vase.</p></li>
+<li><p>Note that the <span class="math inline">\(F\)</span>-test for the treatment effects has the correct ndf and ddf. Unless we specify otherwise, PROC MIXED uses the “containment” method for determining the appropriate error terms. In this case, the fixed-effects for TRT are contained within the random effect for VASE(TRT) (this is another way of saying that the vases are nested within the treatement), and so PROC MIXED uses the MSE for VASE(TRT) to test for the TRT fixed effects. The df for the <span class="math inline">\(F\)</span>-tests can be used as a check to make sure that you’ve coded the model correctly.</p></li>
+</ul>
 <p>Here is an example of using linear contrasts and multiple comparisons to explore differences among the treatments. Note that throughout the df used for inference are the df that correspond to the vase error, not to the stem error.</p>
 <p>Linear contrasts:</p>
 <pre><code>proc mixed data = freedom;
@@ -716,107 +775,31 @@ Cov Parm      Estimate
 vase(trt)       0.1648
 Residual        6.9667</code></pre>
 <p>Again, things work out nicely here because the data are balanced, but it is not guaranteed that the method-of-moments estimation and REML estimation will match up exactly.</p>
-Variations with unbalanced data: Let’s briefly consider how the df accounting might change with unbalanced data. Consider an experiment identical to the one above, except that now a single stem was lost from each of 7 vases, so that there are 83 total stems and 30 vases. The df accounting is now:
-<table>
-<thead>
-<tr>
-<th style="text-align:left;">
-source
-</th>
-<th style="text-align:left;">
-df
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:left;">
-Treatment
-</td>
-<td style="text-align:left;">
-5
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-Vase (EU error)
-</td>
-<td style="text-align:left;">
-24 (= 30 - 1- 5)
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-Stems (subsample error)
-</td>
-<td style="text-align:left;">
-53 (= 83 - 1 - 5 - 24)
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-Total
-</td>
-<td style="text-align:left;">
-82
-</td>
-</tr>
-</tbody>
-</table>
-Now, suppose that two entire vases were lost, and that there are 3 stems in each of the remaining 28 vases. Now the df accounting would become:
-<table>
-<thead>
-<tr>
-<th style="text-align:left;">
-source
-</th>
-<th style="text-align:left;">
-df
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:left;">
-Treatment
-</td>
-<td style="text-align:left;">
-5
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-Vase (EU error)
-</td>
-<td style="text-align:left;">
-22 (= 28 - 1- 5)
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-Stems (subsample error)
-</td>
-<td style="text-align:left;">
-56 (= 84 - 1 - 5 - 24)
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-Total
-</td>
-<td style="text-align:left;">
-83
-</td>
-</tr>
-</tbody>
-</table>
-<p>In all other respects, the analysis of unbalanced data would proceed identically to the analysis of balanced data.</p>
-<p>A final comment on subsampling: Often it is more expensive to have more EUs and is easier to have more subsamples. The extent to which increasing the number of subsamples will increase statistical power depends on the relative magnitudes of the variability among EUs and the variability among subsamples. If the variability among EUs is large relative to the variability among subsamples (as might be the case with the grip strength example, for instance), then adding subsamples does little to increase statistical precision. But if the variability among subsamples is of the same or greater magnitude than the variability among EUs (as in the rose example), then adding subsamples can increase precision and statistical power.</p>
+<!-- Variations with unbalanced data: Let's briefly consider how the df accounting might change with unbalanced data.  Consider an experiment identical to the one above, except that now a single stem was lost from each of 7 vases, so that there are 83 total stems and 30 vases.  The df accounting is now: -->
+<!-- ```{r echo = FALSE} -->
+<!-- rose_anova_table <- data.frame(cbind(sources = c("Treatment", "Vase (EU error)","Stems (subsample error)", "Total"), -->
+<!--                                       df = c(5, "24 (= 30 - 1- 5)", "53 \ (= 83 - 1 - 5 - 24)", 82))) -->
+<!-- colnames(rose_anova_table) = c("source", "df") -->
+<!-- knitr::kable(format="html", -->
+<!--              rose_anova_table,  -->
+<!--              escape = FALSE)  -->
+<!-- ``` -->
+<!-- Now, suppose that two entire vases were lost, and that there are 3 stems in each of the remaining 28 vases.  Now the df accounting would become: -->
+<!-- ```{r echo = FALSE} -->
+<!-- rose_anova_table <- data.frame(cbind(sources = c("Treatment", "Vase (EU error)","Stems (subsample error)", "Total"), -->
+<!--                                       df = c(5, "22 (= 28 - 1- 5)", "56 \ (= 84 - 1 - 5 - 24)", 83))) -->
+<!-- colnames(rose_anova_table) = c("source", "df") -->
+<!-- knitr::kable(format="html", -->
+<!--              rose_anova_table,  -->
+<!--              escape = FALSE)  -->
+<!-- ``` -->
+<!-- In all other respects, the analysis of unbalanced data would proceed identically to the analysis of balanced data. -->
+<p>A final comment on subsampling: Often it is more expensive to have more EUs and is easier to have more subsamples. The extent to which increasing the number of subsamples will increase statistical power depends on the relative magnitudes of the variability among EUs and the variability among subsamples. If the variability among EUs is large relative to the variability among subsamples, then adding subsamples does little to increase statistical precision. But if the variability among subsamples is of the same or greater magnitude than the variability among EUs (as in the rose example), then adding subsamples can increase precision and statistical power.</p>
 </div>
 </div>
 </div>
-<div id="mathematical-foundations" class="section level2 hasAnchor" number="7.4">
-<h2><span class="header-section-number">7.4</span> Mathematical foundations<a href="random-effects.html#mathematical-foundations" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="starmathematical-foundations" class="section level2 hasAnchor" number="7.4">
+<h2><span class="header-section-number">7.4</span> <span class="math inline">\(^\star\)</span>Mathematical foundations<a href="random-effects.html#starmathematical-foundations" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>In this section, we introduce formal mathematical arguments for how random effects induce correlations among grouped responses. This section makes heavy uses of the mathematics of probability. Before proceeding, we will need to review several key probability concepts</p>
 <div id="probability-refresher" class="section level3 hasAnchor" number="7.4.1">
 <h3><span class="header-section-number">7.4.1</span> Probability refresher<a href="random-effects.html#probability-refresher" class="anchor-section" aria-label="Anchor link to header"></a></h3>
@@ -873,7 +856,7 @@ Note that <span class="math inline">\(\mu\)</span> is a constant, and not a rand
     \mbox{Cov}\left(y_{ij}, y_{kl}\right) &amp; = &amp;  \mbox{Cov}\left(\mu + P_i + \varepsilon_{ij}, \mu + P_k + \varepsilon_{kl}\right) \\
     &amp; = &amp;  \mbox{Cov}\left(P_i, P_k\right) + \mbox{Cov}\left(P_i, \varepsilon_{kl}\right) + \mbox{Cov}\left(\varepsilon_{ij}, P_k\right) + \mbox{Cov}\left(\varepsilon_{ij}, \varepsilon_{kl}\right).
 \end{eqnarray*}\]</span>
-Again, the <span class="math inline">\(\mu\)</span>’s drop out because they are constants and have no variance. Next, because the plant random effects are independent of the leaf random effects, <span class="math inline">\(\mbox{Cov}\left(P_i, \varepsilon_{kl}\right) = \mbox{Cov}\left(\varepsilon_{ij}, P_k\right) = 0\)</span>. Next, assuming that are two data points are from different leaves, then <span class="math inline">\(\mbox{Cov}\left(\varepsilon_{ij}, \varepsilon_{kl}\right) = 0\)</span> (because the leaf-level random effects are independent of one another).</p>
+Again, the <span class="math inline">\(\mu\)</span>’s drop out because they are constants and have no variance. Next, because the plant random effects are independent of the leaf random effects, <span class="math inline">\(\mbox{Cov}\left(P_i, \varepsilon_{kl}\right) = \mbox{Cov}\left(\varepsilon_{ij}, P_k\right) = 0\)</span>. Next, assuming that are two data points are from different leaves, then <span class="math inline">\(\mbox{Cov}\left(\varepsilon_{ij}, \varepsilon_{kl}\right) = 0\)</span> (because the lea<span class="math inline">\(F\)</span>-level random effects are independent of one another).</p>
 <p>What about <span class="math inline">\(\mbox{Cov}\left(P_i, P_k\right)\)</span>? If the leaves come from the same plant, that is, if <span class="math inline">\(i=k\)</span>, then we have <span class="math inline">\(\mbox{Cov}\left(P_i, P_k\right) = \mbox{Cov}\left(P_i, P_i\right) = \mbox{Var}\left(P_i\right) = \sigma^2_P\)</span>. However, if the leaves come from different plants (<span class="math inline">\(i \neq k\)</span>), then the two plant random effects are independent, and thus <span class="math inline">\(\mbox{Cov}\left(P_i, P_k\right) = 0\)</span>. Putting it all together, we have
 <span class="math display">\[
 \mbox{Cov}\left(y_{ij}, y_{kl}\right) = \begin{cases} \sigma^2_P &amp; i = k \\ 0 &amp; i \neq k \end{cases}.
@@ -887,10 +870,17 @@ Again, the <span class="math inline">\(\mu\)</span>’s drop out because they ar
 </div>
 </div>
 </div>
+<h3>Bibliography<a href="bibliography.html#bibliography" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div id="refs" class="references csl-bib-body hanging-indent">
+<div id="ref-snedecor67" class="csl-entry">
+Snedecor, G. W., and W. G. Cochran. 1967. <em>Statistical Methods</em>. 6th ed. Ames: Iowa State University Press.
+</div>
+</div>
 <div class="footnotes">
 <hr />
 <ol start="22">
 <li id="fn22"><p>The mean of a distribution is such an important and central concept in statistics that we have many different synonyms for it. Although the following terms are not perfect synonyms (their technical definitions are all slightly different), all of the following tend to be used as loose synonyms for a mean: average, center of mass, expected value, and expectation.<a href="random-effects.html#fnref22" class="footnote-back">↩︎</a></p></li>
+<li id="fn23"><p>In fact, it is always true that the random effect associated within the individual data point is nested within another term in the model. Because this is always true, we usually don’t call attention to it.<a href="random-effects.html#fnref23" class="footnote-back">↩︎</a></p></li>
 </ol>
 </div>
             </section>
@@ -899,7 +889,7 @@ Again, the <span class="math inline">\(\mu\)</span>’s drop out because they ar
         </div>
       </div>
 <a href="ancova.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="bibliography.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="blocked-designs.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>

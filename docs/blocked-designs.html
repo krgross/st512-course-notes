@@ -4,18 +4,18 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>ST 512 course notes</title>
+  <title>Chapter 8 Blocked designs | ST 512 course notes</title>
   <meta name="description" content="Course notes for ST 512, Statistical Methods for Researchers II." />
   <meta name="generator" content="bookdown 0.30 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="ST 512 course notes" />
+  <meta property="og:title" content="Chapter 8 Blocked designs | ST 512 course notes" />
   <meta property="og:type" content="book" />
   
   <meta property="og:description" content="Course notes for ST 512, Statistical Methods for Researchers II." />
   
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="ST 512 course notes" />
+  <meta name="twitter:title" content="Chapter 8 Blocked designs | ST 512 course notes" />
   
   <meta name="twitter:description" content="Course notes for ST 512, Statistical Methods for Researchers II." />
   
@@ -30,8 +30,8 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   
-
-<link rel="next" href="simple-linear-regression.html"/>
+<link rel="prev" href="random-effects.html"/>
+<link rel="next" href="bibliography.html"/>
 <script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
@@ -323,99 +323,296 @@ div.csl-indent {
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="header">
-<h1 class="title">ST 512 course notes</h1>
-<p class="author"><em>Kevin Gross</em></p>
-<p class="date"><em>2023-03-29</em></p>
-</div>
-<div id="preface" class="section level1 unnumbered hasAnchor">
-<h1>Preface<a href="index.html#preface" class="anchor-section" aria-label="Anchor link to header"></a></h1>
-<p>The primary purpose of this document is to serve as a set of course notes for ST 512, Statistical Methods for Researchers II, taught at North Carolina State University. ST 512 is the second semester of a traditional two-semester graduate-level sequence in statistical methods. I eventually hope to convert these notes into an on-line text, but this is an ongoing process. In the meanwhile, these notes are available for use by anyone associated with NCSU.</p>
-<div id="philosophy" class="section level3 unnumbered hasAnchor">
-<h3>Philosophy<a href="index.html#philosophy" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<!-- Why do we learn statistics?  Statistics is a tool that can make for more effective data analysis.  It is not meant merely to serve a signalling function.   -->
-<p>These notes take the following perspectives.</p>
-<p><em>Statistics is nonintuitive.</em><br />
-When it comes to statistics, researchers cannot necessarily rely on their common sense to lead them towards correct answers. Statistical reasoning is non-intuitive (<span class="citation">Kahneman (<a href="#ref-kahneman2011thinking" role="doc-biblioref">2011</a>)</span>), and the foundational ideas of statistics are elusive. Therefore statistical literacy must be learned. The primary goal of this course is to sharpen students’ statistical literacy so that they may become more effective researchers.</p>
-<p><em>The route to conceptual understanding is the detailed study of basic methods.</em><br />
-However, one does not develop a deep conceptual understanding merely by discussing concepts. Instead, conceptual understanding is honed in part by studying the details of particular methods to understand why those details matter. When we study the details of a method, the expectation is not that the student will remember those details in perpetuity. Indeed, practicing scientists are unlikely anyway to remember details about statistical methods that they do not use routinely. (This is not a knock on practicing scientists, but is instead simply a statement about the limitations of human memory.) Instead, the point of studying statistical methods in detail is to strengthen conceptual understanding by exploring statistical methods at a reasonably deep level. Examining details now will also make those details more recognizable if and when one faces a future data-analysis task that requires re-engaging those details. That said, the ultimate emphasis of this course is not on the details of the methods, but is instead on the ideas, concepts, and reasoning that underlie statistical thinking. I hope that these notes will deepen readers’ conceptual understanding of statistics and by doing so strengthen their effectiveness as scientists.</p>
-<p><em>Except when it comes to sums-of-squares decompositions in ANOVA.</em><br />
-The exception to the statement above is ANOVA and the associated sums-of-squares decompositions. At this mathemtical level — that is, without assuming a familiarity with linear algebra — sums-of-squares decompositions and the associated ANOVA tables are poor vehicles for developing conceptual understanding. Instead, they fill texts with inscrutable tables tethered to formulas that lack a compelling underlying logic.<a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a> ANOVA is still worth learning — especially for the analysis of designed experiments — but unless the underlying linear algebra is engaged, ANOVA is more usefully approached as a special case of a regression model. For this reason, these notes introduce regression modeling first and ANOVA second, reversing the path taken by most texts.</p>
-<p><em>Confidence intervals deserve more emphasis, and hypothesis tests less.</em><br />
-Hypothesis tests have become the primary route to inference in contemporary science, likely because they are the de facto evidentiary standard for announcing results in the scientific literature. This is unfortunate, because statistical significance provides only the thinnest of summaries of pattern in data. Confidence intervals, on the other hand (or even standard errors), are often relegated to a secondary role, even though they provide a richer basis for characterizing pattern and uncertainty. In the fullness of time, these notes will seek to promote the reporting of confidence intervals or standard errors as opposed to hypothesis tests as the primary vehicle for inference.</p>
-<p><em>Simplicity in statistical analysis is a virtue.</em><br />
-Contemporary statistical software allows anyone to fit complex statistical models. However, just because one can fit a complex model does not mean that one should. For a statistical analysis to have scientific value, it must be understood by both the analyst and the analyst’s audience. Unfortunately, many contemporary statistical methods produce opaque analyses that are impossible for the informed reader to understand without a substantial and unusual investment of time and energy. (It doesn’t help that, in the scientific literature, the details of contemporary analyses are buried in supplementary material that escapes the scrutiny of most reviewers, but that’s another matter.) As a result, informed and well-intentioned readers of the scientific literature have little choice but to accept the analysis at face value without understanding the genesis of the announced results. This state of affairs does not serve science well.</p>
-<p>It is high time for the scientific community to ask whether complex but opaque statistical analyses are in the best interest of science. For most scientific studies, a simple and transparent analysis provides a more trustworthy vehicle to understanding for both the analyst and the analyst’s audience. These notes will emphasize methods that, when studied, are transparent enough to promote such an understanding.</p>
-<p><em>Everyone is a visual learner.</em><br />
-No one is convinced by a <span class="math inline">\(p\)</span>-value in isolation, Or at least no one should be, given the ease of making errors in statistical analysis. When an analysis suggests a pattern in data, the best way to understand the pattern is to visualize it with a thoughtfully constructed graphic. Unfortunately, these notes in their current state are not as richly illustrated as they should be. Eventually, I hope the notes will contain a full set of graphics that exemplify how to visualize patterns revealed by statistical analysis.</p>
-</div>
-<div id="scope-and-coverage" class="section level3 unnumbered hasAnchor">
-<h3>Scope and coverage<a href="index.html#scope-and-coverage" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<p>These notes form the basis for an intermediate course in statistical analysis. These notes do not start from the very beginning, and they presume a basic knowledge of the fundamentals of (frequentist) statistical inference, similar to what one might see in an introductory statistics course.</p>
-<p><span class="citation">Breiman (<a href="#ref-breiman2001statistical" role="doc-biblioref">2001</a>)</span> wrote a provocative paper some twenty years ago describing two statistical cultures: one of data modeling and a second of algorithmic modeling, thus anticipating the era of machine learning and artificial intelligence in which we increasingly seem to reside. These notes fall squarely within (and even celebrate!) the former culture of data modeling as a path to scientific understanding. Moreover, it seems to me that the data-modeling culture contains at least two different subcultures that map to disciplines that either learn from designed experiments vs. disciplines that rely primarily on so-called observational data.<a href="#fn2" class="footnote-ref" id="fnref2"><sup>2</sup></a> The experimental-data culture tends to involve disciplines in the life sciences, favors ANOVA modeling, uses frequentist inference, and codes its models in SAS. The observational-data culture tends to involve disciplines in the social and environmental sciences, favors regression modeling, increasingly embraces Bayesian analysis, and codes its models in R or Python.</p>
-<p>These notes aim to serve both the experimental and observational subcultures. The saving grace that allows us to do so is that the core statistical model in both subcultures is the linear statistical model, which encompasses both regression and ANOVA. Of course, most graduate students will need to learn specialized statistical methods that are popular in their own field of study. These notes are not meant to cover these specialized methods, and thus they are not meant to embody the whole of statistics. However, study of regression and ANOVA provides an opportunity to master core tools and provides a springboard to the study of more specialized and possibly discipline-specific methods.</p>
-<p>These notes also deal exclusively with so-called “frequentist” statistical inference. We do not engage Bayesian methods yet, although some Bayesian coverage is eventually forthcoming. This class is also firmly situated in the study of low-dimensional statistical models. We value parsimony, and we take the view that well constructed models are worthy objects of study in their own right. More concretely, we seek to construct statistical models with parameters that correspond to natural phenomena of interest. Algorithmic modeling (that is, machine learning) is outside the scope of these notes.</p>
-</div>
-<div id="mathematical-level" class="section level3 unnumbered hasAnchor">
-<h3>Mathematical level<a href="index.html#mathematical-level" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<p>These notes do not assume knowledge of or use any math beyond arithmetic and basic probability. This basic probability includes an understanding of random variables, standard distributions — primarily Gaussian (normal) distributions, but also binomial and Poisson — and basic properties of means and variances.</p>
-<p>Students who are willing to engage the math a bit more deeply will find that doing so provides a more satisfying path through the material and leads to a more durable understanding. Without knowing the math underneath, one can only learn statistical methods as different recipes in a vast cookbook, a tedious task that taxes the memory and gives statistics courses their reputation for drudgery. For those who are so inclined, learning a bit of the mathematical theory reveals how the methods we study connect with one another, and thus provides a scaffolding to organize the methods sensibly and coherently. Moreover, the underpinning mathematics can be understood with a minimum of calculus. Linear algebra, however, is more essential. Indeed, the linear models that we study are, ultimately, exercises in linear algebra. These notes assume no previous familiarity with linear algebra, and so we will not emphasize the linear algebra underpinnings of the methods. In the fullness of time, I hope that these notes will eventually include sidebars that present the linear algebra underneath the methods, for interested readers.</p>
-<p>In this day and age, one might ask why it’s necessary to understand the math at all. Indeed, the internet makes it easy to quickly find code for any standard analysis.<a href="#fn3" class="footnote-ref" id="fnref3"><sup>3</sup></a> In such a world, the primary task facing an analyst is not so much to get the computer to give you an answer, but instead to confirm that the answer is in fact the one you want. Towards this end, knowing a bit about the math behind the methods makes it possible to determine whether the computer output you’ve obtained is indeed the analysis you hoped for. Throughout, we will try to emphasize simple, quick calculations that can be used to verify that computer output is correct, or indicate that something needs to be fixed.</p>
-</div>
-<div id="computing" class="section level3 unnumbered hasAnchor">
-<h3>Computing<a href="index.html#computing" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<p>The first portion of these notes (focused on regression) presents analyses in R, while the latter portion (focused on designed experiments) presents analyses in SAS. In the fullness of time, I hope that these notes will include complete code for conducting analyses in both R and SAS, but that is a work in progress. While the notes examine the R and SAS implementation of the methods that it presents, these notes are not intended as a complete guide for learning either R or SAS from square one. The internet abounds with resources for learning the basics of R, and I would not be able to improve on those resources here. In many cases I provide R code for the sake of illustration, but—especially when it comes to data wrangling and to graphics—the code is not meant to be authoritative. ST 512 students will receive instruction in R and SAS coding in the laboratory component fo the course.</p>
-<p>Readers interested in using R professionally would be well served by consulting Hadley Wickham’s <a href="https://style.tidyverse.org/">tidyverse style guide</a>. The ideas therein have helped me write substantially cleaner code, even if I haven’t had the discipline to adhere to those ideas in all the code in these notes.</p>
-<p>That said, the R code in these notes does not fully embrace the piping style of the <code>tidyverse</code> ecosystem and the associated graphical facilities of <code>ggplot</code>. I take this approach because the focus of these notes is on fitting and visualizing traditional statistical models, and it seems to me that the conventional style of R coding is still best suited for this purpose. The piping style of the <code>tidyverse</code> seems better suited to data-science tasks such as wrangling with and visualizing large data sets. As for <code>ggplot</code>, I prefer the style of coding in R’s native graphical facilities, although <code>ggplot</code> can certainly produce high-quality graphics with relatively few lines of code.</p>
-<p>As a practical matter, these notes are prepared in <code>bookdown</code> (<span class="citation">Xie (<a href="#ref-xie2022bookdown" role="doc-biblioref">2022</a>)</span>). While it is possible to compile both R and SAS code on the fly in <code>bookdown</code>, the extensive output produced by SAS does not serve these notes well. As a consequence, SAS output is condensed to show only the most salient portions of the output.</p>
-</div>
-<div id="format-of-the-notes" class="section level3 unnumbered hasAnchor">
-<h3>Format of the notes<a href="index.html#format-of-the-notes" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<p>Advanced sections are indicated by section titles that begin with stars (<span class="math inline">\(^\star\)</span>). Shorter sidebars for enrichment appear in <span style="color: gray;"> gray text </span> and are offset by horizontal rules (like the one following the acknowledgments). This material may be skipped without loss. Sections that are in an early and rougher stage of development are indicated with section titles shown in <em>italics</em>.</p>
-<!-- This structure is inspired by @mascolell1995microeconomic's lovely text. -->
-<!-- ### Other resources {-} -->
-<!-- Want to consult a more polished resource?  (I wouldn't blame you.)   -->
-</div>
-<div id="acknowledgments-and-license" class="section level3 unnumbered hasAnchor">
-<h3>Acknowledgments and license<a href="index.html#acknowledgments-and-license" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<p>I am deeply indebted to the R community (<span class="citation">R Core Team (<a href="#ref-r" role="doc-biblioref">2021</a>)</span>) for their project which has done no less than revolutionize data analysis in our times. I also thank the developers of <code>bookdown</code> for providing the platform for these notes (<span class="citation">Xie (<a href="#ref-xie2022bookdown" role="doc-biblioref">2022</a>)</span>).</p>
-<p>These notes are provided under <a href="https://www.gnu.org/licenses/gpl-3.0.en.html">version 3 of the GNU General Public License</a>.</p>
-<hr />
-</div>
-</div>
+<div id="blocked-designs" class="section level1 hasAnchor" number="8">
+<h1><span class="header-section-number">Chapter 8</span> Blocked designs<a href="blocked-designs.html#blocked-designs" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<div id="randomized-complete-block-designs" class="section level2 hasAnchor" number="8.1">
+<h2><span class="header-section-number">8.1</span> Randomized complete block designs<a href="blocked-designs.html#randomized-complete-block-designs" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>The strength of people’s grip in their dominant or off-dominant hand was measured for <span class="math inline">\(n=145\)</span> people. Data are below, with strength measured in Newtons of force.
+<img src="08-BlockedDesigns_files/figure-html/unnamed-chunk-2-1.png" width="480" style="display: block; margin: auto;" />
+Suppose we wanted to use these data to ask if there was a difference in strength between people’s dominant and off-dominant hands. One (wrong) way to analyze these data is with a two-sample <span class="math inline">\(t\)</span>-test:</p>
+<pre><code>&gt; with(grip, t.test(x = Dominant, y = Off, var.equal = TRUE))
+
+Two Sample t-test
+
+data:  Dominant and Off
+t = 1.7844, df = 288, p-value = 0.07542
+alternative hypothesis: true difference in means is not equal to 0
+
+95 percent confidence interval:
+-1.812768 36.998975
+
+sample estimates:
+mean of x mean of y 
+298.6552  281.0621 </code></pre>
+<p>The two-sample t-test is the wrong test for these data because it fails to account for the fact that the data are paired. The correct way to analyze these data is to calculate the difference in grip strength for each individual, and then to treat the sample of <span class="math inline">\(n=145\)</span> differences as a single random sample from a population of differences. We then test the null hypothesis that the average of this population of differences is = 0 vs the alternative hypothesis that the difference is <span class="math inline">\(\neq\)</span> 0.</p>
+<pre><code>&gt; with(grip, t.test(x = Dominant - Off))
+
+One Sample t-test
+
+data:  Dominant - Off
+t = 6.4883, df = 144, p-value = 1.306e-09
+alternative hypothesis: true mean is not equal to 0
+
+95 percent confidence interval:
+12.23358 22.95263
+
+sample estimates:
+mean of x 
+17.5931</code></pre>
+<p>The paired analysis estimates the average difference in grip strength more precisely, resulting in a more narrow CI and a smaller p-value. The paired analysis is more precise because the experimental error has been reduced by removing person-to-person variability.</p>
+<p>Taking differences only works when we are comparing two treatments. When we are comparing more than two treatments, we need a more general strategy. <em>Blocking</em> is a technique that reduces experimental error (and hence increases precision) by grouping heterogeneous experimental units into blocks of homogeneous EUs. Remember that statistical tests boil down to comparing the magnitude of the treatment effect to the precision with which that effect is estimated. We can’t do anything about the magnitude of the treatment effect — that’s set by nature. Blocking is a technique that increases statistical power by reducing experimental error and thus increasing precision.</p>
+<p>The canonical example of blocking comes from agriculture. Suppose we want to compare the effects of 3 different fertilizers (call them A, B, and C) on crop yield. Suppose a field can be divided into 12 plots (EUs), and there is a known east-west elevation slope to the field. In a CRD, treatments are randomly assigned to EUs. CRDs are appropriate when EUs are homogeneous. Here, we know that there is a difference between EUs based on where they lie along the east-west gradient. Consequently, a better design is to block against slope by grouping EUs into blocks of plots at similar locations along the east-west gradient. Treatments are then randomly assigned within blocks.</p>
+<!-- One such randomization might be: -->
+<!-- \begin{center} -->
+<!--    \begin{tabular}{|c|c|c|c|} -->
+<!--        \hline C & C & B & A \\ \hline -->
+<!--        A & B & A & C \\ \hline -->
+<!--        B & A & C & B \\ \hline  -->
+<!--        \end{tabular} -->
+<!-- \end{center} -->
+<p>This is a randomized complete block design (RCBD). A RCBD consists of <span class="math inline">\(q\)</span> blocks, each of which is divided into <span class="math inline">\(p\)</span> homogeneous EUs. Treatments are randomly assigned to EUs within each block. This is a “complete” block design because each level of the experimental treatment is represented at least once in every block. (In contrast, an “incomplete” block design is one in which not all experimental treatments are represented in every block.) A standard RCBD is one in which every treatment (or every treatment combination) is assigned to exactly one EU in each block.</p>
+<p>One way to analyze data from an RCBD is with a two-way ANOVA, where “block” is one of the two factors. Example: For the grip strength data, treat “subject” (the person) as a blocking factor.</p>
+<div class="sourceCode" id="cb268"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb268-1"><a href="blocked-designs.html#cb268-1" aria-hidden="true" tabindex="-1"></a>grip <span class="ot">&lt;-</span> <span class="fu">read.table</span>(<span class="st">&quot;data/gripall-long.txt&quot;</span>, <span class="at">head =</span> T, <span class="at">stringsAsFactors =</span> T)</span>
+<span id="cb268-2"><a href="blocked-designs.html#cb268-2" aria-hidden="true" tabindex="-1"></a>fm1 <span class="ot">&lt;-</span> <span class="fu">lm</span>(strength <span class="sc">~</span> subject <span class="sc">+</span> hand, <span class="at">data =</span> grip)</span>
+<span id="cb268-3"><a href="blocked-designs.html#cb268-3" aria-hidden="true" tabindex="-1"></a><span class="fu">anova</span>(fm1)</span></code></pre></div>
+<pre><code>## Analysis of Variance Table
+## 
+## Response: strength
+##            Df  Sum Sq Mean Sq F value    Pr(&gt;F)    
+## subject   144 1952993   13562  25.443 &lt; 2.2e-16 ***
+## hand        1   22440   22440  42.098 1.306e-09 ***
+## Residuals 144   76758     533                      
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+<p>Observe that the <span class="math inline">\(p\)</span>-value for testing an effect of “hand” is exactly the same as the <span class="math inline">\(p\)</span>-value from the paired <span class="math inline">\(t\)</span>-test. This is not a coincidence. These are alternative ways of writing the same model.</p>
+<p>Remarks:
+* We have fit an additive model that does not include a person-by-hand interaction. This is because the design is unreplicated with respect to the person-by-hand interaction. Although we said that biologists typically frown on using an additive model with an unreplicated two-way factorial treatment structure, it is much more common (and accepted) to use an additive model for an RCBD, thus assuming that there is no block-by-treatment interaction.
+* Typically we are not interested in the <span class="math inline">\(F\)</span>-test associated with the block effect. Even if the block effect is not significant, we do not remove it from the model. Doing so would be tantamount to treating the design as a CRD, which does not account for the restricted randomization.</p>
+<p>Here is an example of a standard RCBD with one experimental factor, described in the SAS documentation for PROC GLM: Stenstrom (1940) investigated how <span class="math inline">\(p = 7\)</span> soil types affect the growth of snapdragons. To control for local fertility variations, the soils were grouped into <span class="math inline">\(q = 3\)</span> blocks. Average stem length of the snapdragons in each EU was recorded. The data are:</p>
+<pre><code>                Block
+Type        A    B    C
+Clarion  32.7 32.3 31.5 
+Clinton  32.1 29.7 29.1 
+Knox     35.7 35.9 33.1 
+O&#39;Neill  36.0 34.2 31.2 
+Compost  31.8 28.0 29.2 
+Wabash   38.2 37.8 31.9 
+Webster  32.5 31.1 29.7 </code></pre>
+<p>Here is an analysis with PROC GLM:</p>
+<pre><code>proc glm;
+  class Block Type;
+  model StemLength = Block Type;
+  /*---------------------------------clrn-cltn-knox-onel-cpst-wbsh-wstr */
+  contrast &#39;Compost vs. others&#39;  Type  -1   -1   -1   -1    6   -1   -1 / e; 
+  contrast &#39;Glacial vs. drift&#39;   Type  -1    0    1    1    0    0   -1 / e; 
+  contrast &#39;Clarion vs. Webster&#39; Type  -1    0    0    0    0    0    1 / e; 
+  means Type / tukey;
+run;
+
+Dependent Variable: stemlength
+
+                                        Sum of
+Source                      DF         Squares     Mean Square    F Value    Pr &gt; F
+Model                        8     142.1885714      17.7735714      10.80    0.0002
+Error                       12      19.7428571       1.6452381
+Corrected Total             20     161.9314286
+
+Source                      DF     Type III SS     Mean Square    F Value    Pr &gt; F
+blk                          2      39.0371429      19.5185714      11.86    0.0014
+type                         6     103.1514286      17.1919048      10.45    0.0004
+
+Contrast                    DF     Contrast SS     Mean Square    F Value    Pr &gt; F
+Compost vs. others           1     29.24198413     29.24198413      17.77    0.0012
+Glacial vs. drift            1     22.14083333     22.14083333      13.46    0.0032
+Clarion vs. Webster          1      1.70666667      1.70666667       1.04    0.3285
+
+Tukey&#39;s Studentized Range (HSD) Test for StemLength
+
+Alpha                                   0.05
+Error Degrees of Freedom                  12
+Error Mean Square                   1.645238
+Critical Value of Studentized Range  4.94945
+Minimum Significant Difference        3.6653
+
+Means with the same letter are not significantly different.
 
 
+   Tukey
+ Grouping            Mean      N    Type
 
+     A             35.967      3    Wabash
+B    A             34.900      3    Knox
+B    A    C        33.800      3    O&#39;Neill
+B    D    C        32.167      3    Clarion
+     D    C        31.100      3    Webster
+     D    C        30.300      3    Clinton
+     D             29.667      3    Compost</code></pre>
+<p>Here is an example of a standard RCBD with a 2 <span class="math inline">\(\times\)</span> 2 factorial treatment structure, described in the on-line SAS documentation. The description of the data there reads: “The data, from Neter, Wasserman, and Kutner (1990, p. 941), are from an experiment examining the effects of codeine and acupuncture on post-operative dental pain in male subjects. Both treatment factors have two levels. The codeine levels are a codeine capsule or a sugar capsule. The acupuncture levels are two inactive acupuncture points or two active acupuncture points. There are four distinct treatment combinations due to the factorial treatment structure. The 32 subjects are assigned to eight blocks of four subjects each based on an assessment of pain tolerance.”</p>
+<p>As with any factorial experiment, it is helpful to inspect an interaction plot of the treatment means first:</p>
+<div class="sourceCode" id="cb272"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb272-1"><a href="blocked-designs.html#cb272-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">c</span>(<span class="sc">-</span><span class="fl">0.5</span>,<span class="fl">1.5</span>),<span class="fu">c</span>(<span class="fl">0.5</span>,<span class="dv">2</span>),<span class="at">type=</span><span class="st">&quot;n&quot;</span>,<span class="at">xlab=</span><span class="st">&quot;Acupuncture&quot;</span>,<span class="at">ylab=</span><span class="st">&quot;Relief score&quot;</span>,<span class="at">xaxt=</span><span class="st">&quot;n&quot;</span>)</span>
+<span id="cb272-2"><a href="blocked-designs.html#cb272-2" aria-hidden="true" tabindex="-1"></a><span class="fu">axis</span>(<span class="dv">1</span>,<span class="at">at=</span><span class="dv">0</span><span class="sc">:</span><span class="dv">1</span>,<span class="at">lab=</span><span class="fu">c</span>(<span class="st">&quot;No&quot;</span>,<span class="st">&quot;Yes&quot;</span>))</span>
+<span id="cb272-3"><a href="blocked-designs.html#cb272-3" aria-hidden="true" tabindex="-1"></a><span class="fu">lines</span>(<span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">1</span>),<span class="fu">c</span>(<span class="fl">0.6</span>,<span class="fl">1.175</span>),<span class="at">col=</span><span class="st">&quot;blue&quot;</span>,<span class="at">lwd=</span><span class="dv">2</span>)</span>
+<span id="cb272-4"><a href="blocked-designs.html#cb272-4" aria-hidden="true" tabindex="-1"></a><span class="fu">lines</span>(<span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">1</span>),<span class="fu">c</span>(<span class="fl">1.06</span>,<span class="fl">1.79</span>),<span class="at">col=</span><span class="st">&quot;red&quot;</span>,<span class="at">lwd=</span><span class="dv">2</span>)</span>
+<span id="cb272-5"><a href="blocked-designs.html#cb272-5" aria-hidden="true" tabindex="-1"></a><span class="fu">points</span>(<span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">1</span>),<span class="fu">c</span>(<span class="fl">0.6</span>,<span class="fl">1.175</span>),<span class="at">pch=</span><span class="st">&quot;P&quot;</span>,<span class="at">lwd=</span><span class="dv">2</span>)</span>
+<span id="cb272-6"><a href="blocked-designs.html#cb272-6" aria-hidden="true" tabindex="-1"></a><span class="fu">points</span>(<span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">1</span>),<span class="fu">c</span>(<span class="fl">1.06</span>,<span class="fl">1.79</span>),<span class="at">pch=</span><span class="st">&quot;T&quot;</span>,<span class="at">lwd=</span><span class="dv">2</span>)</span>
+<span id="cb272-7"><a href="blocked-designs.html#cb272-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb272-8"><a href="blocked-designs.html#cb272-8" aria-hidden="true" tabindex="-1"></a><span class="fu">legend</span>(<span class="dv">0</span>,<span class="fl">1.8</span>,<span class="at">leg=</span><span class="fu">c</span>(<span class="st">&quot;Placebo&quot;</span>,<span class="st">&quot;Treated&quot;</span>),<span class="at">col=</span><span class="fu">c</span>(<span class="st">&quot;blue&quot;</span>,<span class="st">&quot;red&quot;</span>),<span class="at">pch=</span><span class="fu">c</span>(<span class="st">&quot;P&quot;</span>,<span class="st">&quot;T&quot;</span>))</span></code></pre></div>
+<p><img src="08-BlockedDesigns_files/figure-html/unnamed-chunk-4-1.png" width="480" style="display: block; margin: auto;" />
+Here is how we might analyze these data with SAS PROC GLM:</p>
+<pre><code>proc glm data=dental;
+  class block codeine acupuncture;
+  model relief = block codeine|acupuncture;
+  means codeine acupuncture / tukey;
+run;
+
+                                        Sum of
+Source                      DF         Squares     Mean Square    F Value    Pr &gt; F
+Model                       10     11.33500000      1.13350000      78.37    &lt;.0001
+Error                       21      0.30375000      0.01446429
+Corrected Total             31     11.63875000
+
+Source                      DF     Type III SS     Mean Square    F Value    Pr &gt; F
+block                        7      5.59875000      0.79982143      55.30    &lt;.0001
+codeine                      1      2.31125000      2.31125000     159.79    &lt;.0001
+acupuncture                  1      3.38000000      3.38000000     233.68    &lt;.0001
+codeine*acupuncture          1      0.04500000      0.04500000       3.11    0.0923
+
+Tukey&#39;s Studentized Range (HSD) Test for relief
+Minimum Significant Difference        0.0884
+
+Means with the same letter are not significantly different.
+
+Tukey grouping
+           Mean      N    codeine
+A       1.42500     16    trt
+B       0.88750     16    placebo
+
+Tukey grouping
+           Mean      N    acupuncture
+A       1.48125     16    yes
+B       0.83125     16    no</code></pre>
+</div>
+<div id="latin-squares-designs" class="section level2 hasAnchor" number="8.2">
+<h2><span class="header-section-number">8.2</span> Latin-squares designs<a href="blocked-designs.html#latin-squares-designs" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Consider the fertilizer again, and suppose that in addition to an east-west slope, there is also a north-south gradient in soil pH. A Latin squares design is a double blocking design that blocks against both east-west and north-south directions.
+<!-- \begin{center} -->
+<!--    \begin{tabular}{|c|c|c|} -->
+<!--        \hline C & B & A \\ \hline -->
+<!--        B & A & C \\ \hline -->
+<!--        A & C & B \\ \hline  -->
+<!--    \end{tabular} -->
+<!-- \end{center} -->
+<!-- Note that each fertilizer treatment appears once in each row block and once in each column block.  (Much like a sudoku puzzle.)   --></p>
+<p>To analyze these data, we need to include a separate factor in the ANOVA for each of the two blocking factors. Here is an example based on a real study.</p>
+<p><span class="citation">Taniguchi, Huntington, and Glenn (<a href="#ref-taniguchi1995net" role="doc-biblioref">1995</a>)</span> studied the effects of infusion of casein (a protein) and cornstarch on net nutrient metabolism in beef steers. The investigators are interested in the effect of the location of the infusion (in the rumen vs. in the abomasum, both compartments of the ruminant stomach) for both the starch and the protein. The 4 unique treatment combinations are: starch and protein both delivered to the abomasum (henceforth treatment “A”), starch delivered to the abomasum and protein delivered to the rumen (treatment “B”), starch delivered to the rumen and protein delivered to the abomasum (treatment “C”), and starch and protein both delivered to the rumen (treatment “D”).</p>
+<p>Four beef steer were available for the study. Each steer was given each treatment over the course of 4 two-week periods. During each period, the steers were given the infusions during days 1–11, and removed from the infusions during days 12–14. Nutrient metabolism was measured on days 8–11 of each period.</p>
+<p>Thus, the data consist of a 2 <span class="math inline">\(\times\)</span> 2 factorial treatment structure with two blocking factors: steer and period. Treatments are assigned to each steer and period using a Latin squares design.</p>
+<!-- Although we do not know the actual Latin squares design used, one possibility is: -->
+<!-- \begin{center} -->
+<!--    \begin{tabular}{|c|c|c|c|c|} -->
+<!--        \hline & \multicolumn{4}{|c|}{Period} \\ \hline -->
+<!--        Steer & 1 & 2 & 3 & 4 \\ \hline -->
+<!--        W & A & B & C & D \\ \hline -->
+<!--        X & C & D & A & B \\ \hline -->
+<!--        Y & B & A & D & C \\ \hline -->
+<!--        Z & D & C & B & A \\ \hline  -->
+<!--    \end{tabular} -->
+<!-- \end{center} -->
+<!-- One of the response variables measured was apparently retained nitrogen, measured as a difference between nitrogen intake and nitrogen excretion.  The original data are unavailable, but one possible data set based on the observed results is  -->
+<!-- \begin{center} -->
+<!--    \begin{tabular}{|c|c|c|c|c|c|} -->
+<!--        \hline & \multicolumn{4}{|c|}{Period} & \\ \hline -->
+<!--        Steer & 1 & 2 & 3 & 4 & Mean\\ \hline -->
+<!--        W & 94.5 & 93.2 & 101.2 & 102.4 & 97.8 \\ \hline -->
+<!--        X & 117.7 & 120.6 & 108.8 & 109.8 & 114.2 \\ \hline -->
+<!--        Y & 110.0 & 115.0 & 121.2 & 122.4 & 117.1 \\ \hline -->
+<!--        Z & 109.4 & 111.9 & 98.0  & 104.9 & 106.1 \\ \hline  -->
+<!--        Mean & 107.9 & 110.2 & 107.3 & 110.0 & 108.8 \\ \hline -->
+<!--    \end{tabular} -->
+<!-- \end{center} -->
+<p>Here is an interaction plot of the treatment means:
+<img src="08-BlockedDesigns_files/figure-html/unnamed-chunk-5-1.png" width="480" style="display: block; margin: auto;" />
+Here is an analysis with PROC GLM:</p>
+<pre><code>proc glm data=steer;
+  class steer period starch protein;
+  model nitrogen = starch|protein steer period;
+run;
+
+Dependent Variable: nitrogen
+
+                                        Sum of
+Source                      DF         Squares     Mean Square    F Value    Pr &gt; F
+Model                        9     1278.855625      142.095069     166.72    &lt;.0001
+Error                        6        5.113750        0.852292
+Corrected Total             15     1283.969375
+
+Source                      DF     Type III SS     Mean Square    F Value    Pr &gt; F
+starch                       1     328.5156250     328.5156250     385.45    &lt;.0001
+protein                      1       8.8506250       8.8506250      10.38    0.0181
+starch*protein               1       9.7656250       9.7656250      11.46    0.0148
+steer                        3     906.9968750     302.3322917     354.73    &lt;.0001
+period                       3      24.7268750       8.2422917       9.67    0.0103</code></pre>
+<p>The significant starch*protein interaction suggests that we should inspect the simple effects of the starch and protein treatments. The interaction plot above suggests that the effect of the protein location is small when starch is delivered to the rumen, but that the protein delivery site has a larger effect when starch is delivered to the abomasum.</p>
+<p>As a remark, note that the model above has only 6 df available to estimate the experimental error. While blocked designs are powerful, block effects do tend to gobble up lots of df, leaving few df available to estimate the experimental error. This phenomenon is particularly pronounced in Latin squares designs.</p>
+</div>
+<div id="should-a-blocking-factor-be-a-fixed-or-random-effect" class="section level2 hasAnchor" number="8.3">
+<h2><span class="header-section-number">8.3</span> *Should a blocking factor be a fixed or random effect?<a href="blocked-designs.html#should-a-blocking-factor-be-a-fixed-or-random-effect" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Often, it makes sense to treat block effects as random effects. Block effects should be treated as fixed if one is interested in drawing inferences that pertain to the particular blocks included in the experiment. Block effects should be treated as random the blocks included in the experiment can be regarded as representative draws from a population of blocks, and one is interested in drawing inferences that extend to this population of blocks.</p>
+<p>Let’s reconsider the snapdragon example that we used to illustrate a RCBD. Here is PROC MIXED code for these data, but now with the block treated as a random effect.</p>
+<pre><code>proc mixed;
+  class blk type;
+  model stemlength = type;
+  random blk;
+  lsmeans type;
+run;
+
+Covariance Parameter Estimates
+
+Cov Parm     Estimate
+blk            2.5533
+Residual       1.6452
+
+Type 3 Tests of Fixed Effects
+
+              Num     Den
+Effect         DF      DF    F Value    Pr &gt; F
+type            6      12      10.45    0.0004
+
+Least Squares Means
+
+                                 Standard
+Effect    type       Estimate       Error      DF    t Value    Pr &gt; |t|
+type      Clarion     32.1667      1.1830      12      27.19      &lt;.0001
+type      Clinton     30.3000      1.1830      12      25.61      &lt;.0001
+type      Compost     29.6667      1.1830      12      25.08      &lt;.0001
+type      Knox        34.9000      1.1830      12      29.50      &lt;.0001
+type      O&#39;Neill     33.8000      1.1830      12      28.57      &lt;.0001
+type      Wabash      35.9667      1.1830      12      30.40      &lt;.0001
+type      Webster     31.1000      1.1830      12      26.29      &lt;.0001</code></pre>
+<p>Remarks:
+* The Type III <span class="math inline">\(F\)</span>-tests for the type effect are the same in both analyses. This is true because the data are balanced. If the data are not balanced, treating the block as a random vs. fixed effect can have a small effect on the Type III <span class="math inline">\(F\)</span>-tests.
+* The standard error of the LSMEAN for each type is larger when we treat the block as a random effect. This makes sense, because if we want to expand our scope of inference to the population of blocks from which these blocks were selected (instead of restricting focus to these particular blocks), we incur a cost of greater uncertainty.
+* The model with block as a random effect is a mixed model, because it includes both a fixed effect (type) and a random effect (block). An equation for this model is
+<span class="math display">\[
+    y_{ij} = \mu + \alpha_i + B_j + \varepsilon_{ij}
+    \]</span>
+where <span class="math inline">\(\mu\)</span> is the reference level or intercept, <span class="math inline">\(\alpha_i\)</span> are the (fixed) effects parameters for the snapdragon type, <span class="math inline">\(B_j \sim \mathcal{N}\left(0, \sigma^2_B \right)\)</span> are the random block effects, and <span class="math inline">\(\varepsilon_{ij} \sim \mathcal{N}\left(0, \sigma^2_\varepsilon \right)\)</span> are the residual errors (also a random effect).</p>
+
+</div>
+</div>
 <h3>Bibliography<a href="bibliography.html#bibliography" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <div id="refs" class="references csl-bib-body hanging-indent">
-<div id="ref-breiman2001statistical" class="csl-entry">
-Breiman, Leo. 2001. <span>“Statistical Modeling: The Two Cultures (with Comments and a Rejoinder by the Author).”</span> <em>Statistical Science</em> 16 (3): 199–231.
+<div id="ref-taniguchi1995net" class="csl-entry">
+Taniguchi, K, GB Huntington, and BP Glenn. 1995. <span>“Net Nutrient Flux by Visceral Tissues of Beef Steers Given Abomasal and Ruminal Infusions of Casein and Starch.”</span> <em>Journal of Animal Science</em> 73 (1): 236–49.
 </div>
-<div id="ref-kahneman2011thinking" class="csl-entry">
-Kahneman, Daniel. 2011. <em>Thinking, Fast and Slow</em>. Macmillan.
-</div>
-<div id="ref-r" class="csl-entry">
-R Core Team. 2021. <em>R: A Language and Environment for Statistical Computing</em>. Vienna, Austria: R Foundation for Statistical Computing. <a href="https://www.R-project.org/">https://www.R-project.org/</a>.
-</div>
-<div id="ref-xie2022bookdown" class="csl-entry">
-Xie, Yihui. 2022. <em>Bookdown: Authoring Books and Technical Documents with r Markdown</em>. <a href="https://github.com/rstudio/bookdown">https://github.com/rstudio/bookdown</a>.
-</div>
-</div>
-<div class="footnotes">
-<hr />
-<ol start="1">
-<li id="fn1"><p>Again, to be clear, the formulas lack a compelling underlying logic because we are not engaging the linear algebra. If we embraced the linear algebra foundations, then the underlying logic would be clear indeed.<a href="index.html#fnref1" class="footnote-back">↩︎</a></p></li>
-<li id="fn2"><p>In this context, the term “observational data” is used to refer to data collected outside the context of a designed experiment. One might bicker that all data, even those data from designed experiments, must be “observed”, but this is the terminology that we have.<a href="index.html#fnref2" class="footnote-back">↩︎</a></p></li>
-<li id="fn3"><p>Indeed, we are probably not too far away from the rise of artificial intelligence-based statistical consulting, where anyone can upload a data set and answer a few questions about it in return for an AI’s analysis.<a href="index.html#fnref3" class="footnote-back">↩︎</a></p></li>
-</ol>
 </div>
             </section>
 
           </div>
         </div>
       </div>
-
-<a href="simple-linear-regression.html" class="navigation navigation-next navigation-unique" aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="random-effects.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="bibliography.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>

@@ -97,6 +97,10 @@ random-effects-models
 subsampling
 equal-subsamples-per-eu
 a-second-look-analysis-with-a-mixed-effects-model
-mathematical-foundations
+starmathematical-foundations
 probability-refresher
 application-to-models-with-random-effects
+blocked-designs
+randomized-complete-block-designs
+latin-squares-designs
+should-a-blocking-factor-be-a-fixed-or-random-effect
