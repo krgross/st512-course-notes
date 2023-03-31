@@ -189,6 +189,58 @@ A       1.48125     16    yes
 B       0.83125     16    no
 ```
 
+### *Should a blocking factor be a fixed or random effect?
+
+Often, it makes sense to treat block effects as random effects.  Block effects should be treated as fixed if one is interested in drawing inferences that pertain to the particular blocks included in the experiment.  Block effects should be treated as random the blocks included in the experiment can be regarded as representative draws from a population of blocks, and one is interested in drawing inferences that extend to this population of blocks.
+
+Let's reconsider the snapdragon example that we used to illustrate a RCBD.  Here is PROC MIXED code for these data, but now with the block treated as a random effect.
+
+```{}
+proc mixed;
+  class blk type;
+  model stemlength = type;
+  random blk;
+  lsmeans type;
+run;
+
+Covariance Parameter Estimates
+
+Cov Parm     Estimate
+blk            2.5533
+Residual       1.6452
+
+Type 3 Tests of Fixed Effects
+
+              Num     Den
+Effect         DF      DF    F Value    Pr > F
+type            6      12      10.45    0.0004
+
+Least Squares Means
+
+                                 Standard
+Effect    type       Estimate       Error      DF    t Value    Pr > |t|
+type      Clarion     32.1667      1.1830      12      27.19      <.0001
+type      Clinton     30.3000      1.1830      12      25.61      <.0001
+type      Compost     29.6667      1.1830      12      25.08      <.0001
+type      Knox        34.9000      1.1830      12      29.50      <.0001
+type      O'Neill     33.8000      1.1830      12      28.57      <.0001
+type      Wabash      35.9667      1.1830      12      30.40      <.0001
+type      Webster     31.1000      1.1830      12      26.29      <.0001
+```
+
+
+Remarks:
+
+* The Type III $F$-tests for the differences among the soil types are the same in both analyses.  This is true because the data are balanced.  If the data are not balanced, treating the block as a random vs. fixed effect can have a small effect on the Type III $F$-tests.
+
+* The standard error of the LSMEAN for each type is larger when we treat the block as a random effect.  This makes sense, because if we want to expand our scope of inference to the population of blocks from which these blocks were selected (instead of restricting focus to these particular blocks), we incur a cost of greater uncertainty.
+
+* The model with block as a random effect is a mixed model, because it includes both a fixed effect (type) and a random effect (block).  An equation for this model is
+	\[
+	y_{ij} = \mu + \alpha_i + B_j + \varepsilon_{ij} 
+	\]
+	where $\mu$ is the reference level or intercept, $\alpha_i$ are the (fixed) effects parameters for the snapdragon type, $B_j \sim \mathcal{N}\left(0, \sigma^2_B \right)$ are the random block effects, and $\varepsilon_{ij} \sim \mathcal{N}\left(0, \sigma^2_\varepsilon \right)$ are the residual errors (also a random effect).
+
 ## Latin-squares designs
 
 Consider the fertilizer again, and suppose that in addition to an east-west slope, there is also a north-south gradient in soil pH.  A Latin squares design is a double blocking design that blocks against both east-west and north-south directions.
@@ -264,55 +316,159 @@ The significant starch*protein interaction suggests that we should inspect the s
 
 As a remark, note that the model above has only 6 df available to estimate the experimental error.  While blocked designs are powerful, block effects do tend to gobble up lots of df, leaving few df available to estimate the experimental error.  This phenomenon is particularly pronounced in Latin squares designs.
 
-## *Should a blocking factor be a fixed or random effect?
+## Split-plot designs
 
-Often, it makes sense to treat block effects as random effects.  Block effects should be treated as fixed if one is interested in drawing inferences that pertain to the particular blocks included in the experiment.  Block effects should be treated as random the blocks included in the experiment can be regarded as representative draws from a population of blocks, and one is interested in drawing inferences that extend to this population of blocks.
+A split-plot experiment combines the ideas of blocking and subsampling in a clever way.  The essential feature of a split-plot experiment is that there are at least two experimental factors, and the factors are randomized to different EUs.  For example, consider a hypothetical 
+experiment to evaluate the effect of 3 bacterial inoculation treatments applied to 2 grass cultivars (A vs.\ B).  The response variable is dry-weight yield.  Eight fields are available for the experiment. Suppose that the different inoculation treatments can be applied to different regions of the same field, but it is impossible to plant different cultivars in the same field.  Consequently,  cultivars are randomly assigned to fields as a balanced CRD.   Fields are then split into 3 thirds, and inoculation treatments are randomly assigned to each third.   Dry weight yield is then measured from each third for a total of 24 data points.  Here is an interaction plot of the means for each of the 6 treatment combinations:
+<img src="08-BlockedDesigns_files/figure-html/unnamed-chunk-6-1.png" width="480" style="display: block; margin: auto;" />
+In this experiment, the EU is different for the two experimental factors.  For the cultivar treatment, the field is the EU, and the thirds are subsamples.  For the bacterial inoculation treatment, however, the thirds are the EUs and the fields are blocks.  Split-plot experiments are advantageous when it is more convenient to apply one factor or factors to large EUs and other factor(s) to smaller EUs.  Split-plot experiments come with their own conventional terminology.  In the example above, the cultivar is the *whole-plot* factor, and the fields are the whole-plot EU.  The inoculation treatment is the *split-plot* factor, and the thirds are the split-plot EUs (subsamples of the whole-plot EUs).  
 
-Let's reconsider the snapdragon example that we used to illustrate a RCBD.  Here is PROC MIXED code for these data, but now with the block treated as a random effect.
+Because the design contains two different EUs, the analysis must contain two error terms.  The critical piece of the analysis is to make sure that the statistical inferences about the whole-plot factor are drawn using the whole-plot error, and conversely inferences about the split-plot factor are drawn using the split-plot error.
+
+Here is an ANOVA model for this experiment:
+\[
+y_{ijk} = \mu + \alpha_i + \beta_j + (\alpha \beta)_{ij} + W_{ik} + \varepsilon_{ijk}
+\]
+where 
+
+* $i = 1, 2$ is an index for the grass cultivars
+* $j = 1, 2, 3$ is an index for the inoculation treatment
+* $k = 1, 2, \ldots, 4$ is an index for the replicate fields assigned to each cultivar
+* $\mu$ is a reference level
+* $\alpha_i$'s are the (fixed) effect parameters for cultvar $i$, subject to the usual constraints
+* $\beta_j$'s are the (fixed) effect parameters for bacterial inoculation $j$, subject to the usual constraints
+* $(\alpha \beta)_{ij}$'s are the (fixed) effect parameters for the cultivar-by-inoculation interaction, subject to the usual constraints
+* $W_{ik}$ is a random effect for the whole-plot error, $W_{ik} \sim \mathcal{N}\left(0, \sigma^2_W \right)$
+* $\varepsilon_{ijk}$ is residual (split-plot) error, $\varepsilon_{ijk} \sim \mathcal{N}\left(0, \sigma^2_{\varepsilon} \right)$
+
+
+As before, we can conduct an ANOVA sum-of-squares decomposition that will lead to $F$-tests of the factorial effects.  We'll prepare for this ANOVA by first partitioning the df among the various sums of squares.   How do we partition the df?
+
+* The random effect for the field will serve as the whole-plot error term.  Because each field is associated with one and only one cultivar, then field is nested within cultivar.
+* The random effect for the third will serve as the split-plot error term.  Because each third is associated with one and only one cultivar, with one and only one field, with one and only one inoculation treatment, and with one and only one cultivar-inoculation treatment combination, then the third is nested in all these other model terms. 
+
+The df for each term in the ANOVA will be:
+<table>
+ <thead>
+  <tr>
+   <th style="text-align:left;"> source </th>
+   <th style="text-align:left;"> df </th>
+  </tr>
+ </thead>
+<tbody>
+  <tr>
+   <td style="text-align:left;"> Cultivar </td>
+   <td style="text-align:left;"> 1 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Whole-plot error </td>
+   <td style="text-align:left;"> 6 (=8 - 1 - 1) </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Inocuolation </td>
+   <td style="text-align:left;"> 2 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Cultivar*Inoculation </td>
+   <td style="text-align:left;"> 2 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Residual error </td>
+   <td style="text-align:left;"> 12  (= 24 - 1 - 1 - 6 - 2 - 2) </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Total </td>
+   <td style="text-align:left;"> 23 </td>
+  </tr>
+</tbody>
+</table>
+
+Because this model has multiple random effects, we'll use PROC MIXED for our calculations.  As before, we can use the METHOD = TYPE3 option to see the ANOVA table, but we'll use METHOD = REML (the default) to obtain our estimates and F-tests of the fixed effects.  (With a balanced data set, both the TYPE3 and REML methods of estimation will yield identical results.)
+
+Here is the TYPE3 analysis first:
+
+```{}
+proc mixed method = type3;
+  class field cult inoc;
+  model drywt = cult|inoc;
+  random field(cult);
+run;
+
+                               Type 3 Analysis of Variance
+                               
+                           Sum of
+Source           DF       Squares   Mean Square  Expected Mean Square
+cult              1      2.406667      2.406667  Var(Residual) + 3 Var(field(cult))
+                                                 + Q(cult,cult*inoc)
+inoc              2    118.175833     59.087917  Var(Residual) + Q(inoc,cult*inoc)
+cult*inoc         2      1.825833      0.912917  Var(Residual) + Q(cult*inoc)
+field(cult)       6     34.800000      5.800000  Var(Residual) + 3 Var(field(cult))
+Residual         12      8.465000      0.705417  Var(Residual)
+```
+
+Note that we've coded the random-effect for the fields as FIELD(CULT), because field is nested within the cultivar treatment.  Now, here is the REML analysis (the default):
 
 ```{}
 proc mixed;
-  class blk type;
-  model stemlength = type;
-  random blk;
-  lsmeans type;
+  class field cult inoc;
+  model drywt = cult|inoc;
+  random field(cult);
 run;
 
 Covariance Parameter Estimates
 
-Cov Parm     Estimate
-blk            2.5533
-Residual       1.6452
+Cov Parm        Estimate
+field(cult)       1.6982
+Residual          0.7054
 
 Type 3 Tests of Fixed Effects
 
               Num     Den
 Effect         DF      DF    F Value    Pr > F
-type            6      12      10.45    0.0004
-
-Least Squares Means
-
-                                 Standard
-Effect    type       Estimate       Error      DF    t Value    Pr > |t|
-type      Clarion     32.1667      1.1830      12      27.19      <.0001
-type      Clinton     30.3000      1.1830      12      25.61      <.0001
-type      Compost     29.6667      1.1830      12      25.08      <.0001
-type      Knox        34.9000      1.1830      12      29.50      <.0001
-type      O'Neill     33.8000      1.1830      12      28.57      <.0001
-type      Wabash      35.9667      1.1830      12      30.40      <.0001
-type      Webster     31.1000      1.1830      12      26.29      <.0001
+cult            1       6       0.41    0.5433
+inoc            2      12      83.76    <.0001
+cult*inoc       2      12       1.29    0.3098
 ```
 
+We see that there is evidence of a difference among the inoculation treatments, but no evidence of an interaction between the inoculation treatments and the cultivar, and no evidence of a difference among the cultivars.
+
+To explore the differences among the inoculation treatments, we'll use an LSMEANS statement using Tukey's HSD procedure:
+
+```{}
+proc mixed;
+  class field cult inoc;
+  model drywt = cult|inoc / ddfm=satterth;
+  random field(cult);
+  lsmeans inoc / pdiff adjust=tukey;
+run;
+
+                         Least Squares Means
+                         
+                              Standard
+Effect    inoc    Estimate       Error      DF    t Value    Pr > |t|
+inoc      con      27.9625      0.5481    9.01      51.01      <.0001
+inoc      dea      29.9500      0.5481    9.01      54.64      <.0001
+inoc      liv      33.3375      0.5481    9.01      60.82      <.0001
+                         
+                         
+                         Differences of Least Squares Means
+                         
+                               Standard
+Effect  inoc  _inoc  Estimate     Error    DF  t Value  Pr > |t|  Adjustment     Adj P
+inoc    con   dea     -1.9875    0.4199    12    -4.73    0.0005  Tukey-Kramer  0.0013
+inoc    con   liv     -5.3750    0.4199    12   -12.80    <.0001  Tukey-Kramer  <.0001
+inoc    dea   liv     -3.3875    0.4199    12    -8.07    <.0001  Tukey-Kramer  <.0001
+```
 
 Remarks:
 
-* The Type III $F$-tests for the type effect are the same in both analyses.  This is true because the data are balanced.  If the data are not balanced, treating the block as a random vs. fixed effect can have a small effect on the Type III $F$-tests.
+* The DDFM = SATTERTH option tells SAS to calculate df using a Satterthwaite approximation.  See below.
+* The LSMEANS statement calculates the average response for each inoculation treatment (the split-plot factor) averaging over the levels of the whole-plot factor, cultivar.  The PDIFF option provides pairwise comparisons, and the ADJUST=TUKEY option adjusts these p-values for multiple comparisons.
+\end{enumerate}
+Analysis and interpretation:  There is no evidence of an interaction between cultivar and inoculation treatment ($F_{2,12} = 1.29$, $p= 0.31$).  There is no evidence of a main effect of cultivar ($F_{1,6} = 0.41$, $p= 0.54$).  There is strong evidence of a main effect of inoculation treatment ($F_{2,12} = 83.76$, $p<.0001$).  Pairwise comparisons of LSMEANS suggest that all inoculation treatments are significantly different from one another.  Variance component estimates suggest that the experimental error associated with the whole-plot is roughly twice as great as the experimental error associated with the split-plot (1.70 vs. 0.70).
 
-* The standard error of the LSMEAN for each type is larger when we treat the block as a random effect.  This makes sense, because if we want to expand our scope of inference to the population of blocks from which these blocks were selected (instead of restricting focus to these particular blocks), we incur a cost of greater uncertainty.
+### Satterthwaite approximation
 
-* The model with block as a random effect is a mixed model, because it includes both a fixed effect (type) and a random effect (block).  An equation for this model is
-	\[
-	y_{ij} = \mu + \alpha_i + B_j + \varepsilon_{ij} 
-	\]
-	where $\mu$ is the reference level or intercept, $\alpha_i$ are the (fixed) effects parameters for the snapdragon type, $B_j \sim \mathcal{N}\left(0, \sigma^2_B \right)$ are the random block effects, and $\varepsilon_{ij} \sim \mathcal{N}\left(0, \sigma^2_\varepsilon \right)$ are the residual errors (also a random effect).
+Standard errors of the LSMEANS for the split-plot factor (here, inoculation treatment) are functions of both the whole-plot error and the split-plot error.  Consequently, the df associated with these standard errors are intermediate between the df available for the whole-plot error (here, 6) and the df available for the split-plot error (12).  The Satterthwaite approximation is a computationally intensive method for approximating the appropriate df.  (It’s computationally intensive because it entails inverting a big matrix.)  With big models or small computers, calculating the Satterthwaite approximation may not be feasible.  See section 11.4 of Oehlert for a more detailed discussion of the Satterthwaite approximation.
 
+You may have already encountered the Satterthwaite approximation in the context of Welch's two-sample $t$-test.  (Recall that Welch's two-sample $t$-test can be used to compare the means of two samples when the variances of those two samples are not equal.  In that context, the standard error of the difference between the means blends two different variance estimates, and thus the Satterthwaite approximation is needed to calculate the associated df.  The key feature to both of these calculations is the presence of multiple variance estimates in the calculation of a standard error.)

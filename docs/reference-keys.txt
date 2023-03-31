@@ -102,5 +102,7 @@ probability-refresher
 application-to-models-with-random-effects
 blocked-designs
 randomized-complete-block-designs
-latin-squares-designs
 should-a-blocking-factor-be-a-fixed-or-random-effect
+latin-squares-designs
+split-plot-designs
+satterthwaite-approximation
