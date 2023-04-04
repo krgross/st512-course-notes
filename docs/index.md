@@ -1,7 +1,7 @@
 --- 
 title: "ST 512 course notes"
 author: "Kevin Gross"
-date: "2023-03-31"
+date: "2023-04-04"
 output:
   bookdown::gitbook:
     config:
@@ -42,6 +42,7 @@ See section 5.1 of Yihui Xie's bookdown book
 \newcommand{\vecyhat}{\mathbf{\hat{Y}}}
 \newcommand{\X}{\mathbf{X}}
 \newcommand{\vecx}{\mathbf{x}}
+\newcommand{\vecX}{\mathbf{X}}
 \newcommand{\vecb}{\mathbf{\beta}}
 \newcommand{\vecbhat}{\hat{\mathbf{\beta}}}
 \newcommand{\veceps}{\mathbf{\epsilon}}
@@ -51,6 +52,8 @@ See section 5.1 of Yihui Xie's bookdown book
 \newcommand{\SD}[1]{\mbox{SD}\left(#1\right)}
 \newcommand{\Cov}[2]{\mbox{Cov}\left(#1, #2\right)}
 \newcommand{\Cor}[2]{\mbox{Cor}\left(#1, #2\right)}
+\newcommand{\vcov}[1]{\mbox{Cov}\left(#1\right)}
+\newcommand{\vcor}[1]{\mbox{Cor}\left(#1\right)}
 
 
 # Preface {-}
@@ -135,7 +138,7 @@ These notes are provided under [version 3 of the GNU General Public License](htt
 
 # Simple linear regression
 
-In statistics, regression models are those that relate the distribution of an output variable to the value(s) of one or several input variables.  Characterizing the relationships among input and output variables is central to much of science, and regression methods form the foundation for much of data analysis.  We'll have a lot to say about regression, but we'll begin with so-called simple linear regression (SLR).  SLR models are "simple" in the sense that they contain only one predictor.  
+In statistics, regression models relate the distribution of an output variable to the value(s) of one or several input variables.  Characterizing the relationships among input and output variables is central to much of science, and regression methods form the foundation for much of data analysis.  We'll have a lot to say about regression, but we'll begin with so-called simple linear regression (SLR).  SLR models are "simple" in the sense that they contain only one predictor.  
 
 Because these notes are meant for the intermediate analyst, I'll assume that you've seen SLR before. The purpose of our study here is twofold.  First, we'll use SLR as a familiar venue to review many of the foundational concepts of (frequentist) statistical inference.  These ideas are often elusive, so it's worth reviewing them again to solidify our understanding.  Along the way, we'll encounter some new (!) ideas for interpreting the outcomes of statistical hypothesis test that may improve upon the traditional convoluted definitions.  
 

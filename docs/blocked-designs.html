@@ -23,7 +23,7 @@
 <meta name="author" content="Kevin Gross" />
 
 
-<meta name="date" content="2023-03-31" />
+<meta name="date" content="2023-04-04" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -310,6 +310,7 @@ div.csl-indent {
 <ul>
 <li class="chapter" data-level="8.3.1" data-path="blocked-designs.html"><a href="blocked-designs.html#satterthwaite-approximation"><i class="fa fa-check"></i><b>8.3.1</b> Satterthwaite approximation</a></li>
 </ul></li>
+<li class="chapter" data-level="8.4" data-path="blocked-designs.html"><a href="blocked-designs.html#repeated-measures"><i class="fa fa-check"></i><b>8.4</b> Repeated measures</a></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="bibliography.html"><a href="bibliography.html"><i class="fa fa-check"></i>Bibliography</a></li>
 </ul>
@@ -396,7 +397,10 @@ mean of x
 <li><p>We have fit an additive model that does not include a person-by-hand interaction. In a RCBD, it is common to assume that there is no block-by-treatment interaction.</p></li>
 <li><p>Typically we are not interested in the <span class="math inline">\(F\)</span>-test associated with the block effect. Even if the block effect is not significant, we do not remove it from the model. Doing so would be tantamount to treating the design as a CRD, which does not account for the restricted randomization.</p></li>
 </ul>
-<p>Here is an example of a standard RCBD with one experimental factor, described in the SAS documentation for PROC GLM: <span class="citation">Stenstrom (<a href="#ref-stenstrom40" role="doc-biblioref">1940</a>)</span> investigated how <span class="math inline">\(p = 7\)</span> soil types affect the growth of snapdragons. To control for local fertility variations, the soils were grouped into <span class="math inline">\(q = 3\)</span> blocks. Average stem length of the snapdragons in each EU was recorded. The data are:</p>
+<p>Here is an example of a standard RCBD with one experimental factor, described in the SAS documentation for PROC GLM: <span class="citation">Stenstrom (<a href="#ref-stenstrom40" role="doc-biblioref">1940</a>)</span> investigated how <span class="math inline">\(p = 7\)</span> soil types affect the growth of snapdragons. Snapdragons were grown in 2.5-by-4 foot containers arranged along a greenhouse bench. To control for variation in light and temperature along the long axis of the bench, containers were blocked into three groups of seven based on their location on the bench. Average stem length of the snapdragons in each EU was recorded.</p>
+<p>Here is a diagram and a photo from Stenstrom’s MS thesis (<span class="citation">Stenstrom (<a href="#ref-stenstrom40" role="doc-biblioref">1940</a>)</span>) that illustrates the design:
+<img src="images/stenstrom-schematic.PNG" style="display: block; margin: auto;" /><img src="images/stenstrom-photo.PNG" style="display: block; margin: auto;" /></p>
+<p>The data are:</p>
 <pre><code>                Block
 Type        A    B    C
 Clarion  32.7 32.3 31.5 
@@ -448,7 +452,7 @@ B    D    C        32.167      3    Clarion
      D             29.667      3    Compost</code></pre>
 <p>Here is an example of a standard RCBD with a 2 <span class="math inline">\(\times\)</span> 2 factorial treatment structure, described in the on-line SAS documentation. The description of the data there reads: “The data, from Neter, Wasserman, and Kutner (1990, p. 941), are from an experiment examining the effects of codeine and acupuncture on post-operative dental pain in male subjects. Both treatment factors have two levels. The codeine levels are a codeine capsule or a sugar capsule. The acupuncture levels are two inactive acupuncture points or two active acupuncture points. There are four distinct treatment combinations due to the factorial treatment structure. The 32 subjects are assigned to eight blocks of four subjects each based on an assessment of pain tolerance.”</p>
 <p>As with any factorial experiment, it is helpful to inspect an interaction plot of the treatment means first:
-<img src="08-BlockedDesigns_files/figure-html/unnamed-chunk-4-1.png" width="480" style="display: block; margin: auto;" />
+<img src="08-BlockedDesigns_files/figure-html/unnamed-chunk-5-1.png" width="480" style="display: block; margin: auto;" />
 Here is how we might analyze these data with SAS PROC GLM:</p>
 <pre><code>proc glm data=dental;
   class block codeine acupuncture;
@@ -567,7 +571,7 @@ where <span class="math inline">\(\mu\)</span> is the reference level or interce
 <!--    \end{tabular} -->
 <!-- \end{center} -->
 <p>Here is an interaction plot of the treatment means:
-<img src="08-BlockedDesigns_files/figure-html/unnamed-chunk-5-1.png" width="480" style="display: block; margin: auto;" />
+<img src="08-BlockedDesigns_files/figure-html/unnamed-chunk-6-1.png" width="480" style="display: block; margin: auto;" />
 Here is an analysis with PROC GLM:</p>
 <pre><code>proc glm data=steer;
   class steer period starch protein;
@@ -595,7 +599,7 @@ period                       3      24.7268750       8.2422917       9.67    0.0
 <h2><span class="header-section-number">8.3</span> Split-plot designs<a href="blocked-designs.html#split-plot-designs" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>A split-plot experiment combines the ideas of blocking and subsampling in a clever way. The essential feature of a split-plot experiment is that there are at least two experimental factors, and the factors are randomized to different EUs. For example, consider a hypothetical
 experiment to evaluate the effect of 3 bacterial inoculation treatments applied to 2 grass cultivars (A vs. B). The response variable is dry-weight yield. Eight fields are available for the experiment. Suppose that the different inoculation treatments can be applied to different regions of the same field, but it is impossible to plant different cultivars in the same field. Consequently, cultivars are randomly assigned to fields as a balanced CRD. Fields are then split into 3 thirds, and inoculation treatments are randomly assigned to each third. Dry weight yield is then measured from each third for a total of 24 data points. Here is an interaction plot of the means for each of the 6 treatment combinations:
-<img src="08-BlockedDesigns_files/figure-html/unnamed-chunk-6-1.png" width="480" style="display: block; margin: auto;" />
+<img src="08-BlockedDesigns_files/figure-html/unnamed-chunk-7-1.png" width="480" style="display: block; margin: auto;" />
 In this experiment, the EU is different for the two experimental factors. For the cultivar treatment, the field is the EU, and the thirds are subsamples. For the bacterial inoculation treatment, however, the thirds are the EUs and the fields are blocks. Split-plot experiments are advantageous when it is more convenient to apply one factor or factors to large EUs and other factor(s) to smaller EUs. Split-plot experiments come with their own conventional terminology. In the example above, the cultivar is the <em>whole-plot</em> factor, and the fields are the whole-plot EU. The inoculation treatment is the <em>split-plot</em> factor, and the thirds are the split-plot EUs (subsamples of the whole-plot EUs).</p>
 <p>Because the design contains two different EUs, the analysis must contain two error terms. The critical piece of the analysis is to make sure that the statistical inferences about the whole-plot factor are drawn using the whole-plot error, and conversely inferences about the split-plot factor are drawn using the split-plot error.</p>
 <p>Here is an ANOVA model for this experiment:
@@ -756,12 +760,530 @@ Analysis and interpretation: There is no evidence of an interaction between cult
 <h3><span class="header-section-number">8.3.1</span> Satterthwaite approximation<a href="blocked-designs.html#satterthwaite-approximation" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>Standard errors of the LSMEANS for the split-plot factor (here, inoculation treatment) are functions of both the whole-plot error and the split-plot error. Consequently, the df associated with these standard errors are intermediate between the df available for the whole-plot error (here, 6) and the df available for the split-plot error (12). The Satterthwaite approximation is a computationally intensive method for approximating the appropriate df. (It’s computationally intensive because it entails inverting a big matrix.) With big models or small computers, calculating the Satterthwaite approximation may not be feasible. See section 11.4 of Oehlert for a more detailed discussion of the Satterthwaite approximation.</p>
 <p>You may have already encountered the Satterthwaite approximation in the context of Welch’s two-sample <span class="math inline">\(t\)</span>-test. (Recall that Welch’s two-sample <span class="math inline">\(t\)</span>-test can be used to compare the means of two samples when the variances of those two samples are not equal. In that context, the standard error of the difference between the means blends two different variance estimates, and thus the Satterthwaite approximation is needed to calculate the associated df. The key feature to both of these calculations is the presence of multiple variance estimates in the calculation of a standard error.)</p>
-
 </div>
+</div>
+<div id="repeated-measures" class="section level2 hasAnchor" number="8.4">
+<h2><span class="header-section-number">8.4</span> Repeated measures<a href="blocked-designs.html#repeated-measures" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Consider the following study that involved 27 children. On each child, the distance (mm) from the center of the pituitary to the pterygomaxillary fissure was made at ages 8, 10, 12, and 14 years of age. The data also specify the children’s genders, in this case as either boys or girls. The data are shown below, as they were originally reported in <span class="citation">Potthoff and Roy (<a href="#ref-potthoff1964generalized" role="doc-biblioref">1964</a>)</span>. In this figure, the panels with blue plot symbols show the girls and the panels with pink plot symbols show the boys.</p>
+<p><img src="08-BlockedDesigns_files/figure-html/unnamed-chunk-9-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>We would like to answer the usual questions that one poses for a factorial design:</p>
+<ul>
+<li>Do the marginal means differ between boys and girls?</li>
+<li>Do the marginal means differ with age?</li>
+<li>Do the differences between boys and girls depend on age?</li>
+</ul>
+<p>This is an example of a repeated-measures study. A repeated-measures study is one in which the response variable is measured multiple times on the same EU. Other examples include an experiment that measures the changes in plant community composition along a transect from an urban center into the countryside, or an experiment that measures changes in health status over time in response to different diets.</p>
+<p>Repeated-measures data share important similarities with a split-plot design. The EU in a repeated-measures design is analogous to the whole-plot in a split-plot design. The repeated measures on a single EU are analogous to the split-plots, where the split-plot factor is time (or age). Repeated-measures designs can also involve repeated measures in space, in which case the split-plot factor is spatial location. There is one critical difference between split-plot and repeated measures designs. In split-plot designs, the split-plot treatment is assigned randomly to the split-plot EUs. In repeated-measures designs, however, the “split-plot” treatment is usually time or space, and hence cannot be randomly assigned. This has important consequences for the statistical analysis.</p>
+<p>Because of their historical roots, repeated measures designs have their own terminology. The “whole-plot” units are usually called subjects (think of people enrolled in a longitudinal study). The experimental treatment is the between-subject factor, and time (age, spatial location) is the within-subject factor.</p>
+<p>Before proceeding, let’s perform a df accounting. This is the same df accounting that we would obtain if we treated these data as a split-plot experiment:</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left;">
+source
+</th>
+<th style="text-align:left;">
+df
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+Gender
+</td>
+<td style="text-align:left;">
+1
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Age
+</td>
+<td style="text-align:left;">
+3
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Gender * Age
+</td>
+<td style="text-align:left;">
+3
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Whole-plot error
+</td>
+<td style="text-align:left;">
+25 (=27 - 1 - 1)
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Residual error
+</td>
+<td style="text-align:left;">
+75 (=108 - 1 - 1 - 25 - 3 - 3)
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Total
+</td>
+<td style="text-align:left;">
+107
+</td>
+</tr>
+</tbody>
+</table>
+<p>Let’s also write down a model equation:
+<span class="math display">\[
+y_{ijk} = \mu_{ij} + W_{ik} + \varepsilon_{ijk}
+\]</span>
+where</p>
+<ul>
+<li><span class="math inline">\(i = 1, 2\)</span> indexes the two genders in this study</li>
+<li><span class="math inline">\(j = 1, 2, 3, 4\)</span> indexes the four ages</li>
+<li><span class="math inline">\(k = 1, 2, \ldots, n_i\)</span> indexes for the replicate subjects for each gender</li>
+<li><span class="math inline">\(\mu_{ij}\)</span> is the average response for a child of gender <span class="math inline">\(i\)</span> at age <span class="math inline">\(j\)</span>.</li>
+<li><span class="math inline">\(W_{ik}\)</span> is a random effect for the between-subject errors, <span class="math inline">\(W_{ik} \sim \mathcal{N}\left(0, \sigma^2_W \right)\)</span></li>
+<li><span class="math inline">\(\varepsilon_{ijk}\)</span> is residual (within-subject) error, <span class="math inline">\(\varepsilon_{ijk} \sim \mathcal{N}\left(0, \sigma^2_{\varepsilon} \right)\)</span></li>
+</ul>
+<p>As written, the model above is identical to a split-plot model. In a split-plot analysis, we assume that the split-plot errors (the <span class="math inline">\(\varepsilon\)</span>’s) are independent. In a repeated measures analysis, we assume that the within-subject errors are correlated. The goal of repeated-measures analysis is to draw valid inferences about the treatment effects while properly accounting for the correlations among the within-subject errors.</p>
+<p>The contemporary approach to analyzing repeated-measures data is to use mixed models. The mixed models approach works by modeling the correlations of the several measurements on each subject.</p>
+<p>We need to back up and develop some more notation. For each subject, let <span class="math inline">\(\rho_{mn}\)</span> denote the correlation between measurements <span class="math inline">\(m\)</span> and <span class="math inline">\(n\)</span>. For the dental data, both <span class="math inline">\(m\)</span> and <span class="math inline">\(n\)</span> take the values from 1 to 4. With the dental data, there are 6 unique pairs of measurements on each subject, and hence we need to find six distinct values of <span class="math inline">\(\rho_{mn}\)</span> to fully characterize the correlations among the several measurements on each subject. While finding six values doesn’t seem so bad, in other contexts when there are more measurements on each subject, the number of unique correlations that we need to estimate can get large quickly. Thus it is often worthwhile to try to develop a parsimonious model for the within-subject correlations that allows us to characterize these correlations with a small number of parameters.</p>
+<p>We will examine three common models for the within-subject correlations. In the PROC MIXED documentation, you’ll find descriptions of nearly two dozen possible models for the within-subject correlations. When discussing within-subject correlations, it is common to arrange these correlations in a <em>correlation matrix</em>. A correlation matrix is a square matrix in which the element in row <span class="math inline">\(i\)</span> and column <span class="math inline">\(j\)</span> corresponds to the correlation <span class="math inline">\(\rho_{ij}\)</span>. For our purposes, the correlation matrix is just a handy bookkeeping device. In other contexts, the matrix representation is useful to derive additional properties using matrix algebra, although we won’t be using any of those results here.</p>
+<hr />
+<p><span style="color: gray;"> Bear in mind that the correlation matrix has a lot of redundancy built into it. First, the elements on the main diagonal of the matrix (that is, the diagonal running from the upper-left corner to the lower-right corner) must equal 1, because these values give the correlation of a number with itself, and any random variable is always perfectly correlated with itself. Second, because correlations are symmetric (that is, <span class="math inline">\(\rho_{mn} = \rho_{nm}\)</span>), each correlation appears in the correlation matrix twice: once in the “upper triangle” above the main diagonal and once in the “lower triangle” below the main diagonal.</span></p>
+<hr />
+<!-- Recall that the covariance between two quantities is a measure of the degree to which they covary.  Positive covariances indicate that two quantities vary together (e.g., height and weight of a person), and negative covariances indicate that two quantities vary oppositely (one is large when the other is small, and vice versa; e.g., stock and bond prices).  The correlation between two variables is the covariance re-scaled to fit on a scale from -1 (perfect negative covariance) to +1 (perfect positive covariance).  Independent quantities have both covariance and correlation equal to 0. -->
+<!-- Consider three random quantities.  Example: $X_1$ = height, $X_2$ = weight, $X_3$ = number of letters in one's name.  Suppose we put these three quantities together in a vector called $\vecX$. -->
+<!-- The covariance matrix of the vector $\vecX$, denoted $\vcov{\vecX}$, is simply a matrix (e.g., an array of numbers) that contains the variances of each component of X on the diagonal running from the upper-left to the lower-right, and the covariances between each pair of components of X off the diagonal: -->
+<!-- $$ -->
+<!-- \vcov{\vecX} = \left( \begin{array}{ccc}  -->
+<!-- \Var{X_1} & \Cov{X_1}{X_2} & \Cov(X_1, X_3) \\ -->
+<!-- \Cov(X_1, X_2) & \Var(X_2) & \Cov(X_2, X_3) \\ -->
+<!-- \Cov{X_1, X_3} & \Cov(X_2, X_3) & \Var(X_3) \end{array} \right) -->
+<!-- $$ -->
+<!-- Here, “Var(X1)” is the variance of X1, and “Cov(X1, X2)” is the covariance between X1 and X2.  Because Cov(X1, X2) = Cov(X2, X1), any covariance matrix is symmetric (e.g., you could place a mirror along the main diagonal and “reflect” one half of the matrix onto the other half.) -->
+<!-- The correlation matrix of the vector X, denoted $\vcor{\vecX}$, is a matrix that contains 1’s on the diagonal running from the upper-left to the lower-right, and the correlations between each pair of components of $\vecX$ off the diagonal: -->
+<!-- $$ -->
+<!-- \vcor{\vecX} = \left( \begin{array}{ccc}  -->
+<!-- 1 & \Cor(X_1, X_2) & \Cor(X_1, X_3) \\ -->
+<!-- \Cor(X_1, X_2) & 1 & \Cov(X_2, X_3) \\ -->
+<!-- \Cor{X_1, X_3} & \Cor(X_2, X_3) & 1 \end{array} \right) -->
+<!-- $$ -->
+<!-- Correlation matrices are also symmetric. -->
+<!-- <!-- For the example above (X1 = height, X2 = weight, X3 = number of CDs owned), we might expect a strong association between height and weight, and weak associations between height and CDs owned, and between weight and CDs owned.  If this is true, the correlation matrix of the vector X might be -->
+<!-- Now let’s return to thinking about repeated measures.  In repeated measures, the goal of a mixed-model analysis is to estimate the correlation matrix for the within-subject errors.  For example, consider the within-subject errors for $j$th child of gender $i$.  We can arrange the within-subject errors for this individual into a vector: -->
+<!-- $$ -->
+<!-- \veceps_{ij} = \left( \begin{array}{c}  \varepsilon_{ij1} & \varepsilon_{ij2} & \varepsilon_{ij3} & \varepsilon_{ij4}  \end{array} \right). -->
+<!-- $$ -->
+<!-- Our goal is to model the correlation matrix for this vector of within-subject errors.  -->
+<!-- Note that with 4 repeated measures per subject, there are a total of 6 unique correlations to be estimated.  We can try to estimate all 6 correlations separately, or we can try for a parsimonious model that models the 6 separate correlations with a small number of estimated parameters.  There are many possible models for the correlation structure.  We will consider 3; many more can be found in the PROC MIXED documentation. -->
+<p>Correlation structure 1: Compound symmetry (CS)</p>
+<p>In this structure, all pairs of observations from the same subject have the same correlation. In an equation, we’d write
+<span class="math display">\[
+\rho_{mn} = \rho.
+\]</span>
+The CS model is equivalent to treating the data as if they came from a split-plot design.</p>
+<p>Correlation structure 2: First-order autoregressive (AR(1))</p>
+<p>In this structure, correlations decay exponentially with time. This is often the case for repeated measures, as two repeated measures occurring close together in time are apt to be more strongly associated than two repeated measures occurring far apart in time. In an equation, we’d write
+<span class="math display">\[
+\rho_{mn} = \rho^{|m-n|}.
+\]</span></p>
+<p>Here, we’ve made the additional assumtion that the repeated measures are equally spaced in time. The AR(1) model can easily be adapted to repeated-measures data that are not equally spaced. (To do so, let <span class="math inline">\(t(m)\)</span> be the time at which measurement <span class="math inline">\(m\)</span> is made. Then the AR(1) correlation model writes as <span class="math inline">\(\rho_{mn} = \rho^{|t(m)-t(n)|}\)</span>.)</p>
+<p>Correlation structure 3: Unstructured correlation matrix (UN)</p>
+<p>In this model, each correlation parameter is estimated separately. This is the most flexible and parameter-rich correlation structure, although not necessarily the best.</p>
+<!-- Unstructured correlation matrices also estimate the variance of each within-subject error term separately. <= Is this true? -->
+<p>Here is an illustration of how to implement these models in PROC MIXED. We’ll start by assuming a CS correlation structure.</p>
+<pre><code>proc print data=growth;
+run;
+
+Obs    Person    Gender      y     Age
+
+  1       1        F       21.0      8
+  2       1        F       20.0     10
+  3       1        F       21.5     12
+  4       1        F       23.0     14
+  5       2        F       21.0      8
+  6       2        F       21.5     10
+  7       2        F       24.0     12
+  8       2        F       25.5     14
+  9       3        F       20.5      8
+...
+
+proc mixed data=growth;
+  class Person Gender Age;
+  model y=Gender | Age; 
+  repeated / type=cs subject=Person(Gender) rcorr; 
+run;
+
+         Type 3 Tests of Fixed Effects
+
+               Num     Den
+Effect          DF      DF    F Value    Pr &gt; F
+Gender           1      25       9.29    0.0054
+Age              3      75      35.35    &lt;.0001
+Gender*Age       3      75       2.36    0.0781
+
+           Estimated R Correlation Matrix
+               for Person(Gender) 1 F
+
+ Row        Col1        Col2        Col3        Col4
+
+   1      1.0000      0.6245      0.6245      0.6245
+   2      0.6245      1.0000      0.6245      0.6245
+   3      0.6245      0.6245      1.0000      0.6245
+   4      0.6245      0.6245      0.6245      1.0000
+
+
+    Covariance Parameter Estimates
+
+Cov Parm     Subject           Estimate
+CS           Person(Gender)      3.2854
+Residual                         1.9750
+
+           Fit Statistics
+
+-2 Res Log Likelihood           423.4
+AIC (smaller is better)         427.4
+AICC (smaller is better)        427.5
+BIC (smaller is better)         430.0</code></pre>
+<p>Remarks:</p>
+<ol style="list-style-type: decimal">
+<li><p>The REPEATED statement tells PROC MIXED that the data are repeated measures data, and asks SAS to model the correlation among data points shared by the same subject.</p></li>
+<li><p>The SUBJECT = option specifies a unique indicator for each subject. In this data set, the variable PERSON is nested within GENDER.</p></li>
+<li><p>The TYPE = CS option tells SAS to use a compound symmetry correlation structure for the observations from the same subject. Other options include TYPE = AR(1) and TYPE = UN.</p></li>
+<li><p>The RCORR option asks SAS to output the estimated correlation matrix for the first subject in the data set. (Remember that this is the same correlation matrix for all subjects.)</p></li>
+<li><p>In the data set itself, the data must be ordered for each subject. That is, the first measurement (at age 8) must appear as the first data record for each person, the second measurement must appear as the second data record, etc.</p></li>
+</ol>
+<!-- 6.  Note that there is no RANDOM statement for the subject error.  The reason for this is technical and subtle: a RANDOM statement effectively adds another variance term to the diagonal elements of the covariance matrix.  With CS and UN correlation structures, this additional variance term cannot be uniquely estimated, and so the model will not converge.  With an AR(1) covariance structure, the additional variance term can be estimated, and so it is usually a good idea to add it.  Bottom line: do not add a random effect for the subject error with a CS or UN correlation structure, but do add it with an AR(1) correlation structure. -->
+<p>Now let’s try an AR(1) correlation structure. To do so, we’ll modify the TYPE argument in the REPEATED statement.</p>
+<pre><code>proc mixed data=growth;
+  class Person Gender Age;
+  model y = Gender | Age; 
+  repeated / type = ar(1) subject = Person(Gender) rcorr; 
+run;
+
+The Mixed Procedure
+
+           Estimated R Correlation Matrix
+               for Person(Gender) 1 F
+
+ Row        Col1        Col2        Col3        Col4
+
+   1      1.0000      0.6153      0.3786      0.2329
+   2      0.6153      1.0000      0.6153      0.3786
+   3      0.3786      0.6153      1.0000      0.6153
+   4      0.2329      0.3786      0.6153      1.0000
+
+
+       Covariance Parameter Estimates
+
+Cov Parm           Subject           Estimate
+AR(1)              Person(Gender)      0.6153
+Residual                               5.2467
+
+           Fit Statistics
+
+-2 Res Log Likelihood           434.5
+AIC (Smaller is Better)         438.5
+AICC (Smaller is Better)        438.7
+BIC (Smaller is Better)         441.1
+
+         Type 3 Tests of Fixed Effects
+
+               Num     Den
+Effect          DF      DF    F Value    Pr &gt; F
+Gender           1      25      11.07    0.0027
+Age              3      75      15.48    &lt;.0001
+Gender*Age       3      75       1.12    0.3445 </code></pre>
+<p>Finally, here’s the fit with a UN correlation structure.</p>
+<pre><code>proc mixed data=growth;
+  class Person Gender Age;
+  model y=Gender|Age; 
+  repeated / type=un subject=Person(Gender) rcorr; 
+run;
+
+The Mixed Procedure
+
+           Estimated R Correlation Matrix
+               for Person(Gender) 1 F
+
+ Row        Col1        Col2        Col3        Col4
+
+   1      1.0000      0.5707      0.6613      0.5216
+   2      0.5707      1.0000      0.5632      0.7262
+   3      0.6613      0.5632      1.0000      0.7281
+   4      0.5216      0.7262      0.7281      1.0000
+
+
+    Covariance Parameter Estimates
+
+Cov Parm    Subject           Estimate
+
+UN(1,1)     Person(Gender)      5.4155
+UN(2,1)     Person(Gender)      2.7168
+UN(2,2)     Person(Gender)      4.1848
+UN(3,1)     Person(Gender)      3.9102
+UN(3,2)     Person(Gender)      2.9272
+UN(3,3)     Person(Gender)      6.4557
+UN(4,1)     Person(Gender)      2.7102
+UN(4,2)     Person(Gender)      3.3172
+UN(4,3)     Person(Gender)      4.1307
+UN(4,4)     Person(Gender)      4.9857
+
+
+           Fit Statistics
+
+-2 Res Log Likelihood           414.0
+AIC (smaller is better)         434.0
+AICC (smaller is better)        436.5
+BIC (smaller is better)         447.0
+
+
+
+         Type 3 Tests of Fixed Effects
+
+               Num     Den
+Effect          DF      DF    F Value    Pr &gt; F
+Gender           1      25       9.29    0.0054
+Age              3      25      34.45    &lt;.0001
+Gender*Age       3      25       2.93    0.0532</code></pre>
+<p>How does one choose among correlation structures? The usual approach is to arbitrate among correlation structures by using AIC, or it’s small-sample variant AIC<span class="math inline">\(_c\)</span>. (Recall that AIC is Akaike’s Information Criterion, and is a penalized measure of model fit. AICc is a modification of AIC that is more appropriate for small sample sizes.) In PROC MIXED, smaller (i.e., further to the left on the number line) values of AICc are better.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left;">
+Covariance structure
+</th>
+<th style="text-align:left;">
+AICc
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+CS
+</td>
+<td style="text-align:left;">
+427.5
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+AR(1)
+</td>
+<td style="text-align:left;">
+438.7
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+UN
+</td>
+<td style="text-align:left;">
+436.5
+</td>
+</tr>
+</tbody>
+</table>
+<p>Thus, we use the CS correlation structure and base our inference of the fixed gender and age effects based on that Type III analysis. So, here we would conclude that there is marginal evidence of an interaction between age and gender (<span class="math inline">\(F_{3,75} = 2.36\)</span>, <span class="math inline">\(p= 0.078\)</span>). If we disregard the interaction, there is strong evidence of both a main effect of age (<span class="math inline">\(F_{3,75} = 35.35\)</span>, <span class="math inline">\(p&lt;.0001\)</span>) and a main effect of gender (<span class="math inline">\(F_{1,25} = 9.29\)</span>, <span class="math inline">\(p=.0054\)</span>). We could dig deeper and compare LSMEANS for both age and gender, using a Satterthwaite approximation:</p>
+<pre><code>proc mixed data=growth;
+  class Person Gender Age;
+  model y=Gender|Age / ddfm=satterth; 
+  repeated / type=cs subject=Person(Gender) rcorr; 
+  lsmeans Gender / pdiff;
+  lsmeans Age / pdiff adjust=tukey;
+run;
+
+                             Least Squares Means
+
+                                       Standard
+Effect    Gender    Age    Estimate       Error      DF    t Value    Pr &gt; |t|
+Gender    F                 22.6477      0.5861      25      38.64      &lt;.0001
+Gender    M                 24.9687      0.4860      25      51.38      &lt;.0001
+Age                  8      22.0284      0.4492    46.1      49.04      &lt;.0001
+Age                 10      23.0199      0.4492    46.1      51.25      &lt;.0001
+Age                 12      24.4048      0.4492    46.1      54.33      &lt;.0001
+Age                 14      25.7798      0.4492    46.1      57.39      &lt;.0001
+
+
+ 
+                           Differences of Least Squares Means
+
+                                                    Standard
+Effect   Gender   Age   _Gender   _Age   Estimate      Error     DF   t Value   Pr &gt; |t|
+Gender   F              M                 -2.3210     0.7614     25     -3.05     0.0054
+Age                8              10      -0.9915     0.3892     75     -2.55     0.0129
+Age                8              12      -2.3764     0.3892     75     -6.11     &lt;.0001
+Age                8              14      -3.7514     0.3892     75     -9.64     &lt;.0001
+Age               10              12      -1.3849     0.3892     75     -3.56     0.0007
+Age               10              14      -2.7599     0.3892     75     -7.09     &lt;.0001
+Age               12              14      -1.3750     0.3892     75     -3.53     0.0007
+
+              Differences of Least Squares Means
+
+Effect   Gender   Age   _Gender   _Age   Adjustment       Adj P
+Gender   F              M                                 .
+Age                8              10     Tukey-Kramer    0.0608
+Age                8              12     Tukey-Kramer    &lt;.0001
+Age                8              14     Tukey-Kramer    &lt;.0001
+Age               10              12     Tukey-Kramer    0.0036
+Age               10              14     Tukey-Kramer    &lt;.0001
+Age               12              14     Tukey-Kramer    0.0039</code></pre>
+<p>In the example above, age is treated as a categorical variable. It might make sense to treat it instead as a numerical variable, akin to a covariate in ANCOVA, and to look for a linear effect of age on size. The SAS code is identical, except that now we do not declare age as a categorical variable:</p>
+<pre><code>proc mixed data=growth;
+  class Person Gender;
+  model y=Gender|Age / solution; 
+  repeated / type=cs subject=Person(Gender) rcorr; 
+run;
+           Estimated R Correlation Matrix
+               for Person(Gender) 1 F
+
+ Row        Col1        Col2        Col3        Col4
+   1      1.0000      0.6318      0.6318      0.6318
+   2      0.6318      1.0000      0.6318      0.6318
+   3      0.6318      0.6318      1.0000      0.6318
+   4      0.6318      0.6318      0.6318      1.0000
+
+
+
+         Type 3 Tests of Fixed Effects
+
+               Num     Den
+Effect          DF      DF    F Value    Pr &gt; F
+Gender           1      25       0.45    0.5082
+Age              1      79     108.36    &lt;.0001
+Age*Gender       1      79       6.30    0.0141</code></pre>
+<p>If we repeat the competition among correlation structures with age considered as a numerical predictor, the CS correlation structure emerges as the best correlation structure. Note that treating age as a continuous predictor leads us to a different conclusion about the significance of the age-by-gender interaction. Which model should we use?</p>
+<p>Answer: Use AICC again to compete models against one another. WARNING! AIC / AICC values produced by PROC MIXED are not comparable among models with different fixed effects. The reason is again technical and subtle (meaning you don’t need to know it for the sake of ST512, but you should be aware of what’s going on if you ever use this to analyze your own data): There are several methods for estimating parameter values in mixed models. The default method in PROC MIXED is restricted maximum likelihood, or REML. REML estimates are found by separating the fixed-effect and random-effect components of the model and estimating each separately. For this reason, the information provided in the “Fit Statistics” component of the PROC MIXED output can only be used to compare models with the same fixed-effect structure. To compare models with different fixed-effect structures, PROC MIXED must be told to find parameter estimates using maximum likelihood (ML). This is achieved by adding a METHOD = ML option to the initial call to PROC MIXED.</p>
+<p>Re-fit using a CS covariance structure and ML estimation.</p>
+<p>Age as a categorical variable:</p>
+<pre><code>proc mixed method=ml data=growth;
+  class Person Gender Age;
+  model y=Gender|Age; 
+  repeated / type=cs subject=Person(Gender) rcorr; 
+run;
+
+           Fit Statistics
+
+-2 Log Likelihood               426.6
+AIC (smaller is better)         446.6
+AICC (smaller is better)        448.9
+BIC (smaller is better)         459.6
+
+         Type 3 Tests of Fixed Effects
+
+               Num     Den
+Effect          DF      DF    F Value    Pr &gt; F
+Gender           1      25      10.04    0.0040
+Age              3      75      38.18    &lt;.0001
+Gender*Age       3      75       2.55    0.0620</code></pre>
+<p>Age as a continuous variable:</p>
+<pre><code>proc mixed method=ml data=growth;
+  class Person Gender;
+  model y=Gender|Age / solution; 
+  repeated / type=cs subject=Person(Gender) rcorr; 
+run;
+
+
+           Fit Statistics
+
+-2 Log Likelihood               428.6
+AIC (smaller is better)         440.6
+AICC (smaller is better)        441.5
+BIC (smaller is better)         448.4
+
+                        Solution for Fixed Effects
+
+                                    Standard
+Effect        Gender    Estimate       Error      DF    t Value    Pr &gt; |t|
+Intercept                16.3406      0.9631      25      16.97      &lt;.0001
+Gender        F           1.0321      1.5089      25       0.68      0.5003
+Gender        M                0           .       .        .         .
+Age                       0.7844     0.07654      79      10.25      &lt;.0001
+Age*Gender    F          -0.3048      0.1199      79      -2.54      0.0130
+Age*Gender    M                0           .       .        .         .
+
+
+         Type 3 Tests of Fixed Effects
+
+               Num     Den
+Effect          DF      DF    F Value    Pr &gt; F
+Gender           1      25       0.47    0.5003
+Age              1      79     111.10    &lt;.0001
+Age*Gender       1      79       6.46    0.0130</code></pre>
+<p>The model with age as a continuous variable is AIC-best. Thus we conclude that there is a significant age-by-gender interaction (<span class="math inline">\(F_{1,79} = 6.46\)</span>, <span class="math inline">\(p= 0.013\)</span>). In light of the significant interaction, we do not consider the Type III F-tests of the main effects. We can use the table of parameter solutions to determine the best-fitting linear relationships between size and age for boys and girls:</p>
+<pre><code>For girls:  size =  (16.34 + 1.03) + (0.78 - 0.30) * age
+        = 17.37 + 0.48 * age
+For boys: size =  (16.34 + 0) + (0.78 + 0) * age
+        = 16.34 + 0.78 * age
+        </code></pre>
+<hr />
+<p><span style="color: gray;"> It’s a bit unexpected that the CS correlation structure is AICc-best for the dental data. We’ve argued that the AR(1) correlation structure seems to make the most sense based on first principles, so why is it that the CS correlation structure provides a better fit to these data? The answer turns out to have a lot to do with the one subject whose response decreases from age 8 to age 10, increases dramatically from age 10 to age 12, and then decreases again from age 12 to age 14. (This subject is easily spotted in the data display above.) If this subject is removed from the data set, then the AR(1) correlation structure emerges as AIC-best. Without knowing more about the genesis of these data, it’s hard to know what to make of the subject with the unusual data pattern. For the present purposes, it’s probably best to take the data at face value. Doing so leads us to favor the CS model.</span></p>
+<hr />
+<hr />
+<p><span style="color: gray;"> There is an older approach to analyzing repeated-measures data that predates the advent of mixed-models software in the 1990s. You might encounter this approach in the historical literature. This approach is based on the idea that a split-plot analysis of repeated-measures data is valid if the within-subject errors satisfy a technical condition called <em>sphericity</em>. Sphericity loosely means that the variances of the differences between observations from a single whole-plot EU are the same for all possible pairwise differences. For example, in the dental data above, sphericity would require that the variance of the difference between the first and second measurement on each child is the same as (for example) the variance between the first and fourth measurements on each child. In a split-plot experiment, it is commonly assumed that the sphericity assumption holds because the split-plot treatments have been randomly assigned to the split-plots. In a repeated measures design, however, the split-plot treatment (time) is not randomly assigned, and so it is likely that the sphericity assumption will be violated. Usually, this violation occurs because two observations from the same EU that are close together in time are more highly correlated than two observations that are far apart in time. (In a perfect world, we would test for sphericity in both split-plot and repeated measures designs. However, tests for sphericity are highly sensitive to the errors being normally distributed, so we typically assume sphericity with split-plot designs, but not with repeated measures.)</span></p>
+<p><span style="color: gray;"> In the historical approach, the sphericity of a data set (or lack thereof) can be measured by a parameter usually written as <span class="math inline">\(\varepsilon\)</span>. (Note that this <span class="math inline">\(\varepsilon\)</span> has nothing to do with the notation that we typically use for residuals, or the within-subject error). A value of <span class="math inline">\(\varepsilon = 1\)</span> indicates sphericity. The <span class="math inline">\(\varepsilon\)</span> parameter can be estimated in one of two ways: the Greenhouse - Geisser estimate and the Huynh - Feldt estimate. Degrees of freedom for <span class="math inline">\(F\)</span>-tests of within-subject effects can be adjusted by multiplying both the numerator and the denominator df by the estimate of <span class="math inline">\(\varepsilon\)</span>.</span></p>
+<p><span style="color: gray;">Here is an example of this approach using PROC GLM:</p>
+<pre><code>data mvgrowth; 
+    input Person Gender $ y1 y2 y3 y4; 
+    datalines; 
+    1   F   21.0    20.0    21.5    23.0 
+    2   F   21.0    21.5    24.0    25.5
+    3   F   20.5    24.0    24.5    26.0 
+    4   F   23.5    24.5    25.0    26.5 
+    …
+
+proc glm data=mvgrowth;
+  class Gender;
+  model y1-y4 = Gender / nouni;
+  repeated Age 4 (8 10 12 14) polynomial / printe summary;
+run;
+
+                            Sphericity Tests
+
+                                   Mauchly&#39;s
+Variables                    DF    Criterion    Chi-Square    Pr &gt; ChiSq
+Transformed Variates          5    0.7353334     7.2929515        0.1997
+Orthogonal Components         5    0.7353334     7.2929515        0.1997
+
+Tests of Hypotheses for Between Subjects Effects
+
+Source                      DF     Type III SS     Mean Square    F Value    Pr &gt; F
+
+Gender                       1     140.4648569     140.4648569       9.29    0.0054
+Error                       25     377.9147727      15.1165909
+
+Univariate Tests of Hypotheses for Within Subject Effects
+
+                                                                             Adj Pr &gt; F
+Source                    DF   Type III SS   Mean Square  F Value  Pr &gt; F   G - G   H - F
+
+Age                        3   209.4369739    69.8123246    35.35  &lt;.0001  &lt;.0001  &lt;.0001
+Age*Gender                 3    13.9925295     4.6641765     2.36  0.0781  0.0878  0.0781
+Error(Age)                75   148.1278409     1.9750379
+
+
+Greenhouse-Geisser Epsilon    0.8672
+Huynh-Feldt Epsilon           1.0156</code></pre>
+<p></span></p>
+<p><span style="color: gray;">Using either the G-G or H-F adjustment, evidence for an age-by-gender interaction is marginal (p = 0.0878 or p = 0.0781, respectively). There is strong evidence for both a main effect of age, and a main effect of gender.</span></p>
+<p><span style="color: gray;">While this older approach was better than nothing, it had serious drawbacks. Among them, the G-G and H-F corrections are “often inadequate” (Littell et al., SAS for Linear Models), and adjusted univariate and multivariate approaches are restricted to F-tests of overall effects and do not lend themselves to comparisons of specific within-subject treatment means that are often of greater interest. For this reason, we favor a mixed-models approach today.</p>
+<hr />
+
 </div>
 </div>
 <h3>Bibliography<a href="bibliography.html#bibliography" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <div id="refs" class="references csl-bib-body hanging-indent">
+<div id="ref-potthoff1964generalized" class="csl-entry">
+Potthoff, Richard F, and SN Roy. 1964. <span>“A Generalized Multivariate Analysis of Variance Model Useful Especially for Growth Curve Problems.”</span> <em>Biometrika</em> 51 (3-4): 313–26.
+</div>
 <div id="ref-stenstrom40" class="csl-entry">
 Stenstrom, F. H. 1940. <span>“The Growth of Snapdragons, Stocks, Cinerarias, and Carnations on Six Iowa Soils.”</span> Master’s thesis, Iowa State College.
 </div>

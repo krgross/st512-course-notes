@@ -106,3 +106,4 @@ should-a-blocking-factor-be-a-fixed-or-random-effect
 latin-squares-designs
 split-plot-designs
 satterthwaite-approximation
+repeated-measures
