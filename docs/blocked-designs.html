@@ -773,7 +773,7 @@ Analysis and interpretation: There is no evidence of an interaction between cult
 <p>You may have already encountered the Satterthwaite approximation in the context of Welch’s two-sample <span class="math inline">\(t\)</span>-test. (Recall that Welch’s two-sample <span class="math inline">\(t\)</span>-test can be used to compare the means of two samples when the variances of those two samples are not equal. In that context, the standard error of the difference between the means blends two different variance estimates, and thus the Satterthwaite approximation is needed to calculate the associated df. The key feature to both of these calculations is the presence of multiple variance estimates in the calculation of a standard error.)</p>
 <p>There is an alternative to the Satterthwaite approximation called the Kenward-Roger approximation.</p>
 <hr />
-<p><span style="color: gray;"> For classic experimental designs with balanced data and nested random effects (such as the split-plot examples encountered in these notes) the denominator df calculations for <span class="math inline">\(F\)</span>-tests of the experimental treatment effects are incontrovertible. For unbalanced data or more complicated designs, it is not clear that the usual <span class="math inline">\(F\)</span>-statistics calculated to test the fixed effects actually have <span class="math inline">\(F\)</span>-distributions. (That is to say, it is not clear that the sampling distribution of the test statistics actually takes an <span class="math inline">\(F\)</span>-distribution when the experimental treatment has no effect.) Famously, the routine for fitting linear mixed models in <code>R</code> (the <code>lmer</code> routine in the <code>lme4</code> library) does not compute <span class="math inline">\(p\)</span>-values for these statistics, because the author of the routine was not convinced that any method for computing these <span class="math inline">\(p\)</span>-values (including the methods implemented in PROC MIXED) could be justified. While analysis commonly assume that the <span class="math inline">\(p\)</span>-values reported by PROC MIXED are valid, one does so at their own risk.</span></p>
+<p><span style="color: gray;"> For classic experimental designs with balanced data and nested random effects (such as the split-plot examples encountered in these notes) the denominator df calculations for <span class="math inline">\(F\)</span>-tests of the experimental treatment effects are incontrovertible. For unbalanced data or more complicated designs, it is not clear that the usual <span class="math inline">\(F\)</span>-statistics calculated to test the fixed effects actually have <span class="math inline">\(F\)</span>-distributions. (That is to say, it is not clear that the sampling distribution of the test statistics actually takes an <span class="math inline">\(F\)</span>-distribution when the experimental treatment has no effect.) Famously, the routine for fitting linear mixed models in <code>R</code> (the <code>lmer</code> routine in the <code>lme4</code> library) does not compute <span class="math inline">\(p\)</span>-values for these statistics, because the author of the routine was not convinced that any method for computing these <span class="math inline">\(p\)</span>-values (including the methods implemented in PROC MIXED) could be justified. While analysts commonly assume that the <span class="math inline">\(p\)</span>-values reported by PROC MIXED are valid, one does so at their own risk.</span></p>
 <hr />
 </div>
 </div>
@@ -1177,6 +1177,13 @@ Age              1      79     108.36    &lt;.0001
 Age*Gender       1      79       6.30    0.0141</code></pre>
 <p>If we repeat the competition among correlation structures with age considered as a numerical predictor, the CS correlation structure emerges as the best correlation structure. Note that treating age as a continuous predictor leads us to a different conclusion about the significance of the age-by-gender interaction. Which model should we use?</p>
 <p>Answer: Use AICC again to compete models against one another. WARNING! AIC / AICC values produced by PROC MIXED are not comparable among models with different fixed effects. The reason is again technical and subtle (meaning you don’t need to know it for the sake of ST512, but you should be aware of what’s going on if you ever use this to analyze your own data): There are several methods for estimating parameter values in mixed models. The default method in PROC MIXED is restricted maximum likelihood, or REML. REML estimates are found by separating the fixed-effect and random-effect components of the model and estimating each separately. For this reason, the information provided in the “Fit Statistics” component of the PROC MIXED output can only be used to compare models with the same fixed-effect structure. To compare models with different fixed-effect structures, PROC MIXED must be told to find parameter estimates using maximum likelihood (ML). This is achieved by adding a METHOD = ML option to the initial call to PROC MIXED.</p>
+<hr />
+<p><span style="color: gray;"> It’s helpful at this point to know a bit more about the distinction between REML and ML estimation. Maximum likelihood (ML) estimation is a general scheme for drawing inferences in parameterized models. An appealing feature of ML estimation is that the bias of a ML estimate (MLE) is guaranteed to shrink to zero as the data set becomes arbitrarily large. (While this may seem like a weak result, it reassures us that our estimates are going to tend to get better as we collect more data. Certainly we’d be concerned if this were not true!) However, MLEs can be, and often are, biased for small data sets. This is especially true with respect to estimating the variance of a Gaussian distribution. For example, in simple regression, the MLE of the residual variance is
+<span class="math inline">\(\hat{\sigma}^2_{\varepsilon} = \dfrac{SSE}{n} = \dfrac{n-2}{n}\dfrac{SSE}{n-2} = \dfrac{n-2}{n}s^2_{\varepsilon}\)</span>.</span></p>
+<p><span style="color: gray;">We favor our usual estimate of the residual variance (<span class="math inline">\(s^2_\varepsilon=SSE/(n-2)\)</span>) because it is unbiased. If <span class="math inline">\(s^2_\varepsilon\)</span> is unbiased (it is the “right size”, on average), then the MLE is too small, although the amount by which the MLE is too small itself gets small as <span class="math inline">\(n\)</span> gets large. This is the basic problem: ML underestimates the variance of a Gaussian distribution. Underestimating the error variance is bad, because our estimates of the error variance feed into all of our other inference procedures. Thus, if we use the ML estimates of the variance, then our confidence intervals and <span class="math inline">\(p\)</span>-values imply more precision in our estimates of the experimental effects than the data warrant.</span></p>
+<p><span style="color: gray;">Restricted maximum likelihood, or REML, is a modification of ML that provides appropriate estimates of the variance. Indeed, our estimate of the residual variance in SLR — <span class="math inline">\(s^2_\varepsilon=SSE/(n-2)\)</span> — is exactly the REML estimate of the residual variance, we just didn’t identify it as such when we first encountered it. REML acts by “restricting” the data and then applying ML to these restricted data. However, in a mixed model, the “restriction” that REML uses differs depending on the fixed-effects component of the model. This is why we can’t compare mixed models with different fixed-effects components using AIC. Remember that AIC values can only be compared among models fit to the same data. Suppose we use REML to fit several mixed models with different fixed-effects components to the same original data. Because the models have different fixed-effects components, they each restrict the original data in different ways, and hence the competing models are fit to different restricted data sets. Thus the AIC values for the fits can’t be compared.</span></p>
+<!-- I'm not entirely sure the above description is accurate.  Check. -->
+<hr />
 <p>Re-fit using a CS covariance structure and ML estimation.</p>
 <p>Age as a categorical variable:</p>
 <pre><code>proc mixed method=ml data=growth;
@@ -1240,57 +1247,48 @@ For boys: size =  (16.34 + 0) + (0.78 + 0) * age
         = 16.34 + 0.78 * age
         </code></pre>
 <hr />
-<p><span style="color: gray;"> It’s a bit unexpected that the CS correlation structure is AICc-best for the dental data. We’ve argued that the AR(1) correlation structure seems to make the most sense based on first principles, so why is it that the CS correlation structure provides a better fit to these data? The answer turns out to have a lot to do with the one subject whose response decreases from age 8 to age 10, increases dramatically from age 10 to age 12, and then decreases again from age 12 to age 14. (This subject is easily spotted in the data display above.) If this subject is removed from the data set, then the AR(1) correlation structure emerges as AIC-best. Without knowing more about the genesis of these data, it’s hard to know what to make of the subject with the unusual data pattern. For the present purposes, it’s probably best to take the data at face value. Doing so leads us to favor the CS model.</span></p>
+<p><span style="color: gray;"> It’s surprising that the CS correlation structure is AICc-best for the dental data. We’ve argued that the AR(1) correlation structure seems to make the most sense based on first principles, so why is it that the CS correlation structure provides a better fit to these data? The answer turns out to have a lot to do with the one subject whose response decreases from age 8 to age 10, increases dramatically from age 10 to age 12, and then decreases again from age 12 to age 14. (This subject is easily spotted in the data display above.) If this subject is removed from the data set, then the AR(1) correlation structure emerges as AIC-best. Without knowing more about these data, it’s hard to know what to make of the subject with the unusual data pattern. For the present purposes, we’ll take the data at face value. Doing so leads us to favor the CS model.</span></p>
 <hr />
-<hr />
-<p><span style="color: gray;"> There is an older approach to analyzing repeated-measures data that predates the advent of mixed-models software in the 1990s. You might encounter this approach in the historical literature. This approach is based on the idea that a split-plot analysis of repeated-measures data is valid if the within-subject errors satisfy a technical condition called <em>sphericity</em>. Sphericity loosely means that the variances of the differences between observations from a single whole-plot EU are the same for all possible pairwise differences. For example, in the dental data above, sphericity would require that the variance of the difference between the first and second measurement on each child is the same as (for example) the variance between the first and fourth measurements on each child. In a split-plot experiment, it is commonly assumed that the sphericity assumption holds because the split-plot treatments have been randomly assigned to the split-plots. In a repeated measures design, however, the split-plot treatment (time) is not randomly assigned, and so it is likely that the sphericity assumption will be violated. Usually, this violation occurs because two observations from the same EU that are close together in time are more highly correlated than two observations that are far apart in time. (In a perfect world, we would test for sphericity in both split-plot and repeated measures designs. However, tests for sphericity are highly sensitive to the errors being normally distributed, so we typically assume sphericity with split-plot designs, but not with repeated measures.)</span></p>
-<p><span style="color: gray;"> In the historical approach, the sphericity of a data set (or lack thereof) can be measured by a parameter usually written as <span class="math inline">\(\varepsilon\)</span>. (Note that this <span class="math inline">\(\varepsilon\)</span> has nothing to do with the notation that we typically use for residuals, or the within-subject error). A value of <span class="math inline">\(\varepsilon = 1\)</span> indicates sphericity. The <span class="math inline">\(\varepsilon\)</span> parameter can be estimated in one of two ways: the Greenhouse - Geisser estimate and the Huynh - Feldt estimate. Degrees of freedom for <span class="math inline">\(F\)</span>-tests of within-subject effects can be adjusted by multiplying both the numerator and the denominator df by the estimate of <span class="math inline">\(\varepsilon\)</span>.</span></p>
-<p><span style="color: gray;">Here is an example of this approach using PROC GLM:</p>
-<pre><code>data mvgrowth; 
-    input Person Gender $ y1 y2 y3 y4; 
-    datalines; 
-    1   F   21.0    20.0    21.5    23.0 
-    2   F   21.0    21.5    24.0    25.5
-    3   F   20.5    24.0    24.5    26.0 
-    4   F   23.5    24.5    25.0    26.5 
-    …
-
-proc glm data=mvgrowth;
-  class Gender;
-  model y1-y4 = Gender / nouni;
-  repeated Age 4 (8 10 12 14) polynomial / printe summary;
-run;
-
-                            Sphericity Tests
-
-                                   Mauchly&#39;s
-Variables                    DF    Criterion    Chi-Square    Pr &gt; ChiSq
-Transformed Variates          5    0.7353334     7.2929515        0.1997
-Orthogonal Components         5    0.7353334     7.2929515        0.1997
-
-Tests of Hypotheses for Between Subjects Effects
-
-Source                      DF     Type III SS     Mean Square    F Value    Pr &gt; F
-
-Gender                       1     140.4648569     140.4648569       9.29    0.0054
-Error                       25     377.9147727      15.1165909
-
-Univariate Tests of Hypotheses for Within Subject Effects
-
-                                                                             Adj Pr &gt; F
-Source                    DF   Type III SS   Mean Square  F Value  Pr &gt; F   G - G   H - F
-
-Age                        3   209.4369739    69.8123246    35.35  &lt;.0001  &lt;.0001  &lt;.0001
-Age*Gender                 3    13.9925295     4.6641765     2.36  0.0781  0.0878  0.0781
-Error(Age)                75   148.1278409     1.9750379
-
-
-Greenhouse-Geisser Epsilon    0.8672
-Huynh-Feldt Epsilon           1.0156</code></pre>
-<p></span></p>
-<p><span style="color: gray;">Using either the G-G or H-F adjustment, evidence for an age-by-gender interaction is marginal (p = 0.0878 or p = 0.0781, respectively). There is strong evidence for both a main effect of age, and a main effect of gender.</span></p>
-<p><span style="color: gray;">While this older approach was better than nothing, it had serious drawbacks. Among them, the G-G and H-F corrections are “often inadequate” (Littell et al., SAS for Linear Models), and adjusted univariate and multivariate approaches are restricted to <span class="math inline">\(F\)</span>-tests of overall effects and do not lend themselves to comparisons of specific within-subject treatment means that are often of greater interest. For this reason, we favor a mixed-models approach today.</p>
-<hr />
+<!-- --- -->
+<!-- <span style="color: gray;"> There is an older approach to analyzing repeated-measures data that predates the advent of mixed-models software in the 1990s. You might encounter this approach in the historical literature.  This approach is based on the idea that a split-plot analysis of repeated-measures data is valid if the within-subject errors satisfy a technical condition called *sphericity*.  Sphericity loosely means that the variances of the differences between observations from a single whole-plot EU are the same for all possible pairwise differences.  For example, in the dental data above, sphericity would require that the variance of the difference between the first and second measurement on each child is the same as (for example) the variance between the first and fourth measurements on each child.  In a split-plot experiment, it is commonly assumed that the sphericity assumption holds because the split-plot treatments have been randomly assigned to the split-plots.  In a repeated measures design, however, the split-plot treatment (time) is not randomly assigned, and so it is likely that the sphericity assumption will be violated.  Usually, this violation occurs because two observations from the same EU that are close together in time are more highly correlated than two observations that are far apart in time.  (In a perfect world, we would test for sphericity in both split-plot and repeated measures designs.  However, tests for sphericity are highly sensitive to the errors being normally distributed, so we typically assume sphericity with split-plot designs, but not with repeated measures.)</span> -->
+<!-- <span style="color: gray;"> In the historical approach, the sphericity of a data set (or lack thereof) can be measured by a parameter usually written as $\varepsilon$.  (Note that this $\varepsilon$ has nothing to do with the notation that we typically use for residuals, or the within-subject error).  A value of $\varepsilon = 1$ indicates sphericity.  The $\varepsilon$ parameter can be estimated in one of two ways: the Greenhouse - Geisser estimate and the Huynh - Feldt estimate.  Degrees of freedom for $F$-tests of within-subject effects can be adjusted by multiplying both the numerator and the denominator df by the estimate of $\varepsilon$.</span> -->
+<!-- <span style="color: gray;">Here is an example of this approach using PROC GLM: -->
+<!-- ```{} -->
+<!-- data mvgrowth;  -->
+<!--     input Person Gender $ y1 y2 y3 y4;  -->
+<!--     datalines;  -->
+<!--     1   F   21.0    20.0    21.5    23.0  -->
+<!--     2   F   21.0    21.5    24.0    25.5 -->
+<!--     3   F   20.5    24.0    24.5    26.0  -->
+<!--     4   F   23.5    24.5    25.0    26.5  -->
+<!--    … -->
+<!-- proc glm data=mvgrowth; -->
+<!--   class Gender; -->
+<!--   model y1-y4 = Gender / nouni; -->
+<!--   repeated Age 4 (8 10 12 14) polynomial / printe summary; -->
+<!-- run; -->
+<!--                             Sphericity Tests -->
+<!--                                    Mauchly's -->
+<!-- Variables                    DF    Criterion    Chi-Square    Pr > ChiSq -->
+<!-- Transformed Variates          5    0.7353334     7.2929515        0.1997 -->
+<!-- Orthogonal Components         5    0.7353334     7.2929515        0.1997 -->
+<!-- Tests of Hypotheses for Between Subjects Effects -->
+<!-- Source                      DF     Type III SS     Mean Square    F Value    Pr > F -->
+<!-- Gender                       1     140.4648569     140.4648569       9.29    0.0054 -->
+<!-- Error                       25     377.9147727      15.1165909 -->
+<!-- Univariate Tests of Hypotheses for Within Subject Effects -->
+<!--                                                                              Adj Pr > F -->
+<!-- Source                    DF   Type III SS   Mean Square  F Value  Pr > F   G - G   H - F -->
+<!-- Age                        3   209.4369739    69.8123246    35.35  <.0001  <.0001  <.0001 -->
+<!-- Age*Gender                 3    13.9925295     4.6641765     2.36  0.0781  0.0878  0.0781 -->
+<!-- Error(Age)                75   148.1278409     1.9750379 -->
+<!-- Greenhouse-Geisser Epsilon    0.8672 -->
+<!-- Huynh-Feldt Epsilon           1.0156 -->
+<!-- ``` -->
+<!-- </span> -->
+<!-- <span style="color: gray;">Using either the G-G or H-F adjustment, evidence for an age-by-gender interaction is marginal (p = 0.0878 or p = 0.0781, respectively).  There is strong evidence for both a main effect of age, and a main effect of gender.</span> -->
+<!-- <span style="color: gray;">While this older approach was better than nothing, it had serious drawbacks.  Among them, the G-G and H-F corrections are “often inadequate” (Littell et al., SAS for Linear Models), and adjusted univariate and multivariate approaches are restricted to $F$-tests of overall effects and do not lend themselves to comparisons of specific within-subject treatment means that are often of greater interest. For this reason, we favor a mixed-models approach today. -->
+<!-- --- -->
 
 </div>
 </div>
