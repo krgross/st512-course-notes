@@ -105,5 +105,5 @@ randomized-complete-block-designs
 should-a-blocking-factor-be-a-fixed-or-random-effect
 latin-squares-designs
 split-plot-designs
-satterthwaite-approximation
+denominator-degrees-of-freedom-in-split-plot-designs-and-the-satterthwaite-approximation
 repeated-measures
