@@ -182,7 +182,7 @@ summary(fm1)
 ## Residual standard error: 10.93 on 10 degrees of freedom
 ## 
 ## Number of iterations to convergence: 6 
-## Achieved convergence tolerance: 6.085e-06
+## Achieved convergence tolerance: 6.093e-06
 ```
 
 In the call to `nls`, the first argument is a formula where we specify the non-linear model that we wish to fit.  In this data set, "velocity" is the response and "conc" is the predictor.  The last argument to `nls` is a list of starting values.  The list contains one starting value for each parameter in the model.   (In R, "lists" are like vectors, except that lists can contain things other than numbers.)
@@ -422,7 +422,7 @@ library(mgcv)
 ```
 
 ```
-## This is mgcv 1.8-41. For overview type 'help("mgcv-package")'.
+## This is mgcv 1.8-42. For overview type 'help("mgcv-package")'.
 ```
 
 ```r

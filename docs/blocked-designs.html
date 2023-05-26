@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>Chapter 9 Blocked designs | ST 512 course notes</title>
   <meta name="description" content="Course notes for ST 512, Statistical Methods for Researchers II." />
-  <meta name="generator" content="bookdown 0.30 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.34 and GitBook 2.6.7" />
 
   <meta property="og:title" content="Chapter 9 Blocked designs | ST 512 course notes" />
   <meta property="og:type" content="book" />
@@ -23,7 +23,7 @@
 <meta name="author" content="Kevin Gross" />
 
 
-<meta name="date" content="2023-04-06" />
+<meta name="date" content="2023-05-26" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -119,6 +119,10 @@ code span.vs { color: #4070a0; } /* VerbatimString */
 code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
 </style>
 
+<style type="text/css">
+  
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+</style>
 <style type="text/css">
 /* Used with Pandoc 2.11+ new --citeproc when CSL is used */
 div.csl-bib-body { }
@@ -421,7 +425,7 @@ mean of x
 </ul>
 <p>Here is an example of a standard RCBD with one experimental factor, described in the SAS documentation for PROC GLM: <span class="citation">Stenstrom (<a href="#ref-stenstrom40" role="doc-biblioref">1940</a>)</span> investigated how <span class="math inline">\(p = 7\)</span> soil types affect the growth of snapdragons. Snapdragons were grown in 2.5-by-4 foot containers arranged along a greenhouse bench. To control for variation in light and temperature along the long axis of the bench, containers were blocked into three groups of seven based on their location on the bench. Average stem length of the snapdragons in each EU was recorded.</p>
 <p>Here is a diagram and a photo from Stenstrom’s MS thesis (<span class="citation">Stenstrom (<a href="#ref-stenstrom40" role="doc-biblioref">1940</a>)</span>) that illustrates the design:
-<img src="images/stenstrom-schematic.PNG" style="display: block; margin: auto;" /><img src="images/stenstrom-photo.PNG" style="display: block; margin: auto;" /></p>
+<img src="images/stenstrom-schematic.png" style="display: block; margin: auto;" /><img src="images/stenstrom-photo.png" style="display: block; margin: auto;" /></p>
 <p>The data are:</p>
 <pre><code>                Block
 Type        A    B    C

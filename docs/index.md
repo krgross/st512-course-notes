@@ -1,7 +1,7 @@
 --- 
 title: "ST 512 course notes"
 author: "Kevin Gross"
-date: "2023-04-06"
+date: "2023-05-26"
 output:
   bookdown::gitbook:
     config:
@@ -59,6 +59,8 @@ See section 5.1 of Yihui Xie's bookdown book
 # Preface {-}
 
 The primary purpose of this document is to serve as a set of course notes for ST 512, Statistical Methods for Researchers II, taught at North Carolina State University.  ST 512 is the second semester of a traditional two-semester graduate-level sequence in statistical methods.  I eventually hope to convert these notes into an on-line text, but this is an ongoing process.  In the meanwhile, these notes are available for use by anyone associated with NCSU.
+
+This paragraph is a test.  It should be removed shortly.
 
 ### Philosophy {-}
 

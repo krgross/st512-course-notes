@@ -44,10 +44,6 @@ summary(fm1)
 ## glm(formula = matings ~ age, family = poisson(link = "log"), 
 ##     data = elephant)
 ## 
-## Deviance Residuals: 
-##      Min        1Q    Median        3Q       Max  
-## -2.80798  -0.86137  -0.08629   0.60087   2.17777  
-## 
 ## Coefficients:
 ##             Estimate Std. Error z value Pr(>|z|)    
 ## (Intercept) -1.58201    0.54462  -2.905  0.00368 ** 
@@ -109,10 +105,6 @@ summary(fm2)
 ## Call:
 ## glm(formula = matings ~ age, family = poisson(link = "identity"), 
 ##     data = elephant)
-## 
-## Deviance Residuals: 
-##      Min        1Q    Median        3Q       Max  
-## -2.87228  -0.97171  -0.09509   0.57794   2.07192  
 ## 
 ## Coefficients:
 ##             Estimate Std. Error z value Pr(>|z|)    
@@ -182,10 +174,6 @@ summary(fm3)
 ## glm(formula = matings ~ age, family = quasipoisson(link = "identity"), 
 ##     data = elephant)
 ## 
-## Deviance Residuals: 
-##      Min        1Q    Median        3Q       Max  
-## -2.87228  -0.97171  -0.09509   0.57794   2.07192  
-## 
 ## Coefficients:
 ##             Estimate Std. Error t value Pr(>|t|)    
 ## (Intercept) -4.55205    1.42164  -3.202  0.00272 ** 
@@ -243,10 +231,6 @@ summary(fm4)
 ## Call:
 ## glm.nb(formula = matings ~ age, data = elephant, link = identity, 
 ##     init.theta = 15.80269167)
-## 
-## Deviance Residuals: 
-##      Min        1Q    Median        3Q       Max  
-## -2.70899  -0.92077  -0.08966   0.54500   1.78248  
 ## 
 ## Coefficients:
 ##             Estimate Std. Error z value Pr(>|z|)    
@@ -336,10 +320,6 @@ summary(fm1)
 ## Call:
 ## glm(formula = tb ~ length, family = binomial(link = "logit"), 
 ##     data = boar)
-## 
-## Deviance Residuals: 
-##     Min       1Q   Median       3Q      Max  
-## -1.6327  -1.1157  -0.6829   1.1263   2.0011  
 ## 
 ## Coefficients:
 ##              Estimate Std. Error z value Pr(>|z|)    
@@ -452,10 +432,6 @@ summary(fm2)
 ## glm(formula = tb ~ length + sex * as.factor(age), family = binomial, 
 ##     data = boar)
 ## 
-## Deviance Residuals: 
-##    Min      1Q  Median      3Q     Max  
-## -1.603  -1.108  -0.669   1.123   1.844  
-## 
 ## Coefficients:
 ##                       Estimate Std. Error z value Pr(>|z|)
 ## (Intercept)          -16.55356  724.50177  -0.023    0.982
@@ -463,7 +439,7 @@ summary(fm2)
 ## sex2                  14.19739  724.50190   0.020    0.984
 ## as.factor(age)2       13.83446  724.50169   0.019    0.985
 ## as.factor(age)3       14.31136  724.50191   0.020    0.984
-## as.factor(age)4       14.68141  724.50218   0.020    0.984
+## as.factor(age)4       14.68141  724.50219   0.020    0.984
 ## sex2:as.factor(age)2 -14.53254  724.50204  -0.020    0.984
 ## sex2:as.factor(age)3 -14.36861  724.50196  -0.020    0.984
 ## sex2:as.factor(age)4 -14.53354  724.50196  -0.020    0.984
@@ -515,10 +491,6 @@ summary(fm3)
 ## glm(formula = tb ~ length + sex + as.factor(age), family = binomial, 
 ##     data = boar)
 ## 
-## Deviance Residuals: 
-##     Min       1Q   Median       3Q      Max  
-## -1.5889  -1.1114  -0.6614   1.1112   1.8837  
-## 
 ## Coefficients:
 ##                 Estimate Std. Error z value Pr(>|z|)  
 ## (Intercept)     -2.67730    1.07306  -2.495   0.0126 *
@@ -561,10 +533,6 @@ summary(fm1)
 ## glm(formula = cbind(removed, placed - removed) ~ morph * distance, 
 ##     family = binomial(link = "logit"), data = moth)
 ## 
-## Deviance Residuals: 
-##      Min        1Q    Median        3Q       Max  
-## -2.21183  -0.39883   0.01155   0.68292   1.31242  
-## 
 ## Coefficients:
 ##                      Estimate Std. Error z value Pr(>|z|)    
 ## (Intercept)         -1.128987   0.197906  -5.705 1.17e-08 ***
@@ -599,10 +567,6 @@ summary(fm1q)
 ## Call:
 ## glm(formula = cbind(removed, placed - removed) ~ morph * distance, 
 ##     family = quasibinomial(link = "logit"), data = moth)
-## 
-## Deviance Residuals: 
-##      Min        1Q    Median        3Q       Max  
-## -2.21183  -0.39883   0.01155   0.68292   1.31242  
 ## 
 ## Coefficients:
 ##                      Estimate Std. Error t value Pr(>|t|)    
