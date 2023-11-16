@@ -23,7 +23,7 @@
 <meta name="author" content="Kevin Gross" />
 
 
-<meta name="date" content="2023-05-26" />
+<meta name="date" content="2023-11-15" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -788,9 +788,9 @@ Analysis and interpretation: There is no evidence of an interaction between cult
 <h3><span class="header-section-number">9.3.1</span> Denominator degrees of freedom in split-plot designs and the Satterthwaite approximation<a href="blocked-designs.html#denominator-degrees-of-freedom-in-split-plot-designs-and-the-satterthwaite-approximation" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>Standard errors of the LSMEANS for the split-plot factor (here, inoculation treatment) are functions of both the whole-plot error and the split-plot error. Consequently, the df associated with these standard errors are intermediate between the df available for the whole-plot error (here, 6) and the df available for the split-plot error (12). The Satterthwaite approximation is a computationally intensive method for approximating the appropriate df. (It’s computationally intensive because it entails inverting a big matrix.) With big models or small computers, calculating the Satterthwaite approximation may not be feasible. See section 11.4 of Oehlert for a more detailed discussion of the Satterthwaite approximation.</p>
 <p>You may have already encountered the Satterthwaite approximation in the context of Welch’s two-sample <span class="math inline">\(t\)</span>-test. (Recall that Welch’s two-sample <span class="math inline">\(t\)</span>-test can be used to compare the means of two samples when the variances of those two samples are not equal. In that context, the standard error of the difference between the means blends two different variance estimates, and thus the Satterthwaite approximation is needed to calculate the associated df. The key feature to both of these calculations is the presence of multiple variance estimates in the calculation of a standard error.)</p>
-<p>There is an alternative to the Satterthwaite approximation called the Kenward-Roger approximation.</p>
+<p>The Kenward-Roger approximation is an (even more computationally intensive) alternative to the Satterthwaite approximation (<span class="citation">Kenward and Roger (<a href="#ref-kenward1997small" role="doc-biblioref">1997</a>)</span>), and can be implemented in PROC MIXED by using the DDFM=KENWARDROGER option. To my knowledge, the guidance in the literature is fairly sparse regarding when these (or other) methods for approximating the denominator df perform best, though see <span class="citation">Schaalje, McBride, and Fellingham (<a href="#ref-schaalje2002adequacy" role="doc-biblioref">2002</a>)</span> for at least one study that seems to suggest the Kenward-Roger approximation is preferable when the computation time is not prohibitive.</p>
 <hr />
-<p><span style="color: gray;"> For classic experimental designs with balanced data and nested random effects (such as the split-plot examples encountered in these notes) the denominator df calculations for <span class="math inline">\(F\)</span>-tests of the experimental treatment effects are incontrovertible. For unbalanced data or more complicated designs, it is not clear that the usual <span class="math inline">\(F\)</span>-statistics calculated to test the fixed effects actually have <span class="math inline">\(F\)</span>-distributions. (That is to say, it is not clear that the sampling distribution of the test statistics actually takes an <span class="math inline">\(F\)</span>-distribution when the experimental treatment has no effect.) Famously, the routine for fitting linear mixed models in <code>R</code> (the <code>lmer</code> routine in the <code>lme4</code> library) does not compute <span class="math inline">\(p\)</span>-values for these statistics, because the author of the routine was not convinced that any method for computing these <span class="math inline">\(p\)</span>-values (including the methods implemented in PROC MIXED) could be justified. While analysts commonly assume that the <span class="math inline">\(p\)</span>-values reported by PROC MIXED are valid, one does so at their own risk.</span></p>
+<p><span style="color: gray;"> For classic experimental designs with balanced data and nested random effects (such as the split-plot examples encountered in these notes) the denominator df calculations for <span class="math inline">\(F\)</span>-tests of the experimental treatment effects are incontrovertible. For unbalanced data or more complicated designs, it is not clear that the usual <span class="math inline">\(F\)</span>-statistics calculated to test the fixed effects actually have <span class="math inline">\(F\)</span>-distributions. (That is to say, it is not clear that the sampling distribution of the test statistics actually takes an <span class="math inline">\(F\)</span>-distribution when the experimental treatment has no effect.) Famously, the routine for fitting linear mixed models in <code>R</code> (the <code>lmer</code> routine in the <code>lme4</code> library) does not compute <span class="math inline">\(p\)</span>-values for these statistics, because the author of the routine was not convinced that any method for computing these <span class="math inline">\(p\)</span>-values (including the methods implemented in PROC MIXED) could be justified. While analysts commonly assume that the <span class="math inline">\(p\)</span>-values reported by PROC MIXED are valid, one does so at their own risk for models with complicated arrangements of random effects.</span></p>
 <hr />
 </div>
 </div>
@@ -1311,8 +1311,14 @@ For boys: size =  (16.34 + 0) + (0.78 + 0) * age
 </div>
 <h3>Bibliography<a href="bibliography.html#bibliography" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <div id="refs" class="references csl-bib-body hanging-indent">
+<div id="ref-kenward1997small" class="csl-entry">
+Kenward, Michael G, and James H Roger. 1997. <span>“Small Sample Inference for Fixed Effects from Restricted Maximum Likelihood.”</span> <em>Biometrics</em>, 983–97.
+</div>
 <div id="ref-potthoff1964generalized" class="csl-entry">
 Potthoff, Richard F, and SN Roy. 1964. <span>“A Generalized Multivariate Analysis of Variance Model Useful Especially for Growth Curve Problems.”</span> <em>Biometrika</em> 51 (3-4): 313–26.
+</div>
+<div id="ref-schaalje2002adequacy" class="csl-entry">
+Schaalje, G Bruce, Justin B McBride, and Gilbert W Fellingham. 2002. <span>“Adequacy of Approximations to Distributions of Test Statistics in Complex Mixed Linear Models.”</span> <em>Journal of Agricultural, Biological, and Environmental Statistics</em> 7: 512–24.
 </div>
 <div id="ref-stenstrom40" class="csl-entry">
 Stenstrom, F. H. 1940. <span>“The Growth of Snapdragons, Stocks, Cinerarias, and Carnations on Six Iowa Soils.”</span> Master’s thesis, Iowa State College.
