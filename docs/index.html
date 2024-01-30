@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>ST 512 course notes</title>
   <meta name="description" content="Course notes for ST 512, Statistical Methods for Researchers II." />
-  <meta name="generator" content="bookdown 0.34 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.36 and GitBook 2.6.7" />
 
   <meta property="og:title" content="ST 512 course notes" />
   <meta property="og:type" content="book" />
@@ -23,7 +23,7 @@
 <meta name="author" content="Kevin Gross" />
 
 
-<meta name="date" content="2023-11-15" />
+<meta name="date" content="2024-01-30" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -180,13 +180,13 @@ div.csl-indent {
 <li class="chapter" data-level="1.3.4" data-path="simple-linear-regression.html"><a href="simple-linear-regression.html#inference-for-the-intercept"><i class="fa fa-check"></i><b>1.3.4</b> Inference for the intercept</a></li>
 </ul></li>
 <li class="chapter" data-level="1.4" data-path="simple-linear-regression.html"><a href="simple-linear-regression.html#sums-of-squares-decomposition-and-r2"><i class="fa fa-check"></i><b>1.4</b> Sums of squares decomposition and <span class="math inline">\(R^2\)</span></a></li>
-<li class="chapter" data-level="1.5" data-path="simple-linear-regression.html"><a href="simple-linear-regression.html#fitting-the-slr-model-in-r"><i class="fa fa-check"></i><b>1.5</b> Fitting the SLR model in R</a></li>
-<li class="chapter" data-level="1.6" data-path="simple-linear-regression.html"><a href="simple-linear-regression.html#diagnostic-plots"><i class="fa fa-check"></i><b>1.6</b> Diagnostic plots</a></li>
-<li class="chapter" data-level="1.7" data-path="simple-linear-regression.html"><a href="simple-linear-regression.html#consequences-of-violating-model-assumptions-and-possible-fixes"><i class="fa fa-check"></i><b>1.7</b> Consequences of violating model assumptions, and possible fixes</a></li>
-<li class="chapter" data-level="1.8" data-path="simple-linear-regression.html"><a href="simple-linear-regression.html#prediction-with-regression-models"><i class="fa fa-check"></i><b>1.8</b> Prediction with regression models</a></li>
-<li class="chapter" data-level="1.9" data-path="simple-linear-regression.html"><a href="simple-linear-regression.html#regression-design"><i class="fa fa-check"></i><b>1.9</b> Regression design</a></li>
-<li class="chapter" data-level="1.10" data-path="simple-linear-regression.html"><a href="simple-linear-regression.html#centering-the-predictor"><i class="fa fa-check"></i><b>1.10</b> <span class="math inline">\(^\star\)</span>Centering the predictor</a></li>
-<li class="chapter" data-level="" data-path="simple-linear-regression.html"><a href="simple-linear-regression.html#appendix-regression-models-in-sas-proc-reg"><i class="fa fa-check"></i>Appendix: Regression models in SAS PROC REG</a></li>
+<li class="chapter" data-level="1.5" data-path="simple-linear-regression.html"><a href="simple-linear-regression.html#diagnostic-plots"><i class="fa fa-check"></i><b>1.5</b> Diagnostic plots</a></li>
+<li class="chapter" data-level="1.6" data-path="simple-linear-regression.html"><a href="simple-linear-regression.html#consequences-of-violating-model-assumptions-and-possible-fixes"><i class="fa fa-check"></i><b>1.6</b> Consequences of violating model assumptions, and possible fixes</a></li>
+<li class="chapter" data-level="1.7" data-path="simple-linear-regression.html"><a href="simple-linear-regression.html#prediction-with-regression-models"><i class="fa fa-check"></i><b>1.7</b> Prediction with regression models</a></li>
+<li class="chapter" data-level="1.8" data-path="simple-linear-regression.html"><a href="simple-linear-regression.html#regression-design"><i class="fa fa-check"></i><b>1.8</b> Regression design</a></li>
+<li class="chapter" data-level="1.9" data-path="simple-linear-regression.html"><a href="simple-linear-regression.html#centering-the-predictor"><i class="fa fa-check"></i><b>1.9</b> <span class="math inline">\(^\star\)</span>Centering the predictor</a></li>
+<li class="chapter" data-level="" data-path="simple-linear-regression.html"><a href="simple-linear-regression.html#appendix-a-fitting-the-slr-model-in-r"><i class="fa fa-check"></i>Appendix A: Fitting the SLR model in R</a></li>
+<li class="chapter" data-level="" data-path="simple-linear-regression.html"><a href="simple-linear-regression.html#appendix-b-regression-models-in-sas-proc-reg"><i class="fa fa-check"></i>Appendix B: Regression models in SAS PROC REG</a></li>
 </ul></li>
 <li class="chapter" data-level="2" data-path="multiple-regression.html"><a href="multiple-regression.html"><i class="fa fa-check"></i><b>2</b> Multiple regression</a>
 <ul>
@@ -350,7 +350,7 @@ div.csl-indent {
 <div id="header">
 <h1 class="title">ST 512 course notes</h1>
 <p class="author"><em>Kevin Gross</em></p>
-<p class="date"><em>2023-11-15</em></p>
+<p class="date"><em>2024-01-30</em></p>
 </div>
 <div id="preface" class="section level1 unnumbered hasAnchor">
 <h1>Preface<a href="index.html#preface" class="anchor-section" aria-label="Anchor link to header"></a></h1>
@@ -360,7 +360,7 @@ div.csl-indent {
 <!-- Why do we learn statistics?  Statistics is a tool that can make for more effective data analysis.  It is not meant merely to serve a signalling function.   -->
 <p>These notes take the following perspectives.</p>
 <p><em>Statistics is nonintuitive.</em><br />
-When it comes to statistics, researchers cannot necessarily rely on their common sense to lead them towards correct answers. Statistical reasoning is non-intuitive (<span class="citation">Kahneman (<a href="#ref-kahneman2011thinking" role="doc-biblioref">2011</a>)</span>), and the foundational ideas of statistics are elusive. Therefore statistical literacy must be learned. The primary goal of this course is to sharpen students’ statistical literacy so that they may become more effective researchers.</p>
+When it comes to statistics, researchers cannot necessarily rely on their common sense to lead them towards correct answers. Statistical reasoning is non-intuitive (<span class="citation">Kahneman (<a href="#ref-kahneman2011thinking">2011</a>)</span>), and the foundational ideas of statistics are elusive. Therefore statistical literacy must be learned. The primary goal of this course is to sharpen students’ statistical literacy so that they may become more effective researchers.</p>
 <p><em>The route to conceptual understanding is the detailed study of basic methods.</em><br />
 However, one does not develop a deep conceptual understanding merely by discussing concepts. Instead, conceptual understanding is honed in part by studying the details of particular methods to understand why those details matter. When we study the details of a method, the expectation is not that the student will remember those details in perpetuity. Indeed, practicing scientists are unlikely anyway to remember details about statistical methods that they do not use routinely. (This is not a knock on practicing scientists, but is instead simply a statement about the limitations of human memory.) Instead, the point of studying statistical methods in detail is to strengthen conceptual understanding by exploring statistical methods at a reasonably deep level. Examining details now will also make those details more recognizable if and when one faces a future data-analysis task that requires re-engaging those details. That said, the ultimate emphasis of this course is not on the details of the methods, but is instead on the ideas, concepts, and reasoning that underlie statistical thinking. I hope that these notes will deepen readers’ conceptual understanding of statistics and by doing so strengthen their effectiveness as scientists.</p>
 <p><em>Except when it comes to sums-of-squares decompositions in ANOVA.</em><br />
@@ -376,7 +376,7 @@ No one is convinced by a <span class="math inline">\(p\)</span>-value in isolati
 <div id="scope-and-coverage" class="section level3 unnumbered hasAnchor">
 <h3>Scope and coverage<a href="index.html#scope-and-coverage" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>These notes form the basis for an intermediate course in statistical analysis. These notes do not start from the very beginning, and they presume a basic knowledge of the fundamentals of (frequentist) statistical inference, similar to what one might see in an introductory statistics course.</p>
-<p><span class="citation">Breiman (<a href="#ref-breiman2001statistical" role="doc-biblioref">2001</a>)</span> wrote a provocative paper some twenty years ago describing two statistical cultures: one of data modeling and a second of algorithmic modeling, thus anticipating the era of machine learning and artificial intelligence in which we increasingly seem to reside. These notes fall squarely within (and even celebrate!) the former culture of data modeling as a path to scientific understanding. Moreover, it seems to me that the data-modeling culture contains at least two different subcultures that map to disciplines that either learn from designed experiments vs. disciplines that rely primarily on so-called observational data.<a href="#fn2" class="footnote-ref" id="fnref2"><sup>2</sup></a> The experimental-data culture tends to involve disciplines in the life sciences, favors ANOVA modeling, uses frequentist inference, and codes its models in SAS. The observational-data culture tends to involve disciplines in the social and environmental sciences, favors regression modeling, increasingly embraces Bayesian analysis, and codes its models in R or Python.</p>
+<p><span class="citation">Breiman (<a href="#ref-breiman2001statistical">2001</a>)</span> wrote a provocative paper some twenty years ago describing two statistical cultures: one of data modeling and a second of algorithmic modeling, thus anticipating the era of machine learning and artificial intelligence in which we increasingly seem to reside. These notes fall squarely within (and even celebrate!) the former culture of data modeling as a path to scientific understanding. Moreover, it seems to me that the data-modeling culture contains at least two different subcultures that map to disciplines that either learn from designed experiments vs. disciplines that rely primarily on so-called observational data.<a href="#fn2" class="footnote-ref" id="fnref2"><sup>2</sup></a> The experimental-data culture tends to involve disciplines in the life sciences, favors ANOVA modeling, uses frequentist inference, and codes its models in SAS. The observational-data culture tends to involve disciplines in the social and environmental sciences, favors regression modeling, increasingly embraces Bayesian analysis, and codes its models in R or Python.</p>
 <p>These notes aim to serve both the experimental and observational subcultures. The saving grace that allows us to do so is that the core statistical model in both subcultures is the linear statistical model, which encompasses both regression and ANOVA. Of course, most graduate students will need to learn specialized statistical methods that are popular in their own field of study. These notes are not meant to cover these specialized methods, and thus they are not meant to embody the whole of statistics. However, study of regression and ANOVA provides an opportunity to master core tools and provides a springboard to the study of more specialized and possibly discipline-specific methods.</p>
 <p>These notes also deal exclusively with so-called “frequentist” statistical inference. We do not engage Bayesian methods yet, although some Bayesian coverage is eventually forthcoming. This class is also firmly situated in the study of low-dimensional statistical models. We value parsimony, and we take the view that well constructed models are worthy objects of study in their own right. More concretely, we seek to construct statistical models with parameters that correspond to natural phenomena of interest. Algorithmic modeling (that is, machine learning) is outside the scope of these notes.</p>
 </div>
@@ -391,7 +391,7 @@ No one is convinced by a <span class="math inline">\(p\)</span>-value in isolati
 <p>The first portion of these notes (focused on regression) presents analyses in R, while the latter portion (focused on designed experiments) presents analyses in SAS. In the fullness of time, I hope that these notes will include complete code for conducting analyses in both R and SAS, but that is a work in progress. While the notes examine the R and SAS implementation of the methods that it presents, these notes are not intended as a complete guide for learning either R or SAS from square one. The internet abounds with resources for learning the basics of R, and I would not be able to improve on those resources here. In many cases I provide R code for the sake of illustration, but—especially when it comes to data wrangling and to graphics—the code is not meant to be authoritative. ST 512 students will receive instruction in R and SAS coding in the laboratory component fo the course.</p>
 <p>Readers interested in using R professionally would be well served by consulting Hadley Wickham’s <a href="https://style.tidyverse.org/">tidyverse style guide</a>. The ideas therein have helped me write substantially cleaner code, even if I haven’t had the discipline to adhere to those ideas in all the code in these notes.</p>
 <p>That said, the R code in these notes does not fully embrace the piping style of the <code>tidyverse</code> ecosystem and the associated graphical facilities of <code>ggplot</code>. I take this approach because the focus of these notes is on fitting and visualizing traditional statistical models, and it seems to me that the conventional style of R coding is still best suited for this purpose. The piping style of the <code>tidyverse</code> seems better suited to data-science tasks such as wrangling with and visualizing large data sets. As for <code>ggplot</code>, I prefer the style of coding in R’s native graphical facilities, although <code>ggplot</code> can certainly produce high-quality graphics with relatively few lines of code.</p>
-<p>As a practical matter, these notes are prepared in <code>bookdown</code> (<span class="citation">Xie (<a href="#ref-xie2022bookdown" role="doc-biblioref">2022</a>)</span>). While it is possible to compile both R and SAS code on the fly in <code>bookdown</code>, the extensive output produced by SAS does not serve these notes well. As a consequence, SAS output is condensed to show only the most salient portions of the output.</p>
+<p>As a practical matter, these notes are prepared in <code>bookdown</code> (<span class="citation">Xie (<a href="#ref-xie2022bookdown">2022</a>)</span>). While it is possible to compile both R and SAS code on the fly in <code>bookdown</code>, the extensive output produced by SAS does not serve these notes well. As a consequence, SAS output is condensed to show only the most salient portions of the output.</p>
 </div>
 <div id="format-of-the-notes" class="section level3 unnumbered hasAnchor">
 <h3>Format of the notes<a href="index.html#format-of-the-notes" class="anchor-section" aria-label="Anchor link to header"></a></h3>
@@ -402,7 +402,7 @@ No one is convinced by a <span class="math inline">\(p\)</span>-value in isolati
 </div>
 <div id="acknowledgments-and-license" class="section level3 unnumbered hasAnchor">
 <h3>Acknowledgments and license<a href="index.html#acknowledgments-and-license" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<p>I am deeply indebted to the R community (<span class="citation">R Core Team (<a href="#ref-r" role="doc-biblioref">2021</a>)</span>) for their project which has done no less than revolutionize data analysis in our times. I also thank the developers of <code>bookdown</code> for providing the platform for these notes (<span class="citation">Xie (<a href="#ref-xie2022bookdown" role="doc-biblioref">2022</a>)</span>).</p>
+<p>I am deeply indebted to the R community (<span class="citation">R Core Team (<a href="#ref-r">2021</a>)</span>) for their project which has done no less than revolutionize data analysis in our times. I also thank the developers of <code>bookdown</code> for providing the platform for these notes (<span class="citation">Xie (<a href="#ref-xie2022bookdown">2022</a>)</span>).</p>
 <p>These notes are provided under <a href="https://www.gnu.org/licenses/gpl-3.0.en.html">version 3 of the GNU General Public License</a>.</p>
 <hr />
 </div>

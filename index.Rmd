@@ -461,41 +461,6 @@ $R^2$ is a nice metric because it quantifies how much of the variability in the 
 
 Mathematically, $R^2$ can also be computed as square of the (sample) correlation coefficient between the fitted values and the response.  In SLR, the fitted values and the predictor are perfectly correlated with one another, so $R^2$ is also the square of the sample correlation coefficient between the predictor and the response.
 
-## Fitting the SLR model in R
-
-The basic command in R for fitting a regression model is the function `lm`, short for [l]inear [m]odel.  (As the name suggests, the `lm' function can be used for more than just SLR.)  The basic syntax is 
-````
-> lm(response ~ predictor)
-````
-where "response" and "predictor" would be replaced by the appropriate variable names.  The ``>`` is the R prompt, and is meant to show what you could type at the command line.  Although the above command would work, it would fit the SLR and then forget the model fit.  We want to keep the model fit around to analyze it, so we'll store it in memory under a name of our choosing.  Here, we'll choose the name ``fm1``, although any name would work.  Anything proceeded by a pound sign (\#) is a comment in R.  We'll assume that the BAC data have already been read into R and reside in memory, and that the variables in the BAC data are named ``BAC`` and ``Beers``.  Here is code for fitting a SLR model to these data:
-```{r}
-fm1 <- lm(BAC ~ Beers, data = beer)
-
-# The '<-' is the assignment operator.
-# Here, the output produced by the call to 'lm' is stored in memory under
-# the name 'fm1'.  We can learn about 'fm1' by asking for a summary.
-
-summary(fm1)
-```
-
-Let's examine each portion of the R output above.
-
-The portion labeled ``Call`` simply tells us what command was used to generate the model.
-
-The portion labeled ``Residuals`` tells us a five-number summary (minimum, first quartile, median, third quartile, and maximum) of the residuals.
-
-The portion labeled ``Coefficients`` gives us a table of parameter estimates and standard errors.  Each row of the table corresponds to a single parameter.  The row labeled (Intercept) obviously corresponds to the intercept.  The row labeled with the name of the predictor gives information about the slope parameter.
-
-In addition to parameter estimates and standard errors, R (like many computer packages) also automatically generates hypothesis tests of $H_0: \beta_0 = 0$ vs.\ $H_a: \beta_0 \ne 0$ and $H_0: \beta_1 = 0$ vs.\ $H_a: \beta_1 \ne 0$.  It is up to you, the user, to determine whether or not these tests are informative.
- 
-Finally, the last block of output provides a variety of additional information.  The "residual standard error" (perhaps not the best term) is the estimate of the residual standard deviation,  $s_{\varepsilon}$.   R also provides two different $R^2$ values; the $R^2$ that we discussed above is labeled as the "Multiple R-squared".   We will discuss adjusted R-squared later.  Finally, the $F$-statistic corresponds to a `model utility test', which we will discuss in the context of multiple regression.  For now, you might notice that in SLR the p-value of the model-utility test is always equal to the p-value for the test of $H_0: \beta_1 = 0$ vs.\ $H_a: \beta_1 \ne 0$.  We will explain why this is so later.
-
-The SS decomposition for a regression model is also referred to as the analysis of variance for the regression model.  We can use the `anova' command in R to obtain the SS decomposition:
-```{r}
-anova(fm1)
-```
-The $F$-statistic is the model utility test, which we will examine in more detail when we study multiple regression.
-
 ## Diagnostic plots
 
 We have seen that, in order to draw statistical inferences from a simple linear regression, we need to make several assumptions.  Although in everyday life assumptions can get a bad rap, assumptions in statistics are necessary and appropriate.  The statistician Don Rubin puts it nicely (@rubin2005causal): 
@@ -755,7 +720,42 @@ summary(beer_slr_ctr)
 ```
 The main advantage of centering the predictors is that the intercept now has a nice interpretation. Namely, the intercept is now the value of the regression line when $x = x^{ctr}$, which happens to equal the average value of $y$ in the data set. Importantly, we have accomplished this without changing anything about the linear association between the predictor and the response, so our inference for the slope remains unchanged.  This is perhaps only a small victory, but it's a nice touch. Centering the predictor also eases the interpretation of regression parameters in more complicated models with [interactions](#regression-interactions), as we will see later.   
 
-## Appendix: Regression models in SAS PROC REG {-}
+## Appendix A: Fitting the SLR model in R {-}
+
+The basic command in R for fitting a regression model is the function `lm`, short for [l]inear [m]odel.  (As the name suggests, the `lm' function can be used for more than just SLR.)  The basic syntax is 
+````
+> lm(response ~ predictor)
+````
+where "response" and "predictor" would be replaced by the appropriate variable names.  The ``>`` is the R prompt, and is meant to show what you could type at the command line.  Although the above command would work, it would fit the SLR and then forget the model fit.  We want to keep the model fit around to analyze it, so we'll store it in memory under a name of our choosing.  Here, we'll choose the name ``fm1``, although any name would work.  Anything proceeded by a pound sign (\#) is a comment in R.  We'll assume that the BAC data have already been read into R and reside in memory, and that the variables in the BAC data are named ``BAC`` and ``Beers``.  Here is code for fitting a SLR model to these data:
+```{r}
+fm1 <- lm(BAC ~ Beers, data = beer)
+
+# The '<-' is the assignment operator.
+# Here, the output produced by the call to 'lm' is stored in memory under
+# the name 'fm1'.  We can learn about 'fm1' by asking for a summary.
+
+summary(fm1)
+```
+
+Let's examine each portion of the R output above.
+
+The portion labeled ``Call`` simply tells us what command was used to generate the model.
+
+The portion labeled ``Residuals`` tells us a five-number summary (minimum, first quartile, median, third quartile, and maximum) of the residuals.
+
+The portion labeled ``Coefficients`` gives us a table of parameter estimates and standard errors.  Each row of the table corresponds to a single parameter.  The row labeled (Intercept) obviously corresponds to the intercept.  The row labeled with the name of the predictor gives information about the slope parameter.
+
+In addition to parameter estimates and standard errors, R (like many computer packages) also automatically generates hypothesis tests of $H_0: \beta_0 = 0$ vs.\ $H_a: \beta_0 \ne 0$ and $H_0: \beta_1 = 0$ vs.\ $H_a: \beta_1 \ne 0$.  It is up to you, the user, to determine whether or not these tests are informative.
+ 
+Finally, the last block of output provides a variety of additional information.  The "residual standard error" (perhaps not the best term) is the estimate of the residual standard deviation,  $s_{\varepsilon}$.   R also provides two different $R^2$ values; the $R^2$ that we discussed above is labeled as the "Multiple R-squared".   We will discuss adjusted R-squared later.  Finally, the $F$-statistic corresponds to a `model utility test', which we will discuss in the context of multiple regression.  For now, you might notice that in SLR the p-value of the model-utility test is always equal to the p-value for the test of $H_0: \beta_1 = 0$ vs.\ $H_a: \beta_1 \ne 0$.  We will explain why this is so later.
+
+The SS decomposition for a regression model is also referred to as the analysis of variance for the regression model.  We can use the `anova' command in R to obtain the SS decomposition:
+```{r}
+anova(fm1)
+```
+The $F$-statistic is the model utility test, which we will examine in more detail when we study multiple regression.
+
+## Appendix B: Regression models in SAS PROC REG {-}
 
 There are two main procedures ('PROCs' for short) that can be used to fit regression models: PROC REG (for REGression) and PROC GLM (for General Linear Model).  As the names suggest, GLM is more versatile, but both can be used for regression.  
 

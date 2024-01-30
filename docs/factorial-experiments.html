@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>Chapter 6 Factorial experiments | ST 512 course notes</title>
   <meta name="description" content="Course notes for ST 512, Statistical Methods for Researchers II." />
-  <meta name="generator" content="bookdown 0.34 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.36 and GitBook 2.6.7" />
 
   <meta property="og:title" content="Chapter 6 Factorial experiments | ST 512 course notes" />
   <meta property="og:type" content="book" />
@@ -23,7 +23,7 @@
 <meta name="author" content="Kevin Gross" />
 
 
-<meta name="date" content="2023-11-15" />
+<meta name="date" content="2024-01-30" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -180,13 +180,13 @@ div.csl-indent {
 <li class="chapter" data-level="1.3.4" data-path="simple-linear-regression.html"><a href="simple-linear-regression.html#inference-for-the-intercept"><i class="fa fa-check"></i><b>1.3.4</b> Inference for the intercept</a></li>
 </ul></li>
 <li class="chapter" data-level="1.4" data-path="simple-linear-regression.html"><a href="simple-linear-regression.html#sums-of-squares-decomposition-and-r2"><i class="fa fa-check"></i><b>1.4</b> Sums of squares decomposition and <span class="math inline">\(R^2\)</span></a></li>
-<li class="chapter" data-level="1.5" data-path="simple-linear-regression.html"><a href="simple-linear-regression.html#fitting-the-slr-model-in-r"><i class="fa fa-check"></i><b>1.5</b> Fitting the SLR model in R</a></li>
-<li class="chapter" data-level="1.6" data-path="simple-linear-regression.html"><a href="simple-linear-regression.html#diagnostic-plots"><i class="fa fa-check"></i><b>1.6</b> Diagnostic plots</a></li>
-<li class="chapter" data-level="1.7" data-path="simple-linear-regression.html"><a href="simple-linear-regression.html#consequences-of-violating-model-assumptions-and-possible-fixes"><i class="fa fa-check"></i><b>1.7</b> Consequences of violating model assumptions, and possible fixes</a></li>
-<li class="chapter" data-level="1.8" data-path="simple-linear-regression.html"><a href="simple-linear-regression.html#prediction-with-regression-models"><i class="fa fa-check"></i><b>1.8</b> Prediction with regression models</a></li>
-<li class="chapter" data-level="1.9" data-path="simple-linear-regression.html"><a href="simple-linear-regression.html#regression-design"><i class="fa fa-check"></i><b>1.9</b> Regression design</a></li>
-<li class="chapter" data-level="1.10" data-path="simple-linear-regression.html"><a href="simple-linear-regression.html#centering-the-predictor"><i class="fa fa-check"></i><b>1.10</b> <span class="math inline">\(^\star\)</span>Centering the predictor</a></li>
-<li class="chapter" data-level="" data-path="simple-linear-regression.html"><a href="simple-linear-regression.html#appendix-regression-models-in-sas-proc-reg"><i class="fa fa-check"></i>Appendix: Regression models in SAS PROC REG</a></li>
+<li class="chapter" data-level="1.5" data-path="simple-linear-regression.html"><a href="simple-linear-regression.html#diagnostic-plots"><i class="fa fa-check"></i><b>1.5</b> Diagnostic plots</a></li>
+<li class="chapter" data-level="1.6" data-path="simple-linear-regression.html"><a href="simple-linear-regression.html#consequences-of-violating-model-assumptions-and-possible-fixes"><i class="fa fa-check"></i><b>1.6</b> Consequences of violating model assumptions, and possible fixes</a></li>
+<li class="chapter" data-level="1.7" data-path="simple-linear-regression.html"><a href="simple-linear-regression.html#prediction-with-regression-models"><i class="fa fa-check"></i><b>1.7</b> Prediction with regression models</a></li>
+<li class="chapter" data-level="1.8" data-path="simple-linear-regression.html"><a href="simple-linear-regression.html#regression-design"><i class="fa fa-check"></i><b>1.8</b> Regression design</a></li>
+<li class="chapter" data-level="1.9" data-path="simple-linear-regression.html"><a href="simple-linear-regression.html#centering-the-predictor"><i class="fa fa-check"></i><b>1.9</b> <span class="math inline">\(^\star\)</span>Centering the predictor</a></li>
+<li class="chapter" data-level="" data-path="simple-linear-regression.html"><a href="simple-linear-regression.html#appendix-a-fitting-the-slr-model-in-r"><i class="fa fa-check"></i>Appendix A: Fitting the SLR model in R</a></li>
+<li class="chapter" data-level="" data-path="simple-linear-regression.html"><a href="simple-linear-regression.html#appendix-b-regression-models-in-sas-proc-reg"><i class="fa fa-check"></i>Appendix B: Regression models in SAS PROC REG</a></li>
 </ul></li>
 <li class="chapter" data-level="2" data-path="multiple-regression.html"><a href="multiple-regression.html"><i class="fa fa-check"></i><b>2</b> Multiple regression</a>
 <ul>
@@ -520,7 +520,7 @@ Are these differences meaningful? The answer usually depends on the scientific c
 <h2><span class="header-section-number">6.3</span> Analysis of a balanced 2 <span class="math inline">\(\times\)</span> 2 factorial experiment<a href="factorial-experiments.html#analysis-of-a-balanced-2-times-2-factorial-experiment" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <div id="example-weight-gain-in-rats" class="section level3 hasAnchor" number="6.3.1">
 <h3><span class="header-section-number">6.3.1</span> Example: Weight gain in rats<a href="factorial-experiments.html#example-weight-gain-in-rats" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<p>In real life, cell means need to be estimated with data. Consider the following example taken from <span class="citation">Sokal and Rohlf (<a href="#ref-sokal1995biometry" role="doc-biblioref">1995</a>)</span>. This experiment was designed to examine differences in food consumption among rats. 6 male rats and 6 female rats were used in the experiment. Half the rats were fed fresh lard, and half the rats were fed rancid lard. The response is total food consumption (in grams) over 73 days. This is a 2 <span class="math inline">\(\times\)</span> 2 factorial design with a CRD. The experiment is balanced.</p>
+<p>In real life, cell means need to be estimated with data. Consider the following example taken from <span class="citation">Sokal and Rohlf (<a href="#ref-sokal1995biometry">1995</a>)</span>. This experiment was designed to examine differences in food consumption among rats. 6 male rats and 6 female rats were used in the experiment. Half the rats were fed fresh lard, and half the rats were fed rancid lard. The response is total food consumption (in grams) over 73 days. This is a 2 <span class="math inline">\(\times\)</span> 2 factorial design with a CRD. The experiment is balanced.</p>
 <!-- \begin{center} -->
 <!-- \begin{tabular}{|p{1.1in}|p{1.1in}|p{1.1in}|p{1.1in}|} \hline  -->
 <!-- \multicolumn{2}{|p{1in}|}{} & \multicolumn{2}{|p{2.2in}|}{Fat} \\ \hline  -->
@@ -826,7 +826,7 @@ H_{0} :\left(\alpha \beta \right)_{11} =\left(\alpha \beta \right)_{12} =...=\le
 </div>
 <div id="a-second-example" class="section level3 hasAnchor" number="6.3.4">
 <h3><span class="header-section-number">6.3.4</span> A second example<a href="factorial-experiments.html#a-second-example" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<p>This example is taken from <span class="citation">Steel, Torrie, and Dickey (<a href="#ref-steel1997principles" role="doc-biblioref">1997</a>)</span>. In their words,</p>
+<p>This example is taken from <span class="citation">Steel, Torrie, and Dickey (<a href="#ref-steel1997principles">1997</a>)</span>. In their words,</p>
 <blockquote>
 <p>Wilkinson (1954) reports the results of an experiment to study the influence of time of bleeding and diethylstilbestrol (an estrogenic compound) on plasma phospholipid in lambs. Five lambs were assigned at random to each of four treatment groups; treatment combinations are for morning and afternoon bleeding and with and without diethylstilbestrol treatment.</p>
 </blockquote>
@@ -945,7 +945,7 @@ Simple effect of drug, time=PM       -8.7220000      3.08189585      -2.83      
 <h2><span class="header-section-number">6.4</span> <span class="math inline">\(a \times b\)</span> factorial designs<a href="factorial-experiments.html#a-times-b-factorial-designs" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <div id="example-without-a-significant-interaction" class="section level3 hasAnchor" number="6.4.1">
 <h3><span class="header-section-number">6.4.1</span> Example without a significant interaction<a href="factorial-experiments.html#example-without-a-significant-interaction" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-Oehlert (problem 8.5) reports the following data. <span class="citation">Low and Bin Mohd. Ali (<a href="#ref-low1985experimental" role="doc-biblioref">1985</a>)</span> studied the collection of pine oleoresin by tapping the trunks of pine trees. Tapping involves cutting a hole in the tree trunk and collecting resin that seeps out. This experiment compared four shapes of holes (circle, diagonal, check, or rectangle) and the efficacy of acid (added vs. control) in collecting resin. Twenty-four pine trees were selected from a plantation and were randomly assigned to each of the 8 possible combinations of hole shape and acid. The response is total grams of resin collected from the hole. The data that we will work with are not the actual data but are instead a hypothetical data set for the same design.
+Oehlert (problem 8.5) reports the following data. <span class="citation">Low and Bin Mohd. Ali (<a href="#ref-low1985experimental">1985</a>)</span> studied the collection of pine oleoresin by tapping the trunks of pine trees. Tapping involves cutting a hole in the tree trunk and collecting resin that seeps out. This experiment compared four shapes of holes (circle, diagonal, check, or rectangle) and the efficacy of acid (added vs. control) in collecting resin. Twenty-four pine trees were selected from a plantation and were randomly assigned to each of the 8 possible combinations of hole shape and acid. The response is total grams of resin collected from the hole. The data that we will work with are not the actual data but are instead a hypothetical data set for the same design.
 <!-- \begin{center} -->
 <!--    \begin{tabular}{|p{0.9in}|p{0.9in}|p{0.9in}|p{0.9in}|p{0.9in}|} \hline  -->
 <!--        & Circle ($i=1$) & Diagonal ($i=2$) & Check ($i=3$) & Rectangle ($i=4$) \\ \hline  -->
@@ -1218,7 +1218,7 @@ D               13.667      6    circular</code></pre>
 </div>
 <div id="example-with-a-significant-interaction" class="section level3 hasAnchor" number="6.4.2">
 <h3><span class="header-section-number">6.4.2</span> Example with a significant interaction<a href="factorial-experiments.html#example-with-a-significant-interaction" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<p>Here’s a second example of a <span class="math inline">\(a \times b\)</span> factorial design where the interaction is significant (based off of exercise 15.24 in <span class="citation">Ott and Longnecker (<a href="#ref-ott2015introduction" role="doc-biblioref">2015</a>)</span>): An experiment was performed to compare the effect of soil pH and calcium additives on trunk diameters of orange trees. 36 trees were selected at random from an orange grove. Experimental treatments were arranged in a factorial design, with 4 levels of soil pH and 3 levels of calcium supplement. Treatment combinations were assigned to trees at random in a balanced CRD, with three trees per treatment combination.</p>
+<p>Here’s a second example of a <span class="math inline">\(a \times b\)</span> factorial design where the interaction is significant (based off of exercise 15.24 in <span class="citation">Ott and Longnecker (<a href="#ref-ott2015introduction">2015</a>)</span>): An experiment was performed to compare the effect of soil pH and calcium additives on trunk diameters of orange trees. 36 trees were selected at random from an orange grove. Experimental treatments were arranged in a factorial design, with 4 levels of soil pH and 3 levels of calcium supplement. Treatment combinations were assigned to trees at random in a balanced CRD, with three trees per treatment combination.</p>
 <!-- The data are: -->
 <!-- \begin{center} -->
 <!-- \begin{tabular}{|p{1.1in}|p{0.8in}|p{0.7in}|p{0.8in}|p{0.8in}|} \hline  -->
@@ -1488,7 +1488,7 @@ Then we average the cell means, so that the LSMEAN for males is (709 + 535.3)/2 
 <div id="more-than-two-factors" class="section level2 hasAnchor" number="6.7">
 <h2><span class="header-section-number">6.7</span> More than two factors<a href="factorial-experiments.html#more-than-two-factors" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>All of these ideas can be extended to factorial experiments with more than two factors.</p>
-<p>Example (based off of an example in <span class="citation">Rao (<a href="#ref-rao1998statistical" role="doc-biblioref">1998</a>)</span>): An investigator is interested in understanding the effects of water temperature (cold vs. lukewarm vs. warm), light (low vs. high), and water movement (still vs. flowing) on weight gain in fish. She has 24 aquaria to serve as experimental units. Each of the 3 x 2 x 2 = 12 treatment combinations are randomly assigned to 2 of the 24 aqauria, and the average weight gain of the fish in each aquaria is measured. This is a balanced three-way factorial design with a CRD randomization structure.</p>
+<p>Example (based off of an example in <span class="citation">Rao (<a href="#ref-rao1998statistical">1998</a>)</span>): An investigator is interested in understanding the effects of water temperature (cold vs. lukewarm vs. warm), light (low vs. high), and water movement (still vs. flowing) on weight gain in fish. She has 24 aquaria to serve as experimental units. Each of the 3 x 2 x 2 = 12 treatment combinations are randomly assigned to 2 of the 24 aqauria, and the average weight gain of the fish in each aquaria is measured. This is a balanced three-way factorial design with a CRD randomization structure.</p>
 <!-- The averages of the two replicates for each treatment combination are: -->
 <!-- \begin{center} -->
 <!--    \begin{tabular}{|p{1.1in}|p{1.1in}|p{1.1in}|p{1.1in}|} \hline  -->

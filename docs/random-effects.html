@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>Chapter 8 Random effects | ST 512 course notes</title>
   <meta name="description" content="Course notes for ST 512, Statistical Methods for Researchers II." />
-  <meta name="generator" content="bookdown 0.34 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.36 and GitBook 2.6.7" />
 
   <meta property="og:title" content="Chapter 8 Random effects | ST 512 course notes" />
   <meta property="og:type" content="book" />
@@ -23,7 +23,7 @@
 <meta name="author" content="Kevin Gross" />
 
 
-<meta name="date" content="2023-11-15" />
+<meta name="date" content="2024-01-30" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -180,13 +180,13 @@ div.csl-indent {
 <li class="chapter" data-level="1.3.4" data-path="simple-linear-regression.html"><a href="simple-linear-regression.html#inference-for-the-intercept"><i class="fa fa-check"></i><b>1.3.4</b> Inference for the intercept</a></li>
 </ul></li>
 <li class="chapter" data-level="1.4" data-path="simple-linear-regression.html"><a href="simple-linear-regression.html#sums-of-squares-decomposition-and-r2"><i class="fa fa-check"></i><b>1.4</b> Sums of squares decomposition and <span class="math inline">\(R^2\)</span></a></li>
-<li class="chapter" data-level="1.5" data-path="simple-linear-regression.html"><a href="simple-linear-regression.html#fitting-the-slr-model-in-r"><i class="fa fa-check"></i><b>1.5</b> Fitting the SLR model in R</a></li>
-<li class="chapter" data-level="1.6" data-path="simple-linear-regression.html"><a href="simple-linear-regression.html#diagnostic-plots"><i class="fa fa-check"></i><b>1.6</b> Diagnostic plots</a></li>
-<li class="chapter" data-level="1.7" data-path="simple-linear-regression.html"><a href="simple-linear-regression.html#consequences-of-violating-model-assumptions-and-possible-fixes"><i class="fa fa-check"></i><b>1.7</b> Consequences of violating model assumptions, and possible fixes</a></li>
-<li class="chapter" data-level="1.8" data-path="simple-linear-regression.html"><a href="simple-linear-regression.html#prediction-with-regression-models"><i class="fa fa-check"></i><b>1.8</b> Prediction with regression models</a></li>
-<li class="chapter" data-level="1.9" data-path="simple-linear-regression.html"><a href="simple-linear-regression.html#regression-design"><i class="fa fa-check"></i><b>1.9</b> Regression design</a></li>
-<li class="chapter" data-level="1.10" data-path="simple-linear-regression.html"><a href="simple-linear-regression.html#centering-the-predictor"><i class="fa fa-check"></i><b>1.10</b> <span class="math inline">\(^\star\)</span>Centering the predictor</a></li>
-<li class="chapter" data-level="" data-path="simple-linear-regression.html"><a href="simple-linear-regression.html#appendix-regression-models-in-sas-proc-reg"><i class="fa fa-check"></i>Appendix: Regression models in SAS PROC REG</a></li>
+<li class="chapter" data-level="1.5" data-path="simple-linear-regression.html"><a href="simple-linear-regression.html#diagnostic-plots"><i class="fa fa-check"></i><b>1.5</b> Diagnostic plots</a></li>
+<li class="chapter" data-level="1.6" data-path="simple-linear-regression.html"><a href="simple-linear-regression.html#consequences-of-violating-model-assumptions-and-possible-fixes"><i class="fa fa-check"></i><b>1.6</b> Consequences of violating model assumptions, and possible fixes</a></li>
+<li class="chapter" data-level="1.7" data-path="simple-linear-regression.html"><a href="simple-linear-regression.html#prediction-with-regression-models"><i class="fa fa-check"></i><b>1.7</b> Prediction with regression models</a></li>
+<li class="chapter" data-level="1.8" data-path="simple-linear-regression.html"><a href="simple-linear-regression.html#regression-design"><i class="fa fa-check"></i><b>1.8</b> Regression design</a></li>
+<li class="chapter" data-level="1.9" data-path="simple-linear-regression.html"><a href="simple-linear-regression.html#centering-the-predictor"><i class="fa fa-check"></i><b>1.9</b> <span class="math inline">\(^\star\)</span>Centering the predictor</a></li>
+<li class="chapter" data-level="" data-path="simple-linear-regression.html"><a href="simple-linear-regression.html#appendix-a-fitting-the-slr-model-in-r"><i class="fa fa-check"></i>Appendix A: Fitting the SLR model in R</a></li>
+<li class="chapter" data-level="" data-path="simple-linear-regression.html"><a href="simple-linear-regression.html#appendix-b-regression-models-in-sas-proc-reg"><i class="fa fa-check"></i>Appendix B: Regression models in SAS PROC REG</a></li>
 </ul></li>
 <li class="chapter" data-level="2" data-path="multiple-regression.html"><a href="multiple-regression.html"><i class="fa fa-check"></i><b>2</b> Multiple regression</a>
 <ul>
@@ -364,7 +364,7 @@ div.csl-indent {
 <p>Models with no fixed effects (except for the intercept) are called random-effects models. Pure random-effects models are not frequently encountered in the life sciences, but they are occasionally useful for characterizing hierarchical variability.</p>
 <p>This example is taken from the on-line SAS documentation. The description given there reads</p>
 <blockquote>
-<p>In the following example from <span class="citation">Snedecor and Cochran (<a href="#ref-snedecor67" role="doc-biblioref">1967</a>)</span>, an experiment is conducted to study the variability of calcium concentration in turnip greens. Four plants are selected at random; then three leaves are randomly selected from each plant. Two 100-mg samples are taken from each leaf. The amount of calcium is determined by microchemical methods.</p>
+<p>In the following example from <span class="citation">Snedecor and Cochran (<a href="#ref-snedecor67">1967</a>)</span>, an experiment is conducted to study the variability of calcium concentration in turnip greens. Four plants are selected at random; then three leaves are randomly selected from each plant. Two 100-mg samples are taken from each leaf. The amount of calcium is determined by microchemical methods.</p>
 </blockquote>
 <!-- The data are: -->
 <!-- \begin{center} -->

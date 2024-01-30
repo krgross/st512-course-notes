@@ -1,7 +1,7 @@
 --- 
 title: "ST 512 course notes"
 author: "Kevin Gross"
-date: "2023-11-15"
+date: "2024-01-30"
 output:
   bookdown::gitbook:
     config:
@@ -501,75 +501,6 @@ $R^2$ is a nice metric because it quantifies how much of the variability in the 
 
 Mathematically, $R^2$ can also be computed as square of the (sample) correlation coefficient between the fitted values and the response.  In SLR, the fitted values and the predictor are perfectly correlated with one another, so $R^2$ is also the square of the sample correlation coefficient between the predictor and the response.
 
-## Fitting the SLR model in R
-
-The basic command in R for fitting a regression model is the function `lm`, short for [l]inear [m]odel.  (As the name suggests, the `lm' function can be used for more than just SLR.)  The basic syntax is 
-````
-> lm(response ~ predictor)
-````
-where "response" and "predictor" would be replaced by the appropriate variable names.  The ``>`` is the R prompt, and is meant to show what you could type at the command line.  Although the above command would work, it would fit the SLR and then forget the model fit.  We want to keep the model fit around to analyze it, so we'll store it in memory under a name of our choosing.  Here, we'll choose the name ``fm1``, although any name would work.  Anything proceeded by a pound sign (\#) is a comment in R.  We'll assume that the BAC data have already been read into R and reside in memory, and that the variables in the BAC data are named ``BAC`` and ``Beers``.  Here is code for fitting a SLR model to these data:
-
-```r
-fm1 <- lm(BAC ~ Beers, data = beer)
-
-# The '<-' is the assignment operator.
-# Here, the output produced by the call to 'lm' is stored in memory under
-# the name 'fm1'.  We can learn about 'fm1' by asking for a summary.
-
-summary(fm1)
-```
-
-```
-## 
-## Call:
-## lm(formula = BAC ~ Beers, data = beer)
-## 
-## Residuals:
-##       Min        1Q    Median        3Q       Max 
-## -0.027118 -0.017350  0.001773  0.008623  0.041027 
-## 
-## Coefficients:
-##              Estimate Std. Error t value Pr(>|t|)    
-## (Intercept) -0.012701   0.012638  -1.005    0.332    
-## Beers        0.017964   0.002402   7.480 2.97e-06 ***
-## ---
-## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
-## 
-## Residual standard error: 0.02044 on 14 degrees of freedom
-## Multiple R-squared:  0.7998,	Adjusted R-squared:  0.7855 
-## F-statistic: 55.94 on 1 and 14 DF,  p-value: 2.969e-06
-```
-
-Let's examine each portion of the R output above.
-
-The portion labeled ``Call`` simply tells us what command was used to generate the model.
-
-The portion labeled ``Residuals`` tells us a five-number summary (minimum, first quartile, median, third quartile, and maximum) of the residuals.
-
-The portion labeled ``Coefficients`` gives us a table of parameter estimates and standard errors.  Each row of the table corresponds to a single parameter.  The row labeled (Intercept) obviously corresponds to the intercept.  The row labeled with the name of the predictor gives information about the slope parameter.
-
-In addition to parameter estimates and standard errors, R (like many computer packages) also automatically generates hypothesis tests of $H_0: \beta_0 = 0$ vs.\ $H_a: \beta_0 \ne 0$ and $H_0: \beta_1 = 0$ vs.\ $H_a: \beta_1 \ne 0$.  It is up to you, the user, to determine whether or not these tests are informative.
- 
-Finally, the last block of output provides a variety of additional information.  The "residual standard error" (perhaps not the best term) is the estimate of the residual standard deviation,  $s_{\varepsilon}$.   R also provides two different $R^2$ values; the $R^2$ that we discussed above is labeled as the "Multiple R-squared".   We will discuss adjusted R-squared later.  Finally, the $F$-statistic corresponds to a `model utility test', which we will discuss in the context of multiple regression.  For now, you might notice that in SLR the p-value of the model-utility test is always equal to the p-value for the test of $H_0: \beta_1 = 0$ vs.\ $H_a: \beta_1 \ne 0$.  We will explain why this is so later.
-
-The SS decomposition for a regression model is also referred to as the analysis of variance for the regression model.  We can use the `anova' command in R to obtain the SS decomposition:
-
-```r
-anova(fm1)
-```
-
-```
-## Analysis of Variance Table
-## 
-## Response: BAC
-##           Df    Sum Sq   Mean Sq F value    Pr(>F)    
-## Beers      1 0.0233753 0.0233753  55.944 2.969e-06 ***
-## Residuals 14 0.0058497 0.0004178                      
-## ---
-## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
-```
-The $F$-statistic is the model utility test, which we will examine in more detail when we study multiple regression.
-
 ## Diagnostic plots
 
 We have seen that, in order to draw statistical inferences from a simple linear regression, we need to make several assumptions.  Although in everyday life assumptions can get a bad rap, assumptions in statistics are necessary and appropriate.  The statistician Don Rubin puts it nicely (@rubin2005causal): 
@@ -587,11 +518,11 @@ plot(resid(fm1) ~ fitted(fm1), xlab = "Fitted Values", ylab = "Residuals")
 abline(h = 0, lty = "dotted")
 ```
 
-<img src="index_files/figure-html/unnamed-chunk-8-1.png" width="384" style="display: block; margin: auto;" />
+<img src="index_files/figure-html/unnamed-chunk-6-1.png" width="384" style="display: block; margin: auto;" />
 
 Perhaps the most common violation of the regression assumption occurs when the variance of a response increases as the fitted values increase.  The tell-tale signature of this violation is a "trumpeting" pattern in the plot of the residuals vs.\ the fitted values.  Indeed, an increasing variance is perhaps more the rule than the exception in some sciences, especially the life sciences.  To illustrate, here is a data set that we will study more closely when we study [ANCOVA].  For now, it suffices to say that this is a data set in which the response is the lifespan of a fruitfly, and there are several predictors.  Here is a residual plot of the ANCOVA model:
 
-<img src="index_files/figure-html/unnamed-chunk-9-1.png" width="384" style="display: block; margin: auto;" />
+<img src="index_files/figure-html/unnamed-chunk-7-1.png" width="384" style="display: block; margin: auto;" />
 
 Fruitflies that live longer clearly have more variable lifespans.
 
@@ -610,7 +541,7 @@ plot(resid(fm1) ~ beer$Beers, xlab = "Beers", ylab = "Residuals")
 abline(h = 0, lty = "dotted")
 ```
 
-<img src="index_files/figure-html/unnamed-chunk-10-1.png" width="384" style="display: block; margin: auto;" />
+<img src="index_files/figure-html/unnamed-chunk-8-1.png" width="384" style="display: block; margin: auto;" />
 
 3. Residuals vs. variables not in the model, e.g., other predictors, observer, order of observation, spatial coordinates.  In the BAC data, the only other variable we have (for now at least) is the order in which the observations appear in the data set. Without knowing how the data were collected or recorded, it's impossible to say whether this variable is meaningful. However, the plot suggests a distinctive downward trend -- data points that appear early in the data set are associated with positive residuals, and data points that appear later in the data set are associated with negative residuals.  What do you think might have caused this trend?
 
@@ -619,7 +550,7 @@ plot(resid(fm1), xlab = "Order", ylab = "Residuals")
 abline(h = 0, lty = "dotted")
 ```
 
-<img src="index_files/figure-html/unnamed-chunk-11-1.png" width="384" style="display: block; margin: auto;" />
+<img src="index_files/figure-html/unnamed-chunk-9-1.png" width="384" style="display: block; margin: auto;" />
 
 4. An obvious way to check the normality assumption is to plot a histogram of the residuals.  While this is a straightforward idea, it suffers from the fact that the shape of the histogram depends strongly on how the residuals are grouped into bins.  Note how the two histograms below of the BAC residuals provide different impressions about the suitability of the normality assumption.
 
@@ -627,13 +558,13 @@ abline(h = 0, lty = "dotted")
 hist(resid(fm1), main = "Bin width = 0.01", xlab = "Residuals")
 ```
 
-<img src="index_files/figure-html/unnamed-chunk-12-1.png" width="384" style="display: block; margin: auto;" />
+<img src="index_files/figure-html/unnamed-chunk-10-1.png" width="384" style="display: block; margin: auto;" />
 
 ```r
 hist(resid(fm1), main = "Bin width = 0.02", xlab = "Residuals", breaks = 4)
 ```
 
-<img src="index_files/figure-html/unnamed-chunk-12-2.png" width="384" style="display: block; margin: auto;" />
+<img src="index_files/figure-html/unnamed-chunk-10-2.png" width="384" style="display: block; margin: auto;" />
 An alternative to histograms is a normal probability plot of residuals, also known as a quantile-quantile, or Q-Q, plot.  Q-Q plots calculate the empirical quantile of each residual, and compare this to the theoretical quantile from a normal distribution.  If the normality assumption is appropriate, the empirical and theoretical quantiles will change at the same rate, so when plotted against one another, they'll fall on a line.  If the normality assumption is not appropriate, the plot of empirical vs. theoretical quantiles will bend.
  
 As we'll see below, the normality assumption is the \textit{least} critical of the assumptions in regression.  Thus, unless the Q-Q plot shows big and dramatic bends, we won't concern ourselves with small bumps and wiggles.  The Q-Q plot for the BAC data below doesn't seem terribly problematic.
@@ -643,7 +574,7 @@ qqnorm(resid(fm1))
 qqline(resid(fm1))
 ```
 
-<img src="index_files/figure-html/unnamed-chunk-13-1.png" width="384" style="display: block; margin: auto;" />
+<img src="index_files/figure-html/unnamed-chunk-11-1.png" width="384" style="display: block; margin: auto;" />
 
 ## Consequences of violating model assumptions, and possible fixes
 
@@ -681,7 +612,7 @@ fm1 <- lm(BoxOffice ~ Score, data = movie)
 abline(fm1)
 ```
 
-<img src="index_files/figure-html/unnamed-chunk-14-1.png" width="384" style="display: block; margin: auto;" />
+<img src="index_files/figure-html/unnamed-chunk-12-1.png" width="384" style="display: block; margin: auto;" />
 
 The plots of residuals vs. fitted value show clear evidence of non-constant variance.  The Q-Q plot indicates right-skew.  Taking a square-root transformation of the response stabilizes the variance nicely:
 
@@ -690,14 +621,14 @@ plot(resid(fm1) ~ fitted(fm1), xlab = "Fitted value", ylab = "Residual")
 abline(h = 0,lty = "dashed")
 ```
 
-<img src="index_files/figure-html/unnamed-chunk-15-1.png" width="384" style="display: block; margin: auto;" />
+<img src="index_files/figure-html/unnamed-chunk-13-1.png" width="384" style="display: block; margin: auto;" />
 
 ```r
 qqnorm(resid(fm1),main = "QQ plot, movie data")
 qqline(resid(fm1))
 ```
 
-<img src="index_files/figure-html/unnamed-chunk-15-2.png" width="384" style="display: block; margin: auto;" />
+<img src="index_files/figure-html/unnamed-chunk-13-2.png" width="384" style="display: block; margin: auto;" />
 
 Let's try a square-root transformation of the response:
 
@@ -731,7 +662,7 @@ summary(fm2)
 plot(fm2)
 ```
 
-<img src="index_files/figure-html/unnamed-chunk-16-1.png" width="384" style="display: block; margin: auto;" /><img src="index_files/figure-html/unnamed-chunk-16-2.png" width="384" style="display: block; margin: auto;" /><img src="index_files/figure-html/unnamed-chunk-16-3.png" width="384" style="display: block; margin: auto;" /><img src="index_files/figure-html/unnamed-chunk-16-4.png" width="384" style="display: block; margin: auto;" />
+<img src="index_files/figure-html/unnamed-chunk-14-1.png" width="384" style="display: block; margin: auto;" /><img src="index_files/figure-html/unnamed-chunk-14-2.png" width="384" style="display: block; margin: auto;" /><img src="index_files/figure-html/unnamed-chunk-14-3.png" width="384" style="display: block; margin: auto;" /><img src="index_files/figure-html/unnamed-chunk-14-4.png" width="384" style="display: block; margin: auto;" />
 Another commonly used transformation for right-skewed data is the log transformation.  Here are residual plots and model output for log-transformed data:
 
 ```r
@@ -764,7 +695,7 @@ summary(fm3)
 plot(fm3)
 ```
 
-<img src="index_files/figure-html/unnamed-chunk-17-1.png" width="384" style="display: block; margin: auto;" /><img src="index_files/figure-html/unnamed-chunk-17-2.png" width="384" style="display: block; margin: auto;" /><img src="index_files/figure-html/unnamed-chunk-17-3.png" width="384" style="display: block; margin: auto;" /><img src="index_files/figure-html/unnamed-chunk-17-4.png" width="384" style="display: block; margin: auto;" />
+<img src="index_files/figure-html/unnamed-chunk-15-1.png" width="384" style="display: block; margin: auto;" /><img src="index_files/figure-html/unnamed-chunk-15-2.png" width="384" style="display: block; margin: auto;" /><img src="index_files/figure-html/unnamed-chunk-15-3.png" width="384" style="display: block; margin: auto;" /><img src="index_files/figure-html/unnamed-chunk-15-4.png" width="384" style="display: block; margin: auto;" />
 
 Which transformation do you think is more appropriate?  Do the different transformations lead to different qualitative conclusions regarding the statistical significance of the relationship between reviewer rating and box office take?
 
@@ -779,14 +710,14 @@ fm1 <- lm(mpghw ~ weight, data = cars)
 abline(fm1)
 ```
 
-<img src="index_files/figure-html/unnamed-chunk-18-1.png" width="384" style="display: block; margin: auto;" />
+<img src="index_files/figure-html/unnamed-chunk-16-1.png" width="384" style="display: block; margin: auto;" />
 
 ```r
 plot(resid(fm1) ~ fitted(fm1), xlab = "Fitted value", ylab = "Residual")
 abline(h = 0,lty = "dashed")
 ```
 
-<img src="index_files/figure-html/unnamed-chunk-18-2.png" width="384" style="display: block; margin: auto;" />
+<img src="index_files/figure-html/unnamed-chunk-16-2.png" width="384" style="display: block; margin: auto;" />
 
 The relationship between highway mpg and vehicle weight is clearly non-linear, although that is seen most clearly from the plot of residuals vs. fitted values.  We will discuss modeling non-linear relationships later.
 
@@ -890,7 +821,7 @@ predict(fm1, interval = "prediction", newdata = new.data, level = 0.90)
 ##         fit          lwr        upr
 ## 1 0.0322088 -0.006169709 0.07058731
 ```
-<img src="index_files/figure-html/unnamed-chunk-20-1.png" width="384" style="display: block; margin: auto;" />
+<img src="index_files/figure-html/unnamed-chunk-18-1.png" width="384" style="display: block; margin: auto;" />
 Regression (solid line), 95\% confidence intervals (dashed lines), and 95\% prediction intervals (dotted lines) for the beer data.  Note that both confidence and prediction intervals widen near the edges of the range of the predictor.
 
 ## Regression design
@@ -953,7 +884,76 @@ summary(beer_slr_ctr)
 ```
 The main advantage of centering the predictors is that the intercept now has a nice interpretation. Namely, the intercept is now the value of the regression line when $x = x^{ctr}$, which happens to equal the average value of $y$ in the data set. Importantly, we have accomplished this without changing anything about the linear association between the predictor and the response, so our inference for the slope remains unchanged.  This is perhaps only a small victory, but it's a nice touch. Centering the predictor also eases the interpretation of regression parameters in more complicated models with [interactions](#regression-interactions), as we will see later.   
 
-## Appendix: Regression models in SAS PROC REG {-}
+## Appendix A: Fitting the SLR model in R {-}
+
+The basic command in R for fitting a regression model is the function `lm`, short for [l]inear [m]odel.  (As the name suggests, the `lm' function can be used for more than just SLR.)  The basic syntax is 
+````
+> lm(response ~ predictor)
+````
+where "response" and "predictor" would be replaced by the appropriate variable names.  The ``>`` is the R prompt, and is meant to show what you could type at the command line.  Although the above command would work, it would fit the SLR and then forget the model fit.  We want to keep the model fit around to analyze it, so we'll store it in memory under a name of our choosing.  Here, we'll choose the name ``fm1``, although any name would work.  Anything proceeded by a pound sign (\#) is a comment in R.  We'll assume that the BAC data have already been read into R and reside in memory, and that the variables in the BAC data are named ``BAC`` and ``Beers``.  Here is code for fitting a SLR model to these data:
+
+```r
+fm1 <- lm(BAC ~ Beers, data = beer)
+
+# The '<-' is the assignment operator.
+# Here, the output produced by the call to 'lm' is stored in memory under
+# the name 'fm1'.  We can learn about 'fm1' by asking for a summary.
+
+summary(fm1)
+```
+
+```
+## 
+## Call:
+## lm(formula = BAC ~ Beers, data = beer)
+## 
+## Residuals:
+##       Min        1Q    Median        3Q       Max 
+## -0.027118 -0.017350  0.001773  0.008623  0.041027 
+## 
+## Coefficients:
+##              Estimate Std. Error t value Pr(>|t|)    
+## (Intercept) -0.012701   0.012638  -1.005    0.332    
+## Beers        0.017964   0.002402   7.480 2.97e-06 ***
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Residual standard error: 0.02044 on 14 degrees of freedom
+## Multiple R-squared:  0.7998,	Adjusted R-squared:  0.7855 
+## F-statistic: 55.94 on 1 and 14 DF,  p-value: 2.969e-06
+```
+
+Let's examine each portion of the R output above.
+
+The portion labeled ``Call`` simply tells us what command was used to generate the model.
+
+The portion labeled ``Residuals`` tells us a five-number summary (minimum, first quartile, median, third quartile, and maximum) of the residuals.
+
+The portion labeled ``Coefficients`` gives us a table of parameter estimates and standard errors.  Each row of the table corresponds to a single parameter.  The row labeled (Intercept) obviously corresponds to the intercept.  The row labeled with the name of the predictor gives information about the slope parameter.
+
+In addition to parameter estimates and standard errors, R (like many computer packages) also automatically generates hypothesis tests of $H_0: \beta_0 = 0$ vs.\ $H_a: \beta_0 \ne 0$ and $H_0: \beta_1 = 0$ vs.\ $H_a: \beta_1 \ne 0$.  It is up to you, the user, to determine whether or not these tests are informative.
+ 
+Finally, the last block of output provides a variety of additional information.  The "residual standard error" (perhaps not the best term) is the estimate of the residual standard deviation,  $s_{\varepsilon}$.   R also provides two different $R^2$ values; the $R^2$ that we discussed above is labeled as the "Multiple R-squared".   We will discuss adjusted R-squared later.  Finally, the $F$-statistic corresponds to a `model utility test', which we will discuss in the context of multiple regression.  For now, you might notice that in SLR the p-value of the model-utility test is always equal to the p-value for the test of $H_0: \beta_1 = 0$ vs.\ $H_a: \beta_1 \ne 0$.  We will explain why this is so later.
+
+The SS decomposition for a regression model is also referred to as the analysis of variance for the regression model.  We can use the `anova' command in R to obtain the SS decomposition:
+
+```r
+anova(fm1)
+```
+
+```
+## Analysis of Variance Table
+## 
+## Response: BAC
+##           Df    Sum Sq   Mean Sq F value    Pr(>F)    
+## Beers      1 0.0233753 0.0233753  55.944 2.969e-06 ***
+## Residuals 14 0.0058497 0.0004178                      
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+```
+The $F$-statistic is the model utility test, which we will examine in more detail when we study multiple regression.
+
+## Appendix B: Regression models in SAS PROC REG {-}
 
 There are two main procedures ('PROCs' for short) that can be used to fit regression models: PROC REG (for REGression) and PROC GLM (for General Linear Model).  As the names suggest, GLM is more versatile, but both can be used for regression.  
 

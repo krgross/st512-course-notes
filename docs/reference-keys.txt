@@ -14,7 +14,6 @@ confidence-intervals
 statistical-hypothesis-tests
 inference-for-the-intercept
 sums-of-squares-decomposition-and-r2
-fitting-the-slr-model-in-r
 diagnostic-plots
 consequences-of-violating-model-assumptions-and-possible-fixes
 prediction-with-regression-models

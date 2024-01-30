@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>Chapter 7 ANCOVA | ST 512 course notes</title>
   <meta name="description" content="Course notes for ST 512, Statistical Methods for Researchers II." />
-  <meta name="generator" content="bookdown 0.34 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.36 and GitBook 2.6.7" />
 
   <meta property="og:title" content="Chapter 7 ANCOVA | ST 512 course notes" />
   <meta property="og:type" content="book" />
@@ -23,7 +23,7 @@
 <meta name="author" content="Kevin Gross" />
 
 
-<meta name="date" content="2023-11-15" />
+<meta name="date" content="2024-01-30" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -180,13 +180,13 @@ div.csl-indent {
 <li class="chapter" data-level="1.3.4" data-path="simple-linear-regression.html"><a href="simple-linear-regression.html#inference-for-the-intercept"><i class="fa fa-check"></i><b>1.3.4</b> Inference for the intercept</a></li>
 </ul></li>
 <li class="chapter" data-level="1.4" data-path="simple-linear-regression.html"><a href="simple-linear-regression.html#sums-of-squares-decomposition-and-r2"><i class="fa fa-check"></i><b>1.4</b> Sums of squares decomposition and <span class="math inline">\(R^2\)</span></a></li>
-<li class="chapter" data-level="1.5" data-path="simple-linear-regression.html"><a href="simple-linear-regression.html#fitting-the-slr-model-in-r"><i class="fa fa-check"></i><b>1.5</b> Fitting the SLR model in R</a></li>
-<li class="chapter" data-level="1.6" data-path="simple-linear-regression.html"><a href="simple-linear-regression.html#diagnostic-plots"><i class="fa fa-check"></i><b>1.6</b> Diagnostic plots</a></li>
-<li class="chapter" data-level="1.7" data-path="simple-linear-regression.html"><a href="simple-linear-regression.html#consequences-of-violating-model-assumptions-and-possible-fixes"><i class="fa fa-check"></i><b>1.7</b> Consequences of violating model assumptions, and possible fixes</a></li>
-<li class="chapter" data-level="1.8" data-path="simple-linear-regression.html"><a href="simple-linear-regression.html#prediction-with-regression-models"><i class="fa fa-check"></i><b>1.8</b> Prediction with regression models</a></li>
-<li class="chapter" data-level="1.9" data-path="simple-linear-regression.html"><a href="simple-linear-regression.html#regression-design"><i class="fa fa-check"></i><b>1.9</b> Regression design</a></li>
-<li class="chapter" data-level="1.10" data-path="simple-linear-regression.html"><a href="simple-linear-regression.html#centering-the-predictor"><i class="fa fa-check"></i><b>1.10</b> <span class="math inline">\(^\star\)</span>Centering the predictor</a></li>
-<li class="chapter" data-level="" data-path="simple-linear-regression.html"><a href="simple-linear-regression.html#appendix-regression-models-in-sas-proc-reg"><i class="fa fa-check"></i>Appendix: Regression models in SAS PROC REG</a></li>
+<li class="chapter" data-level="1.5" data-path="simple-linear-regression.html"><a href="simple-linear-regression.html#diagnostic-plots"><i class="fa fa-check"></i><b>1.5</b> Diagnostic plots</a></li>
+<li class="chapter" data-level="1.6" data-path="simple-linear-regression.html"><a href="simple-linear-regression.html#consequences-of-violating-model-assumptions-and-possible-fixes"><i class="fa fa-check"></i><b>1.6</b> Consequences of violating model assumptions, and possible fixes</a></li>
+<li class="chapter" data-level="1.7" data-path="simple-linear-regression.html"><a href="simple-linear-regression.html#prediction-with-regression-models"><i class="fa fa-check"></i><b>1.7</b> Prediction with regression models</a></li>
+<li class="chapter" data-level="1.8" data-path="simple-linear-regression.html"><a href="simple-linear-regression.html#regression-design"><i class="fa fa-check"></i><b>1.8</b> Regression design</a></li>
+<li class="chapter" data-level="1.9" data-path="simple-linear-regression.html"><a href="simple-linear-regression.html#centering-the-predictor"><i class="fa fa-check"></i><b>1.9</b> <span class="math inline">\(^\star\)</span>Centering the predictor</a></li>
+<li class="chapter" data-level="" data-path="simple-linear-regression.html"><a href="simple-linear-regression.html#appendix-a-fitting-the-slr-model-in-r"><i class="fa fa-check"></i>Appendix A: Fitting the SLR model in R</a></li>
+<li class="chapter" data-level="" data-path="simple-linear-regression.html"><a href="simple-linear-regression.html#appendix-b-regression-models-in-sas-proc-reg"><i class="fa fa-check"></i>Appendix B: Regression models in SAS PROC REG</a></li>
 </ul></li>
 <li class="chapter" data-level="2" data-path="multiple-regression.html"><a href="multiple-regression.html"><i class="fa fa-check"></i><b>2</b> Multiple regression</a>
 <ul>
@@ -351,7 +351,7 @@ div.csl-indent {
 <h1><span class="header-section-number">Chapter 7</span> ANCOVA<a href="ancova.html#ancova" class="anchor-section" aria-label="Anchor link to header"></a></h1>
 <p>Statistical tests compare the estimated magnitude of a treatment effect to the precision with which that effect is estimated. Often, the magnitude of a treatment effect is set by nature. Thus, if we want to increase our chances of observing a statistically significant result, we must find ways to make our estimates more precise. Statistical precision is a function of (a) the degree of replication and (b) the experimental error. Thus, precision can be improved by including more replicates or reducing experimental error.</p>
 <p>One technique for reducing experimental error and hence increasing precision is to use a covariate that accounts for heterogeneity among EUs. Inclusion of covariates in ANOVA models is called the analysis of covariance, or ANCOVA. Mathematically, ANCOVA is no different from regression with both quantitative and categorical predictors. However, the emphases differ depending on the context. In ANCOVA, our primary focus is analyzing the differences among the treatment groups. We model the relationship between the response and the covariate to gain a more precise estimate of the differences among treatment groups, but the relationship between the response and the covariate is of secondary interest at best. In regression, both quantitative and categorical predictors are on equal footing, and we have no reason to prioritize one versus the other.</p>
-<p>Example: <span class="citation">Partridge and Farquhar (<a href="#ref-partridge1981sexual" role="doc-biblioref">1981</a>)</span>; as reported in Hanley &amp; Shapiro, (1994) conducted an experiment to determine if increased reproduction reduces longevity in male fruitflies. (Such a cost had already been established for females.) There were 5 experimental treatments: male fruitflies reared alone, reared with 1 or 8 non-mated females, and reared with 1 or 8 recently mated females. 25 male flies were assigned to each treatment. The data recorded are longevity (days lived) and thorax length. The data are shown below:</p>
+<p>Example: <span class="citation">Partridge and Farquhar (<a href="#ref-partridge1981sexual">1981</a>)</span>; as reported in Hanley &amp; Shapiro, (1994) conducted an experiment to determine if increased reproduction reduces longevity in male fruitflies. (Such a cost had already been established for females.) There were 5 experimental treatments: male fruitflies reared alone, reared with 1 or 8 non-mated females, and reared with 1 or 8 recently mated females. 25 male flies were assigned to each treatment. The data recorded are longevity (days lived) and thorax length. The data are shown below:</p>
 <p><img src="07-Ancova_files/figure-html/unnamed-chunk-2-1.png" width="720" style="display: block; margin: auto;" />
 Suppose we analyze these data with a one-way ANOVA and ignore differences in the sizes of the flies:</p>
 <pre><code>proc glm;
