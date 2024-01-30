@@ -187,6 +187,8 @@ predict(fm2, newdata = new.data, interval = "confidence")
 
 ## $F$-tests for several regression coefficients {#F-test}
 
+### Basic machinery
+
 Consider a general multiple regression model with $k$ predictors:
 \[
 y=\beta_0 +\beta_1 x_1 +\beta_2 x_2 +...+\beta_k x_k +\varepsilon 
@@ -467,8 +469,6 @@ The multiple regression model suggests that if we compare cigarettes with the sa
 The issue here is that tar and nicotine content are strongly correlated with one another, raising legitimate questions about whether we can separate the associations between one of the predictors and the response from the other.  Indeed, in light of the strong correlation between tar content and nicotine content, does our comparative interpretation of the regression coefficients even make sense?  If two cigarettes have the same nicotine content and weight, then by how much can their tar content differ?
 
 This is the issue of collinearity.  Perfect collinearity occurs when two predictors are perfectly correlated with one another.  Perfect collinearity is rare (unless the number of predictors exceeds the number of data points, in which case it is inevitable).  However, if predictors are strongly (but nor perfectly) correlated, trouble still lurks.  Indeed, collinearity is not just caused by strong correlations between pairs of predictors: It can also be caused by strong correlations between weighted sums of predictors.  For this reason, when there are many predictors relative to the number of data points, collinearity is nearly inevitable.
-
-<!-- Mathematically, calculating $\left(\X'\X\right)^{-1}$ with strong (but not perfect) collinearity is numerically unstable, and tends to magnify rounding errors (think of dividing by a number very close to, but not equal to zero).  Geometrically, the "plane" that we are trying to fit to the cloud of data points is not well anchored.  It is unstable, in the sense that small changes in the data can have large impacts on the estimated regression coefficients.   -->
 
 The usual guidance is that collinearity makes the estimated regression coefficients unreliable or unstable, in the sense that small changes in the data set can trigger large changes in the model fit (@bowerman1990linear).  This sensitivity to small changes makes it difficult, if not impossible, to have confidence in our inferences about the estimated partial regression coefficients. 
 
@@ -782,7 +782,9 @@ Next, we can find the variance of $\vecbhat$ using a result for the variance of 
 	& = & \sigma^2_{\varepsilon} \left(\X'\X \right)^{-1} \X' \X \left(\X'\X \right)^{-1} \\
 	& = & \sigma^2_{\varepsilon} \left(\X'\X \right)^{-1}.
 \end{eqnarray*}
-The second equality above is a quadratic form, and uses the fact that $\left(\X'\X \right)^{-1}$ is symmetric (and thus equal to its transpose).  The final result, $\Var{\vecbhat} = \sigma^2_{\varepsilon} \left(\X'\X \right)^{-1}$, shows that the variances of the least squares estimates (and thus their standard errors) are proportional to the diagonal elements of $\left(\X'\X \right)^{-1}$.  This result will become important in multiple regression when we discuss multicollinearity.  
+The second equality above is a quadratic form, and uses the fact that $\left(\X'\X \right)^{-1}$ is symmetric (and thus equal to its transpose).  The final result, $\Var{\vecbhat} = \sigma^2_{\varepsilon} \left(\X'\X \right)^{-1}$, shows that the variances of the least squares estimates (and thus their standard errors) are proportional to the diagonal elements of $\left(\X'\X \right)^{-1}$.  
+
+<!-- This result is important for thinking about multicollinearity.  Mathematically, calculating $\left(\X'\X\right)^{-1}$ with strong (but not perfect) collinearity is numerically unstable, and tends to magnify rounding errors (think of dividing by a number very close to, but not equal to zero).  Geometrically, the "plane" that we are trying to fit to the cloud of data points is not well anchored.  It is unstable, in the sense that small changes in the data can have large impacts on the estimated regression coefficients.    -->
 
 Finally, let $\vecyhat$ be a vector of fitted values, i.e., $\vecyhat = \left[ \hat{y}_1, \hat{y_2}, \ldots, \hat{y_n} \right]'$.  We can find an experssion for $\vecyhat$ simply as:
 \begin{eqnarray*}

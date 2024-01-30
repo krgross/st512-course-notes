@@ -118,13 +118,6 @@ As a practical matter, these notes are prepared in `bookdown` (@xie2022bookdown)
 
 Advanced sections are indicated by section titles that begin with stars ($^\star$). Shorter sidebars for enrichment appear in <span style="color: gray;"> gray text </span> and are offset by horizontal rules (like the one following the acknowledgments).  This material may be skipped without loss. Sections that are in an early and rougher stage of development are indicated with section titles shown in *italics*.  
 
-<!-- This structure is inspired by @mascolell1995microeconomic's lovely text. -->
-
-<!-- ### Other resources {-} -->
-
-<!-- Want to consult a more polished resource?  (I wouldn't blame you.)   -->
-
-
 ### Acknowledgments and license {-}
 
 I am deeply indebted to the R community (@r) for their project which has done no less than revolutionize data analysis in our times.  I also thank the developers of `bookdown` for providing the platform for these notes (@xie2022bookdown).
@@ -261,8 +254,6 @@ For the BAC data, $s_{\varepsilon} = \sqrt{0.0004} = 0.020$.  This is a more use
 
 ---
 
-<!-- Some additional notation: In general, we'll use the notation $\mu \left(x\right)$ to denote the signal or mean component of the model.  In simple linear regression, the mean is simply a linear function of the predictor: $\mu \left(x\right) = \beta_0 +\beta_1 x$.  Although the notation $\mu \left(x\right)$ might seem like overkill for SLR, it will prove handy for more complicated models. -->
-
 ## Inference for the slope 
 
 To draw statistical inferences about the slope parameter $\beta_1$, we make the following assumptions:
@@ -274,10 +265,6 @@ To draw statistical inferences about the slope parameter $\beta_1$, we make the 
 3. Independence:  The error terms are independent of one another.
 
 4.  Normality.  The errors have a normal (i.e., bell-shaped, or Gaussian) distribution.
-
-<!-- 5. The predictors are measured without error. -->
-
-<!-- This fifth assumption is usually not listed as one of the assumptions in SLR, but it is useful to keep in mind.  The predictor and the response are *not* placed on equal footing.  -->
 
 Note that assumption number 1 deals with the mean component of the model, while assumptions 2--4 deal with the error component of the model.
 
