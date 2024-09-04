@@ -373,7 +373,11 @@ abline(v = conf.limits[2, ], col = "red", lty = "dotted")
 
 The values above could be found by consulting a table, or by using statistical software such as R.  Because the test of $H_0: \beta_1 = 0$ vs.\ $H_a: \beta_1 \ne 0$ is sufficiently common in SLR, most computer packages will do this calculation for us.  
   
-We'll sweep a lot of acrimonious debate about statistical hypothesis testing under the rug and simply say that some scientists like to make a decision about whether or not to "reject" the null hypothesis.  In contemporary practice, most scientists make these "reject" or "do not reject" decisions by comparing the $p$-value to the test's *significance level*, which is usually denoted by $\alpha$.  The significance level (or size) of a test is the frequency with which one would erroneously reject a true null hypothesis; you might also think of it as the allowable false-positive rate.  Consequently, tests with more exacting thresholds for statistical signficance require more evidence against the null to reject it.  Most scientists conventionally make reject / do not reject decisions with a significance level of $\alpha = .05$, but you are free to use whatever significance level you deem appropriate.  If $p \le \alpha$, we reject the null hypothesis; otherwise, we fail to reject it.  (Remember that we never `accept' the null hypothesis.  We only fail to reject it.)
+We'll sweep a lot of acrimonious debate about statistical hypothesis testing under the rug and simply say that some scientists like to make a decision about whether or not to "reject" the null hypothesis.  In contemporary practice, most scientists make these "reject" or "do not reject" decisions by comparing the $p$-value to the test's *significance level*, which is usually denoted by $\alpha$.  The significance level (or size) of a test is the frequency with which one would erroneously reject a true null hypothesis; you might also think of it as the allowable Type I (or false-positive) error rate.  Consequently, tests with more exacting thresholds for statistical signficance require more evidence against the null to reject it.  Most scientists conventionally make reject / do not reject decisions with a significance level of $\alpha = .05$, but you are free to use whatever significance level you deem appropriate.  If $p \le \alpha$, we reject the null hypothesis; otherwise, we fail to reject it.  (Remember that we never `accept' the null hypothesis.  We only fail to reject it.)
+
+Of course, the Type I (false positive) error rate is only one side of the coin.  In a perfect world, we want to balance the Type I error rate against the so-called Type II error rate, which is the probability of rejecting a false null hypothesis. More informally, we might think of the Type II error rate as the ``false negative'' error rate, if the null hypothesis corresponds to a statement of no effect as it usually does.  In practice, it is usually easiest to strike this balance by specifying the Type I error rate and letting the Type II error rate fall where it may.  This is because specifying the TyPe I error rate is as easy as choosing it.  Determining the Type II error rate, on the other hand, entails a more involved calculation that usually depends on quantities that we don't even know.  For more on the Type II error rate, see the subsequent discussion on [statistical power](#powerSLR).
+
+
 
 Although it is rare, we can also entertain so-called 'one-sided' alternative hypotheses. For example, suppose that we were uninterested in the (somewhat nonsensical) possibility that the numbers of beers consumed decreased BAC, and only were interested in measuring the evidence that the numbers of beers consumed increases BAC.  To do so, we might test the same null hypothesis $H_0: \beta_1 \leq 0$ vs. the one-sided alternative $H_a: \beta_1 > 0$.  To conduct this test, the test statistic is still
 $$
@@ -383,13 +387,13 @@ However, because the alternative hypothesis is one-sided, to calculate a $p$-val
 $$
 p=\Pr{ t_{14} >7.48} =1.5\times 10^{-6} 
 $$ 
-We would then reject $H_0: \beta_1 = 0$ in favor of the one-sided alternative $H_a: \beta_1 > 0$ at the $\alpha = .05$ significance level.  
+We would then reject $H_0: \beta_1 \leq 0$ in favor of the one-sided alternative $H_a: \beta_1 > 0$ at the $\alpha = .05$ significance level.  
  
 Finally, although it doesn't make much sense in terms of what we know about alcohol, we could consider testing $H_0: \beta_1 \geq 0$ vs. the one-sided alternative $H_a: \beta_1 < 0$.  Again, the test statistic is the same ($t$ = 7.48), but now evidence against the null and in favor of the alternative is provided by negative values of the test statistic, so the p-value is the probability of observing a test statistic *less* than 7.48, i.e.,  
 $$
 p=\Pr{ t_{14} < 7.48} = 1 - \Pr{ t_{14} > 7.48} \approx 0.9999.
 $$
-Thus, there is no evidence that would allow us to reject $H_0: \beta_1 = 0$ in favor of the one-sided alternative $H_a: \beta_1 < 0$.
+Thus, there is no evidence that would allow us to reject $H_0: \beta_1 \geq 0$ in favor of the one-sided alternative $H_a: \beta_1 < 0$.
 
 One final note: Although it is rarely done, there is no reason why we must restrict ourselves to testing  $H_0: \beta_1 = 0$.  We could in fact test any null hypothesis.  For example, suppose conventional wisdom held that each additional beer consumed increased BAC by 0.02, and we were interested in asking if these data contain evidence that the conventional wisdom is false.  Then we could test  $H_0: \beta_1 = 0.02$ vs.\ $H_a: \beta_1 \ne 0.02$, although we have to calculate the test statistic and $p$-value manually instead of relying on computer output:
 \begin{align*}
@@ -694,9 +698,9 @@ Regression models can be used both for observational and experimental data.  In 
  
 Once the values of the predictor to be included in the experiment have been chosen, these values should be randomly assigned to the experimental units.  Note that randomization does *not* require randomly choosing the values of the predictor to be included in the experiment!
 
-### Power
+### Power {#powerSLR}
 
-In statistical hypothesis testing, *power* refers to the probability of rejecting a false null hypothesis.  It is equal to one minus the Type II (false negative) error rate. For example, if the type II error rate is 40\%, then the power is 1- 40\% = 60\%. All else equal, we favor designs with more power as opposed to less.
+In statistical hypothesis testing, *power* refers to the probability of rejecting a false null hypothesis.  It is equal to one minus the Type II (false negative) error rate. For example, if the type II error rate is 40\%, then the power is $100\% - 40\% = 60\%$. All else equal, we favor designs with more power as opposed to less.
 
 Power calculations are typically used to provide a rough sense of the appropriate sample size for a regression study.  Unfortunately, power depends on several factors, many of which are unknown prior to conducting an experiment.  Thus, when calculating power, usually the best that one can do is to make educated guesses about the values of the inputs on which the power depends.  For this reason, power calculations are better regarded as rough guides to sample size.
 
@@ -707,11 +711,11 @@ For the usual SLR test of $H_0: \beta_1 = 0$ vs. $H_a: \beta_1 \ne 0$, power dep
 * the magnitude of the residual variance, $\sigma^2_\varepsilon$. Larger values of $\sigma^2_\varepsilon$ give less power.
 * the acceptable Type I (false positive) error rate, $\alpha$.  Greater tolerance for Type I errors gives greater power (why?).
 
-Typically, a power calculation for SLR involves specifying best guesses for $\beta_1$ and $\sigma^2_\varepsilon$, determining the allowable type I error rate $\alpha$, and then finding the sample size needed to achieve a minimal acceptable power.  The internet contains a variety of power calculators for simple regression. Here's an example using the `pwrss.f.reg` function found in the `pwrss` package in `R`.  The code here uses the fact that in SLR, the usual test of $H_0: \beta_1 = 0$ vs. $H_a: \beta_1 \ne 0$ is equivalent to a test of $H_0: R^2 = 0$ vs. $H_a: R^2 > 0$.  Conveniently, when we specify the test in terms of $R^2$, we don't need to specify both $\beta_1$ and $\sigma^2_\varepsilon$; instead, we only need to specify out best guess for $R^2$.  The calculation below shows the sample size needed to achieve 80\% power in a SLR when $R^2=0.3$ and $\alpha=0.05$.  
+Typically, a power calculation for SLR involves specifying best guesses for $\beta_1$ and $\sigma^2_\varepsilon$, determining the allowable type I error rate $\alpha$, and then finding the sample size needed to achieve a minimal acceptable power.  The internet contains a variety of power calculators for simple regression. Here's an example using the `pwrss.f.reg` function found in the `pwrss` package in `R`.  The code here uses the fact that in SLR the usual test of $H_0: \beta_1 = 0$ vs. $H_a: \beta_1 \ne 0$ is equivalent to a test of $H_0: R^2 = 0$ vs. $H_a: R^2 > 0$.  Conveniently, when we specify the test in terms of $R^2$, we don't need to specify both $\beta_1$ and $\sigma^2_\varepsilon$; instead, we only need to specify out best guess for $R^2$.  The calculation below shows the sample size needed to achieve 80\% power in a SLR when $R^2=0.3$ and $\alpha=0.05$.  
 
-Note that the function `pwrss.f.reg` is built for multiple regression models that can include several predictor variables.  The argument `k` in the function call indicates the number of predictor variables; in SLR, $k=1$ because there is a single predictor.  
+Note that the function `pwrss.f.reg` is built for multiple regression models that can include several predictor variables.  The argument `k` in the function call indicates the number of predictor variables; in SLR, $k=1$ because there is a single predictor.^[Actually, `pwrss::pwrss.f.reg` computes the power of the model-utility test. Later, we will see that in the context of SLR this test  is equivalent to the test of $H_0: \beta_1 = 0$ vs. $H_a: \beta_1 \ne 0$.]  
 
-```{r}
+```{r example power calculation}
 pwrss::pwrss.f.reg(r2 = 0.3, k = 1, power = 0.8, alpha = 0.05)
 ```
 
@@ -719,7 +723,7 @@ We see that we would need a sample size of $n=21$ to achieve the desired power.
 
 The graph below shows how the power is related to sample size when $R^2 = 30\%$ and when $R^2 = 60\%$.
 
-```{r echo = FALSE}
+```{r power curves, echo = FALSE}
 nVals <- 5:40
 rsqVals <- c(0.3, 0.6)
 powerVals <- matrix(NA, nrow = length(nVals), ncol = length(rsqVals))
@@ -737,7 +741,7 @@ legend("bottomright", leg = c("R2 = 0.6", "R2 = 0.3"), pch = 16, col = c("red", 
 
 The plot below shows the power as a function of $R^2$ for several sample sizes.
 
-```{r echo = FALSE}
+```{r more power curves, echo = FALSE}
 nVals <- c(5, 20, 50)
 rsqVals <- seq(from = 0, to = 0.99, by = 0.01)
 powerVals <- matrix(NA, nrow = length(nVals), ncol = length(rsqVals))

@@ -238,7 +238,7 @@ We've taken the above calculations slowly so that we can understand their logic.
 anova(reduced.model, full.model)
 ```
 
-### Model utility tests
+### Model utility test {#model utility test}
 
 The test that we have just conducted for the BAC data turns out to be a type of $F$-test called the *model utility test*.  In general, with the general regression model
 \[

@@ -425,7 +425,7 @@ anova(reduced.model, full.model)
 ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 ```
 
-### Model utility tests
+### Model utility test {#model utility test}
 
 The test that we have just conducted for the BAC data turns out to be a type of $F$-test called the *model utility test*.  In general, with the general regression model
 \[

@@ -18,6 +18,8 @@ diagnostic-plots
 consequences-of-violating-model-assumptions-and-possible-fixes
 prediction-with-regression-models
 regression-design
+choice-of-predictor-values
+powerSLR
 centering-the-predictor
 multiple-regression
 multiple-regression-basics
@@ -29,7 +31,7 @@ statistical-inference-for-partial-regression-coefficients
 prediction
 F-test
 basic-machinery
-model-utility-tests
+model-utility-test-model-utility-test
 categorical-predictors
 regression-interactions
 collinearity
@@ -114,5 +116,3 @@ latin-squares-designs
 split-plot-designs
 denominator-degrees-of-freedom-in-split-plot-designs-and-the-satterthwaite-approximation
 repeated-measures
-choice-of-predictor-values
-power
