@@ -16,7 +16,7 @@ Before proceeding, a historical note is worthwhile.  It used to be that polynomi
 
 *Example.* In the cars data, the relationship between highway mpg and vehicle weight is clearly non-linear:
 
-```r
+``` r
 cars <- read.table("data/cars.txt", head = T, stringsAsFactors = T)
 with(cars, plot(mpghw ~ weight, xlab = "Vehicle weight (lbs)", ylab = "Highway mpg"))
 ```
@@ -25,7 +25,7 @@ with(cars, plot(mpghw ~ weight, xlab = "Vehicle weight (lbs)", ylab = "Highway m
 
 To fit a quadratic model, we could manually create a predictor equal to weight-squared.  Or, in R, we could create the weight-squared predictor within the call to "lm" by using the following syntax:
 
-```r
+``` r
 quad <- lm(mpghw ~ weight + I(weight^2), data = cars)
 summary(quad)
 ```
@@ -57,7 +57,7 @@ However, in the context of the quadratic model, the test of $H_0$: $\beta_1=0$ v
 
 If a quadratic model is good, will the cubic model $y=\beta_0 +\beta_1 x+\beta_2 x^2 +\beta_3 x^{3} +\varepsilon$ be even better? Let's see:
 
-```r
+``` r
 cubic <- lm(mpghw ~ weight + I(weight^2) + I(weight^3), data = cars)
 summary(cubic)
 ```
@@ -91,7 +91,7 @@ At this point, you might wonder if we are limited only to comparing models of ad
 
 Even though as cubic model does not offer a significantly better fit than a quadratic model, we have not necessarily ruled out the possibility that a higher-order polynomial model might provide a significantly better fit.  However, higher-order polynomials (beyond a cubic) are typically difficult to justify on scientific grounds, and offend our sense of parsimony.  Plus, a plot of the quadratic model and the associated residuals suggest that a quadratic model captures the trend in the data well:
 
-```r
+``` r
 with(cars, plot(mpghw ~ weight, xlab = "Vehicle weight (lbs)", ylab = "Highway mpg"))
   
 quad <- with(cars, lm(mpghw ~ weight + I(weight^2)))
@@ -104,7 +104,7 @@ curve(quad.fit, from = min(cars$weight), to = max(cars$weight), add = TRUE, col 
 
 <img src="03-NonlinearRegression_files/figure-html/unnamed-chunk-4-1.png" width="480" style="display: block; margin: auto;" />
 
-```r
+``` r
 plot(x = fitted(quad), y = resid(quad), xlab = "Fitted values", ylab = "Residuals")
 abline(h = 0, lty = "dashed")
 ```
@@ -137,7 +137,7 @@ Today, software is readily available to fit non-linear models to data using the 
 
 *Ex. Puromycin.*  This example is taken directly from the text \textit{Nonlinear regression analysis and its applications}, by D.M. Bates and D.G. Watts @bates1988nonlinear.  The data themselves are from Treloar (1974, MS Thesis, Univ of Toronto), who studied the relationship between the velocity of an enzymatic reaction (the response, measured in counts / minute$^2$) vs. the concentration of a particular substrate (the predictor, measured in parts per million).  The experiment was conducted in the presence of the puromycin Puromycin.  The data are shown below.
 
-```r
+``` r
 puromycin <- read.table("data/puromycin.txt", head = T, stringsAsFactors = T)
 with(puromycin, plot(velocity ~ conc, xlab = "concentration", ylab = "velocity"))
 ```
@@ -162,7 +162,7 @@ While we can trust that the numerical minimization routine implemented by R or S
 
 Equipped with our choice of starting values, we are ready to find the least-squares estimates using `nls`:
 
-```r
+``` r
 fm1 <- nls(velocity ~ theta1 * conc / (theta2 + conc), data = puromycin, 
              start = list(theta1 = 200, theta2 = 0.1))
 summary(fm1)
@@ -193,7 +193,7 @@ The last portion of the output from nls tells us about the performance of the nu
 
 We can examine the model fit by overlaying a fitted curve:
 
-```r
+``` r
 with(puromycin, plot(velocity ~ conc, xlab = "concentration", ylab = "velocity"))
 mm.fit <- function(x) (212.7 * x) / (0.06412 + x)
 curve(mm.fit, from = min(puromycin$conc), to = max(puromycin$conc), col = "red", add = TRUE)
@@ -203,7 +203,7 @@ curve(mm.fit, from = min(puromycin$conc), to = max(puromycin$conc), col = "red",
 
 It is instructive to compare the fit of this non-linear model with the fit from a few polynomial regressions.  Neither the quadratic nor the cubic models fits very well in this case.  Polynomial models often have a difficult time handling a data set with an asymptote.  In this case, the Michaelis-Menten model clearly seems preferable.
 
-```r
+``` r
 quad <- lm(velocity ~ conc + I(conc^2), data = puromycin)
 cubic <- lm(velocity ~ conc + I(conc^2) + I(conc^3), data = puromycin)
 
@@ -231,7 +231,7 @@ Sometimes, all we want to do is to generate a curve that characterizes the relat
 "Loess" is an acronym for [lo]cal regr[ess]ion.  Nomenclature can be a bit frustrating with loess models. As we will see later, some versions of loess models use weighted least squares instead of ordinary least squares, and are called "lowess" models to emphasize the use of weighted least squares.   However, the basic `R` routine for fitting lo(w)ess models is called `loess`, but uses the weighted least-squares fitting with its default factory settings.  We will illustrate loess smoothers with the bioluminescence data found in the ISIT data set.  These data can be found by visiting the webpage for the book "Mixed Effects Models and Extensions in Ecology with R" by Zuur et al. (@zuur2009mixed).  
 
 
-```r
+``` r
 ## download the data from the book's website
 
 isit <- read.table("data/ISIT.txt", head = T)
@@ -252,7 +252,7 @@ with(st16, plot(sources ~ depth))
 Fit a loess smoother using the factory settings:
 
 
-```r
+``` r
 st16.lo <- loess(sources ~ depth, data = st16)
 summary(st16.lo)
 ```
@@ -278,7 +278,7 @@ summary(st16.lo)
 
 Plot the fit, this takes a little work
 
-```r
+``` r
 depth.vals <- with(st16, seq(from   = min(depth), 
                              to     = max(depth), 
                              length = 100))
@@ -306,7 +306,7 @@ lines(x   = depth.vals,
 
 Examine the residuals:
 
-```r
+``` r
 ## see what the fit returns; maybe the residuals are already there
 
 names(st16.lo)  # they are!
@@ -318,7 +318,7 @@ names(st16.lo)  # they are!
 ## [13] "call"      "terms"     "xnames"    "x"         "y"         "weights"
 ```
 
-```r
+``` r
 plot(st16.lo$residuals ~ st16$depth)
 abline(h = 0, lty = "dotted")
 ```
@@ -328,7 +328,7 @@ abline(h = 0, lty = "dotted")
 Let's look at how changing the span changes the fit.  We'll write a custom function to fit a LOESS curve, and then call the function with various values for the span.
 
 
-```r
+``` r
 PlotLoessFit <- function(x, y, return.fit = FALSE, ...){
   
   # Caluclates a loess fit with the 'loess' function, and makes a plot
@@ -372,19 +372,19 @@ PlotLoessFit <- function(x, y, return.fit = FALSE, ...){
 Now we'll call the function several times, each time chanigng the value of the `span` argument to the `loess` function:
 
 
-```r
+``` r
 PlotLoessFit(x = st16$depth, y = st16$sources, span = 0.5)
 ```
 
 <img src="03-NonlinearRegression_files/figure-html/unnamed-chunk-14-1.png" width="480" style="display: block; margin: auto;" />
 
-```r
+``` r
 PlotLoessFit(x = st16$depth, y = st16$sources, span = 0.25)
 ```
 
 <img src="03-NonlinearRegression_files/figure-html/unnamed-chunk-14-2.png" width="480" style="display: block; margin: auto;" />
 
-```r
+``` r
 PlotLoessFit(x = st16$depth, y = st16$sources, span = 0.1)
 ```
 
@@ -393,7 +393,7 @@ PlotLoessFit(x = st16$depth, y = st16$sources, span = 0.1)
 Let's try a loess fit with a locally linear regression:
 
 
-```r
+``` r
 PlotLoessFit(x = st16$depth, y = st16$sources, span = 0.25, degree = 1)
 ```
 
@@ -413,7 +413,7 @@ The `s()` component of the model formula designates a spline, and specifies deta
 In any case, we'll fit a regression spline with two knots:
 
 
-```r
+``` r
 library(mgcv)
 ```
 
@@ -422,10 +422,10 @@ library(mgcv)
 ```
 
 ```
-## This is mgcv 1.9-0. For overview type 'help("mgcv-package")'.
+## This is mgcv 1.9-1. For overview type 'help("mgcv-package")'.
 ```
 
-```r
+``` r
 st16.rspline <- mgcv::gam(sources ~ s(depth, k = 6, fx = TRUE), data = st16)
 plot(st16.rspline, se = TRUE)
 ```
@@ -436,7 +436,7 @@ Note that the plot includes only the portion of the model attributable to the co
 
 The plot shows only the spline component, which thus does not include the intercept. To visualize the fit, we'll need to do a bit more work.
 
-```r
+``` r
 with(st16, plot(sources ~ depth))  
 
 st16.fit <- predict(st16.rspline, 
@@ -459,7 +459,7 @@ We see that this particular fit is not flexible enough to capture the trend in l
 Let's take a look at the information produced by a call to `summary`:
 
 
-```r
+``` r
 summary(st16.rspline)
 ```
 
@@ -491,7 +491,7 @@ This summary requires a bit more explanation as well.  In this GAM, the spline c
 
 Now we'll fit and plot a smoothing spline.  A smoothing spline differs from a regression spline by using generalized cross-validation to determine the appropriate smoothness.
 
-```r
+``` r
 st16.spline <- mgcv::gam(sources ~ s(depth), data = st16)
 plot(st16.spline, se = TRUE)  # note that the plot does not include the intercept
 ```
@@ -501,7 +501,7 @@ plot(st16.spline, se = TRUE)  # note that the plot does not include the intercep
 Again, we make a plot that includes both the points and the fit
 
 
-```r
+``` r
 with(st16, plot(sources ~ depth))  
 
 st16.fit <- predict(st16.spline, 
@@ -521,7 +521,7 @@ lines(x = depth.vals, y = st16.fit$fit - 2 * st16.fit$se.fit, lty = "dashed")
 
 Let's ask for a summary:
 
-```r
+``` r
 summary(st16.spline)
 ```
 
@@ -554,7 +554,7 @@ Note especially the `edf` component in the "Approximate significance of smooth t
 Find the AIC for the smoothing spline fit:
 
 
-```r
+``` r
 AIC(st16.spline)
 ```
 
@@ -563,7 +563,7 @@ AIC(st16.spline)
 ```
 Here's a small detail.  Notice that the syntax of the call to `predict` is slightly different when making a prediction for a `loess`  object vs.\ making a prediction for a `gam` object (which the spline fit is).  For a call to `predict` with a `loess` object, the new predictor values can be provided in the form of a vector.  So, we were able to use
 
-```r
+``` r
 depth.vals <- with(st16, seq(from   = min(depth), 
                              to     = max(depth), 
                              length = 100))
@@ -576,7 +576,7 @@ st16.fit <- predict(object  = st16.lo,
 However, for a call to `predict` with a `gam` object, the new predictor values must be provided in the form of a new data frame, with variable names that match the variables in the `gam` model.  So, to get predicted values for the spline fit, we needed to use the more cumbersome
 
 
-```r
+``` r
 depth.vals <- with(st16, seq(from   = min(depth), 
                              to     = max(depth), 
                              length = 100))
@@ -607,7 +607,7 @@ We will illustrate additive modeling using the bird data found in Appendix A of 
 We first read the data and perform some light exploratory analysis and housekeeping.
 
 
-```r
+``` r
 rm(list = ls())
 require(mgcv)
 
@@ -633,7 +633,7 @@ summary(bird)
 ##  Max.   :4426.0   Max.   :1976   Max.   :5.000   Max.   :260.0
 ```
 
-```r
+``` r
 # get rid of the 'Site' variable; it is redundant with the row label
 
 bird <- bird[, -1]
@@ -673,7 +673,7 @@ summary(bird)
 
 Our first attempt at a GAM will entertain smoothing splines for all of the continuous predictors in the model.  We will use a linear term for GRAZE because there are too few unique values to support a smooth term:
 
-```r
+``` r
 bird.gam1 <- mgcv::gam(ABUND ~ s(L.AREA) + s(L.DIST) + s(L.LDIST) + s(YR.ISOL) + GRAZE + s(ALT), data = bird)
 
 summary(bird.gam1)
@@ -711,7 +711,7 @@ summary(bird.gam1)
 
 The output reports the partial regression coefficient for the lone quantitative predictor GRAZE, and approximate significance tests for the smooth terms for each of the other predictors.  We can visualize these smooth terms with a call to `plot`:
 
-```r
+``` r
 plot(bird.gam1)
 ```
 
@@ -719,7 +719,7 @@ plot(bird.gam1)
 
 In the interest of time, we take a casual approach to variable selection here.  We'll drop smooth terms that are clearly not significant to obtain:
 
-```r
+``` r
 bird.gam2 <- mgcv::gam(ABUND ~ s(L.AREA) + GRAZE, data = bird)
 summary(bird.gam2)
 ```
@@ -749,7 +749,7 @@ summary(bird.gam2)
 ## GCV = 39.992  Scale est. = 36.932    n = 56
 ```
 
-```r
+``` r
 plot(bird.gam2)
 ```
 
@@ -757,7 +757,7 @@ plot(bird.gam2)
 
 Note that the GRAZE variable is currently treated as a numerical predictor.  We'll try fitting a model with GRAZE as a factor.  First we'll create a new variable that treats GRAZE as a factor.  We'll use the `summary` command to confirm that the new variable fGRAZE is indeed a factor.
 
-```r
+``` r
 bird$fGRAZE <- as.factor(bird$GRAZE)
 summary(bird)
 ```
@@ -781,14 +781,14 @@ summary(bird)
 
 Now we'll proceed to fit the model
 
-```r
+``` r
 bird.gam3 <- gam(ABUND ~ s(L.AREA) + fGRAZE, data = bird)
 plot(bird.gam3)
 ```
 
 <img src="03-NonlinearRegression_files/figure-html/unnamed-chunk-30-1.png" width="480" style="display: block; margin: auto;" />
 
-```r
+``` r
 summary(bird.gam3)
 ```
 
@@ -823,7 +823,7 @@ summary(bird.gam3)
 To formally compare the models with GRAZE as a numerical vs.\ categorical predictor, we'll have to use AIC.  We can't use an $F$-test here because we have used smoothing splines to capture the effect of L.AREA.  Thus, the models are not nested.  (If we had used regression splines for L.AREA, then the models would have been nested.)  We can extract the AICs for these models by a simple call to the `AIC` function.
 
 
-```r
+``` r
 AIC(bird.gam2)
 ```
 
@@ -831,7 +831,7 @@ AIC(bird.gam2)
 ## [1] 367.1413
 ```
 
-```r
+``` r
 AIC(bird.gam3)
 ```
 
@@ -846,7 +846,7 @@ AIC(bird.gam3)
 <!-- ``` -->
 We can see the contrasts used to incorporate the factor fGRAZE in the model by a call to `contrasts`:
 
-```r
+``` r
 with(bird, contrasts(fGRAZE))
 ```
 
@@ -863,7 +863,7 @@ The output here is somewhat opaque because the levels of fGRAZE are 1, 2, $\ldot
 
 Fit an additive model with only a smooth effect of L.AREA, in order to show residuals vs.\ GRAZE:
 
-```r
+``` r
 bird.gam4 <- gam(ABUND ~ s(L.AREA), data = bird)
 
 plot(x = bird$GRAZE, y = bird.gam4$residuals)
@@ -876,7 +876,7 @@ Both the plot and the model output suggest that the effect of grazing is primari
 
 To conclude, we'll conduct a formal test of whether the model with GRAZE as a factor provides a significantly better fit than the model with a linear effect of GRAZE.  In this case, we have to use regression splines for the smooth effect of L.AREA.  We'll use regression "splines" without any internal knots, (which are actually not splines at all, just a cubic trend) because the effect of log area seems to be reasonably well captured by a cubic trend anyway:
 
-```r
+``` r
 bird.gam5 <- gam(ABUND ~ s(L.AREA, k = 4, fx = TRUE) + GRAZE, data = bird)
 bird.gam6 <- gam(ABUND ~ s(L.AREA, k = 4, fx = TRUE) + fGRAZE, data = bird)
 

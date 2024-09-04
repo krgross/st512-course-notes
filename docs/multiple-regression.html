@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>Chapter 2 Multiple regression | ST 512 course notes</title>
   <meta name="description" content="Course notes for ST 512, Statistical Methods for Researchers II." />
-  <meta name="generator" content="bookdown 0.36 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.40 and GitBook 2.6.7" />
 
   <meta property="og:title" content="Chapter 2 Multiple regression | ST 512 course notes" />
   <meta property="og:type" content="book" />
@@ -23,7 +23,7 @@
 <meta name="author" content="Kevin Gross" />
 
 
-<meta name="date" content="2024-01-30" />
+<meta name="date" content="2024-09-04" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -56,7 +56,7 @@
 
 <style type="text/css">
 pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span { line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode > span { color: inherit; text-decoration: inherit; }
@@ -128,6 +128,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 div.csl-bib-body { }
 div.csl-entry {
   clear: both;
+  margin-bottom: 0em;
 }
 .hanging div.csl-entry {
   margin-left:2em;
@@ -200,7 +201,8 @@ div.csl-indent {
 </ul></li>
 <li class="chapter" data-level="2.2" data-path="multiple-regression.html"><a href="multiple-regression.html#F-test"><i class="fa fa-check"></i><b>2.2</b> <span class="math inline">\(F\)</span>-tests for several regression coefficients</a>
 <ul>
-<li class="chapter" data-level="2.2.1" data-path="multiple-regression.html"><a href="multiple-regression.html#model-utility-tests"><i class="fa fa-check"></i><b>2.2.1</b> Model utility tests</a></li>
+<li class="chapter" data-level="2.2.1" data-path="multiple-regression.html"><a href="multiple-regression.html#basic-machinery"><i class="fa fa-check"></i><b>2.2.1</b> Basic machinery</a></li>
+<li class="chapter" data-level="2.2.2" data-path="multiple-regression.html"><a href="multiple-regression.html#model-utility-tests"><i class="fa fa-check"></i><b>2.2.2</b> Model utility tests</a></li>
 </ul></li>
 <li class="chapter" data-level="2.3" data-path="multiple-regression.html"><a href="multiple-regression.html#categorical-predictors"><i class="fa fa-check"></i><b>2.3</b> Categorical predictors</a></li>
 <li class="chapter" data-level="2.4" data-path="multiple-regression.html"><a href="multiple-regression.html#regression-interactions"><i class="fa fa-check"></i><b>2.4</b> Interactions between predictors</a></li>
@@ -603,6 +605,8 @@ Let’s entertain a model that uses all three predictors.</p>
 </div>
 <div id="F-test" class="section level2 hasAnchor" number="2.2">
 <h2><span class="header-section-number">2.2</span> <span class="math inline">\(F\)</span>-tests for several regression coefficients<a href="multiple-regression.html#F-test" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="basic-machinery" class="section level3 hasAnchor" number="2.2.1">
+<h3><span class="header-section-number">2.2.1</span> Basic machinery<a href="multiple-regression.html#basic-machinery" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>Consider a general multiple regression model with <span class="math inline">\(k\)</span> predictors:
 <span class="math display">\[
 y=\beta_0 +\beta_1 x_1 +\beta_2 x_2 +...+\beta_k x_k +\varepsilon
@@ -647,8 +651,9 @@ F=\frac{\left[0.0292 - 0.0014 \right]/\left[15 - 13 \right]}{{0.0014 / 13 }} = 1
 ## 2     13 0.0014089  2  0.027816 128.33 2.756e-09 ***
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
-<div id="model-utility-tests" class="section level3 hasAnchor" number="2.2.1">
-<h3><span class="header-section-number">2.2.1</span> Model utility tests<a href="multiple-regression.html#model-utility-tests" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+</div>
+<div id="model-utility-tests" class="section level3 hasAnchor" number="2.2.2">
+<h3><span class="header-section-number">2.2.2</span> Model utility tests<a href="multiple-regression.html#model-utility-tests" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>The test that we have just conducted for the BAC data turns out to be a type of <span class="math inline">\(F\)</span>-test called the <em>model utility test</em>. In general, with the general regression model
 <span class="math display">\[
 y=\beta_0 +\beta_1 x_1 +\beta_2 x_2 +...+\beta_k x_k +\varepsilon
@@ -1002,7 +1007,6 @@ We then fit the model with the interaction, using the centered predictors instea
 <p>The multiple regression model suggests that if we compare cigarettes with the same nicotine content (and weight), then there will be a (strongly) significant statistical association between tar content and carbon monoxide content. On the other hand, if we compare cigarettes with the same tar content (and weight), then there will not be a significant association between the nicotine content and the carbon monoxide content. This seems like a strong distinction. Do we trust it?</p>
 <p>The issue here is that tar and nicotine content are strongly correlated with one another, raising legitimate questions about whether we can separate the associations between one of the predictors and the response from the other. Indeed, in light of the strong correlation between tar content and nicotine content, does our comparative interpretation of the regression coefficients even make sense? If two cigarettes have the same nicotine content and weight, then by how much can their tar content differ?</p>
 <p>This is the issue of collinearity. Perfect collinearity occurs when two predictors are perfectly correlated with one another. Perfect collinearity is rare (unless the number of predictors exceeds the number of data points, in which case it is inevitable). However, if predictors are strongly (but nor perfectly) correlated, trouble still lurks. Indeed, collinearity is not just caused by strong correlations between pairs of predictors: It can also be caused by strong correlations between weighted sums of predictors. For this reason, when there are many predictors relative to the number of data points, collinearity is nearly inevitable.</p>
-<!-- Mathematically, calculating $\left(\X'\X\right)^{-1}$ with strong (but not perfect) collinearity is numerically unstable, and tends to magnify rounding errors (think of dividing by a number very close to, but not equal to zero).  Geometrically, the "plane" that we are trying to fit to the cloud of data points is not well anchored.  It is unstable, in the sense that small changes in the data can have large impacts on the estimated regression coefficients.   -->
 <p>The usual guidance is that collinearity makes the estimated regression coefficients unreliable or unstable, in the sense that small changes in the data set can trigger large changes in the model fit (<span class="citation">Bowerman and O’Connell (<a href="#ref-bowerman1990linear">1990</a>)</span>). This sensitivity to small changes makes it difficult, if not impossible, to have confidence in our inferences about the estimated partial regression coefficients.</p>
 <p>Collinearity is not a problem for prediction, however. As <span class="citation">Quinn and Keough (<a href="#ref-quinn2002experimental">2002</a>)</span> (p. 127) say:</p>
 <blockquote>
@@ -1314,7 +1318,8 @@ Next, we can find the variance of <span class="math inline">\(\hat{\mathbf{\beta
     &amp; = &amp; \sigma^2_{\varepsilon} \left(\mathbf{X}&#39;\mathbf{X}\right)^{-1} \mathbf{X}&#39; \mathbf{X}\left(\mathbf{X}&#39;\mathbf{X}\right)^{-1} \\
     &amp; = &amp; \sigma^2_{\varepsilon} \left(\mathbf{X}&#39;\mathbf{X}\right)^{-1}.
 \end{eqnarray*}\]</span>
-The second equality above is a quadratic form, and uses the fact that <span class="math inline">\(\left(\mathbf{X}&#39;\mathbf{X}\right)^{-1}\)</span> is symmetric (and thus equal to its transpose). The final result, <span class="math inline">\(\mbox{Var}\left(\hat{\mathbf{\beta}}\right) = \sigma^2_{\varepsilon} \left(\mathbf{X}&#39;\mathbf{X}\right)^{-1}\)</span>, shows that the variances of the least squares estimates (and thus their standard errors) are proportional to the diagonal elements of <span class="math inline">\(\left(\mathbf{X}&#39;\mathbf{X}\right)^{-1}\)</span>. This result will become important in multiple regression when we discuss multicollinearity.</p>
+The second equality above is a quadratic form, and uses the fact that <span class="math inline">\(\left(\mathbf{X}&#39;\mathbf{X}\right)^{-1}\)</span> is symmetric (and thus equal to its transpose). The final result, <span class="math inline">\(\mbox{Var}\left(\hat{\mathbf{\beta}}\right) = \sigma^2_{\varepsilon} \left(\mathbf{X}&#39;\mathbf{X}\right)^{-1}\)</span>, shows that the variances of the least squares estimates (and thus their standard errors) are proportional to the diagonal elements of <span class="math inline">\(\left(\mathbf{X}&#39;\mathbf{X}\right)^{-1}\)</span>.</p>
+<!-- This result is important for thinking about multicollinearity.  Mathematically, calculating $\left(\X'\X\right)^{-1}$ with strong (but not perfect) collinearity is numerically unstable, and tends to magnify rounding errors (think of dividing by a number very close to, but not equal to zero).  Geometrically, the "plane" that we are trying to fit to the cloud of data points is not well anchored.  It is unstable, in the sense that small changes in the data can have large impacts on the estimated regression coefficients.    -->
 <p>Finally, let <span class="math inline">\(\mathbf{\hat{Y}}\)</span> be a vector of fitted values, i.e., <span class="math inline">\(\mathbf{\hat{Y}}= \left[ \hat{y}_1, \hat{y_2}, \ldots, \hat{y_n} \right]&#39;\)</span>. We can find an experssion for <span class="math inline">\(\mathbf{\hat{Y}}\)</span> simply as:
 <span class="math display">\[\begin{eqnarray*}
 \mathbf{\hat{Y}}&amp; = &amp; \mathbf{X}\hat{\mathbf{\beta}}\\
@@ -1327,7 +1332,7 @@ The matrix <span class="math inline">\(\mathbf{X}\left(\mathbf{X}&#39;\mathbf{X}
 </div>
 </div>
 <h3>Bibliography<a href="bibliography.html#bibliography" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<div id="refs" class="references csl-bib-body hanging-indent">
+<div id="refs" class="references csl-bib-body hanging-indent" entry-spacing="0">
 <div id="ref-berry2016p" class="csl-entry">
 Berry, Donald A. 2016. <span>“P-Values Are Not What They’re Cracked up to Be.”</span> <em>Online Commentary to ASA Statement on Statistical Significance and <span class="math inline">\(p\)</span>-Values.(doi: 10.1080/00031305.2016. 1154108)</em>.
 </div>

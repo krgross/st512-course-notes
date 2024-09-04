@@ -28,6 +28,7 @@ visualizing-a-multiple-regression-model
 statistical-inference-for-partial-regression-coefficients
 prediction
 F-test
+basic-machinery
 model-utility-tests
 categorical-predictors
 regression-interactions
@@ -113,3 +114,5 @@ latin-squares-designs
 split-plot-designs
 denominator-degrees-of-freedom-in-split-plot-designs-and-the-satterthwaite-approximation
 repeated-measures
+choice-of-predictor-values
+power

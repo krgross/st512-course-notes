@@ -63,7 +63,7 @@ This is a randomized complete block design (RCBD).   A RCBD consists of several 
 The classical way to analyze data from an RCBD is to include the block as an additional factor in the ANOVA, albeit a factor that is not engaged in interactions with the treatment factors.  For the grip strength data, we would treat "subject" (the person) as a blocking factor.
 
 
-```r
+``` r
 grip <- read.table("data/gripall-long.txt", head = T, stringsAsFactors = T)
 summary(grip)
 ```
@@ -79,7 +79,7 @@ summary(grip)
 ##  (Other):278
 ```
 
-```r
+``` r
 fm1 <- lm(strength ~ subject + hand, data = grip)
 anova(fm1)
 ```

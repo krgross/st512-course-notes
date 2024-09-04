@@ -312,9 +312,9 @@ t=\frac{\hat{\beta}_{1} -0}{s_{\hat{\beta }_{1} } } =\frac{\hat{\beta }_{1} }{s_
 $$ 
 In SLR, this test is so common that the value of the $t$-statistic is provided automatically by most statistical software packages, including R.   For the BAC data, the $t$-statistic associated with the test of $H_0: \beta_1 = 0$ vs.\ $H_a: \beta_1 \ne 0$ is $t = 7.48$.
 
-Values of the test statistic by themselves are not terribly enlightening.  Instead, we use the test statistic to find a $p$-value.  $P$-values are famously difficult to interpret, and those difficulties in interpretation have impeded their proper use.  In 2016, a blue-ribbon panel of experts were convened by the American Statistical Association (the leading professional organization for statisticians in the US) to take the remarkable step of issuing a policy statement regarding the use of $p$-values.  That statement (@wasserstein2016asa) defines a $p$-value as follows:  
->
-Informally, a $p$-value is the probability under a specified statistical model that a statistical summary of the data (e.g., the sample mean difference between two compared groups) would be equal to or more extreme than its observed value.
+Values of the test statistic by themselves are not terribly enlightening.  Instead, we use the test statistic to find a $p$-value.  $P$-values are famously difficult to interpret, and those difficulties in interpretation have impeded their proper use.  In 2016, a blue-ribbon panel of experts were convened by the American Statistical Association (the leading professional organization for statisticians in the US) to take the remarkable step of issuing a policy statement regarding the use of $p$-values.  That statement (@wasserstein2016asa) defines a $p$-value as follows: 
+
+> Informally, a $p$-value is the probability under a specified statistical model that a statistical summary of the data (e.g., the sample mean difference between two compared groups) would be equal to or more extreme than its observed value.
 
 (Bear in mind that this definition is the work of two dozen of the world's leading statisticians.)  
  
@@ -684,6 +684,8 @@ Regression (solid line), 95\% confidence intervals (dashed lines), and 95\% pred
 
 ## Regression design
 
+### Choice of predictor values
+
 Regression models can be used both for observational and experimental data.  In some experiments, the experimenter has control over the values of the predictor included in the experiment.  @gotelli2004primer (pp. 167-9) give the following guidelines for a regression design with a single predictor:
 
 1. Ensure that the range of values sampled for the predictor variable is large enough to capture the full range of responses by the response variable.
@@ -691,6 +693,68 @@ Regression models can be used both for observational and experimental data.  In 
 2. Ensure that the distribution of predictor values is approximately uniform within the sampled range.
  
 Once the values of the predictor to be included in the experiment have been chosen, these values should be randomly assigned to the experimental units.  Note that randomization does *not* require randomly choosing the values of the predictor to be included in the experiment!
+
+### Power
+
+In statistical hypothesis testing, *power* refers to the probability of rejecting a false null hypothesis.  It is equal to one minus the Type II (false negative) error rate. For example, if the type II error rate is 40\%, then the power is 1- 40\% = 60\%. All else equal, we favor designs with more power as opposed to less.
+
+Power calculations are typically used to provide a rough sense of the appropriate sample size for a regression study.  Unfortunately, power depends on several factors, many of which are unknown prior to conducting an experiment.  Thus, when calculating power, usually the best that one can do is to make educated guesses about the values of the inputs on which the power depends.  For this reason, power calculations are better regarded as rough guides to sample size.
+
+For the usual SLR test of $H_0: \beta_1 = 0$ vs. $H_a: \beta_1 \ne 0$, power depends on all of the following:
+
+* the sample size, $n$.  Larger sample sizes give greater power.
+* the size of the true slope $\beta_1$.  Values of $\beta_1$ further away from zero (that is, larger values of $|\beta_1|$) give greater power.  
+* the magnitude of the residual variance, $\sigma^2_\varepsilon$. Larger values of $\sigma^2_\varepsilon$ give less power.
+* the acceptable Type I (false positive) error rate, $\alpha$.  Greater tolerance for Type I errors gives greater power (why?).
+
+Typically, a power calculation for SLR involves specifying best guesses for $\beta_1$ and $\sigma^2_\varepsilon$, determining the allowable type I error rate $\alpha$, and then finding the sample size needed to achieve a minimal acceptable power.  The internet contains a variety of power calculators for simple regression. Here's an example using the `pwrss.f.reg` function found in the `pwrss` package in `R`.  The code here uses the fact that in SLR, the usual test of $H_0: \beta_1 = 0$ vs. $H_a: \beta_1 \ne 0$ is equivalent to a test of $H_0: R^2 = 0$ vs. $H_a: R^2 > 0$.  Conveniently, when we specify the test in terms of $R^2$, we don't need to specify both $\beta_1$ and $\sigma^2_\varepsilon$; instead, we only need to specify out best guess for $R^2$.  The calculation below shows the sample size needed to achieve 80\% power in a SLR when $R^2=0.3$ and $\alpha=0.05$.  
+
+Note that the function `pwrss.f.reg` is built for multiple regression models that can include several predictor variables.  The argument `k` in the function call indicates the number of predictor variables; in SLR, $k=1$ because there is a single predictor.  
+
+```{r}
+pwrss::pwrss.f.reg(r2 = 0.3, k = 1, power = 0.8, alpha = 0.05)
+```
+
+We see that we would need a sample size of $n=21$ to achieve the desired power.
+
+The graph below shows how the power is related to sample size when $R^2 = 30\%$ and when $R^2 = 60\%$.
+
+```{r echo = FALSE}
+nVals <- 5:40
+rsqVals <- c(0.3, 0.6)
+powerVals <- matrix(NA, nrow = length(nVals), ncol = length(rsqVals))
+
+for (i in seq(along = nVals)) {
+  for (j in seq(along = rsqVals)) {
+  powerVals[i, j] <- pwrss::pwrss.f.reg(r2 = rsqVals[j], k = 1, n = nVals[i], alpha = 0.05, verbose = F)$power
+  }
+}
+
+plot(powerVals[, 1] ~ nVals, xlab = "sample size, n", ylab = "Power", ylim = c(0, 1), type = "l", bty = "n", xaxs = "i", yaxs = "i")
+lines(powerVals[,2] ~ nVals, col = "red")
+legend("bottomright", leg = c("R2 = 0.6", "R2 = 0.3"), pch = 16, col = c("red", "black"), bty = "n")
+```
+
+The plot below shows the power as a function of $R^2$ for several sample sizes.
+
+```{r echo = FALSE}
+nVals <- c(5, 20, 50)
+rsqVals <- seq(from = 0, to = 0.99, by = 0.01)
+powerVals <- matrix(NA, nrow = length(nVals), ncol = length(rsqVals))
+
+for (i in seq(along = nVals)) {
+  for (j in seq(along = rsqVals)) {
+  powerVals[i, j] <- pwrss::pwrss.f.reg(r2 = rsqVals[j], k = 1, n = nVals[i], alpha = 0.05, verbose = F)$power
+  }
+}
+
+plot(powerVals[1, ] ~ rsqVals, xlab = expression(R^2), ylab = "Power", ylim = c(0, 1), xlim = c(0, 1), type = "l", bty = "n", xaxs = "i", yaxs = "i")
+lines(powerVals[2, ] ~ rsqVals, col = "blue")
+lines(powerVals[3, ] ~ rsqVals, col = "red")
+legend("bottomright", leg = c("n = 50", "n = 20", "n = 5"), pch = 16, col = c("red", "blue", "black"), bty = "n")
+```
+
+Why do all three curves intersect at the same point when $R^2 = 0$?  What is this value?
 
 ## $^\star$Centering the predictor {#centering-the-predictor}
 

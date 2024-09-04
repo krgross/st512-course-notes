@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>Chapter 5 One-factor ANOVA | ST 512 course notes</title>
   <meta name="description" content="Course notes for ST 512, Statistical Methods for Researchers II." />
-  <meta name="generator" content="bookdown 0.36 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.40 and GitBook 2.6.7" />
 
   <meta property="og:title" content="Chapter 5 One-factor ANOVA | ST 512 course notes" />
   <meta property="og:type" content="book" />
@@ -23,7 +23,7 @@
 <meta name="author" content="Kevin Gross" />
 
 
-<meta name="date" content="2024-01-30" />
+<meta name="date" content="2024-09-04" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -56,7 +56,7 @@
 
 <style type="text/css">
 pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span { line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode > span { color: inherit; text-decoration: inherit; }
@@ -128,6 +128,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 div.csl-bib-body { }
 div.csl-entry {
   clear: both;
+  margin-bottom: 0em;
 }
 .hanging div.csl-entry {
   margin-left:2em;
@@ -200,7 +201,8 @@ div.csl-indent {
 </ul></li>
 <li class="chapter" data-level="2.2" data-path="multiple-regression.html"><a href="multiple-regression.html#F-test"><i class="fa fa-check"></i><b>2.2</b> <span class="math inline">\(F\)</span>-tests for several regression coefficients</a>
 <ul>
-<li class="chapter" data-level="2.2.1" data-path="multiple-regression.html"><a href="multiple-regression.html#model-utility-tests"><i class="fa fa-check"></i><b>2.2.1</b> Model utility tests</a></li>
+<li class="chapter" data-level="2.2.1" data-path="multiple-regression.html"><a href="multiple-regression.html#basic-machinery"><i class="fa fa-check"></i><b>2.2.1</b> Basic machinery</a></li>
+<li class="chapter" data-level="2.2.2" data-path="multiple-regression.html"><a href="multiple-regression.html#model-utility-tests"><i class="fa fa-check"></i><b>2.2.2</b> Model utility tests</a></li>
 </ul></li>
 <li class="chapter" data-level="2.3" data-path="multiple-regression.html"><a href="multiple-regression.html#categorical-predictors"><i class="fa fa-check"></i><b>2.3</b> Categorical predictors</a></li>
 <li class="chapter" data-level="2.4" data-path="multiple-regression.html"><a href="multiple-regression.html#regression-interactions"><i class="fa fa-check"></i><b>2.4</b> Interactions between predictors</a></li>
@@ -948,7 +950,7 @@ Corrected Total             53     45759.33333
 Contrast                    DF     Contrast SS     Mean Square    F Value    Pr &gt; F
 B vs M, B vs P               2     17692.19510      8846.09755      16.07    &lt;.0001</code></pre>
 <p>The results of the test of <span class="math inline">\(H_0\)</span>: <span class="math inline">\(\theta_1 = \theta_2 = 0\)</span> are included in the portion of the output labeled ‘Contrast’. Note that, of course, the <span class="math inline">\(F\)</span>-test of <span class="math inline">\(H_0\)</span>: <span class="math inline">\(\theta_1 = \theta_2 = 0\)</span> yields exactly the same result as the <span class="math inline">\(F\)</span>-test of <span class="math inline">\(H_0\)</span>: <span class="math inline">\(\mu_1 = \mu_2 = \mu_3\)</span>, which should not surprise us.</p>
-<p>Let us collect what we have learned so far. With <span class="math inline">\(g\)</span> groups, the ANOVA <span class="math inline">\(F\)</span>-test that all the group means are equal, that is, of <span class="math inline">\(H_0\)</span>: <span class="math inline">\(\mu_1 = \mu_2 = \ldots = \mu_g\)</span> is equivalent to a test of <span class="math inline">\(g-1\)</span> linearly independent contrasts among the group means. In other words, the differences among <span class="math inline">\(g\)</span> group means are completely captured by <span class="math inline">\(g-1\)</span> linearly independent contrasts of those group means. Note that there are many possible sets of <span class="math inline">\(g-1\)</span> linearly independent contrasts that can be used to test the equality of group means. For example, in the hot-dog data, we could also define the contrasts
+<p>Let us collect what we have learned so far. With <span class="math inline">\(g\)</span> groups, the ANOVA <span class="math inline">\(F\)</span>-test that all the group means are equal, that is, of <span class="math inline">\(H_0\)</span>: <span class="math inline">\(\mu_1 = \mu_2 =  \ldots = \mu_g\)</span> is equivalent to a test of <span class="math inline">\(g-1\)</span> linearly independent contrasts among the group means. In other words, the differences among <span class="math inline">\(g\)</span> group means are completely captured by <span class="math inline">\(g-1\)</span> linearly independent contrasts of those group means. Note that there are many possible sets of <span class="math inline">\(g-1\)</span> linearly independent contrasts that can be used to test the equality of group means. For example, in the hot-dog data, we could also define the contrasts
 <span class="math display">\[\begin{eqnarray*}
     \theta_3 &amp; = &amp; \mu_2 - \mu_3 \\
     \theta_4 &amp; = &amp; \mu_1 - \frac{\mu_2 + \mu_3}{2}.
@@ -1497,7 +1499,7 @@ Corrected Total             19      4.15629685
 </div>
 </div>
 <h3>Bibliography<a href="bibliography.html#bibliography" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<div id="refs" class="references csl-bib-body hanging-indent">
+<div id="refs" class="references csl-bib-body hanging-indent" entry-spacing="0">
 <div id="ref-benjamini1995controlling" class="csl-entry">
 Benjamini, Yoav, and Yosef Hochberg. 1995. <span>“Controlling the False Discovery Rate: A Practical and Powerful Approach to Multiple Testing.”</span> <em>Journal of the Royal Statistical Society: Series B (Methodological)</em> 57 (1): 289–300.
 </div>

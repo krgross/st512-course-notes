@@ -12,7 +12,7 @@ Just as SLR was used to characterize the relationship between a single predictor
 
 *Example.*  In the BAC data, we also know each individual's weight and gender:
 
-```r
+``` r
 beer <- read.csv("data/beer2.csv", head = T, stringsAsFactors = T)
 head(beer)
 ```
@@ -28,7 +28,7 @@ head(beer)
 ```
 A plot of the residuals from the BAC vs. beers consumed model against weight strongly suggests that some of the variation in BAC is attributable to differences in weight:
 
-```r
+``` r
 fm1 <- with(beer, lm(BAC ~ beers))
 plot(x = beer$weight, y = resid(fm1), xlab = "weight", ylab = "residual")
 abline(h = 0, lty = "dotted")
@@ -66,7 +66,7 @@ SSE & = & \sum_{i=1}^n e_i^2 \\
 \end{eqnarray*}
 In R, we can fit this model by adding a new term to the right-hand side of the model formula in the call to the function 'lm':
 
-```r
+``` r
 fm2 <- lm(BAC ~ beers + weight, data = beer)
 summary(fm2)
 ```
@@ -146,7 +146,7 @@ Here's another example from the world of food science.  As cheese ages, various 
 
 Here is a "pairs plot" of the data.  In this plot, each panel is a scatterplot showing the relationship between two of the four variables in the model.  Pairs plots are useful ways to gain a quick grasp of the structure in the data and how the constituent variables are related to one another.
 
-```r
+``` r
 cheese <- read.table("data/cheese.txt", head = T, stringsAsFactors = T)
 pairs(cheese)
 ```
@@ -154,7 +154,7 @@ pairs(cheese)
 <img src="02-MultipleRegression_files/figure-html/unnamed-chunk-4-1.png" width="480" style="display: block; margin: auto;" />
 Let's entertain a model that uses all three predictors.  
 
-```r
+``` r
 cheese_regression <- lm(taste ~ Acetic + H2S + Lactic, data = cheese)
 summary(cheese_regression)
 ```
@@ -184,7 +184,7 @@ summary(cheese_regression)
 
 Compare this MLR model with each of the three possible SLR models:
 
-```r
+``` r
 slr1 <- lm(taste ~ Acetic, data = cheese)
 summary(slr1)
 ```
@@ -210,7 +210,7 @@ summary(slr1)
 ## F-statistic: 12.11 on 1 and 28 DF,  p-value: 0.001658
 ```
 
-```r
+``` r
 slr2 <- lm(taste ~ H2S, data = cheese)
 summary(slr2)
 ```
@@ -236,7 +236,7 @@ summary(slr2)
 ## F-statistic: 37.29 on 1 and 28 DF,  p-value: 1.374e-06
 ```
 
-```r
+``` r
 slr3 <- lm(taste ~ Lactic, data = cheese)
 summary(slr3)
 ```
@@ -277,7 +277,7 @@ How do you visualize a multiple regression model?  With two predictors (as in ou
 We'll continue to use the BAC model as an example.  For starters, we might consider plotting the implied relationship between the predicted response and a predictor when the other predictors are set at their average value.  In the BAC model, that means plotting the relationship between the predicted BAC and beers consumed for an individual of average weight, where by average weight we mean equal to the average weight of the individuals in the data set.  We can couple this with a plot of predicted BAC vs weight for an individual who has consumed an average number of beers, where again we determine this average based on the average value that appears in the data set.  Here are those plots for the BAC model:
 
 
-```r
+``` r
 par(mfrow = c(1, 2))
 
 b.hat <- coefficients(fm2)  # extract LSEs of regression coefficients
@@ -303,7 +303,7 @@ Statistical inference for partial regression coefficients proceeds in the same w
 
 Most software will do the needed math for us.  For example, to find 99\% CIs for the partial regression coefficients in the BAC model, we can use
 
-```r
+``` r
 confint(fm2, level = 0.99)
 ```
 
@@ -324,7 +324,7 @@ If we were reporting this analysis in scientific writing, we might say that when
 As in SLR, we distinguish between predictions of the average response of the population at a new value of the predictors vs.\ the value of a single future observation.  The point estimates of the two predictions are identical, but the value of a single future observation is more uncertain.  Therefore, we use a prediction interval for a single observation and a confidence interval for a population average.  The width of a PI or CI is affected by the same factors as in SLR.  In MLR, the width of the PI or CI depends on the distance between the new observation and the "center of mass" of the predictors in the data set.  For example, if we now use the BAC model to predict the BAC of a 170-lb individual who consumes 4 beers:
 
 
-```r
+``` r
 new.data <- data.frame(weight = 170, beers = 4)
 predict(fm2, newdata = new.data, interval = "prediction")
 ```
@@ -334,7 +334,7 @@ predict(fm2, newdata = new.data, interval = "prediction")
 ## 1 0.05808664 0.03480226 0.08137103
 ```
 
-```r
+``` r
 predict(fm2, newdata = new.data, interval = "confidence")
 ```
 
@@ -344,6 +344,8 @@ predict(fm2, newdata = new.data, interval = "confidence")
 ```
 
 ## $F$-tests for several regression coefficients {#F-test}
+
+### Basic machinery
 
 Consider a general multiple regression model with $k$ predictors:
 \[
@@ -370,7 +372,7 @@ where by $df_{full}$ and $df_{reduced}$ we mean the df associated with the SSE o
 
 For the BAC data, we could compute the $F$-statistic "manually" by first fitting both models and extracting the SSE:
 
-```r
+``` r
 full.model <- lm(BAC ~ beers + weight, data = beer)
 (sse.full <- sum(resid(full.model)^2))
 ```
@@ -379,7 +381,7 @@ full.model <- lm(BAC ~ beers + weight, data = beer)
 ## [1] 0.001408883
 ```
 
-```r
+``` r
 reduced.model <- lm(BAC ~ 1, data = beer)
 (sse.full <- sum(resid(reduced.model)^2))
 ```
@@ -396,7 +398,7 @@ If the null hypothesis is true, then the $F$-statistic will be drawn from an $F$
 
 In R, this $p$-values can be found with the command `pf`.
 
-```r
+``` r
 pf(128.3, df1 = 2, df2 = 13, lower = FALSE)
 ```
 
@@ -407,7 +409,7 @@ Thus, our $p$-value is infinitesimal.  In light of these data, it is almost comp
 
 We've taken the above calculations slowly so that we can understand their logic.  In R, we can use the `anova` command to execute the $F$-test in one fell swoop.
 
-```r
+``` r
 anova(reduced.model, full.model)
 ```
 
@@ -431,7 +433,7 @@ y=\beta_0 +\beta_1 x_1 +\beta_2 x_2 +...+\beta_k x_k +\varepsilon
 \] 
 the model utility test is a test of the null hypothesis that all the regression coefficients equal zero, that is, $H_0 :\beta_1 =\beta_2 =...=\beta_k =0$ vs.\ the alternative that at least one of the partial regression coefficients is not equal to zero.  In other words, it is a test of whether the regression model provides a significant improvement in fit compared a simpler model that assumes the $y$'s are a simple random sample from a Gaussian distirbution.  The model utility test is easy for computer programmers to automate, so it is usually included as part of the standard regression output.  In the R `summary` of a regression model, we can find it at the very end of the output.
 
-```r
+``` r
 full.model <- lm(BAC ~ beers + weight, data = beer)
 summary(full.model)
 ```
@@ -480,7 +482,7 @@ Categorical variables are variables whose values cannot be sensibly placed on a 
 
 *Example.* D. K. Sackett investigated mercury accumulation in the tissues of large-mouth bass (a species of fish) in several lakes in the Raleigh, NC area (@sackett2013influence).  We will examine data from three lakes: Adger, Bennett's Millpond, and Waterville.  From each lake, several fish were sampled, and the mercury (Hg) content of their tissues was measured.  Because fish are known to accumulate mercury in their tissues as they age, the age of each fish (in years) was also determined.  The plot below shows the mercury content (in mg / kg) for each fish plotted vs.\ age, with different plotting symbols used for the three lakes.  To stabilize the variance, we will use the log of mercury content as the response variable.  There are $n=23$ data points in this data set.
 
-```r
+``` r
 fish <- read.table("data/fish-mercury.txt", head = T, stringsAsFactors = T)
 
 with(fish, plot(log(hg) ~ age, xlab = "age (years)", ylab = "log(tissue Hg)", type = "n"))
@@ -497,7 +499,7 @@ To create a set of indicator variables, we first need to choose one level of the
 
 To see how R constructs indicator variables, we can use the `contrast` command^[The `contrast` command does much more than report how indicator variables are coded for a categorical variable, as we will see later.]
 
-```r
+``` r
 contrasts(fish$site)
 ```
 
@@ -511,7 +513,7 @@ In the R output above, each column represents an indicator variable, the rows gi
 
 Now let's fit a regression model with both `age` and `site` as predictors.
 
-```r
+``` r
 fish_model <- lm(log(hg) ~ age + site, data = fish)
 summary(fish_model)
 ```
@@ -546,7 +548,7 @@ where $x_1$ gives the age of the fish and $x_2$ and $x_3$ are the indicator vari
 
 While the R output gives us tests of the significance of the individual regression coefficients, we want to determine whether there are significant differences among the three sites when comparing fish of the same age.  To answer this question, we need to test the hypothesis $H_0: \beta_2 = \beta_3 = 0$.  We can do this with an [$F$-test](#F-test).
 
-```r
+``` r
 fish_model_full <- lm(log(hg) ~ age + site, data = fish)
 fish_model_reduced <- lm(log(hg) ~ age, data = fish)
 anova(fish_model_reduced, fish_model_full)
@@ -567,7 +569,7 @@ Thus, we see that there are significant differences among the sites, when compar
 
 For what it's worth, we also could have obtained this test by running the `anova` command on the full model.
 
-```r
+``` r
 anova(fish_model_full)
 ```
 
@@ -591,7 +593,7 @@ Finally, now that we have established that there are significant differences amo
 <span style="color: gray;"> Indicator variables may seem like a bit of an awkward device.  Why can't we just fit a model with a separate intercept for each lake?  In fact, we can.  In `R`, the program `lm` includes the intercept $\beta_0$ in any model by default, because most regression models include it.  However, if we instruct `lm` to omit the baseline intercept $\beta_0$, then the program will parameterize the model by the lake-specific intercepts.  We instruct `lm` to omit the intercept by including a `-1` on the right-hand side of the model formula as follows:</span>
 
 
-```r
+``` r
 fish_model_alt <- lm(log(hg) ~ age + site - 1, data = fish)
 summary(fish_model_alt)
 ```
@@ -629,7 +631,7 @@ Models that combine a single numerical predictor and a single categorical predic
 
 
 
-```r
+``` r
 with(fish, plot(log(hg) ~ age, xlab = "age (years)", ylab = "log(tissue Hg)", type = "n"))
 with(subset(fish, site == "Adger"), points(log(hg) ~ age, pch = "A", col = "forestgreen"))
 with(subset(fish, site == "Bennett"), points(log(hg) ~ age, pch = "B", col = "red"))  
@@ -657,17 +659,17 @@ y =\beta_0 +\beta_1 x_1 +\beta_2 x_2 +\beta_3 x_1 x_2 +\varepsilon
 \] 
 There are two equally good ways to code this model in R:
 
-```r
+``` r
 fm1 <- lm(BAC ~ beers + weight + beers:weight, data = beer)
 ```
 or
 
-```r
+``` r
 fm2 <- lm(BAC ~ beers * weight, data = beer)
 ```
 In the first notation, the colon (:) tells R to include the interaction between the predictors that appear on either side of the colon.  In the second notation, the asterisk (*) is shorthand for both the individual predictors and their interaction.  
 
-```r
+``` r
 summary(fm2)
 ```
 
@@ -720,7 +722,7 @@ We can ease the interpretation of partial regression coefficients in a model tha
 \] 
 We then fit the model with the interaction, using the centered predictors instead:
 
-```r
+``` r
 beer$beers.c <- beer$beers - mean(beer$beers)
 beer$weight.c <- beer$weight - mean(beer$weight)
 head(beer)
@@ -736,7 +738,7 @@ head(beer)
 ## 6 0.095    250     7  2.1875  78.4375
 ```
 
-```r
+``` r
 fm3 <- lm(BAC ~ beers.c * weight.c, data = beer)
 summary(fm3)
 ```
@@ -767,7 +769,7 @@ Note that centering the predictors does not change the estimated interaction or 
 
 While we're at it, we can also return to the fish data to ask if fish accumulate mercury in their tissues at different rates in the three lakes.
 
-```r
+``` r
 fish_model_interaction <- lm(log(hg) ~ age * site, data = fish)
 fish_model_additive <- lm(log(hg) ~ age + site, data = fish)
 anova(fish_model_additive, fish_model_interaction)
@@ -786,7 +788,7 @@ The interaction between age and lake is not significant ($F_{2, 17} = 0.81$, $p=
 
 Just for fun, we can plot the model with the interaction to see how the plot differs from the additive model that we considered earlier.  As we did before, we'll use the trick of fitting the model without the baseline intercept to make it easier to extract the slopes and intercepts of the lake-specific trend lines.
 
-```r
+``` r
 fish_model_alt <- lm(log(hg) ~ site + age:site - 1, data = fish)
 with(fish, plot(log(hg) ~ age, xlab = "age (years)", ylab = "log(tissue Hg)", type = "n"))
 with(subset(fish, site == "Adger"), points(log(hg) ~ age, pch = "A", col = "forestgreen"))
@@ -813,7 +815,7 @@ To illustrate, we'll use a data set that details the tar content, nicotine conte
 > The dataset presented here contains measurements of weight and tar, nicotine, and carbon monoxide (CO) content for 25 brands of cigarettes. The data were taken from @mendenhall1992statistics. The original source of the data is the Federal Trade Commission.”
 
 
-```r
+``` r
 cig <- read.table("data/cigarettes.txt", head = T)
 head(cig)
 ```
@@ -832,7 +834,7 @@ head(cig)
 
 Here is a pairs plot of the data:
 
-```r
+``` r
 pairs(cig[, 2:5])
 ```
 
@@ -840,7 +842,7 @@ pairs(cig[, 2:5])
 
 We wish to use tar content, nicotine content, and weight to build a predictive model of carbon monoxide content.^[Another feature of these data that immediately catches the eye is that there is one cigarette --- Bull Durham brand --- that has noticeably larger values of all variables.  There is also a brand --- Now brand --- that has noticeably lower values of all variables.  These two data points will have large leverage, and we might wonder to what extent the fit will be driven by these two data points alone.  That's a fair question, and one that we should ask in a complete analysis of these data.  But it's beside the point for the present purposes, so we won't engage with it here.]  Let's first observe that, when considered on their own, both tar content and nicotine content have strongly significant associations with carbon monoxide content, as the pairs plot suggests.
 
-```r
+``` r
 summary(lm(co ~ tar, data = cig))
 ```
 
@@ -865,7 +867,7 @@ summary(lm(co ~ tar, data = cig))
 ## F-statistic: 253.4 on 1 and 23 DF,  p-value: 6.552e-14
 ```
 
-```r
+``` r
 summary(lm(co ~ nicotine, data = cig))
 ```
 
@@ -892,7 +894,7 @@ summary(lm(co ~ nicotine, data = cig))
 
 Yet in a model that includes all three predictors, only tar content seems to be statistically significant:
 
-```r
+``` r
 cig.model <- lm(co ~ tar + nicotine + weight, data = cig)
 summary(cig.model)
 ```
@@ -926,8 +928,6 @@ The issue here is that tar and nicotine content are strongly correlated with one
 
 This is the issue of collinearity.  Perfect collinearity occurs when two predictors are perfectly correlated with one another.  Perfect collinearity is rare (unless the number of predictors exceeds the number of data points, in which case it is inevitable).  However, if predictors are strongly (but nor perfectly) correlated, trouble still lurks.  Indeed, collinearity is not just caused by strong correlations between pairs of predictors: It can also be caused by strong correlations between weighted sums of predictors.  For this reason, when there are many predictors relative to the number of data points, collinearity is nearly inevitable.
 
-<!-- Mathematically, calculating $\left(\X'\X\right)^{-1}$ with strong (but not perfect) collinearity is numerically unstable, and tends to magnify rounding errors (think of dividing by a number very close to, but not equal to zero).  Geometrically, the "plane" that we are trying to fit to the cloud of data points is not well anchored.  It is unstable, in the sense that small changes in the data can have large impacts on the estimated regression coefficients.   -->
-
 The usual guidance is that collinearity makes the estimated regression coefficients unreliable or unstable, in the sense that small changes in the data set can trigger large changes in the model fit (@bowerman1990linear).  This sensitivity to small changes makes it difficult, if not impossible, to have confidence in our inferences about the estimated partial regression coefficients. 
 
 Collinearity is not a problem for prediction, however.  As @quinn2002experimental (p. 127) say:
@@ -950,7 +950,7 @@ The interesting feature of the recipe is that it depends only on the values of t
 
 Here, we'll use the `vif` function found in the `car` package to compute the VIFs for the cigarette model:
 
-```r
+``` r
 car::vif(cig.model)
 ```
 
@@ -1091,7 +1091,7 @@ So far, we have been silent about how we determine whether a candidate model imp
 
 The `step' routine in R uses AIC as its default criterion for adding or dropping terms in stepwise selection.  Here is an example of stepwise selection with the cheese data, considering only models without interactions or polynomial terms. 
 
-```r
+``` r
 fm0 <- lm(taste ~ 1, data = cheese)  # the initial model y = b0 + eps
 step(fm0, taste ~ Acetic + H2S + Lactic, data = cheese)  
 ```
@@ -1161,14 +1161,14 @@ Recall that in SLR, a data point can have undue influence on the regression mode
 To calculate leverages in R, first pass the regression model object to the function `influence.lm`.  This function returns several diagnostic measures; the leverages are contained in the component called `hat`.  To extract the leverages, use code like the following:
 
 
-```r
+``` r
 fm1 <- lm(BAC ~ weight + beers, data = beer)
 fm1.diagnostics <- lm.influence(fm1)
 lev <- fm1.diagnostics$hat
 ```
 Here is a look at some of the leverage values for the BAC data:
 
-```r
+``` r
 head(cbind(beer, lev))
 ```
 
@@ -1198,7 +1198,7 @@ The benefit of standardized residuals is that if our model assumptions are appro
 
 R does not have a built-in function for calculating standardized residuals.  However, there is a library of functions called the `MASS` library that contains the function `stdres`.  (MASS is an acronym for \textit{Modern Applied Statistics with S-Plus}, which is one of the original advanced texts for using R.  It is written by W.N. Venables and B.D. Ripley.)
 
-```r
+``` r
 MASS::stdres(fm1)
 ```
 
@@ -1214,7 +1214,7 @@ MASS::stdres(fm1)
 ### Cook's distance
 Leverages and standardized residuals can be combined into various quantities that measure the influence each observation has on the fitted regression line.  One of the most popular of these are Cook's distance, $D_i$.  In R, if you pass a regression model to the command `plot`, it will produce four (somewhat sophisticated) diagnostic plots.  The last of these shows Cook's distance.
 
-```r
+``` r
 plot(fm1)
 ```
 
@@ -1262,7 +1262,7 @@ The power and beauty of the equation $\vecbhat = \left(\X'\X \right)^{-1} \X'\ve
 \] 
 where the predictor in the 2$^{nd}$ column is degrees Centigrade and the predictor in the 3$^{rd}$ column is degrees Fahrenheit.  Let's try to fit a regression model in R for some made up values of $y$:
 
-```r
+``` r
 bad.data <- data.frame(y    = c(2.4, 6.1, 4.4, 7.0),
                        degC = c(5, 10, 15, 20),
                        degF = c(41, 50, 59, 68))
@@ -1332,7 +1332,9 @@ Next, we can find the variance of $\vecbhat$ using a result for the variance of 
 	& = & \sigma^2_{\varepsilon} \left(\X'\X \right)^{-1} \X' \X \left(\X'\X \right)^{-1} \\
 	& = & \sigma^2_{\varepsilon} \left(\X'\X \right)^{-1}.
 \end{eqnarray*}
-The second equality above is a quadratic form, and uses the fact that $\left(\X'\X \right)^{-1}$ is symmetric (and thus equal to its transpose).  The final result, $\Var{\vecbhat} = \sigma^2_{\varepsilon} \left(\X'\X \right)^{-1}$, shows that the variances of the least squares estimates (and thus their standard errors) are proportional to the diagonal elements of $\left(\X'\X \right)^{-1}$.  This result will become important in multiple regression when we discuss multicollinearity.  
+The second equality above is a quadratic form, and uses the fact that $\left(\X'\X \right)^{-1}$ is symmetric (and thus equal to its transpose).  The final result, $\Var{\vecbhat} = \sigma^2_{\varepsilon} \left(\X'\X \right)^{-1}$, shows that the variances of the least squares estimates (and thus their standard errors) are proportional to the diagonal elements of $\left(\X'\X \right)^{-1}$.  
+
+<!-- This result is important for thinking about multicollinearity.  Mathematically, calculating $\left(\X'\X\right)^{-1}$ with strong (but not perfect) collinearity is numerically unstable, and tends to magnify rounding errors (think of dividing by a number very close to, but not equal to zero).  Geometrically, the "plane" that we are trying to fit to the cloud of data points is not well anchored.  It is unstable, in the sense that small changes in the data can have large impacts on the estimated regression coefficients.    -->
 
 Finally, let $\vecyhat$ be a vector of fitted values, i.e., $\vecyhat = \left[ \hat{y}_1, \hat{y_2}, \ldots, \hat{y_n} \right]'$.  We can find an experssion for $\vecyhat$ simply as:
 \begin{eqnarray*}

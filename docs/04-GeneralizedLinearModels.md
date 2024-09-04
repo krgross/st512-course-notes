@@ -9,7 +9,7 @@ In practice, logistic regression (with binomial responses) and Poisson regressio
 We will begin with an example of Poisson regression.  These data are originally from @poole1989mate, and were analyzed in @ramsey2012statistical.  They describe an observational study of 41 male elephants  over 8 years at Amboseli National Park in Kenya.  Each record in this data set gives the age of a male elephant at the beginning of a study and the number of successful matings for the elephant over the study's duration.  The number of matings is a count variable.  Our goal is to characterize how the number of matings is related to the elephant's age.  We'll start by fitting a model with the canonical log link.
 
 
-```r
+``` r
 elephant <- read.table("data/elephant.txt", head = T)
 head(elephant)
 ```
@@ -24,13 +24,13 @@ head(elephant)
 ## 6  29       0
 ```
 
-```r
+``` r
 with(elephant, plot(matings ~ age))
 ```
 
 <img src="04-GeneralizedLinearModels_files/figure-html/unnamed-chunk-1-1.png" width="672" />
 
-```r
+``` r
 fm1 <- glm(matings ~ age, 
            family = poisson(link = "log"), 
            data   = elephant)  # log link is the default
@@ -66,7 +66,7 @@ $$
 We can visualize the fit by plotting a best-fitting line with a 95\% confidence interval.  Because the scale parameter is not estimated here, we will use a critical value from a standard normal distribution.  Later, when we estimate the scale parameter based on data, we will use a critical value from a $t$-distribution instead. 
 
 
-```r
+``` r
 new.data <- data.frame(age = seq(from = min(elephant$age),
                                  to   = max(elephant$age),
                                  length = 100))
@@ -94,7 +94,7 @@ lines(x   = new.data$age,
 While the canonical link is a natural starting point, we are free to try other link functions as well.  Below, we try the identity link and plot the fit.
 
 
-```r
+``` r
 fm2 <- glm(matings ~ age, family = poisson(link = "identity"), data = elephant)  
 
 summary(fm2)
@@ -122,7 +122,7 @@ summary(fm2)
 ## Number of Fisher Scoring iterations: 5
 ```
 
-```r
+``` r
 predict.fm2 <- predict(fm2, newdata = new.data, type = "response", se.fit = TRUE)
 
 with(elephant, plot(matings ~ age))
@@ -146,7 +146,7 @@ Note that the choice of the link function has a substantial impact on the shape 
 We can also have a look at the residuals to see if they suggest any model deficiencies.  In general, we prefer the deviance residuals, so we will look at them.
 
 
-```r
+``` r
 plot(x = elephant$age, 
      y = residuals(fm2, type = "deviance"),
      xlab = "age",
@@ -162,7 +162,7 @@ The residuals do not suggest any deficiency in the fit.
 For this fit, the residual deviance suggests a small amount of overdispersion.  To be on the safe side, we can fit a quasi-Poisson model in which the scale (overdispersion) parameter is estimated from the data.  Note that when we estimate the overdispersion parameter, the estimates of the model parameters do not change, but their standard errors increase.  Consequently, the uncertainty in the fit increases as well.  In this case, however, the increase is so slight that it is barely noticeable.
 
 
-```r
+``` r
 fm3 <- glm(matings ~ age, family = quasipoisson(link = "identity"), data = elephant)  
 
 summary(fm3)
@@ -190,7 +190,7 @@ summary(fm3)
 ## Number of Fisher Scoring iterations: 5
 ```
 
-```r
+``` r
 predict.fm3 <- predict(fm3, newdata = new.data, type = "response", se.fit = TRUE)
 
 with(elephant, plot(matings ~ age))
@@ -212,7 +212,7 @@ lines(x   = new.data$age,
 As an alternative, we could fit a model that uses a negative binomial distribution for the response.  Negative binomial distributions belong to the exponential family, so we can fit them using the GLM framework.  However, the authors of `glm` did not include a negative binomial family in their initial code.  Venables & Ripley's `MASS` package includes a program called `glm.nb` which is specifically designed for negative binomial responses.  `MASS::glm.nb` uses the parameterization familiar to ecologists, although they use the parameter $\theta$ instead of $k$.  So, in their notation, if $y \sim \mathrm{NB}(\mu, \theta)$, then $\mathrm{Var}(y) = \mu + \mu^2/\theta$.
 
 
-```r
+``` r
 require(MASS)
 ```
 
@@ -220,7 +220,7 @@ require(MASS)
 ## Loading required package: MASS
 ```
 
-```r
+``` r
 fm4 <- glm.nb(matings ~ age, link = identity, data = elephant)  
 
 summary(fm4)
@@ -254,7 +254,7 @@ summary(fm4)
 ##  2 x log-likelihood:  -150.872
 ```
 
-```r
+``` r
 predict.fm4 <- predict(fm4, newdata = new.data, type = "response", se.fit = TRUE)
 
 with(elephant, plot(matings ~ age))
@@ -285,7 +285,7 @@ To illustrate individual binary data, we will use a data set analyzed by @zuur20
 
 Preparatory work:
 
-```r
+``` r
 boar <- read.table("data/boar.txt", head = T)
 
 # remove incomplete records
@@ -310,7 +310,7 @@ summary(boar)
 
 We'll fit the usual logistic regression model first, considering only the animal's size as a predictor.  Size in this case is a measure of the length of the animal, in cm.
 
-```r
+``` r
 fm1 <- glm(tb ~ length, family = binomial(link = "logit"), data = boar)
 summary(fm1)
 ```
@@ -338,7 +338,7 @@ summary(fm1)
 ```
 
 
-```r
+``` r
 with(boar, plot(tb ~ length))
 
 # add a line for the fitted probabilities of tb
@@ -373,7 +373,7 @@ Regression coefficients in logistic regression can be a bit hard to interpret.  
 Overdispersion is typically not an issue with individual binary response data.  Nonetheless, the pseudo-$R^2$ here is fairly low.  We can try the probit and complementary log-log links to see if we obtain a better fit:
 
 
-```r
+``` r
 # probit link
 
 fm1a <- glm(tb ~ length, family = binomial(link = "probit"), data = boar)
@@ -391,7 +391,7 @@ AIC(fm1, fm1a, fm1b)
 ## fm1b  2 645.6100
 ```
 
-```r
+``` r
 # make a plot to compare the fits with the different links
 
 predict.fm1a <- predict(fm1a, newdata = new.data, type = "response", se.fit = TRUE)
@@ -416,7 +416,7 @@ The logit and probit links are nearly identical.  The complementary log-log link
 Try adding sex and age class as predictors.  Some of the MLEs cannot be found, because none of the individuals with \texttt{sex = 1} and \texttt{age = 1} are infected, thus the MLE of the log odds of infection for this group (which happens to be the baseline) is $-\infty$.  This phenomenon is known as "complete separation".
 
 
-```r
+``` r
 # fit a model with sex, age (as a categorical predictor) and their interaction
 
 fm2 <- glm(tb ~ length + sex * as.factor(age),
@@ -453,7 +453,7 @@ summary(fm2)
 ## Number of Fisher Scoring iterations: 14
 ```
 
-```r
+``` r
 with(boar, table(tb, age, sex))
 ```
 
@@ -475,7 +475,7 @@ with(boar, table(tb, age, sex))
 
 There are several possible remedies here.  The first is to try to reduce the number of parameters in the model, perhaps by eliminating the interaction between sex and age class.
 
-```r
+``` r
 # fit a model with sex, age (as a categorical predictor) and their interaction
 
 fm3 <- glm(tb ~ length + sex + as.factor(age),
@@ -517,7 +517,7 @@ A second option is to use so-called ``exact'' methods for inference.  There does
 We'll start with the standard logistic regression model for the industrial melanism data.  We are primarily interested in determining if the effect of color morph on removal rate changes with distance from Liverpool.  For grouped binary data, we need to specify both the number of "successes" and number of "failures" as the response variable in the model.  Here, we use `cbind` to create a two-column matrix with the number of "successes" (moths removed) in the first column, and the number of "failures" (moths not removed) in the second column.  See the help documentation for `glm` for more details.
 
 
-```r
+``` r
 moth <- read.table("data/moth.txt", head = TRUE, stringsAsFactors = TRUE)
 
 fm1 <- glm(cbind(removed, placed - removed) ~ morph * distance, 
@@ -554,7 +554,7 @@ summary(fm1)
 Grouped binary data are often overdispersed relative to the variance implied by a binomial distribution.  In this case, we would call the overdispersion "extra-binomial" variation.  As with count data, we can deal with overdispersion through a quasi-likelihood approach:
 
 
-```r
+``` r
 fm1q <- glm(cbind(removed, placed - removed) ~ morph * distance, 
            family = quasibinomial(link = "logit"),
            data = moth)
@@ -591,7 +591,7 @@ As with count data, using quasi-likelihood to estimate the scale (or dispersion)
 The $t$-test of the interaction between color morph and distance indicates that there is a statistically significant difference in how the proportion of moth removes changes over the distance transect between the two color morphs.
 
 
-```r
+``` r
 plot(x = moth$distance, 
      y = residuals(fm1q, type = "deviance"),
      xlab = "distance",

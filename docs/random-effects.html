@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>Chapter 8 Random effects | ST 512 course notes</title>
   <meta name="description" content="Course notes for ST 512, Statistical Methods for Researchers II." />
-  <meta name="generator" content="bookdown 0.36 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.40 and GitBook 2.6.7" />
 
   <meta property="og:title" content="Chapter 8 Random effects | ST 512 course notes" />
   <meta property="og:type" content="book" />
@@ -23,7 +23,7 @@
 <meta name="author" content="Kevin Gross" />
 
 
-<meta name="date" content="2024-01-30" />
+<meta name="date" content="2024-09-04" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -56,7 +56,7 @@
 
 <style type="text/css">
 pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span { line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode > span { color: inherit; text-decoration: inherit; }
@@ -128,6 +128,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 div.csl-bib-body { }
 div.csl-entry {
   clear: both;
+  margin-bottom: 0em;
 }
 .hanging div.csl-entry {
   margin-left:2em;
@@ -200,7 +201,8 @@ div.csl-indent {
 </ul></li>
 <li class="chapter" data-level="2.2" data-path="multiple-regression.html"><a href="multiple-regression.html#F-test"><i class="fa fa-check"></i><b>2.2</b> <span class="math inline">\(F\)</span>-tests for several regression coefficients</a>
 <ul>
-<li class="chapter" data-level="2.2.1" data-path="multiple-regression.html"><a href="multiple-regression.html#model-utility-tests"><i class="fa fa-check"></i><b>2.2.1</b> Model utility tests</a></li>
+<li class="chapter" data-level="2.2.1" data-path="multiple-regression.html"><a href="multiple-regression.html#basic-machinery"><i class="fa fa-check"></i><b>2.2.1</b> Basic machinery</a></li>
+<li class="chapter" data-level="2.2.2" data-path="multiple-regression.html"><a href="multiple-regression.html#model-utility-tests"><i class="fa fa-check"></i><b>2.2.2</b> Model utility tests</a></li>
 </ul></li>
 <li class="chapter" data-level="2.3" data-path="multiple-regression.html"><a href="multiple-regression.html#categorical-predictors"><i class="fa fa-check"></i><b>2.3</b> Categorical predictors</a></li>
 <li class="chapter" data-level="2.4" data-path="multiple-regression.html"><a href="multiple-regression.html#regression-interactions"><i class="fa fa-check"></i><b>2.4</b> Interactions between predictors</a></li>
@@ -713,7 +715,7 @@ trt             5      24       9.88    &lt;.0001</code></pre>
 <li><p>The MODEL statement in PROC MIXED only contains the fixed effects. In this model, the only fixed effects are the different treatments (vase solutions).</p></li>
 <li><p>The RANDOM statement specifies the random effects to be included in the model. The residual (= the error term for the subsample) is always included by default, so a separate term for “stem” did not need to be specified.</p></li>
 <li><p>We use the parenthetical syntax VASE(TRT) to tell SAS that VASE is nested within TRT.</p></li>
-<li><p>The portion of the output labeled “Covariance Parameter Estimates” provides the estimates for <span class="math inline">\(\sigma^2_V\)</span> and <span class="math inline">\(\sigma^2_{\varepsilon}\)</span>. In this case, they are <span class="math inline">\(\sigma^2_V = 0.165\)</span> and <span class="math inline">\(\sigma^2_{\varepsilon} = 6.97\)</span>. Although these estimates are not the primary focus of our analysis, they are still informative. In this case, they tell us that the stem-to-stem variability among stems in the same vase is much greater than the vase-to-vase variability among vases receiving the same treatment.</p></li>
+<li><p>The portion of the output labeled “Covariance Parameter Estimates” provides the estimates for <span class="math inline">\(\sigma^2_V\)</span> and <span class="math inline">\(\sigma^2_{\varepsilon}\)</span>. In this case, they are <span class="math inline">\(\sigma^2_V  = 0.165\)</span> and <span class="math inline">\(\sigma^2_{\varepsilon} = 6.97\)</span>. Although these estimates are not the primary focus of our analysis, they are still informative. In this case, they tell us that the stem-to-stem variability among stems in the same vase is much greater than the vase-to-vase variability among vases receiving the same treatment.</p></li>
 <li><p>The portion of the output labeled “Type 3 Tests of Fixed Effects” provides <span class="math inline">\(F\)</span>-tests of the fixed effects. With REML estimation, PROC MIXED does not present the full ANOVA table. Note that the <span class="math inline">\(F\)</span>-test for the treatment effect is identical to the <span class="math inline">\(F\)</span>-test that we obtained by averaging subsamples within EUs. These two tests are identical because in this case we have the same number of stems per vase.</p></li>
 <li><p>Note that the <span class="math inline">\(F\)</span>-test for the treatment effects has the correct ndf and ddf. Unless we specify otherwise, PROC MIXED uses the “containment” method for determining the appropriate error terms. In this case, the fixed-effects for TRT are contained within the random effect for VASE(TRT) (this is another way of saying that the vases are nested within the treatement), and so PROC MIXED uses the MSE for VASE(TRT) to test for the TRT fixed effects. The df for the <span class="math inline">\(F\)</span>-tests can be used as a check to make sure that you’ve coded the model correctly.</p></li>
 </ul>
@@ -863,7 +865,7 @@ Thus, if <span class="math inline">\(X\)</span> and <span class="math inline">\(
 <span class="math display">\[
 y_{ij} = \mu + P_i + \varepsilon_{ij}
 \]</span>
-where <span class="math inline">\(P_i \sim \mathcal{N}\left(0, \sigma^2_P \right)\)</span> represents the plant random effects, and <span class="math inline">\(\varepsilon_{ijk} \sim \mathcal{N}\left(0, \sigma^2_{\varepsilon} \right)\)</span> represents the leaf random effects (the residual error in this case). Let’s first find an expression for the variance of <span class="math inline">\(y_{ij}\)</span>:
+where <span class="math inline">\(P_i \sim \mathcal{N}\left(0, \sigma^2_P \right)\)</span> represents the plant random effects, and <span class="math inline">\(\varepsilon_{ijk} \sim  \mathcal{N}\left(0, \sigma^2_{\varepsilon} \right)\)</span> represents the leaf random effects (the residual error in this case). Let’s first find an expression for the variance of <span class="math inline">\(y_{ij}\)</span>:
 <span class="math display">\[\begin{eqnarray*}
 \mbox{Var}\left(y_{ij}\right) &amp; = &amp;  \mbox{Var}\left(\mu + P_i + \varepsilon_{ij}\right) \\
        &amp; = &amp;  \mbox{Var}\left(P_i\right) + \mbox{Var}\left(\varepsilon_{ij}\right) + 2 \mbox{Cov}\left(P_i, \varepsilon_{ij}\right)\\
@@ -895,7 +897,7 @@ Again, the <span class="math inline">\(\mu\)</span>’s drop out because they ar
 </div>
 </div>
 <h3>Bibliography<a href="bibliography.html#bibliography" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<div id="refs" class="references csl-bib-body hanging-indent">
+<div id="refs" class="references csl-bib-body hanging-indent" entry-spacing="0">
 <div id="ref-snedecor67" class="csl-entry">
 Snedecor, G. W., and W. G. Cochran. 1967. <em>Statistical Methods</em>. 6th ed. Ames: Iowa State University Press.
 </div>

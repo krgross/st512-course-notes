@@ -1,7 +1,7 @@
 --- 
 title: "ST 512 course notes"
 author: "Kevin Gross"
-date: "2024-01-30"
+date: "2024-09-04"
 output:
   bookdown::gitbook:
     config:
@@ -19,7 +19,7 @@ description: "Course notes for ST 512, Statistical Methods for Researchers II."
 ---
 
 
-```r
+``` r
 knitr::opts_chunk$set(fig.width = 4, fig.height = 4, fig.align = "center") 
 ```
 
@@ -119,13 +119,6 @@ As a practical matter, these notes are prepared in `bookdown` (@xie2022bookdown)
 
 Advanced sections are indicated by section titles that begin with stars ($^\star$). Shorter sidebars for enrichment appear in <span style="color: gray;"> gray text </span> and are offset by horizontal rules (like the one following the acknowledgments).  This material may be skipped without loss. Sections that are in an early and rougher stage of development are indicated with section titles shown in *italics*.  
 
-<!-- This structure is inspired by @mascolell1995microeconomic's lovely text. -->
-
-<!-- ### Other resources {-} -->
-
-<!-- Want to consult a more polished resource?  (I wouldn't blame you.)   -->
-
-
 ### Acknowledgments and license {-}
 
 I am deeply indebted to the R community (@r) for their project which has done no less than revolutionize data analysis in our times.  I also thank the developers of `bookdown` for providing the platform for these notes (@xie2022bookdown).
@@ -203,7 +196,7 @@ If we were inventing SLR from scratch, we might imagine many possible criteria t
 In an introductory statistics course, you may have derived formulas for calculating the least-squares estimates $\hat{\beta}_0$ and $\hat{\beta}_1$  by hand. Here, we will rely on software for the necessary computations, although one might note that one could derive the formulas for $\hat{\beta}_0$ and $\hat{\beta}_1$  by using basic calculus tools to minimize the error sum-of squares. Using R, we obtain the least-squares fit of the regression model to the BAC data below.^[A note on terminology: It is conventional to refer to a regression model as a regression of the response on, versus, or against the predictor.  Thus, the BAC model could be described as a regression of BAC on the number of beers consumed, or alternatively as a regression of BAC against the number of beers consumed.]
 
 
-```r
+``` r
 fm1 <- with(beer, lm(BAC ~ Beers))
 summary(fm1)
 ```
@@ -232,7 +225,7 @@ summary(fm1)
 The least-squares estimates of the intercept and slope for the BAC data are $\hat{\beta}_0 = -0.013$ and $\hat{\beta}_1 = 0.018$, respectively.  Here's a picture of the scatter-plot with the least-squares line: 
 
 
-```r
+``` r
 with(beer, plot(BAC ~ Beers, xlab = "beers consumed"))
 abline(fm1)
 ```
@@ -286,8 +279,6 @@ For the BAC data, $s_{\varepsilon} = \sqrt{0.0004} = 0.020$.  This is a more use
 
 ---
 
-<!-- Some additional notation: In general, we'll use the notation $\mu \left(x\right)$ to denote the signal or mean component of the model.  In simple linear regression, the mean is simply a linear function of the predictor: $\mu \left(x\right) = \beta_0 +\beta_1 x$.  Although the notation $\mu \left(x\right)$ might seem like overkill for SLR, it will prove handy for more complicated models. -->
-
 ## Inference for the slope 
 
 To draw statistical inferences about the slope parameter $\beta_1$, we make the following assumptions:
@@ -299,10 +290,6 @@ To draw statistical inferences about the slope parameter $\beta_1$, we make the 
 3. Independence:  The error terms are independent of one another.
 
 4.  Normality.  The errors have a normal (i.e., bell-shaped, or Gaussian) distribution.
-
-<!-- 5. The predictors are measured without error. -->
-
-<!-- This fifth assumption is usually not listed as one of the assumptions in SLR, but it is useful to keep in mind.  The predictor and the response are *not* placed on equal footing.  -->
 
 Note that assumption number 1 deals with the mean component of the model, while assumptions 2--4 deal with the error component of the model.
 
@@ -350,9 +337,9 @@ t=\frac{\hat{\beta}_{1} -0}{s_{\hat{\beta }_{1} } } =\frac{\hat{\beta }_{1} }{s_
 $$ 
 In SLR, this test is so common that the value of the $t$-statistic is provided automatically by most statistical software packages, including R.   For the BAC data, the $t$-statistic associated with the test of $H_0: \beta_1 = 0$ vs.\ $H_a: \beta_1 \ne 0$ is $t = 7.48$.
 
-Values of the test statistic by themselves are not terribly enlightening.  Instead, we use the test statistic to find a $p$-value.  $P$-values are famously difficult to interpret, and those difficulties in interpretation have impeded their proper use.  In 2016, a blue-ribbon panel of experts were convened by the American Statistical Association (the leading professional organization for statisticians in the US) to take the remarkable step of issuing a policy statement regarding the use of $p$-values.  That statement (@wasserstein2016asa) defines a $p$-value as follows:  
->
-Informally, a $p$-value is the probability under a specified statistical model that a statistical summary of the data (e.g., the sample mean difference between two compared groups) would be equal to or more extreme than its observed value.
+Values of the test statistic by themselves are not terribly enlightening.  Instead, we use the test statistic to find a $p$-value.  $P$-values are famously difficult to interpret, and those difficulties in interpretation have impeded their proper use.  In 2016, a blue-ribbon panel of experts were convened by the American Statistical Association (the leading professional organization for statisticians in the US) to take the remarkable step of issuing a policy statement regarding the use of $p$-values.  That statement (@wasserstein2016asa) defines a $p$-value as follows: 
+
+> Informally, a $p$-value is the probability under a specified statistical model that a statistical summary of the data (e.g., the sample mean difference between two compared groups) would be equal to or more extreme than its observed value.
 
 (Bear in mind that this definition is the work of two dozen of the world's leading statisticians.)  
  
@@ -373,7 +360,7 @@ Thus, there is exceedingly strong evidence that BAC is related to the number of 
 <span style="color: gray;"> Continuing in this vein, we can plot the $p$-value associated with the test of $H_0: \beta_1 = \beta_{1,0}$ vs.\ $H_a: \beta_1 \ne \beta_{1,0}$ for any parameter value $\beta_{1,0}$ that we might assume under the null.  This plot shows the $p$-value function, or, following along the lines of the interpretation above, what we might call the plausibility function.  Here is a look at the plausibility function for $\beta_1$ for the BAC data:</span>
 
 
-```r
+``` r
 b1.hat <- 0.017964
 b1.se  <- 0.002402
 
@@ -397,7 +384,7 @@ axis(3, at = b1.hat, lab = expression(hat(beta)[1]))
 <span style="color: gray;"> Another nice feature of the $p$-value function is that we can find a $100 \times (1 - \alpha)\%$ confidence interval (or, more generally, a confidence region) by taking all those parameter values that are individually at least $\alpha\%$ plausible.  So, for example, a 90\% confidence interval consists of all those parameter values that are at least 10\% plausible.  For the BAC data, we can show this confidence interval as:</span>
 
 
-```r
+``` r
 curve(p_val, from = 0, to = 0.03, xlab = expression(beta[1]), ylab = "plausibility",
       yaxt = "n")
 axis(2, at = c(0, 0.5, 1), las = 1)
@@ -412,7 +399,7 @@ abline(h = 0.1, col = "red", lty = "dashed")
 ## Beers        0.01373362 0.022193906
 ```
 
-```r
+``` r
 abline(v = conf.limits[2, ], col = "red", lty = "dotted")
 ```
 
@@ -513,7 +500,7 @@ We list commonly used diagnostic plots below.  Although some types of plots are 
  
 1.Residuals vs. fitted values.  Check for non-constant variance (trumpeting).  The BAC data shown here don't show an obvious increase or decrease in variance as the fitted values increase, although the fact that the largest residual is associated with the largest fitted value is notable.  We might want to go back and check that data point out.
 
-```r
+``` r
 plot(resid(fm1) ~ fitted(fm1), xlab = "Fitted Values", ylab = "Residuals")
 abline(h = 0, lty = "dotted")
 ```
@@ -536,7 +523,7 @@ Fruitflies that live longer clearly have more variable lifespans.
 
 For the BAC data, you'll note that the plot below looks exactly like the plot of residuals vs. fitted values above.  This isn't just coincidence; in fact, residuals vs. fitted values and residuals vs. predictor will always generate exactly the same patterns in SLR.  (The reason is because in SLR the fitted value is just a linear function of the predictor.)  We want to get in the habit of checking both types of plots, however, because when we start entertaining multiple predictor variables in multiple regression, the plots will no longer be identical. 
 
-```r
+``` r
 plot(resid(fm1) ~ beer$Beers, xlab = "Beers", ylab = "Residuals")
 abline(h = 0, lty = "dotted")
 ```
@@ -545,7 +532,7 @@ abline(h = 0, lty = "dotted")
 
 3. Residuals vs. variables not in the model, e.g., other predictors, observer, order of observation, spatial coordinates.  In the BAC data, the only other variable we have (for now at least) is the order in which the observations appear in the data set. Without knowing how the data were collected or recorded, it's impossible to say whether this variable is meaningful. However, the plot suggests a distinctive downward trend -- data points that appear early in the data set are associated with positive residuals, and data points that appear later in the data set are associated with negative residuals.  What do you think might have caused this trend?
 
-```r
+``` r
 plot(resid(fm1), xlab = "Order", ylab = "Residuals")
 abline(h = 0, lty = "dotted")
 ```
@@ -554,13 +541,13 @@ abline(h = 0, lty = "dotted")
 
 4. An obvious way to check the normality assumption is to plot a histogram of the residuals.  While this is a straightforward idea, it suffers from the fact that the shape of the histogram depends strongly on how the residuals are grouped into bins.  Note how the two histograms below of the BAC residuals provide different impressions about the suitability of the normality assumption.
 
-```r
+``` r
 hist(resid(fm1), main = "Bin width = 0.01", xlab = "Residuals")
 ```
 
 <img src="index_files/figure-html/unnamed-chunk-10-1.png" width="384" style="display: block; margin: auto;" />
 
-```r
+``` r
 hist(resid(fm1), main = "Bin width = 0.02", xlab = "Residuals", breaks = 4)
 ```
 
@@ -569,7 +556,7 @@ An alternative to histograms is a normal probability plot of residuals, also kno
  
 As we'll see below, the normality assumption is the \textit{least} critical of the assumptions in regression.  Thus, unless the Q-Q plot shows big and dramatic bends, we won't concern ourselves with small bumps and wiggles.  The Q-Q plot for the BAC data below doesn't seem terribly problematic.
 
-```r
+``` r
 qqnorm(resid(fm1))
 qqline(resid(fm1))
 ```
@@ -604,7 +591,7 @@ Perhaps surprisingly, the consequences of violating the normality assumption are
 
 Here's an example of another data set with residuals that are a bit more problematic.  These data give the box office take (in millions of US\$) vs. a composite rating score from critics' reviews:
 
-```r
+``` r
 movie <- read.table("data/movie.txt", head = T, stringsAsFactors = T)
 
 with(movie, plot(BoxOffice ~ Score, xlab = "Average rating", ylab = "Box office take"))
@@ -616,14 +603,14 @@ abline(fm1)
 
 The plots of residuals vs. fitted value show clear evidence of non-constant variance.  The Q-Q plot indicates right-skew.  Taking a square-root transformation of the response stabilizes the variance nicely:
 
-```r
+``` r
 plot(resid(fm1) ~ fitted(fm1), xlab = "Fitted value", ylab = "Residual")
 abline(h = 0,lty = "dashed")
 ```
 
 <img src="index_files/figure-html/unnamed-chunk-13-1.png" width="384" style="display: block; margin: auto;" />
 
-```r
+``` r
 qqnorm(resid(fm1),main = "QQ plot, movie data")
 qqline(resid(fm1))
 ```
@@ -632,7 +619,7 @@ qqline(resid(fm1))
 
 Let's try a square-root transformation of the response:
 
-```r
+``` r
 fm2 <- lm(sqrt(BoxOffice) ~ Score, data = movie)
 summary(fm2)
 ```
@@ -658,14 +645,14 @@ summary(fm2)
 ## F-statistic: 32.74 on 1 and 138 DF,  p-value: 6.272e-08
 ```
 
-```r
+``` r
 plot(fm2)
 ```
 
 <img src="index_files/figure-html/unnamed-chunk-14-1.png" width="384" style="display: block; margin: auto;" /><img src="index_files/figure-html/unnamed-chunk-14-2.png" width="384" style="display: block; margin: auto;" /><img src="index_files/figure-html/unnamed-chunk-14-3.png" width="384" style="display: block; margin: auto;" /><img src="index_files/figure-html/unnamed-chunk-14-4.png" width="384" style="display: block; margin: auto;" />
 Another commonly used transformation for right-skewed data is the log transformation.  Here are residual plots and model output for log-transformed data:
 
-```r
+``` r
 fm3 <- lm(log(BoxOffice) ~ Score, data = movie)
 summary(fm3)
 ```
@@ -691,7 +678,7 @@ summary(fm3)
 ## F-statistic: 28.71 on 1 and 138 DF,  p-value: 3.438e-07
 ```
 
-```r
+``` r
 plot(fm3)
 ```
 
@@ -702,7 +689,7 @@ Which transformation do you think is more appropriate?  Do the different transfo
 Here's a second example using a data set that gives the highway fuel efficiency (in mpg) and vehicle weight of 1999 model cars:
 
 
-```r
+``` r
 cars <- read.table("data/cars.txt", head = T)
 
 with(cars, plot(mpghw ~ weight, xlab = "Vehicle weight (lbs)", ylab = "Highway mpg"))
@@ -712,7 +699,7 @@ abline(fm1)
 
 <img src="index_files/figure-html/unnamed-chunk-16-1.png" width="384" style="display: block; margin: auto;" />
 
-```r
+``` r
 plot(resid(fm1) ~ fitted(fm1), xlab = "Fitted value", ylab = "Residual")
 abline(h = 0,lty = "dashed")
 ```
@@ -793,7 +780,7 @@ Thus, the width of a CI or PI depends on the following:
 
 The function `predict` can be used to calculate these intervals in R:
 
-```r
+``` r
 fm1 <- lm(BAC ~ Beers, data = beer)
 new.data <- data.frame(Beers = 2.5)
 predict(fm1, interval = "confidence", newdata = new.data)
@@ -804,7 +791,7 @@ predict(fm1, interval = "confidence", newdata = new.data)
 ## 1 0.0322088 0.01602159 0.04839601
 ```
 
-```r
+``` r
 predict(fm1, interval = "prediction", newdata = new.data)
 ```
 
@@ -813,7 +800,7 @@ predict(fm1, interval = "prediction", newdata = new.data)
 ## 1 0.0322088 -0.01452557 0.07894317
 ```
 
-```r
+``` r
 predict(fm1, interval = "prediction", newdata = new.data, level = 0.90)
 ```
 
@@ -826,6 +813,8 @@ Regression (solid line), 95\% confidence intervals (dashed lines), and 95\% pred
 
 ## Regression design
 
+### Choice of predictor values
+
 Regression models can be used both for observational and experimental data.  In some experiments, the experimenter has control over the values of the predictor included in the experiment.  @gotelli2004primer (pp. 167-9) give the following guidelines for a regression design with a single predictor:
 
 1. Ensure that the range of values sampled for the predictor variable is large enough to capture the full range of responses by the response variable.
@@ -833,6 +822,56 @@ Regression models can be used both for observational and experimental data.  In 
 2. Ensure that the distribution of predictor values is approximately uniform within the sampled range.
  
 Once the values of the predictor to be included in the experiment have been chosen, these values should be randomly assigned to the experimental units.  Note that randomization does *not* require randomly choosing the values of the predictor to be included in the experiment!
+
+### Power
+
+In statistical hypothesis testing, *power* refers to the probability of rejecting a false null hypothesis.  It is equal to one minus the Type II (false negative) error rate. For example, if the type II error rate is 40\%, then the power is 1- 40\% = 60\%. All else equal, we favor designs with more power as opposed to less.
+
+Power calculations are typically used to provide a rough sense of the appropriate sample size for a regression study.  Unfortunately, power depends on several factors, many of which are unknown prior to conducting an experiment.  Thus, when calculating power, usually the best that one can do is to make educated guesses about the values of the inputs on which the power depends.  For this reason, power calculations are better regarded as rough guides to sample size.
+
+For the usual SLR test of $H_0: \beta_1 = 0$ vs. $H_a: \beta_1 \ne 0$, power depends on all of the following:
+
+* the sample size, $n$.  Larger sample sizes give greater power.
+* the size of the true slope $\beta_1$.  Values of $\beta_1$ further away from zero (that is, larger values of $|\beta_1|$) give greater power.  
+* the magnitude of the residual variance, $\sigma^2_\varepsilon$. Larger values of $\sigma^2_\varepsilon$ give less power.
+* the acceptable Type I (false positive) error rate, $\alpha$.  Greater tolerance for Type I errors gives greater power (why?).
+
+Typically, a power calculation for SLR involves specifying best guesses for $\beta_1$ and $\sigma^2_\varepsilon$, determining the allowable type I error rate $\alpha$, and then finding the sample size needed to achieve a minimal acceptable power.  The internet contains a variety of power calculators for simple regression. Here's an example using the `pwrss.f.reg` function found in the `pwrss` package in `R`.  The code here uses the fact that in SLR, the usual test of $H_0: \beta_1 = 0$ vs. $H_a: \beta_1 \ne 0$ is equivalent to a test of $H_0: R^2 = 0$ vs. $H_a: R^2 > 0$.  Conveniently, when we specify the test in terms of $R^2$, we don't need to specify both $\beta_1$ and $\sigma^2_\varepsilon$; instead, we only need to specify out best guess for $R^2$.  The calculation below shows the sample size needed to achieve 80\% power in a SLR when $R^2=0.3$ and $\alpha=0.05$.  
+
+Note that the function `pwrss.f.reg` is built for multiple regression models that can include several predictor variables.  The argument `k` in the function call indicates the number of predictor variables; in SLR, $k=1$ because there is a single predictor.  
+
+
+``` r
+pwrss::pwrss.f.reg(r2 = 0.3, k = 1, power = 0.8, alpha = 0.05)
+```
+
+```
+##  Linear Regression (F test) 
+##  R-squared Deviation from 0 (zero) 
+##  H0: r2 = 0 
+##  HA: r2 > 0 
+##  ------------------------------ 
+##   Statistical power = 0.8 
+##   n = 21 
+##  ------------------------------ 
+##  Numerator degrees of freedom = 1 
+##  Denominator degrees of freedom = 18.425 
+##  Non-centrality parameter = 8.754 
+##  Type I error rate = 0.05 
+##  Type II error rate = 0.2
+```
+
+We see that we would need a sample size of $n=21$ to achieve the desired power.
+
+The graph below shows how the power is related to sample size when $R^2 = 30\%$ and when $R^2 = 60\%$.
+
+<img src="index_files/figure-html/unnamed-chunk-20-1.png" width="384" style="display: block; margin: auto;" />
+
+The plot below shows the power as a function of $R^2$ for several sample sizes.
+
+<img src="index_files/figure-html/unnamed-chunk-21-1.png" width="384" style="display: block; margin: auto;" />
+
+Why do all three curves intersect at the same point when $R^2 = 0$?  What is this value?
 
 ## $^\star$Centering the predictor {#centering-the-predictor}
 
@@ -842,7 +881,7 @@ x^{ctr} =x -\bar{x}
 \] 
 Let's try regressing the response against the centered version of the predictor:
 
-```r
+``` r
 beer$beers.c <- beer$Beers - mean(beer$Beers)
 head(beer)
 ```
@@ -857,7 +896,7 @@ head(beer)
 ## 6     7 0.095  2.1875
 ```
 
-```r
+``` r
 beer_slr_ctr <- lm(BAC ~ beers.c, data = beer)
 summary(beer_slr_ctr)
 ```
@@ -892,7 +931,7 @@ The basic command in R for fitting a regression model is the function `lm`, shor
 ````
 where "response" and "predictor" would be replaced by the appropriate variable names.  The ``>`` is the R prompt, and is meant to show what you could type at the command line.  Although the above command would work, it would fit the SLR and then forget the model fit.  We want to keep the model fit around to analyze it, so we'll store it in memory under a name of our choosing.  Here, we'll choose the name ``fm1``, although any name would work.  Anything proceeded by a pound sign (\#) is a comment in R.  We'll assume that the BAC data have already been read into R and reside in memory, and that the variables in the BAC data are named ``BAC`` and ``Beers``.  Here is code for fitting a SLR model to these data:
 
-```r
+``` r
 fm1 <- lm(BAC ~ Beers, data = beer)
 
 # The '<-' is the assignment operator.
@@ -937,7 +976,7 @@ Finally, the last block of output provides a variety of additional information. 
 
 The SS decomposition for a regression model is also referred to as the analysis of variance for the regression model.  We can use the `anova' command in R to obtain the SS decomposition:
 
-```r
+``` r
 anova(fm1)
 ```
 

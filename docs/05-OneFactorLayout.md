@@ -38,7 +38,7 @@ The simplest type of randomization structure is a *completely randomized design*
 In the reading example, each of the three methods was randomly assigned to 22 different students.  One of the measures of reading comprehension in the data set is called "POST3".  The data for this response are shown in the strip chart below.
 
 
-```r
+``` r
 reading <- read.table("data/reading.txt", head = T, stringsAsFactors = T)
 with(reading, stripchart(POST3 ~ Group, method = "jitter", pch = 16, las = 1))
 ```
@@ -155,7 +155,7 @@ Let's compare ANOVA tables for the hot-dog calorie data from both R and SAS.  No
 
 In R, the ANOVA table is produced by fitting a linear model using lm(), and then passing that model fit to the command anova().
 
-```r
+``` r
 fm1 <- lm(calories ~ type, data = hotdog)
 anova(fm1) 
 ```
@@ -173,7 +173,7 @@ Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
 For the sake of these notes, we can make the ANOVA table look a bit nicer using the following code.
 
-```r
+``` r
 options(knitr.kable.NA = '') 
 anova(fm1) %>% knitr::kable(format = "html")
 ```
@@ -277,13 +277,13 @@ Thankfully, we get the same output regardless of which computer package we use. 
 
 *Example 2.* We also have sodium content (in mg) available for each hotdog.  A strip-chart of the sodium data is shown below.
 
-```r
+``` r
 with(hotdog, stripchart(sodium ~ type, method = "jitter", pch = 16))
 ```
 
 <img src="05-OneFactorLayout_files/figure-html/unnamed-chunk-7-1.png" width="480" style="display: block; margin: auto;" />
 
-```r
+``` r
 fm2 <- lm(sodium ~ type, data = hotdog)
 anova(fm2)
 ```
@@ -306,7 +306,7 @@ y=\beta_0 +\beta_1 x_1 +\beta_2 x_2 + \epsilon
 \] 
 where $x_1$ and $x_2$ are indicator variables to code for the different types of hotdogs.  We can ask if the data contain evidence that the different types of hotdogs have different calorie contents on average by testing $H_0$: $\beta_1 = \beta_2 = 0$.  In this particular case, the $F$-test that we need is the model utility test.  We'll just find this test directly in the R output.  
 
-```r
+``` r
 summary(fm1)
 ```
 
@@ -336,7 +336,7 @@ Note that the test statistic and $p$-value for the model utility test are exactl
 
 One-factor ANOVA also generalizes a two-sample $t$-test.   To illustrate, consider the data below, which show body temperatures for 65 randomly selected women and 65 randomly selected men.
 
-```r
+``` r
 bodytemp <- read.table("data/bodytemp.txt", head = T, stringsAsFactors = T)
 with(bodytemp, stripchart(bodytemp ~ gender, method = 'jitter', pch = 16, las = 1))
 ```
@@ -344,7 +344,7 @@ with(bodytemp, stripchart(bodytemp ~ gender, method = 'jitter', pch = 16, las = 
 <img src="05-OneFactorLayout_files/figure-html/unnamed-chunk-9-1.png" width="480" style="display: block; margin: auto;" />
 Suppose we want to study the difference in average body temperature between men and women.  In an introductory course you might have conducted this analysis with a two-sample $t$-test.  Here is how to implement this $t$-test in R.
 
-```r
+``` r
 t.test(bodytemp ~ gender, data = bodytemp, var.equal = TRUE)
 ```
 
@@ -363,7 +363,7 @@ mean in group female   mean in group male
 ```
 The $p$-value of 0.0239 suggests that there is reasonably strong evidence of a difference in average body temperature for males and females.  Compare this output with a one-factor ANOVA analysis:
 
-```r
+``` r
 anova(lm(bodytemp ~ gender, data = bodytemp))
 ```
 
@@ -677,7 +677,7 @@ So what is the point, if all we have done is to recreate the familiar $F$-test f
 
 *Example.} An experiment is conducted to investigate the effects of five different sugar treatments on the length (in mm) of pea sections grown in tissue culture.  The five treatments are: a control (no sugar added), +2\% sucrose, +2\% fructose, +2\% glucose, and +1\% fructose +1\% glucose.  The data are balanced, with $n = 10$ replicates per treatment.  A stripchart of the data is shown below.
 
-```r
+``` r
 pea <- read.table("data/pea.txt", head = T, stringsAsFactors = T)
 with(pea, stripchart(length ~ trt, method = "jitter", pch = 16))
 ```
@@ -805,7 +805,7 @@ To implement a Bonferroni correction, we can simply use a linear contrast for ea
 
 *Example.*  @sokal1995biometry give the following data.  H.\ L.\ Willis measured the head width of tiger beetles at $g=8$ sites across the central U.S.  The data are balanced, with are $n=15$ tiger beetles measured at each site.  The data are shown below.
 
-```r
+``` r
 beetle <- read.table("data/beetle.txt", head = T, stringsAsFactors = T)
 par(mar = c(5, 7, 1, 1))
 with(beetle, stripchart(head.width ~ site, method = "jitter", pch = 16, las = 1))
@@ -1131,7 +1131,7 @@ The natural question that arises is: When should we expect orthogonality?  One d
 
 Consider the following data set.  Pott (1992) conducted an experiment to investigate the effect of added dietary molybdenum (Mo) on the molybdenum concentrations of sheep kidneys.  Twenty (20) sheep were randomly assigned to one of four diets, where the diets differed only in the amount of supplementary molybdenum (0, 15, 30 and 45 ppm).  Five sheep were assigned to each diet, and the Mo concentration in the kidney was measured after 14 days.  The data are shown below:
 
-```r
+``` r
 molybdenum <- read.csv("data/molybdenum.csv", head = T)
 with(molybdenum, stripchart(conc ~ diet, method = "jitter", pch = 16))
 ```
@@ -1139,14 +1139,14 @@ with(molybdenum, stripchart(conc ~ diet, method = "jitter", pch = 16))
 <img src="05-OneFactorLayout_files/figure-html/unnamed-chunk-14-1.png" width="480" style="display: block; margin: auto;" />
 Should we model these data with an ANOVA or a regression?  In this case, the treatment groups are formed by different values of a quantitative variable --- in this case, the amount of supplementary molybdenum in the diet.  Many experiments form treatment groups in this way.  Often, the data exhibit a clear trend with respect to the quantitative variable, as the sheep example does.  This is easier to see if we plot the molybdenum variable on the horizontal axis, as we would if this were a regression design:
 
-```r
+``` r
 with(molybdenum, plot(conc ~ diet, xlab = "molybdenum addition (ppm)", ylab = "kidney Mo", pch = 16))
 ```
 
 <img src="05-OneFactorLayout_files/figure-html/unnamed-chunk-15-1.png" width="480" style="display: block; margin: auto;" />
 THis plot makes it clear that, as with much biological data, the variance increases as the average response increases.  We should analyze the log of the response to stabilize the variance.
 
-```r
+``` r
 with(molybdenum, plot(log(conc) ~ diet, xlab = "molybdenum addition (ppm)", ylab = "log(kidney Mo)", pch = 16))
 ```
 
