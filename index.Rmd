@@ -462,7 +462,8 @@ In regression, we can use *diagnostic plots* to investigate the scientific quali
  
 We list commonly used diagnostic plots below.  Although some types of plots are more useful for examining some assumptions than others, there isn't a strict correspondence between plot types and assumptions.  Any plot can reveal a departure from any one of our assumptions.  Examples of each for the BAC data and the R code used to generate the plots are provided as examples.
  
-1.Residuals vs. fitted values.  Check for non-constant variance (trumpeting).  The BAC data shown here don't show an obvious increase or decrease in variance as the fitted values increase, although the fact that the largest residual is associated with the largest fitted value is notable.  We might want to go back and check that data point out.
+### Residuals vs. fitted values
+Check for non-constant variance (trumpeting).  The BAC data shown here don't show an obvious increase or decrease in variance as the fitted values increase, although the fact that the largest residual is associated with the largest fitted value is notable.  We might want to go back and check that data point out.
 ```{r}
 plot(resid(fm1) ~ fitted(fm1), xlab = "Fitted Values", ylab = "Residuals")
 abline(h = 0, lty = "dotted")
@@ -486,7 +487,8 @@ Fruitflies that live longer clearly have more variable lifespans.
 
 ---
 
-2. Residuals vs. predictor.  We can use this plot to check for non-linear trends.  If we see a non-linear trend, like a hump-shaped pattern, it might suggest that the true relationship between predictor and response is actually non-linear.
+### Residuals vs. predictor(s)
+We can use this plot to check for non-linear trends.  If we see a non-linear trend, like a hump-shaped pattern, it might suggest that the true relationship between predictor and response is actually non-linear.
 
 For the BAC data, you'll note that the plot below looks exactly like the plot of residuals vs. fitted values above.  This isn't just coincidence; in fact, residuals vs. fitted values and residuals vs. predictor will always generate exactly the same patterns in SLR.  (The reason is because in SLR the fitted value is just a linear function of the predictor.)  We want to get in the habit of checking both types of plots, however, because when we start entertaining multiple predictor variables in multiple regression, the plots will no longer be identical. 
 ```{r}
@@ -494,18 +496,20 @@ plot(resid(fm1) ~ beer$Beers, xlab = "Beers", ylab = "Residuals")
 abline(h = 0, lty = "dotted")
 ```
 
-3. Residuals vs. variables not in the model, e.g., other predictors, observer, order of observation, spatial coordinates.  In the BAC data, the only other variable we have (for now at least) is the order in which the observations appear in the data set. Without knowing how the data were collected or recorded, it's impossible to say whether this variable is meaningful. However, the plot suggests a distinctive downward trend -- data points that appear early in the data set are associated with positive residuals, and data points that appear later in the data set are associated with negative residuals.  What do you think might have caused this trend?
+### Residuals vs. other variables 
+Plot the residuals against variables that are not in the model, e.g., other predictors, observer, order of observation, spatial coordinates.  In the BAC data, the only other variable we have (for now at least) is the order in which the observations appear in the data set. Without knowing how the data were collected or recorded, it's impossible to say whether this variable is meaningful. However, the plot suggests a distinctive downward trend -- data points that appear early in the data set are associated with positive residuals, and data points that appear later in the data set are associated with negative residuals.  What do you think might have caused this trend?
 ```{r}
 plot(resid(fm1), xlab = "Order", ylab = "Residuals")
 abline(h = 0, lty = "dotted")
 ```
 
-4. An obvious way to check the normality assumption is to plot a histogram of the residuals.  While this is a straightforward idea, it suffers from the fact that the shape of the histogram depends strongly on how the residuals are grouped into bins.  Note how the two histograms below of the BAC residuals provide different impressions about the suitability of the normality assumption.
+### Normal probability plot
+An obvious way to check the normality assumption is to plot a histogram of the residuals.  While this is a straightforward idea, it suffers from the fact that the shape of the histogram depends strongly on how the residuals are grouped into bins.  Note how the two histograms below of the BAC residuals provide different impressions about the suitability of the normality assumption.
 ```{r}
 hist(resid(fm1), main = "Bin width = 0.01", xlab = "Residuals")
 hist(resid(fm1), main = "Bin width = 0.02", xlab = "Residuals", breaks = 4)
 ```
-An alternative to histograms is a normal probability plot of residuals, also known as a quantile-quantile, or Q-Q, plot.  Q-Q plots calculate the empirical quantile of each residual, and compare this to the theoretical quantile from a normal distribution.  If the normality assumption is appropriate, the empirical and theoretical quantiles will change at the same rate, so when plotted against one another, they'll fall on a line.  If the normality assumption is not appropriate, the plot of empirical vs. theoretical quantiles will bend.
+An alternative to histograms is a normal probability plot of residuals, also known as a quantile-quantile, or Q-Q, plot.  Q-Q plots calculate the empirical quantile of each residual and compare this to the theoretical quantile from a normal distribution.  If the normality assumption is appropriate, the empirical and theoretical quantiles will change at the same rate, so they'll fall on a line when plotted against one another.  If the normality assumption is not appropriate, the plot of empirical vs. theoretical quantiles will bend.
  
 As we'll see below, the normality assumption is the \textit{least} critical of the assumptions in regression.  Thus, unless the Q-Q plot shows big and dramatic bends, we won't concern ourselves with small bumps and wiggles.  The Q-Q plot for the BAC data below doesn't seem terribly problematic.
 ```{r}
@@ -513,21 +517,46 @@ qqnorm(resid(fm1))
 qqline(resid(fm1))
 ```
 
+Here is an example of some Q-Q plots that do show strong departures from normality.  This plot is based on Figure 6.1 of @oehlert2010first.
+```{r qqexamples, echo = FALSE, fig.width = 5.5, fig.height = 9}
+set.seed(1)
+par(mfrow = c(3, 2))
+
+my.function <- function(x) dgamma(x, shape = 1.5, rate = 1)
+curve(my.function, from = 0, to = 5, xlab = "right skew (common)", ylab = "", main = "Underlying distribution\nof residuals")
+ttt <- rgamma(100, shape = 1.5, rate = 1)
+qqnorm(ttt, main = "Example of\ncorresponding Q-Q plot")
+qqline(ttt)
+
+my.function <- function(x) dgamma(-x, shape = 1.5, rate = 1)
+curve(my.function, from = -5, to = 0, xlab = "left skew (rare)", ylab = "")
+ttt <- -1 * rgamma(100, shape = 1.5, rate = 1)
+qqnorm(ttt, main = "")
+qqline(ttt)
+
+my.function <- function(x) dt(x, df = 1)
+curve(my.function, from = -3, to = 3, xlab = "fat tails (rare)", ylab = "")
+ttt <- rt(100, df = 1)
+qqnorm(ttt, main = "")
+qqline(ttt)
+```
+
+
 ## Consequences of violating model assumptions, and possible fixes
 
-1. Linearity 
+### Linearity 
 	
 When the linearity assumption is violated, the model has little worth.  What's the point of fitting a linear model to data when the relationship between predictor and response is clearly not linear?
 	
 The best fix is to fit a non-linear model using non-linear regression.  (We will discuss non-linear regression later.)  A second-best option is to transform the predictor and / or the response to make the relationship linear.  
 	
-2. Independence
+### Independence
 	
 Inference about regression parameters using naive standard errors is not trustworthy when errors are correlated (there is more uncertainty in the estimates than the naive standard errors suggest).
 	
 The most common sources of non-independence is either temporal or spatial structure in the data, or if the data are grouped in some way that has been accounted for in the analysis.  Arguably, we have seen this with the BAC data, where one way to think about the downward trend of residuals vs.\ the order of observation is that residuals close together in time tend to be positively correlated.  The best, and easiest, way to accommodate this type of dependence is to include (an)other predictor(s) in the model for time or space, or to account for a group structure.   A second-best solution is to use specific methods for time-series data or spatial data, which doable, but is fairly involved, and will require considerable additional study.
 	
-3. Constant variance
+### Constant variance
 	
 Like violations of the independence assumption, violations of the constant-variance assumption cause inference about regression parameters is not trustworthy.  Non-constant variance causes there to be more uncertainty in the parameters estimates than the default CIs or $t$-tests suggest.
 	
@@ -535,7 +564,7 @@ There are two possible fixes for non-constant variance.  If the non-constant var
 	 
 For better or worse, there used to be a bit of a cottage industry in statistics in developing variance-stabilizing transformations.  Remember that transformations come with a cost of diminished interpretability, and be wary of exotic transformations.  It is not uncommon to observe data where the variance increases as the mean response increases.  Good transformations for this situation are either a log transformation or a square-root transformation.^[Note that a log transformation will not work if the data contain response values equal to 0.  The usual approach in this case is either to take the $\ln(y + 1)$, or to take $\ln(y + c)$, where $c$ is one-half of the smallest non-zero response value in the data set.  Note also that the base of the logarithm doesn't matter when taking a log transformation.  Natural log is the most common choice, but one can also use $\log_2$ or $\log_{10}$.]  Another common non-constant variance problem arises when the response is a percentage or a proportion.  In this case, the standard and appropriate transformation is the arcsin-square root transformation, i.e., if the observed response is 10\%, the transformed response is $\sin^{-1}(\sqrt{.1})=0.322$.
 	
-4. Normality
+### Normality
 	
 Perhaps surprisingly, the consequences of violating the normality assumption are minimal, unless departures from normality are severe (e.g., binary data).^[One of my instructors used to refer to normality of the residuals in a linear model as a "self-fulfilling prophecy".]  When one encounters decidedly non-normal data, the usual remedy is to entertain a so-called generalized linear models, i.e., logistic regression for binary data; Poisson regression for count data.	
 

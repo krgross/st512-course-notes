@@ -15,7 +15,15 @@ statistical-hypothesis-tests
 inference-for-the-intercept
 sums-of-squares-decomposition-and-r2
 diagnostic-plots
+residuals-vs.-fitted-values
+residuals-vs.-predictors
+residuals-vs.-other-variables
+normal-probability-plot
 consequences-of-violating-model-assumptions-and-possible-fixes
+linearity
+independence
+constant-variance
+normality
 prediction-with-regression-models
 regression-design
 choice-of-predictor-values

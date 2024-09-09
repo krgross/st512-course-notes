@@ -23,7 +23,7 @@
 <meta name="author" content="Kevin Gross" />
 
 
-<meta name="date" content="2024-09-04" />
+<meta name="date" content="2024-09-09" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -181,8 +181,20 @@ div.csl-indent {
 <li class="chapter" data-level="1.3.4" data-path="simple-linear-regression.html"><a href="simple-linear-regression.html#inference-for-the-intercept"><i class="fa fa-check"></i><b>1.3.4</b> Inference for the intercept</a></li>
 </ul></li>
 <li class="chapter" data-level="1.4" data-path="simple-linear-regression.html"><a href="simple-linear-regression.html#sums-of-squares-decomposition-and-r2"><i class="fa fa-check"></i><b>1.4</b> Sums of squares decomposition and <span class="math inline">\(R^2\)</span></a></li>
-<li class="chapter" data-level="1.5" data-path="simple-linear-regression.html"><a href="simple-linear-regression.html#diagnostic-plots"><i class="fa fa-check"></i><b>1.5</b> Diagnostic plots</a></li>
-<li class="chapter" data-level="1.6" data-path="simple-linear-regression.html"><a href="simple-linear-regression.html#consequences-of-violating-model-assumptions-and-possible-fixes"><i class="fa fa-check"></i><b>1.6</b> Consequences of violating model assumptions, and possible fixes</a></li>
+<li class="chapter" data-level="1.5" data-path="simple-linear-regression.html"><a href="simple-linear-regression.html#diagnostic-plots"><i class="fa fa-check"></i><b>1.5</b> Diagnostic plots</a>
+<ul>
+<li class="chapter" data-level="1.5.1" data-path="simple-linear-regression.html"><a href="simple-linear-regression.html#residuals-vs.-fitted-values"><i class="fa fa-check"></i><b>1.5.1</b> Residuals vs. fitted values</a></li>
+<li class="chapter" data-level="1.5.2" data-path="simple-linear-regression.html"><a href="simple-linear-regression.html#residuals-vs.-predictors"><i class="fa fa-check"></i><b>1.5.2</b> Residuals vs. predictor(s)</a></li>
+<li class="chapter" data-level="1.5.3" data-path="simple-linear-regression.html"><a href="simple-linear-regression.html#residuals-vs.-other-variables"><i class="fa fa-check"></i><b>1.5.3</b> Residuals vs. other variables</a></li>
+<li class="chapter" data-level="1.5.4" data-path="simple-linear-regression.html"><a href="simple-linear-regression.html#normal-probability-plot"><i class="fa fa-check"></i><b>1.5.4</b> Normal probability plot</a></li>
+</ul></li>
+<li class="chapter" data-level="1.6" data-path="simple-linear-regression.html"><a href="simple-linear-regression.html#consequences-of-violating-model-assumptions-and-possible-fixes"><i class="fa fa-check"></i><b>1.6</b> Consequences of violating model assumptions, and possible fixes</a>
+<ul>
+<li class="chapter" data-level="1.6.1" data-path="simple-linear-regression.html"><a href="simple-linear-regression.html#linearity"><i class="fa fa-check"></i><b>1.6.1</b> Linearity</a></li>
+<li class="chapter" data-level="1.6.2" data-path="simple-linear-regression.html"><a href="simple-linear-regression.html#independence"><i class="fa fa-check"></i><b>1.6.2</b> Independence</a></li>
+<li class="chapter" data-level="1.6.3" data-path="simple-linear-regression.html"><a href="simple-linear-regression.html#constant-variance"><i class="fa fa-check"></i><b>1.6.3</b> Constant variance</a></li>
+<li class="chapter" data-level="1.6.4" data-path="simple-linear-regression.html"><a href="simple-linear-regression.html#normality"><i class="fa fa-check"></i><b>1.6.4</b> Normality</a></li>
+</ul></li>
 <li class="chapter" data-level="1.7" data-path="simple-linear-regression.html"><a href="simple-linear-regression.html#prediction-with-regression-models"><i class="fa fa-check"></i><b>1.7</b> Prediction with regression models</a></li>
 <li class="chapter" data-level="1.8" data-path="simple-linear-regression.html"><a href="simple-linear-regression.html#regression-design"><i class="fa fa-check"></i><b>1.8</b> Regression design</a>
 <ul>
@@ -625,7 +637,9 @@ R^2 = \dfrac{{\rm SS(Regression)}}{{\rm SS(Total)}} = 1-\frac{{\rm SSE}}{{\rm SS
 </blockquote>
 <p>In regression, we can use <em>diagnostic plots</em> to investigate the scientific quality of our assumptions. The main idea of diagnostic plots is that if the assumptions are appropriate, then residuals should be independent draws from a normal distribution with constant variance (what some might more colorfully describe as “white noise”). Any structure in the residuals indicates a violation of at least one assumption.</p>
 <p>We list commonly used diagnostic plots below. Although some types of plots are more useful for examining some assumptions than others, there isn’t a strict correspondence between plot types and assumptions. Any plot can reveal a departure from any one of our assumptions. Examples of each for the BAC data and the R code used to generate the plots are provided as examples.</p>
-<p>1.Residuals vs. fitted values. Check for non-constant variance (trumpeting). The BAC data shown here don’t show an obvious increase or decrease in variance as the fitted values increase, although the fact that the largest residual is associated with the largest fitted value is notable. We might want to go back and check that data point out.</p>
+<div id="residuals-vs.-fitted-values" class="section level3 hasAnchor" number="1.5.1">
+<h3><span class="header-section-number">1.5.1</span> Residuals vs. fitted values<a href="simple-linear-regression.html#residuals-vs.-fitted-values" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Check for non-constant variance (trumpeting). The BAC data shown here don’t show an obvious increase or decrease in variance as the fitted values increase, although the fact that the largest residual is associated with the largest fitted value is notable. We might want to go back and check that data point out.</p>
 <div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="simple-linear-regression.html#cb9-1" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">resid</span>(fm1) <span class="sc">~</span> <span class="fu">fitted</span>(fm1), <span class="at">xlab =</span> <span class="st">&quot;Fitted Values&quot;</span>, <span class="at">ylab =</span> <span class="st">&quot;Residuals&quot;</span>)</span>
 <span id="cb9-2"><a href="simple-linear-regression.html#cb9-2" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">h =</span> <span class="dv">0</span>, <span class="at">lty =</span> <span class="st">&quot;dotted&quot;</span>)</span></code></pre></div>
 <p><img src="index_files/figure-html/unnamed-chunk-6-1.png" width="384" style="display: block; margin: auto;" /></p>
@@ -635,53 +649,58 @@ R^2 = \dfrac{{\rm SS(Regression)}}{{\rm SS(Total)}} = 1-\frac{{\rm SSE}}{{\rm SS
 <hr />
 <p><span style="color: gray;"> Recall that the Central Limit Theorem gives us a good reason to expect normally distributed residuals when the many small influences that comprise the residual error add together. There’s a related explanation for why increasing variance is so common. When the many small influences that comprise the residual error multiply together instead of adding together, then we tend to observe more variance in the response when the fitted value is larger. Indeed, this is the usual explanation offered for why increasing variance is common in the life sciences, where many processes involve some form of multiplicative growth or decay. This explanation also helps us understand why a log transformation is usually helpful as a remedy for increasing variance, because when we take a log of the response we are converting a multiplicative process into an additive one.</span></p>
 <hr />
-<ol start="2" style="list-style-type: decimal">
-<li>Residuals vs. predictor. We can use this plot to check for non-linear trends. If we see a non-linear trend, like a hump-shaped pattern, it might suggest that the true relationship between predictor and response is actually non-linear.</li>
-</ol>
+</div>
+<div id="residuals-vs.-predictors" class="section level3 hasAnchor" number="1.5.2">
+<h3><span class="header-section-number">1.5.2</span> Residuals vs. predictor(s)<a href="simple-linear-regression.html#residuals-vs.-predictors" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>We can use this plot to check for non-linear trends. If we see a non-linear trend, like a hump-shaped pattern, it might suggest that the true relationship between predictor and response is actually non-linear.</p>
 <p>For the BAC data, you’ll note that the plot below looks exactly like the plot of residuals vs. fitted values above. This isn’t just coincidence; in fact, residuals vs. fitted values and residuals vs. predictor will always generate exactly the same patterns in SLR. (The reason is because in SLR the fitted value is just a linear function of the predictor.) We want to get in the habit of checking both types of plots, however, because when we start entertaining multiple predictor variables in multiple regression, the plots will no longer be identical.</p>
 <div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="simple-linear-regression.html#cb10-1" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">resid</span>(fm1) <span class="sc">~</span> beer<span class="sc">$</span>Beers, <span class="at">xlab =</span> <span class="st">&quot;Beers&quot;</span>, <span class="at">ylab =</span> <span class="st">&quot;Residuals&quot;</span>)</span>
 <span id="cb10-2"><a href="simple-linear-regression.html#cb10-2" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">h =</span> <span class="dv">0</span>, <span class="at">lty =</span> <span class="st">&quot;dotted&quot;</span>)</span></code></pre></div>
 <p><img src="index_files/figure-html/unnamed-chunk-8-1.png" width="384" style="display: block; margin: auto;" /></p>
-<ol start="3" style="list-style-type: decimal">
-<li>Residuals vs. variables not in the model, e.g., other predictors, observer, order of observation, spatial coordinates. In the BAC data, the only other variable we have (for now at least) is the order in which the observations appear in the data set. Without knowing how the data were collected or recorded, it’s impossible to say whether this variable is meaningful. However, the plot suggests a distinctive downward trend – data points that appear early in the data set are associated with positive residuals, and data points that appear later in the data set are associated with negative residuals. What do you think might have caused this trend?</li>
-</ol>
+</div>
+<div id="residuals-vs.-other-variables" class="section level3 hasAnchor" number="1.5.3">
+<h3><span class="header-section-number">1.5.3</span> Residuals vs. other variables<a href="simple-linear-regression.html#residuals-vs.-other-variables" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Plot the residuals against variables that are not in the model, e.g., other predictors, observer, order of observation, spatial coordinates. In the BAC data, the only other variable we have (for now at least) is the order in which the observations appear in the data set. Without knowing how the data were collected or recorded, it’s impossible to say whether this variable is meaningful. However, the plot suggests a distinctive downward trend – data points that appear early in the data set are associated with positive residuals, and data points that appear later in the data set are associated with negative residuals. What do you think might have caused this trend?</p>
 <div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="simple-linear-regression.html#cb11-1" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">resid</span>(fm1), <span class="at">xlab =</span> <span class="st">&quot;Order&quot;</span>, <span class="at">ylab =</span> <span class="st">&quot;Residuals&quot;</span>)</span>
 <span id="cb11-2"><a href="simple-linear-regression.html#cb11-2" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">h =</span> <span class="dv">0</span>, <span class="at">lty =</span> <span class="st">&quot;dotted&quot;</span>)</span></code></pre></div>
 <p><img src="index_files/figure-html/unnamed-chunk-9-1.png" width="384" style="display: block; margin: auto;" /></p>
-<ol start="4" style="list-style-type: decimal">
-<li>An obvious way to check the normality assumption is to plot a histogram of the residuals. While this is a straightforward idea, it suffers from the fact that the shape of the histogram depends strongly on how the residuals are grouped into bins. Note how the two histograms below of the BAC residuals provide different impressions about the suitability of the normality assumption.</li>
-</ol>
+</div>
+<div id="normal-probability-plot" class="section level3 hasAnchor" number="1.5.4">
+<h3><span class="header-section-number">1.5.4</span> Normal probability plot<a href="simple-linear-regression.html#normal-probability-plot" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>An obvious way to check the normality assumption is to plot a histogram of the residuals. While this is a straightforward idea, it suffers from the fact that the shape of the histogram depends strongly on how the residuals are grouped into bins. Note how the two histograms below of the BAC residuals provide different impressions about the suitability of the normality assumption.</p>
 <div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="simple-linear-regression.html#cb12-1" tabindex="-1"></a><span class="fu">hist</span>(<span class="fu">resid</span>(fm1), <span class="at">main =</span> <span class="st">&quot;Bin width = 0.01&quot;</span>, <span class="at">xlab =</span> <span class="st">&quot;Residuals&quot;</span>)</span></code></pre></div>
 <p><img src="index_files/figure-html/unnamed-chunk-10-1.png" width="384" style="display: block; margin: auto;" /></p>
 <div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="simple-linear-regression.html#cb13-1" tabindex="-1"></a><span class="fu">hist</span>(<span class="fu">resid</span>(fm1), <span class="at">main =</span> <span class="st">&quot;Bin width = 0.02&quot;</span>, <span class="at">xlab =</span> <span class="st">&quot;Residuals&quot;</span>, <span class="at">breaks =</span> <span class="dv">4</span>)</span></code></pre></div>
 <p><img src="index_files/figure-html/unnamed-chunk-10-2.png" width="384" style="display: block; margin: auto;" />
-An alternative to histograms is a normal probability plot of residuals, also known as a quantile-quantile, or Q-Q, plot. Q-Q plots calculate the empirical quantile of each residual, and compare this to the theoretical quantile from a normal distribution. If the normality assumption is appropriate, the empirical and theoretical quantiles will change at the same rate, so when plotted against one another, they’ll fall on a line. If the normality assumption is not appropriate, the plot of empirical vs. theoretical quantiles will bend.</p>
+An alternative to histograms is a normal probability plot of residuals, also known as a quantile-quantile, or Q-Q, plot. Q-Q plots calculate the empirical quantile of each residual and compare this to the theoretical quantile from a normal distribution. If the normality assumption is appropriate, the empirical and theoretical quantiles will change at the same rate, so they’ll fall on a line when plotted against one another. If the normality assumption is not appropriate, the plot of empirical vs. theoretical quantiles will bend.</p>
 <p>As we’ll see below, the normality assumption is the critical of the assumptions in regression. Thus, unless the Q-Q plot shows big and dramatic bends, we won’t concern ourselves with small bumps and wiggles. The Q-Q plot for the BAC data below doesn’t seem terribly problematic.</p>
 <div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="simple-linear-regression.html#cb14-1" tabindex="-1"></a><span class="fu">qqnorm</span>(<span class="fu">resid</span>(fm1))</span>
 <span id="cb14-2"><a href="simple-linear-regression.html#cb14-2" tabindex="-1"></a><span class="fu">qqline</span>(<span class="fu">resid</span>(fm1))</span></code></pre></div>
 <p><img src="index_files/figure-html/unnamed-chunk-11-1.png" width="384" style="display: block; margin: auto;" /></p>
+<p>Here is an example of some Q-Q plots that do show strong departures from normality. This plot is based on Figure 6.1 of <span class="citation">Oehlert (<a href="#ref-oehlert2010first">2010</a>)</span>.
+<img src="index_files/figure-html/qqexamples-1.png" width="528" style="display: block; margin: auto;" /></p>
+</div>
 </div>
 <div id="consequences-of-violating-model-assumptions-and-possible-fixes" class="section level2 hasAnchor" number="1.6">
 <h2><span class="header-section-number">1.6</span> Consequences of violating model assumptions, and possible fixes<a href="simple-linear-regression.html#consequences-of-violating-model-assumptions-and-possible-fixes" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<ol style="list-style-type: decimal">
-<li>Linearity</li>
-</ol>
+<div id="linearity" class="section level3 hasAnchor" number="1.6.1">
+<h3><span class="header-section-number">1.6.1</span> Linearity<a href="simple-linear-regression.html#linearity" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>When the linearity assumption is violated, the model has little worth. What’s the point of fitting a linear model to data when the relationship between predictor and response is clearly not linear?</p>
 <p>The best fix is to fit a non-linear model using non-linear regression. (We will discuss non-linear regression later.) A second-best option is to transform the predictor and / or the response to make the relationship linear.</p>
-<ol start="2" style="list-style-type: decimal">
-<li>Independence</li>
-</ol>
+</div>
+<div id="independence" class="section level3 hasAnchor" number="1.6.2">
+<h3><span class="header-section-number">1.6.2</span> Independence<a href="simple-linear-regression.html#independence" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>Inference about regression parameters using naive standard errors is not trustworthy when errors are correlated (there is more uncertainty in the estimates than the naive standard errors suggest).</p>
 <p>The most common sources of non-independence is either temporal or spatial structure in the data, or if the data are grouped in some way that has been accounted for in the analysis. Arguably, we have seen this with the BAC data, where one way to think about the downward trend of residuals vs. the order of observation is that residuals close together in time tend to be positively correlated. The best, and easiest, way to accommodate this type of dependence is to include (an)other predictor(s) in the model for time or space, or to account for a group structure. A second-best solution is to use specific methods for time-series data or spatial data, which doable, but is fairly involved, and will require considerable additional study.</p>
-<ol start="3" style="list-style-type: decimal">
-<li>Constant variance</li>
-</ol>
+</div>
+<div id="constant-variance" class="section level3 hasAnchor" number="1.6.3">
+<h3><span class="header-section-number">1.6.3</span> Constant variance<a href="simple-linear-regression.html#constant-variance" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>Like violations of the independence assumption, violations of the constant-variance assumption cause inference about regression parameters is not trustworthy. Non-constant variance causes there to be more uncertainty in the parameters estimates than the default CIs or <span class="math inline">\(t\)</span>-tests suggest.</p>
 <p>There are two possible fixes for non-constant variance. If the non-constant variance arises because the response variable has a known, non-normal distribution, then one can use generalized linear models (such as logistic regression for binary data, or Poisson regression for count data). We will touch on generalized linear models briefly at the end of ST 512. Alternatively, if there is no obvious alternative distribution for the response, the usual approach is to transform the response variable to “stabilize” the variance.</p>
 <p>For better or worse, there used to be a bit of a cottage industry in statistics in developing variance-stabilizing transformations. Remember that transformations come with a cost of diminished interpretability, and be wary of exotic transformations. It is not uncommon to observe data where the variance increases as the mean response increases. Good transformations for this situation are either a log transformation or a square-root transformation.<a href="#fn11" class="footnote-ref" id="fnref11"><sup>11</sup></a> Another common non-constant variance problem arises when the response is a percentage or a proportion. In this case, the standard and appropriate transformation is the arcsin-square root transformation, i.e., if the observed response is 10%, the transformed response is <span class="math inline">\(\sin^{-1}(\sqrt{.1})=0.322\)</span>.</p>
-<ol start="4" style="list-style-type: decimal">
-<li>Normality</li>
-</ol>
+</div>
+<div id="normality" class="section level3 hasAnchor" number="1.6.4">
+<h3><span class="header-section-number">1.6.4</span> Normality<a href="simple-linear-regression.html#normality" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>Perhaps surprisingly, the consequences of violating the normality assumption are minimal, unless departures from normality are severe (e.g., binary data).<a href="#fn12" class="footnote-ref" id="fnref12"><sup>12</sup></a> When one encounters decidedly non-normal data, the usual remedy is to entertain a so-called generalized linear models, i.e., logistic regression for binary data; Poisson regression for count data.</p>
 <p>Here’s an example of another data set with residuals that are a bit more problematic. These data give the box office take (in millions of US$) vs. a composite rating score from critics’ reviews:</p>
 <div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="simple-linear-regression.html#cb15-1" tabindex="-1"></a>movie <span class="ot">&lt;-</span> <span class="fu">read.table</span>(<span class="st">&quot;data/movie.txt&quot;</span>, <span class="at">head =</span> T, <span class="at">stringsAsFactors =</span> T)</span>
@@ -769,6 +788,7 @@ Another commonly used transformation for right-skewed data is the log transforma
 <!--    \includegraphics*[height=2.5in]{figures/sin} -->
 <!-- \end{center}  -->
 <!-- Clearly, there is one data point that does not fit the pattern, and has considerably less spending on alcohol.  Inspection of the data shows that this data point corresponds to Northern Ireland, while all other data points are from the island of Great Britain.  Eliminating the data point that corresponds to Northern Ireland from the regression model gives the linear fit shown with the dashed line.   -->
+</div>
 </div>
 <div id="prediction-with-regression-models" class="section level2 hasAnchor" number="1.7">
 <h2><span class="header-section-number">1.7</span> Prediction with regression models<a href="simple-linear-regression.html#prediction-with-regression-models" class="anchor-section" aria-label="Anchor link to header"></a></h2>
@@ -1001,6 +1021,9 @@ Kahneman, Daniel. 2011. <em>Thinking, Fast and Slow</em>. Macmillan.
 </div>
 <div id="ref-martin2017statistical" class="csl-entry">
 Martin, Ryan. 2017. <span>“A Statistical Inference Course Based on p-Values.”</span> <em>The American Statistician</em> 71 (2): 128–36.
+</div>
+<div id="ref-oehlert2010first" class="csl-entry">
+Oehlert, Gary W. 2010. <em>A First Course in Design and Analysis of Experiments</em>.
 </div>
 <div id="ref-rubin2005causal" class="csl-entry">
 Rubin, Donald B. 2005. <span>“Causal Inference Using Potential Outcomes: Design, Modeling, Decisions.”</span> <em>Journal of the American Statistical Association</em> 100 (469): 322–31.
