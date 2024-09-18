@@ -1,7 +1,7 @@
 --- 
 title: "ST 512 course notes"
 author: "Kevin Gross"
-date: "2024-09-09"
+date: "2024-09-18"
 output:
   bookdown::gitbook:
     config:
@@ -571,7 +571,7 @@ qqline(resid(fm1))
 
 <img src="index_files/figure-html/unnamed-chunk-11-1.png" width="384" style="display: block; margin: auto;" />
 
-Here is an example of some Q-Q plots that do show strong departures from normality.  This plot is based on Figure 6.1 of @oehlert2010first.
+Here is an example of some Q-Q plots that do show strong departures from normality.^[This plot is based on Figure 6.1 of @oehlert2010first.]
 <img src="index_files/figure-html/qqexamples-1.png" width="528" style="display: block; margin: auto;" />
 
 

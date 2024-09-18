@@ -517,7 +517,7 @@ qqnorm(resid(fm1))
 qqline(resid(fm1))
 ```
 
-Here is an example of some Q-Q plots that do show strong departures from normality.  This plot is based on Figure 6.1 of @oehlert2010first.
+Here is an example of some Q-Q plots that do show strong departures from normality.^[This plot is based on Figure 6.1 of @oehlert2010first.]
 ```{r qqexamples, echo = FALSE, fig.width = 5.5, fig.height = 9}
 set.seed(1)
 par(mfrow = c(3, 2))
