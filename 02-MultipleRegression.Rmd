@@ -544,19 +544,31 @@ Throughout this section, we will refer to the number of predictors in a model, a
 
 Before beginning, we should note that $R^2$ is *not* a good choice for a ranking metric.  This is because adding a predictor will never decrease $R^2$.  Therefore, $R^2$ can only be used to compare models that have the same number of predictors.
 
-1. Adjusted $R^2$.  Adjusted $R^2$ is a penalized version of $R^2$ that imposes a penalty for each additional parameter added to the model.  The (rather opaque) formula for adjusted $R^2$ is
-	\[
-	{\rm Adj-}R^2 =1-\frac{n-1}{n-\left(k+1\right)} \left(1-R^2 \right)
-	\] 
-	The model with the largest Adj-$R^2$ is considered best.
+#### Adjusted $R^2$.  
+
+Adjusted $R^2$ is a penalized version of $R^2$ that imposes a penalty for each additional parameter added to the model.  Recall that the formula for (unadjusted) $R^2$ can be written as
+\[
+R^2 = 1 - \dfrac{SSE}{SSTotal}.
+\]
+Adjusted $R^2$ ``adjusts'' both sums-of-squares based on their associated df.  That is, the formula for adjusted $R^2$ is
+\[
+{\rm Adj-}R^2 =1-\dfrac{SSE / (n - (k + 1))}{SSTotal / (n - 1)}.
+\] 
+Although it isn't easy to see from the formula, the effect of the adjustment is to impose a penalty on the $R^2$ term that increases as the number of predictors ($k$) increases.  The model with the largest Adj-$R^2$ is considered best.
+
+It is easy to see that we can rewrite the formula for adjusted $R^2$ as
+\[
+{\rm Adj-}R^2 =1-\dfrac{s^2_\varepsilon}{SSTotal / (n - 1)}.
+\] 
+Thus, the model with the largest adjusted $R^2$ will be exactly the model with the smallest residual variance (or mean-squared error) $s^2_\varepsilon$.
 	
-2. AIC (Akaike's Information Criterion)
+#### AIC (Akaike's Information Criterion)
 	
-	AIC is also a penalized goodness-of-fit measure, like adjusted $R^2$.  AIC enjoys a bit more theoretical support than adjusted $R^2$ and is more versatile, although its derivation is a bit more opaque.  (As the name suggests, AIC has its roots in information theory.)  The general form of AIC involves math that is beyond the scope of ST 512, but we can write down the specific formula for regression models, which is
-	\[
-	AIC=n\ln \left[\frac{SSE}{n} \right]+2\left(k+1\right)
-	\] 
-	The smallest value of AIC is best. (Smaller here means algebraically smaller --- that is, further to the left on the number line --- not closer to zero.)   Despite its theoretical support, AIC tends to favor models with too many predictors.
+AIC is also a penalized goodness-of-fit measure, like adjusted $R^2$.  AIC enjoys a bit more theoretical support than adjusted $R^2$ and is more versatile, although its derivation is a bit more opaque.  (As the name suggests, AIC has its roots in information theory.)  The general form of AIC involves math that is beyond the scope of ST 512, but we can write down the specific formula for regression models, which is
+\[
+AIC=n\ln \left[\frac{SSE}{n} \right]+2\left(k+1\right)
+\] 
+The smallest value of AIC is best. (Smaller here means algebraically smaller --- that is, further to the left on the number line --- not closer to zero.)   Despite its theoretical support, AIC tends to favor models with too many predictors.
 
 <!-- Example of various ranking criteria with the cheese data: -->
 <!-- \begin{center} -->
@@ -583,9 +595,9 @@ Before beginning, we should note that $R^2$ is *not* a good choice for a ranking
 
 ---
 
-### Cross-validation
+#### Cross-validation
 
-Cross validation is a type of ranking method that is popular in machine learning.  The appeal of cross validation is that it doesn't rely on any abstract statistical ideas; instead, the ideas flow directly from common sense.  The difficulty lies in the fact that implementing a cross-validation procedure requires a small bit of programming chops.  As of this writing, the `R` package `caret` (an acronym for classification and regression training) includes routines that do most of the hard programming work for you.  Cross-validation is most compelling when we wish to use our regression model primarily for prediction.
+Cross validation is a type of ranking method that is popular in machine learning.  The appeal of cross validation is that it doesn't rely on any abstract statistical ideas; instead, the ideas flow directly from common sense.  The difficulty lies in the fact that implementing a cross-validation procedure requires a small bit of programming chops.  As of this writing, there seem to be several `R` packages that implement cross-validation, including one called `cv`.  Cross-validation is most compelling when we wish to use our regression model primarily for prediction.
 
 The basic idea of cross-validation is that a good regression model (especially a good predictive mode) should make accurate predictions.  At first, this may not seem like a useful observation: it's usually hard to collect new data that we can use to evaluate how well our candidate models make predictions.  The genius of cross-validation is that if we have enough data to begin with, we don't have to collect new data to evaluate predictive performance.  Instead, we can mimic the collection of new data by splitting our data into two subsets, fitting the model to the first subset, and then using that fit to predict the responses in the second subset.  Hence the name "cross-validation": we are validating our model by seeing how well it predicts data that we already have in hand.
 
@@ -593,7 +605,9 @@ The important point to note here is that we do *not* use the same data both for 
 
 When we split the data, the subset to which the data are fit is called the training subset, and the subset which are held out for prediction is called the testing subset.  Usually the training subset is larger than the testing subset.  Of course, if we can split the data once, then we can split it many times, and we obtain a better idea of how well our model makes predictions by averaging its predictive performance over many splits.  To quantify predictive performance at each split, we can use any sensible measure of predictive accuracy such as the mean-squared error of the predictions (or more commonly the square root of the mean squared error) or mean absolute error of the predictions.  The averaged predictive performance over many splits provides a measure of prediction accuracy that we can use to rank candidate models.
 
-There are many variations on this theme.  $K$-fold cross-validation splits the data into $k$ different subsets (or folds) of roughly equal size, and then uses each fold once as the testing subset, for a total of $k$ different splits.  Leave-one-out cross validation is $k$-fold cross validation with $k=n$ folds.  In other words, the testing subset in each split consists of a single data point.  As it happens, leave-one-out cross validation combined with the use the sum of squared prediction errors as the measure of predictive performance produces a special statistic called the PRESS statistic (an acronym for [pre]dicted [s]um of [s]quares).  The PRESS statistic is handy because it can be calculated with some clever math and a single fit to the entire data set; it doesn't actually require going to the trouble of splitting the data and re-fitting the model $n$ times. The PRESS statistic was popular before the advent of machine learning, and you'll find software routines that are able to compute it.
+There are many variations on this theme.  $K$-fold cross-validation splits the data into $k$ different subsets (or folds) of roughly equal size, and then uses each fold once as the testing subset, for a total of $k$ different splits.  Leave-one-out cross validation is $k$-fold cross validation with $k=n$ folds.  In other words, each data point constitutes its own fold.  Leave-one-out cross validation combined with the use the sum of squared prediction errors as the measure of predictive performance produces a special statistic that SAS dubbed the PRESS statistic (an acronym for [pre]dicted [s]um of [s]quares); it isn't clear to me whether this term is used much nowadays.  It's also worth noting that $k$-fold cross-validation doesn't actually require going to the trouble of splitting the data and re-fitting the model $k$ times; some clever math can be used to compute the mean-squared error for the $k$-fold cross-validation without manually performing all the splits and refits, which speeds up the computation time considerably.  
+
+For more on cross-validation using `R`, see the vignette [here](https://cran.r-project.org/web/packages/cv/vignettes/cv.html).
 
 ### Sequential methods
 

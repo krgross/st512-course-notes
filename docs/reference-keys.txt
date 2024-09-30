@@ -46,6 +46,8 @@ collinearity
 variable-selection-choosing-the-best-model
 model-selection-and-inference
 ranking-methods
+adjusted-r2.
+aic-akaikes-information-criterion
 cross-validation
 sequential-methods
 leverage-influential-points-and-standardized-residuals
