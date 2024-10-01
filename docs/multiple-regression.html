@@ -23,7 +23,7 @@
 <meta name="author" content="Kevin Gross" />
 
 
-<meta name="date" content="2024-09-30" />
+<meta name="date" content="2024-10-01" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -209,7 +209,7 @@ div.csl-indent {
 <ul>
 <li class="chapter" data-level="2.1" data-path="multiple-regression.html"><a href="multiple-regression.html#multiple-regression-basics"><i class="fa fa-check"></i><b>2.1</b> Multiple regression basics</a>
 <ul>
-<li class="chapter" data-level="2.1.1" data-path="multiple-regression.html"><a href="multiple-regression.html#the-multiple-regression-model"><i class="fa fa-check"></i><b>2.1.1</b> The multiple regression model</a></li>
+<li class="chapter" data-level="2.1.1" data-path="multiple-regression.html"><a href="multiple-regression.html#ideas-that-carry-over-from-slr-to-multiple-regression"><i class="fa fa-check"></i><b>2.1.1</b> Ideas that carry over from SLR to multiple regression</a></li>
 <li class="chapter" data-level="2.1.2" data-path="multiple-regression.html"><a href="multiple-regression.html#interpreting-partial-regression-coefficients."><i class="fa fa-check"></i><b>2.1.2</b> Interpreting partial regression coefficients.</a></li>
 <li class="chapter" data-level="2.1.3" data-path="multiple-regression.html"><a href="multiple-regression.html#visualizing-a-multiple-regression-model"><i class="fa fa-check"></i><b>2.1.3</b> Visualizing a multiple regression model</a></li>
 <li class="chapter" data-level="2.1.4" data-path="multiple-regression.html"><a href="multiple-regression.html#statistical-inference-for-partial-regression-coefficients"><i class="fa fa-check"></i><b>2.1.4</b> Statistical inference for partial regression coefficients</a></li>
@@ -218,7 +218,7 @@ div.csl-indent {
 <li class="chapter" data-level="2.2" data-path="multiple-regression.html"><a href="multiple-regression.html#F-test"><i class="fa fa-check"></i><b>2.2</b> <span class="math inline">\(F\)</span>-tests for several regression coefficients</a>
 <ul>
 <li class="chapter" data-level="2.2.1" data-path="multiple-regression.html"><a href="multiple-regression.html#basic-machinery"><i class="fa fa-check"></i><b>2.2.1</b> Basic machinery</a></li>
-<li class="chapter" data-level="2.2.2" data-path="multiple-regression.html"><a href="multiple-regression.html#model-utility-test-model-utility-test"><i class="fa fa-check"></i><b>2.2.2</b> Model utility test {#model utility test}</a></li>
+<li class="chapter" data-level="2.2.2" data-path="multiple-regression.html"><a href="multiple-regression.html#model-utility-test"><i class="fa fa-check"></i><b>2.2.2</b> Model utility test</a></li>
 </ul></li>
 <li class="chapter" data-level="2.3" data-path="multiple-regression.html"><a href="multiple-regression.html#categorical-predictors"><i class="fa fa-check"></i><b>2.3</b> Categorical predictors</a></li>
 <li class="chapter" data-level="2.4" data-path="multiple-regression.html"><a href="multiple-regression.html#regression-interactions"><i class="fa fa-check"></i><b>2.4</b> Interactions between predictors</a></li>
@@ -369,10 +369,8 @@ div.csl-indent {
 <p>In this chapter, we examine regression models that contain several predictor variables. Thankfully, many of the ideas from the simple linear regression also apply to regression models with several predictors. After an overview of the basics, this chapter will focus on the new aspects of regression modeling that arise when considering several predictors.</p>
 <div id="multiple-regression-basics" class="section level2 hasAnchor" number="2.1">
 <h2><span class="header-section-number">2.1</span> Multiple regression basics<a href="multiple-regression.html#multiple-regression-basics" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<div id="the-multiple-regression-model" class="section level3 hasAnchor" number="2.1.1">
-<h3><span class="header-section-number">2.1.1</span> The multiple regression model<a href="multiple-regression.html#the-multiple-regression-model" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>Just as SLR was used to characterize the relationship between a single predictor and a response, multiple regression can be used to characterize the relationship between several predictors and a response.</p>
-<p><em>Example.</em> In the BAC data, we also know each individual’s weight and gender:</p>
+<p><em>Example.</em> In the BAC data, we also know each individual’s weight:</p>
 <div class="sourceCode" id="cb44"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb44-1"><a href="multiple-regression.html#cb44-1" tabindex="-1"></a>beer <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">&quot;data/beer2.csv&quot;</span>, <span class="at">head =</span> T, <span class="at">stringsAsFactors =</span> T)</span>
 <span id="cb44-2"><a href="multiple-regression.html#cb44-2" tabindex="-1"></a><span class="fu">head</span>(beer)</span></code></pre></div>
 <pre><code>##     BAC weight beers
@@ -386,35 +384,39 @@ div.csl-indent {
 <div class="sourceCode" id="cb46"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb46-1"><a href="multiple-regression.html#cb46-1" tabindex="-1"></a>fm1 <span class="ot">&lt;-</span> <span class="fu">with</span>(beer, <span class="fu">lm</span>(BAC <span class="sc">~</span> beers))</span>
 <span id="cb46-2"><a href="multiple-regression.html#cb46-2" tabindex="-1"></a><span class="fu">plot</span>(<span class="at">x =</span> beer<span class="sc">$</span>weight, <span class="at">y =</span> <span class="fu">resid</span>(fm1), <span class="at">xlab =</span> <span class="st">&quot;weight&quot;</span>, <span class="at">ylab =</span> <span class="st">&quot;residual&quot;</span>)</span>
 <span id="cb46-3"><a href="multiple-regression.html#cb46-3" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">h =</span> <span class="dv">0</span>, <span class="at">lty =</span> <span class="st">&quot;dotted&quot;</span>)</span></code></pre></div>
-<div class="figure" style="text-align: center"><span style="display:block;" id="fig:unnamed-chunk-2"></span>
-<img src="02-MultipleRegression_files/figure-html/unnamed-chunk-2-1.png" alt="SLR residuals vs. weight." width="480" />
-<p class="caption">
-Figure 1.1: SLR residuals vs. weight.
-</p>
-</div>
+<p><img src="02-MultipleRegression_files/figure-html/unnamed-chunk-2-1.png" width="480" style="display: block; margin: auto;" /></p>
 <p>To simultaneously characterize the effect that the variables “beers” and “weight” have on BAC, we might want to entertain a model with both predictors. In words, the model is
 <span class="math display">\[
-\mbox{BAC} = \mbox{intercept} + \mbox{(parameter associated with beers)} \times \mbox{beers}  + \mbox{(parameter associated with weight)} \times \mbox{weight} + \mbox{error}
+\mbox{BAC} = \mbox{beers}  + \mbox{weight} + \mbox{error}.
 \]</span>
-where (for the moment) we are intentionally vague about what we mean by “parameter associated with beers”. As in SLR, the error term can be interpreted as a catch-all term that includes all the variation not accounted for by the linear associations betwen the response and the predictors “beers” and “weight”.</p>
+As in SLR, the error term is a catch-all term that includes all the variation not accounted for by the linear associations between the response and the predictors “beers” and “weight”.</p>
 <p>In mathematical notation, we can write the model as
 <span class="math display" id="eq:beer-two-predictors">\[\begin{equation}
 y = \beta_0 +\beta_1 x_1 +\beta_2 x_2 +\varepsilon
 \tag{2.1}
 \end{equation}\]</span>
-We use subscripts to distinguish different predictors. In this case, <span class="math inline">\(x_1\)</span> is the number of beers consumed and <span class="math inline">\(x_2\)</span> is the individual’s weight. Of course, the order in which we designate the predictors is arbitrary.</p>
-<p>There are a variety of ways to think about this model. As in SLR, we can separate this model into a mean or signal component <span class="math inline">\(\beta_0 +\beta_1 x_1 +\beta_2 x_2\)</span> and an error component <span class="math inline">\(\varepsilon\)</span>. Note that the mean component is now a function of two variables, and suggests that the relationship between the average response and either predictor is linear. If we wish to make statistical inferences about the parameters <span class="math inline">\(\beta_0\)</span>, <span class="math inline">\(\beta_1\)</span> and <span class="math inline">\(\beta_2\)</span> (which we do), then we need to place the standard assumptions on the error component: independence, constant variance, and normality. In notation, <span class="math inline">\(\varepsilon \sim \mathcal{N}\left(0,\sigma_{\varepsilon}^2 \right)\)</span>.</p>
-<p>We can also think about this model geometrically. Recall that in SLR, we could interpret the SLR model as a line passing through a cloud of data points. With 2 predictors, we are now fitting a plane to data points that “exist” in a three- dimensional data cloud.
+We use subscripts to distinguish different predictors. In this case, <span class="math inline">\(x_1\)</span> is the number of beers consumed and <span class="math inline">\(x_2\)</span> is the individual’s weight. Of course, the order in which we designate the predictors is arbitrary. For the moment, we shall be vague about how we interpret the <span class="math inline">\(\beta\)</span> parameters that multiply each of the predictors, but we will provide a precise interpretation soon. As in SLR, we place the standard assumptions of independence, constant variance, and normality on the error.</p>
+<p>We can also think about this model geometrically. Recall that in SLR, we could interpret the SLR model as a line passing through a cloud of data points. With 2 predictors, the model describes a plane that passes through data points that “exist” in a three- dimensional data cloud.
 <!-- ```{r fig.height = 3, echo = FALSE} -->
 <!-- knitr::include_graphics("images/regression-schematic.png", dpi = 100) -->
-<!-- ``` -->
-As in SLR, we use the least squares criteria to find the best-fitting parameter estimates. That is to say, we will agree that the best estimates of the parameters <span class="math inline">\(\beta_0\)</span>, <span class="math inline">\(\beta_1\)</span> and <span class="math inline">\(\beta_2\)</span> are the values that minimize
+<!-- ``` --></p>
+<p>In general, the equation for an MLR model with any number of predictors can be written:<br />
+<span class="math display">\[
+y =\beta_0 +\beta_1 x_{1} +\beta_2 x_{2} +\ldots +\beta_k x_{k} +\varepsilon
+\]</span></p>
+<div id="ideas-that-carry-over-from-slr-to-multiple-regression" class="section level3 hasAnchor" number="2.1.1">
+<h3><span class="header-section-number">2.1.1</span> Ideas that carry over from SLR to multiple regression<a href="multiple-regression.html#ideas-that-carry-over-from-slr-to-multiple-regression" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>We can apply much of our understanding from simple regression directly to multiple regression. Here are some of the ideas that carry over directly from SLR to multiple regression.</p>
+<div id="least-squares-estimation-1" class="section level4 hasAnchor" number="2.1.1.1">
+<h4><span class="header-section-number">2.1.1.1</span> Least-squares estimation<a href="multiple-regression.html#least-squares-estimation-1" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p>As in SLR, we use the least squares criteria to find the best-fitting parameter estimates. That is to say, we will agree that the best estimates of the parameters <span class="math inline">\(\beta_0\)</span>, <span class="math inline">\(\beta_1\)</span> and <span class="math inline">\(\beta_2\)</span> are the values that minimize
 <span class="math display">\[\begin{eqnarray*}
 SSE &amp; = &amp; \sum_{i=1}^n e_i^2 \\
 &amp; = &amp; \sum_{i=1}^n \left(y_i -\hat{y}_i \right)^2 \\
-&amp; = &amp; \sum_{i=1}^n\left(y_i -\left[\hat{\beta}_0 +\hat{\beta}_1 x_{i1} +\hat{\beta}_{2} x_{i2} \right]\right)^2  
+&amp; = &amp; \sum_{i=1}^n\left(y_i -\left[\hat{\beta}_0 +\hat{\beta}_1 x_{i1} +\hat{\beta}_{2} x_{i2} + \ldots + \hat{\beta}_{k} x_{ik} \right]\right)^2  
 \end{eqnarray*}\]</span>
-In R, we can fit this model by adding a new term to the right-hand side of the model formula in the call to the function ‘lm’:</p>
+In the formula for the fitted values, we require a double subscripting of the <span class="math inline">\(x\)</span>’s, with the first subscript is used to distinguish the individual observations and the second subscript is used to distinguish different predictors. For example, <span class="math inline">\(x_{i2}\)</span> is the value of the second predictor for the <span class="math inline">\(i\)</span>th data point. Recall that the least-squares criterion is attached to our assumption of normally distributed errors. Because we are still assuming that the errors are normally distributed, we continue to use the least-squares criterion here.</p>
+<p>In R, we can find the LSEs for the BAC data by adding a new term to the right-hand side of the model formula in the call to the function ‘lm’:</p>
 <div class="sourceCode" id="cb47"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb47-1"><a href="multiple-regression.html#cb47-1" tabindex="-1"></a>fm2 <span class="ot">&lt;-</span> <span class="fu">lm</span>(BAC <span class="sc">~</span> beers <span class="sc">+</span> weight, <span class="at">data =</span> beer)</span>
 <span id="cb47-2"><a href="multiple-regression.html#cb47-2" tabindex="-1"></a><span class="fu">summary</span>(fm2)</span></code></pre></div>
 <pre><code>## 
@@ -436,25 +438,31 @@ In R, we can fit this model by adding a new term to the right-hand side of the m
 ## Residual standard error: 0.01041 on 13 degrees of freedom
 ## Multiple R-squared:  0.9518, Adjusted R-squared:  0.9444 
 ## F-statistic: 128.3 on 2 and 13 DF,  p-value: 2.756e-09</code></pre>
-<p>Thus, we see that the LSEs are <span class="math inline">\(\hat{\beta}_0 = 0.040\%\)</span>, <span class="math inline">\(\hat{\beta}_1 = 0.020\%\)</span> per beer consumed, and <span class="math inline">\(\hat{\beta}_{2} = -0.0003\%\)</span> per pound of body weight.</p>
-<p>As in SLR, we can define the fitted value associated with the <span class="math inline">\(i\)</span>th data point as <span class="math inline">\(\hat{y}_i =\hat{\beta}_0 +\hat{\beta}_1 x_{i1} +\hat{\beta}_{2} x_{i2}\)</span>, and the residual associated with the <span class="math inline">\(i\)</span>th data point as <span class="math inline">\(e_i =y_i -\hat{y}_i\)</span>. Here, we require a double subscripting of the <span class="math inline">\(x\)</span>’s, with the first subscript is used to distinguish the individual observations and the second subscript is used to distinguish different predictors. For example, <span class="math inline">\(x_{i2}\)</span> is the value of the second predictor for the <span class="math inline">\(i\)</span>th data point.</p>
+<p>Thus, we see that the LSEs are <span class="math inline">\(\hat{\beta}_0 = 0.040\%\)</span>, <span class="math inline">\(\hat{\beta}_1 = 0.020\%\)</span> per beer consumed, and <span class="math inline">\(\hat{\beta}_{2} = -0.00036\%\)</span> per pound of body weight.</p>
+</div>
+<div id="fitted-values-and-residuals" class="section level4 hasAnchor" number="2.1.1.2">
+<h4><span class="header-section-number">2.1.1.2</span> Fitted values and residuals<a href="multiple-regression.html#fitted-values-and-residuals" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p>As in SLR, we can define the fitted value associated with the <span class="math inline">\(i\)</span>th data point as
+<span class="math display">\[
+\hat{y}_i =\hat{\beta}_0 +\hat{\beta}_1 x_{i1} +\hat{\beta}_{2} x_{i2} + \ldots + \hat{\beta}_{k} x_{ik}
+\]</span>
+and the residual associated with the <span class="math inline">\(i\)</span>th data point as
+<span class="math display">\[
+e_i =y_i -\hat{y}_i.
+\]</span></p>
 <p><em>Example.</em> Find the fitted value and residual for the first observation in the data set, a <span class="math inline">\(x_2=132\)</span> lb person who drank <span class="math inline">\(x_1=5\)</span> beers and had a BAC of <span class="math inline">\(y=0.1\)</span>. Answer: <span class="math inline">\(\hat{y}_1 =0.092\)</span> and <span class="math inline">\(e_1 =0.008\)</span>.</p>
-<p>We can define the error sum of squares as <span class="math inline">\(SSE=\sum_{i=1}^n e_i^2 = \sum_{i=1}^n \left(y_i -\hat{y}_i \right)^2\)</span>. How many df are associated with the SSE? In this model, there are <span class="math inline">\(n-3\)</span> df associated with the SSE, because 3 parameters are needed to determine the mean component of the model. As in SLR, we can estimate the error variance <span class="math inline">\(\sigma_{\varepsilon}^2\)</span> with the MSE, although now we must be careful to divide by the appropriate df:
-<span class="math display">\[
-s_\varepsilon^2 = MSE = \frac{SSE}{n-3}.
-\]</span>
-For the model above, <span class="math inline">\(s_\varepsilon = 0.010\%\)</span>.</p>
-<p>In general, the equation for an MLR model with any number of predictors can be written:<br />
-<span class="math display">\[
-y_i =\beta_0 +\beta_1 x_{i1} +\beta_2 x_{i2} +\ldots +\beta_k x_{ik} +\varepsilon_i
-\]</span>
-The error term is subject to the standard assumptions of independence, constant variance, and normality. We will use the notation that <span class="math inline">\(k\)</span> is the number of parameters that need to be estimated in the mean component of the model excluding the intercept. (When counting parameters, some texts include the intercept, while others do not. If you consult a text, check to make sure you know what definition is being used.) The SSE will be associated with <span class="math inline">\(n - (k + 1)\)</span> df. Thus, the estimate of <span class="math inline">\(\sigma_{\varepsilon}^2\)</span> will be
+</div>
+<div id="mse-and-the-estimate-of-the-residual-variance" class="section level4 hasAnchor" number="2.1.1.3">
+<h4><span class="header-section-number">2.1.1.3</span> MSE and the estimate of the residual variance<a href="multiple-regression.html#mse-and-the-estimate-of-the-residual-variance" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p>We can define the error sum of squares as <span class="math inline">\(SSE=\sum_{i=1}^n e_i^2 = \sum_{i=1}^n \left(y_i -\hat{y}_i \right)^2\)</span>. To count the df associated with the SSE, we will use the notation that <span class="math inline">\(k\)</span> is the number of parameters that need to be estimated in the formula for the fitted values, excluding the intercept. (When counting parameters, some texts include the intercept, while others do not. If you consult a text, check to make sure you know what definition is being used.) The SSE will be associated with <span class="math inline">\(n - (k + 1)\)</span> df. Thus, the estimate of <span class="math inline">\(\sigma_{\varepsilon}^2\)</span> will be
 <span class="math display">\[
 s_\varepsilon^2 = MSE = \frac{SSE}{n-(k+1)}.
 \]</span></p>
-<div id="sums-of-squares-decomposition-and-r2." class="section level4 hasAnchor" number="2.1.1.1">
-<h4><span class="header-section-number">2.1.1.1</span> Sums of squares decomposition and <span class="math inline">\(R^2\)</span>.<a href="multiple-regression.html#sums-of-squares-decomposition-and-r2." class="anchor-section" aria-label="Anchor link to header"></a></h4>
-<p>The sums-of-squares decomposition also carries over from SLR. We still have <span class="math inline">\({\rm SS(Total)} = \sum_{i=1}^n \left(y_i -\bar{y}\right)^2\)</span>, <span class="math inline">\({\rm SS(Regression)} = \sum_{i=1}^n \left(\hat{y}_i -\bar{y}\right)^2\)</span>, and <span class="math inline">\({\rm SS(Total) = SS(Regression) + SSE}\)</span>. Thus, we can define <span class="math inline">\(R^2\)</span> using the same formula:
+<p>For the BAC data, there are <span class="math inline">\(16-3=13\)</span> df associated with the SSE, because 3 parameters are needed to determine the mean component of the model. From the <code>R</code> output above, we can see that <span class="math inline">\(s_\varepsilon = 0.010\%\)</span>.</p>
+</div>
+<div id="sums-of-squares-decomposition-and-r2-1" class="section level4 hasAnchor" number="2.1.1.4">
+<h4><span class="header-section-number">2.1.1.4</span> Sums of squares decomposition and <span class="math inline">\(R^2\)</span><a href="multiple-regression.html#sums-of-squares-decomposition-and-r2-1" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p>The sums-of-squares decomposition also carries over from SLR. In fact, the formulas for <span class="math inline">\({\rm SS(Total)}\)</span>, <span class="math inline">\({\rm SS(Regression)}\)</span>, and <span class="math inline">\(SSE\)</span> are exactly the same as in SLR. It is also still true that <span class="math inline">\({\rm SS(Total) = SS(Regression) + SSE}\)</span>. Thus, we can define <span class="math inline">\(R^2\)</span> using the same formula:
 <span class="math display">\[
 R^2 = \frac{{\rm SS(Regression)}}{{\rm SS(Total)}} = 1- \frac{{\rm SSE}}{{\rm SS(Total)}}
 \]</span>
@@ -667,8 +675,8 @@ F=\frac{\left[0.0292 - 0.0014 \right]/\left[15 - 13 \right]}{{0.0014 / 13 }} = 1
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
 </div>
-<div id="model-utility-test-model-utility-test" class="section level3 hasAnchor" number="2.2.2">
-<h3><span class="header-section-number">2.2.2</span> Model utility test {#model utility test}<a href="multiple-regression.html#model-utility-test-model-utility-test" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div id="model-utility-test" class="section level3 hasAnchor" number="2.2.2">
+<h3><span class="header-section-number">2.2.2</span> Model utility test<a href="multiple-regression.html#model-utility-test" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>The test that we have just conducted for the BAC data turns out to be a type of <span class="math inline">\(F\)</span>-test called the <em>model utility test</em>. In general, with the general regression model
 <span class="math display">\[
 y=\beta_0 +\beta_1 x_1 +\beta_2 x_2 +...+\beta_k x_k +\varepsilon
@@ -1082,7 +1090,7 @@ We then fit the model with the interaction, using the centered predictors instea
 <span class="math display">\[
 R^2 = 1 - \dfrac{SSE}{SSTotal}.
 \]</span>
-Adjusted <span class="math inline">\(R^2\)</span> ``adjusts’’ both sums-of-squares based on their associated df. That is, the formula for adjusted <span class="math inline">\(R^2\)</span> is
+Adjusted <span class="math inline">\(R^2\)</span> “adjusts” both sums-of-squares based on their associated df. That is, the formula for adjusted <span class="math inline">\(R^2\)</span> is
 <span class="math display">\[
 {\rm Adj-}R^2 =1-\dfrac{SSE / (n - (k + 1))}{SSTotal / (n - 1)}.
 \]</span>

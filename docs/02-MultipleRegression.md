@@ -6,11 +6,9 @@ In this chapter, we examine regression models that contain several predictor var
 
 ## Multiple regression basics
 
-### The multiple regression model
-
 Just as SLR was used to characterize the relationship between a single predictor and a response, multiple regression can be used to characterize the relationship between several predictors and a response.
 
-*Example.*  In the BAC data, we also know each individual's weight and gender:
+*Example.*  In the BAC data, we also know each individual's weight:
 
 ``` r
 beer <- read.csv("data/beer2.csv", head = T, stringsAsFactors = T)
@@ -34,37 +32,46 @@ plot(x = beer$weight, y = resid(fm1), xlab = "weight", ylab = "residual")
 abline(h = 0, lty = "dotted")
 ```
 
-<div class="figure" style="text-align: center">
-<img src="02-MultipleRegression_files/figure-html/unnamed-chunk-2-1.png" alt="SLR residuals vs. weight." width="480" />
-<p class="caption">(\#fig:unnamed-chunk-2)SLR residuals vs. weight.</p>
-</div>
+<img src="02-MultipleRegression_files/figure-html/unnamed-chunk-2-1.png" width="480" style="display: block; margin: auto;" />
 
 To simultaneously characterize the effect that the variables "beers" and "weight" have on BAC, we might want to entertain a model with both predictors.  In words, the model is
 \[
-\mbox{BAC} = \mbox{intercept} + \mbox{(parameter associated with beers)} \times \mbox{beers}  + \mbox{(parameter associated with weight)} \times \mbox{weight} + \mbox{error}
+\mbox{BAC} = \mbox{beers}  + \mbox{weight} + \mbox{error}.
 \]
-where (for the moment)  we are intentionally vague about what we mean by "parameter associated with beers".  As in SLR, the error term can be interpreted as a catch-all term that includes all the variation not accounted for by the linear associations betwen the response and the predictors  "beers" and "weight".
+As in SLR, the error term is a catch-all term that includes all the variation not accounted for by the linear associations between the response and the predictors  "beers" and "weight".
 
 In mathematical notation, we can write the model as
 \begin{equation}
 y = \beta_0 +\beta_1 x_1 +\beta_2 x_2 +\varepsilon 
 (\#eq:beer-two-predictors)
 \end{equation}
-We use subscripts to distinguish different predictors.  In this case, $x_1$ is the number of beers consumed and $x_2$ is the individual's weight.  Of course, the order in which we designate the predictors is arbitrary.
+We use subscripts to distinguish different predictors.  In this case, $x_1$ is the number of beers consumed and $x_2$ is the individual's weight.  Of course, the order in which we designate the predictors is arbitrary.  For the moment, we shall be vague about how we interpret the $\beta$ parameters that multiply each of the predictors, but we will provide a precise interpretation soon.  As in SLR, we place the standard assumptions of independence, constant variance, and normality on the error.
 
-There are a variety of ways to think about this model.  As in SLR, we can separate this model into a mean or signal component $\beta_0 +\beta_1 x_1 +\beta_2 x_2$ and an error component $\varepsilon$.  Note that the mean component is now a function of two variables, and suggests that the relationship between the average response and either predictor is linear.  If we wish to make statistical inferences about the parameters $\beta_0$, $\beta_1$ and $\beta_2$ (which we do), then we need to place the standard assumptions on the error component: independence, constant variance, and normality.  In notation, $\varepsilon \sim \mathcal{N}\left(0,\sigma_{\varepsilon}^2 \right)$.
-
-We can also think about this model geometrically.  Recall that in SLR, we could interpret the SLR model as a line passing through a cloud of data points.  With 2 predictors, we are now fitting a plane to data points that "exist" in a three- dimensional data cloud. 
+We can also think about this model geometrically.  Recall that in SLR, we could interpret the SLR model as a line passing through a cloud of data points.  With 2 predictors, the model describes a plane that passes through data points that "exist" in a three- dimensional data cloud. 
 <!-- ```{r fig.height = 3, echo = FALSE} -->
 <!-- knitr::include_graphics("images/regression-schematic.png", dpi = 100) -->
 <!-- ``` -->
+
+In general, the equation for an MLR model with any number of predictors can be written:  
+\[
+y =\beta_0 +\beta_1 x_{1} +\beta_2 x_{2} +\ldots +\beta_k x_{k} +\varepsilon 
+\] 
+
+### Ideas that carry over from SLR to multiple regression
+
+We can apply much of our understanding from simple regression directly to multiple regression.  Here are some of the ideas that carry over directly from SLR to multiple regression.
+
+#### Least-squares estimation  
+
 As in SLR, we use the least squares criteria to find the best-fitting parameter estimates.  That is to say, we will agree that the best estimates of the parameters $\beta_0$, $\beta_1$ and $\beta_2$ are the values that minimize
 \begin{eqnarray*}
 SSE & = & \sum_{i=1}^n e_i^2 \\
  & = & \sum_{i=1}^n \left(y_i -\hat{y}_i \right)^2 \\
- & = & \sum_{i=1}^n\left(y_i -\left[\hat{\beta}_0 +\hat{\beta}_1 x_{i1} +\hat{\beta}_{2} x_{i2} \right]\right)^2  
+ & = & \sum_{i=1}^n\left(y_i -\left[\hat{\beta}_0 +\hat{\beta}_1 x_{i1} +\hat{\beta}_{2} x_{i2} + \ldots + \hat{\beta}_{k} x_{ik} \right]\right)^2  
 \end{eqnarray*}
-In R, we can fit this model by adding a new term to the right-hand side of the model formula in the call to the function 'lm':
+In the formula for the fitted values, we require a double subscripting of the $x$'s, with the first subscript is used to distinguish the individual observations and the second subscript is used to distinguish different predictors.  For example, $x_{i2}$ is the value of the second predictor for the $i$th data point.  Recall that the least-squares criterion is attached to our assumption of normally distributed errors.  Because we are still assuming that the errors are normally distributed, we continue to use the least-squares criterion here.
+
+In R, we can find the LSEs for the BAC data by adding a new term to the right-hand side of the model formula in the call to the function 'lm':
 
 ``` r
 fm2 <- lm(BAC ~ beers + weight, data = beer)
@@ -92,29 +99,33 @@ summary(fm2)
 ## Multiple R-squared:  0.9518,	Adjusted R-squared:  0.9444 
 ## F-statistic: 128.3 on 2 and 13 DF,  p-value: 2.756e-09
 ```
-Thus, we see that the LSEs are $\hat{\beta}_0 = 0.040\%$, $\hat{\beta}_1 = 0.020\%$ per beer consumed, and $\hat{\beta}_{2} = -0.0003\%$ per pound of body weight.
+Thus, we see that the LSEs are $\hat{\beta}_0 = 0.040\%$, $\hat{\beta}_1 = 0.020\%$ per beer consumed, and $\hat{\beta}_{2} = -0.00036\%$ per pound of body weight.
 
-As in SLR, we can define the fitted value associated with the $i$th data point as $\hat{y}_i =\hat{\beta}_0 +\hat{\beta}_1 x_{i1} +\hat{\beta}_{2} x_{i2}$, and the residual associated with the $i$th data point as $e_i =y_i -\hat{y}_i$.  Here, we require a double subscripting of the $x$'s, with the first subscript is used to distinguish the individual observations and the second subscript is used to distinguish different predictors.  For example, $x_{i2}$ is the value of the second predictor for the $i$th data point. 
+#### Fitted values and residuals
+
+As in SLR, we can define the fitted value associated with the $i$th data point as 
+\[
+\hat{y}_i =\hat{\beta}_0 +\hat{\beta}_1 x_{i1} +\hat{\beta}_{2} x_{i2} + \ldots + \hat{\beta}_{k} x_{ik}
+\]
+and the residual associated with the $i$th data point as 
+\[
+e_i =y_i -\hat{y}_i.
+\]  
 
 *Example.* Find the fitted value and residual for the first observation in the data set, a $x_2=132$ lb person who drank $x_1=5$ beers and had a BAC of $y=0.1$.  Answer: $\hat{y}_1 =0.092$ and $e_1 =0.008$.
 
-We can define the error sum of squares as $SSE=\sum_{i=1}^n e_i^2 = \sum_{i=1}^n \left(y_i -\hat{y}_i \right)^2$.   How many df are associated with the SSE?  In this model, there are $n-3$ df associated with the SSE, because 3 parameters are needed to determine the mean component of the model.  As in SLR, we can estimate the error variance $\sigma_{\varepsilon}^2$ with the MSE, although now we must be careful to divide by the appropriate df:
-\[
-s_\varepsilon^2 = MSE = \frac{SSE}{n-3}.
-\] 
-For the model above, $s_\varepsilon = 0.010\%$.
+#### MSE and the estimate of the residual variance
 
-In general, the equation for an MLR model with any number of predictors can be written:  
-\[
-y_i =\beta_0 +\beta_1 x_{i1} +\beta_2 x_{i2} +\ldots +\beta_k x_{ik} +\varepsilon_i 
-\] 
-The error term is subject to the standard assumptions of independence, constant variance, and normality.  We will use the notation that $k$ is the number of parameters that need to be estimated in the mean component of the model excluding the intercept.  (When counting parameters, some texts include the intercept, while others do not.  If you consult a text, check to make sure you know what definition is being used.)  The SSE will be associated with $n - (k + 1)$ df.  Thus, the estimate of $\sigma_{\varepsilon}^2$ will be
+We can define the error sum of squares as $SSE=\sum_{i=1}^n e_i^2 = \sum_{i=1}^n \left(y_i -\hat{y}_i \right)^2$.   To count the df associated with the SSE,  we will use the notation that $k$ is the number of parameters that need to be estimated in the formula for the fitted values, excluding the intercept.  (When counting parameters, some texts include the intercept, while others do not.  If you consult a text, check to make sure you know what definition is being used.)  The SSE will be associated with $n - (k + 1)$ df.  Thus, the estimate of $\sigma_{\varepsilon}^2$ will be
 \[
 s_\varepsilon^2 = MSE = \frac{SSE}{n-(k+1)}.
 \] 
 
-#### Sums of squares decomposition and $R^2$.  
-The sums-of-squares decomposition also carries over from SLR.  We still have ${\rm SS(Total)} = \sum_{i=1}^n \left(y_i -\bar{y}\right)^2$, ${\rm SS(Regression)} = \sum_{i=1}^n \left(\hat{y}_i -\bar{y}\right)^2$, and ${\rm SS(Total) = SS(Regression) + SSE}$.  Thus, we can define $R^2$ using the same formula:
+For the BAC data, there are $16-3=13$ df associated with the SSE, because 3 parameters are needed to determine the mean component of the model.  From the `R` output above, we can see that $s_\varepsilon = 0.010\%$.
+
+#### Sums of squares decomposition and $R^2$
+
+The sums-of-squares decomposition also carries over from SLR.  In fact, the formulas for ${\rm SS(Total)}$, ${\rm SS(Regression)}$, and $SSE$ are exactly the same as in SLR.  It is also still true that ${\rm SS(Total) = SS(Regression) + SSE}$.  Thus, we can define $R^2$ using the same formula:
 \[
 R^2 = \frac{{\rm SS(Regression)}}{{\rm SS(Total)}} = 1- \frac{{\rm SSE}}{{\rm SS(Total)}} 
 \] 
@@ -425,7 +436,7 @@ anova(reduced.model, full.model)
 ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 ```
 
-### Model utility test {#model utility test}
+### Model utility test{#model-utility-test}
 
 The test that we have just conducted for the BAC data turns out to be a type of $F$-test called the *model utility test*.  In general, with the general regression model
 \[
@@ -1014,7 +1025,7 @@ Adjusted $R^2$ is a penalized version of $R^2$ that imposes a penalty for each a
 \[
 R^2 = 1 - \dfrac{SSE}{SSTotal}.
 \]
-Adjusted $R^2$ ``adjusts'' both sums-of-squares based on their associated df.  That is, the formula for adjusted $R^2$ is
+Adjusted $R^2$ "adjusts" both sums-of-squares based on their associated df.  That is, the formula for adjusted $R^2$ is
 \[
 {\rm Adj-}R^2 =1-\dfrac{SSE / (n - (k + 1))}{SSTotal / (n - 1)}.
 \] 
