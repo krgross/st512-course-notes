@@ -7,9 +7,9 @@ knitr::opts_chunk$set(fig.width = 5, fig.height = 4.5, fig.align = "center")
 
 In this section, we consider experiments where the treatment structure involves multiple experimental factors.
 
-## Crossed vs.\ nested designs
+## Combining factors: Crossed vs.\ nested designs
 
-Consider the following two experiments 
+There are two distinct ways in which experimental factors can be combined.  The distinction is illustrated by the following two experiments 
 
 *Experiment 1.*  (A hypothetical experiment based on example 15.8 in Ott \& Longnecker):
 
@@ -36,27 +36,22 @@ A citrus orchard contains 3 different varieties of citrus trees.  Eight trees of
 <!-- \end{tabular} -->
 <!-- \end{center} -->
 
-In both experiments, there are two experimental factors --- variety and pesticide in experiment 1, and consultant and ranch in experiment 2.  Each unique combination of factors forms a separate *treatment combination*.  In experiment 1, the treatment combinations are formed by crossing the two experimental factors.  That is to say, every level of the first factor (variety) is combined with every level of the second factor (pesticide).  This is an example of a *factorial* or *crossed design*.  In experiment 2, each level of one factor (ranch) is only combined with one single level of the other factor (consultant).  This is an example of a *hierarchical design*, and we would say that ranch is nested within the consultant.  
+In both experiments, there are two experimental factors---variety and pesticide in experiment 1, and consultant and ranch in experiment 2.  Each unique combination of factors forms a separate *treatment combination*.  In experiment 1, the treatment combinations are formed by crossing the two experimental factors.  That is to say, every level of the first factor (variety) is combined with every level of the second factor (pesticide).  This is an example of a *factorial* or *crossed design*.  In experiment 2, each level of one factor (ranch) is only combined with one single level of the other factor (consultant).  This is an example of a *hierarchical design*, and we would say that ranch is nested within the consultant.  
 
+Experiments with more than two factors can give rise to designs that involve aspects of both crossed and nested designs. For example, if we three factors---call them factors "A", "B", and "C"---we might cross factors A and B and then nest factor C within the A*B cross.  
 
-The treatment structure in experiment 1 above could be alternatively called a *two-factor classification*, or a *two-way factorial* treatment structure, or a *4 x 3 factorial* treatment structure.  Generically, we will call the two factors in a two-way factorial design factors "A" and "B".
+The remainder of this chapter concerns factorial designs.  We will begin by studying a two-factor cross. Most of the ideas involved in analyzing factorial designs can be mastered by studying a two-factor cross.  We will conclude this chapter with a three-factor design to see how ideas from two-factor designs extend to experiments with more than two factors.  
 
-The scientific questions of most interest in a two-factor design are:
-
- 1. Is there evidence of an effect of factor A on the response?
-
- 2. Is there evidence of an effect of factor B on the response?
-
- 3. Is there evidence that the effect of factor A depends on the level of factor B, and vice versa?  That is to say, is there evidence of an interaction between the two factors?
+The analysis of factorial designs makes heavy use of the idea of [contrasts](#contrasts), so make sure you understand that material well.
  
  
-## Simple effects, main effects, and interaction effects
+<!-- ## Simple effects, main effects, and interaction effects -->
 
-In a factorial experiment, we typically analyze three types of effects: simple effects, main effects and interaction effects.  We can illustrate these effects with the following hypothetical experiment:  A food scientist wants to know how the shelf-life of a product is affected by the temperature at which the product is packed (low vs.\ high temperature) and the wrapping material (foil vs.\ plastic).  They conduct a balanced 2 x 2 factorial experiment to investigate the effect of temperature and wrapping material on shelf life.
+<!-- In a factorial experiment, we typically analyze three types of effects: simple effects, main effects and interaction effects.  We can illustrate these effects with the following hypothetical experiment:  A food scientist wants to know how the shelf-life of a product is affected by the temperature at which the product is packed (low vs.\ high temperature) and the wrapping material (foil vs.\ plastic).  They conduct a balanced 2 x 2 factorial experiment to investigate the effect of temperature and wrapping material on shelf life. -->
 
-In notation, let temperature be factor "A", and let $i$ be an index that distinguishes the two temperatures.  That is, let $i = 1$ indicate low temperature and $i = 2$ indicate high temperature.  Let material be factor "B", and let $j$ be an index that distinguishes the two materials.  That is, let  $j = 1$ indicate foil and $j = 2$ indicate plastic.
+<!-- In notation, let temperature be factor "A", and let $i$ be an index that distinguishes the two temperatures.  That is, let $i = 1$ indicate low temperature and $i = 2$ indicate high temperature.  Let material be factor "B", and let $j$ be an index that distinguishes the two materials.  That is, let  $j = 1$ indicate foil and $j = 2$ indicate plastic. -->
 
-Suppose for a moment that we actually know what the actual means (in units of days) are for each treatment combination.  (Remember, in real life the means for each treatment combination are parameters that have to be estimated.)  Let $\mu_{ij}$ denote the true mean response for the treatment combination formed by temperature $i$ and material $j$.
+<!-- Suppose for a moment that we actually know what the actual means (in units of days) are for each treatment combination.  (Remember, in real life the means for each treatment combination are parameters that have to be estimated.)  Let $\mu_{ij}$ denote the true mean response for the treatment combination formed by temperature $i$ and material $j$. -->
 <!-- \begin{center} -->
 <!-- 	\begin{tabular}{|p{1.1in}|p{1.1in}|p{1.1in}|p{1.1in}|} \hline  -->
 <!-- 		\multicolumn{2}{|p{1in}|}{} & \multicolumn{2}{|p{2.2in}|}{Temperature} \\ \hline  -->
@@ -65,27 +60,27 @@ Suppose for a moment that we actually know what the actual means (in units of da
 <!-- 		& Plastic & $\mu_{12} =4$ & $\mu_{22} =5$ \\ \hline  -->
 <!-- 	\end{tabular} -->
 <!-- \end{center} -->
-Each of the four means above are called *cell means*, because they provide the average response for each 'cell' in the factorial table.  More generally, cell means are the average response for each unique treatment combination.
+<!-- Each of the four means above are called *cell means*, because they provide the average response for each 'cell' in the factorial table.  More generally, cell means are the average response for each unique treatment combination. -->
 
-In addition to cell means, we can define *marginal means* as the averages of cell means.  That is, the marginal mean for level $i$ of factor A is the average of each of the cell means associated with level $i$, where the average is taken over all the levels of factor B.  In a 2 $\times$ 2 design, the two marginal means for factor A are 
-\[
-\bar{\mu}_{1+} =\frac{\mu_{11} +\mu_{12} }{2} 
-\] 
-and
-\[
-\bar{\mu}_{2+} =\frac{\mu_{21} +\mu_{22} }{2}.
-\] 
+<!-- In addition to cell means, we can define *marginal means* as the averages of cell means.  That is, the marginal mean for level $i$ of factor A is the average of each of the cell means associated with level $i$, where the average is taken over all the levels of factor B.  In a 2 $\times$ 2 design, the two marginal means for factor A are  -->
+<!-- \[ -->
+<!-- \bar{\mu}_{1+} =\frac{\mu_{11} +\mu_{12} }{2}  -->
+<!-- \]  -->
+<!-- and -->
+<!-- \[ -->
+<!-- \bar{\mu}_{2+} =\frac{\mu_{21} +\mu_{22} }{2}. -->
+<!-- \]  -->
 
-Similarly, we can define the marginal means for each level $j$ of factor B as the average of each of the cell means associated with level $j$, averaging over the levels of factor A.  In the 2 $\times$ 2 design, the marginal means associated with factor B are
-\[
-\bar{\mu}_{+1} =\frac{\mu_{11} +\mu_{21} }{2} 
-\] 
-and
-\[
-\bar{\mu}_{+2} =\frac{\mu_{12} +\mu_{22} }{2}.
-\] 
+<!-- Similarly, we can define the marginal means for each level $j$ of factor B as the average of each of the cell means associated with level $j$, averaging over the levels of factor A.  In the 2 $\times$ 2 design, the marginal means associated with factor B are -->
+<!-- \[ -->
+<!-- \bar{\mu}_{+1} =\frac{\mu_{11} +\mu_{21} }{2}  -->
+<!-- \]  -->
+<!-- and -->
+<!-- \[ -->
+<!-- \bar{\mu}_{+2} =\frac{\mu_{12} +\mu_{22} }{2}. -->
+<!-- \]  -->
 
-Marginal means take their name because they are found by marginalizing over the level(s) of the other factor(s).  In a two-factor design, we might think about locating the marginal means in the margins of the table of cell means:
+<!-- Marginal means take their name because they are found by marginalizing over the level(s) of the other factor(s).  In a two-factor design, we might think about locating the marginal means in the margins of the table of cell means: -->
 <!-- \begin{center} -->
 <!-- \begin{tabular}{|p{0.9in}|p{0.9in}|p{0.9in}|p{0.9in}|p{0.8in}|} \hline  -->
 <!-- \multicolumn{2}{|p{1in}|}{} & \multicolumn{2}{|p{1.8in}|}{Temperature} &  \\ \hline  -->
@@ -96,11 +91,11 @@ Marginal means take their name because they are found by marginalizing over the 
 <!-- \end{tabular} -->
 <!-- \end{center} -->
 
-Finally, we can define the grand mean as the average of marginal means.  In a 2 $\times$ 2 design,
-\[
-\bar{\mu}_{++} =\frac{\bar{\mu}_{1+} +\bar{\mu}_{2+} }{2} =\frac{\bar{\mu}_{+1} +\bar{\mu}_{+2} }{2} 
-\] 
-Sometimes the grand mean is placed in the lower right-hand corner of the table of cell means:
+<!-- Finally, we can define the grand mean as the average of marginal means.  In a 2 $\times$ 2 design, -->
+<!-- \[ -->
+<!-- \bar{\mu}_{++} =\frac{\bar{\mu}_{1+} +\bar{\mu}_{2+} }{2} =\frac{\bar{\mu}_{+1} +\bar{\mu}_{+2} }{2}  -->
+<!-- \]  -->
+<!-- Sometimes the grand mean is placed in the lower right-hand corner of the table of cell means: -->
 <!-- \begin{center} -->
 <!-- \begin{tabular}{|p{0.9in}|p{0.9in}|p{0.9in}|p{0.9in}|p{0.8in}|} \hline  -->
 <!-- \multicolumn{2}{|p{1in}|}{} & \multicolumn{2}{|p{1.8in}|}{Temperature} &  \\ \hline  -->
@@ -111,50 +106,50 @@ Sometimes the grand mean is placed in the lower right-hand corner of the table o
 <!-- \end{tabular} -->
 <!-- \end{center} -->
 
-Let's visualize the structure of these cell means with an interaction plot.  (Other authors call these profile plots.)  To construct an interaction plot, write the levels of one factor along the horizontal axis, and use the vertical axis to denote the response.  Draw lines on the plot for each level of the other experimental factor.   Two possible interaction plots for the above means are:
-```{r echo = FALSE, fig.width = 8}
-par(oma=rep(0,4),mar=c(5,5,0,0),mfrow=c(1,2),las=1,bty='l')
+<!-- Let's visualize the structure of these cell means with an interaction plot.  (Other authors call these profile plots.)  To construct an interaction plot, write the levels of one factor along the horizontal axis, and use the vertical axis to denote the response.  Draw lines on the plot for each level of the other experimental factor.   Two possible interaction plots for the above means are: -->
+<!-- ```{r echo = FALSE, fig.width = 8} -->
+<!-- par(oma=rep(0,4),mar=c(5,5,0,0),mfrow=c(1,2),las=1,bty='l') -->
 
-plot(c(-0.5,1.5),c(1,6),type="n",xlab="Material",ylab="Shelf life",xaxt="n")
-axis(1,at=0:1,lab=c("F","P"))
-lines(c(0,1),c(2,4))
-lines(c(0,1),c(3,5),lty="dashed")
-points(c(0,1),c(2,4),pch="L")
-points(c(0,1),c(3,5),pch="H")
+<!-- plot(c(-0.5,1.5),c(1,6),type="n",xlab="Material",ylab="Shelf life",xaxt="n") -->
+<!-- axis(1,at=0:1,lab=c("F","P")) -->
+<!-- lines(c(0,1),c(2,4)) -->
+<!-- lines(c(0,1),c(3,5),lty="dashed") -->
+<!-- points(c(0,1),c(2,4),pch="L") -->
+<!-- points(c(0,1),c(3,5),pch="H") -->
 
-plot(c(-0.5,1.5),c(1,6),type="n",xlab="Temperature",ylab="Shelf life",xaxt="n")
-axis(1,at=0:1,lab=c("L","H"))
-lines(c(0,1),c(2,3))
-lines(c(0,1),c(4,5),lty="dashed")
-points(c(0,1),c(2,3),pch="F")
-points(c(0,1),c(4,5),pch="P")
-```
+<!-- plot(c(-0.5,1.5),c(1,6),type="n",xlab="Temperature",ylab="Shelf life",xaxt="n") -->
+<!-- axis(1,at=0:1,lab=c("L","H")) -->
+<!-- lines(c(0,1),c(2,3)) -->
+<!-- lines(c(0,1),c(4,5),lty="dashed") -->
+<!-- points(c(0,1),c(2,3),pch="F") -->
+<!-- points(c(0,1),c(4,5),pch="P") -->
+<!-- ``` -->
 
-Note that regardless of which factor we choose to place on the horizontal axis, the lines above are parallel.  This indicates that the effects of the two factors do not depend on one another.  When the effects of two (or more) factors do not depend on one another, we say that the effects of those factors are *additive*.  
+<!-- Note that regardless of which factor we choose to place on the horizontal axis, the lines above are parallel.  This indicates that the effects of the two factors do not depend on one another.  When the effects of two (or more) factors do not depend on one another, we say that the effects of those factors are *additive*.   -->
 
-We can also express this idea mathematically.  The *simple-effects comparisons* (or just simple effects) for a factor describe the differences among cell means associated with that factor at a single level of the other factor(s).  In a 2 $\times$ 2 factorial design, simple effects can be expressed as simple differences.  For example, to calculate the simple effect of temperature on food products wrapped in foil, simply calculate the difference $\mu_{21} -\mu_{11} =3-2=1$.  This difference means that for food products wrapped in foil, products packed at high temperature last 1 day longer than products wrapped at low temperature.  
+<!-- We can also express this idea mathematically.  The *simple-effects comparisons* (or just simple effects) for a factor describe the differences among cell means associated with that factor at a single level of the other factor(s).  In a 2 $\times$ 2 factorial design, simple effects can be expressed as simple differences.  For example, to calculate the simple effect of temperature on food products wrapped in foil, simply calculate the difference $\mu_{21} -\mu_{11} =3-2=1$.  This difference means that for food products wrapped in foil, products packed at high temperature last 1 day longer than products wrapped at low temperature.   -->
 
-Similarly, we could calculate:
+<!-- Similarly, we could calculate: -->
 
-* The simple effect of temperature on food products wrapped in plastic:
-	\[\mu_{22} -\mu_{12} =5-4=1\] 
-	
-* The simple effect of material on food products packed at low temperatures:
-	\[\mu_{12} -\mu_{11} =4-2=2\] 
-	
-* The simple effect of material at food products packed at high temperatures:
-	\[\mu_{22} -\mu_{21} =5-3=2\] 
+<!-- * The simple effect of temperature on food products wrapped in plastic: -->
+<!-- 	\[\mu_{22} -\mu_{12} =5-4=1\]  -->
+
+<!-- * The simple effect of material on food products packed at low temperatures: -->
+<!-- 	\[\mu_{12} -\mu_{11} =4-2=2\]  -->
+
+<!-- * The simple effect of material at food products packed at high temperatures: -->
+<!-- 	\[\mu_{22} -\mu_{21} =5-3=2\]  -->
 
 
-In this case, the effect of temperature on shelf life does not depend on the type of material in which the food was wrapped.  Similarly, the effect of material does not depend on the temperature at which the food was packed.  This is a more precise expression of what we mean when we say that the effects of each factor do not depend on one another.
+<!-- In this case, the effect of temperature on shelf life does not depend on the type of material in which the food was wrapped.  Similarly, the effect of material does not depend on the temperature at which the food was packed.  This is a more precise expression of what we mean when we say that the effects of each factor do not depend on one another. -->
 
-We can also define *main-effects comparisons* (or just main effects) for each experimental factor.  Main effects describe differences among the marginal means associated with each level of an experimental factor.  In a 2 $\times$ 2 design, main effects can be expressed as simple differences.  In the example above, we could quantify the main effect of temperature as the difference
-\[\bar{\mu}_{2+} -\bar{\mu}_{1+} =4-3=1.\] 
-Similarly, we can quantify the main effect of material as the difference
-\[\bar{\mu}_{+2} -\bar{\mu}_{+1} =4.5-2.5=2.\] 
-With a little algebra, it can also be shown that main effects are equal to averages of simple effects.  That is, in the example above, the main effect of temperature is equal to the average of the simple effect of temperature for foods wrapped in foil, and the simple effect of temperature for foods wrapped in plastic.  Whether you prefer to think about main effects as differences among marginal means or as averages of simple effect is up to you --- both interpretations work equally well.
+<!-- We can also define *main-effects comparisons* (or just main effects) for each experimental factor.  Main effects describe differences among the marginal means associated with each level of an experimental factor.  In a 2 $\times$ 2 design, main effects can be expressed as simple differences.  In the example above, we could quantify the main effect of temperature as the difference -->
+<!-- \[\bar{\mu}_{2+} -\bar{\mu}_{1+} =4-3=1.\]  -->
+<!-- Similarly, we can quantify the main effect of material as the difference -->
+<!-- \[\bar{\mu}_{+2} -\bar{\mu}_{+1} =4.5-2.5=2.\]  -->
+<!-- With a little algebra, it can also be shown that main effects are equal to averages of simple effects.  That is, in the example above, the main effect of temperature is equal to the average of the simple effect of temperature for foods wrapped in foil, and the simple effect of temperature for foods wrapped in plastic.  Whether you prefer to think about main effects as differences among marginal means or as averages of simple effect is up to you --- both interpretations work equally well. -->
 
-Now, suppose that instead the means for each treatment combination are 
+<!-- Now, suppose that instead the means for each treatment combination are  -->
 <!-- \begin{center} -->
 <!-- 	\begin{tabular}{|p{0.9in}|p{0.9in}|p{0.9in}|p{0.9in}|p{0.8in}|} \hline  -->
 <!-- 		\multicolumn{2}{|p{1in}|}{} & \multicolumn{2}{|p{1.8in}|}{Temperature} &  \\ \hline  -->
@@ -165,43 +160,43 @@ Now, suppose that instead the means for each treatment combination are
 <!-- 	\end{tabular} -->
 <!-- \end{center} -->
 
-Again, let's visualize the structure of these means with an interaction plot:
-```{r echo = FALSE, fig.width = 8}
-par(oma=rep(0,4),mar=c(5,5,0,0),mfrow=c(1,2),las=1,bty='l')
+<!-- Again, let's visualize the structure of these means with an interaction plot: -->
+<!-- ```{r echo = FALSE, fig.width = 8} -->
+<!-- par(oma=rep(0,4),mar=c(5,5,0,0),mfrow=c(1,2),las=1,bty='l') -->
 
-plot(c(-0.5,1.5),c(1,6.5),type="n",xlab="Material",ylab="Shelf life",xaxt="n")
-axis(1,at=0:1,lab=c("F","P"))
-lines(c(0,1),c(2,4))
-lines(c(0,1),c(3,6),lty="dashed")
-points(c(0,1),c(2,4),pch="L")
-points(c(0,1),c(3,6),pch="H")
+<!-- plot(c(-0.5,1.5),c(1,6.5),type="n",xlab="Material",ylab="Shelf life",xaxt="n") -->
+<!-- axis(1,at=0:1,lab=c("F","P")) -->
+<!-- lines(c(0,1),c(2,4)) -->
+<!-- lines(c(0,1),c(3,6),lty="dashed") -->
+<!-- points(c(0,1),c(2,4),pch="L") -->
+<!-- points(c(0,1),c(3,6),pch="H") -->
 
-plot(c(-0.5,1.5),c(1,6.5),type="n",xlab="Temperature",ylab="Shelf life",xaxt="n")
-axis(1,at=0:1,lab=c("L","H"))
-lines(c(0,1),c(2,3))
-lines(c(0,1),c(4,6),lty="dashed")
-points(c(0,1),c(2,3),pch="F")
-points(c(0,1),c(4,6),pch="P")
-```
+<!-- plot(c(-0.5,1.5),c(1,6.5),type="n",xlab="Temperature",ylab="Shelf life",xaxt="n") -->
+<!-- axis(1,at=0:1,lab=c("L","H")) -->
+<!-- lines(c(0,1),c(2,3)) -->
+<!-- lines(c(0,1),c(4,6),lty="dashed") -->
+<!-- points(c(0,1),c(2,3),pch="F") -->
+<!-- points(c(0,1),c(4,6),pch="P") -->
+<!-- ``` -->
 
-Note that the lines above are no longer parallel.  This is a visual indication that the effects of the two factors depend on one another.  Or, to put it another way, there is an interaction between the two factors.
+<!-- Note that the lines above are no longer parallel.  This is a visual indication that the effects of the two factors depend on one another.  Or, to put it another way, there is an interaction between the two factors. -->
 
-Again, we can express this idea mathematically.  Let's repeat the process of measuring the simple effect of each treatment factor:
- + Simple effect of temperature on food products wrapped in foil:
-	\[\mu_{21} -\mu_{11} =3-2=1\] 
-	
- + Simple effect of temperature on food products wrapped in plastic:
-	\[\mu_{22} -\mu_{12} =6-4=2\] 
-	
- + Simple effect of material on food products packed at low temperatures:
-	\[\mu_{12} -\mu_{11} =4-2=2\] 
-	
- + Simple effect of material at food products packed at high temperatures:
-	\[\mu_{22} -\mu_{21} =6-3=3\] 
-	
-In this case, the effect of temperature on shelf life depends on the type of material in which the food was wrapped.  Similarly, the effect of material depends on the temperature at which the food was packed.  We describe this dependence by saying that the treatments *interact*.
+<!-- Again, we can express this idea mathematically.  Let's repeat the process of measuring the simple effect of each treatment factor: -->
+<!--  + Simple effect of temperature on food products wrapped in foil: -->
+<!-- 	\[\mu_{21} -\mu_{11} =3-2=1\]  -->
 
-Now, suppose that instead the means for each treatment combination are 
+<!--  + Simple effect of temperature on food products wrapped in plastic: -->
+<!-- 	\[\mu_{22} -\mu_{12} =6-4=2\]  -->
+
+<!--  + Simple effect of material on food products packed at low temperatures: -->
+<!-- 	\[\mu_{12} -\mu_{11} =4-2=2\]  -->
+
+<!--  + Simple effect of material at food products packed at high temperatures: -->
+<!-- 	\[\mu_{22} -\mu_{21} =6-3=3\]  -->
+
+<!-- In this case, the effect of temperature on shelf life depends on the type of material in which the food was wrapped.  Similarly, the effect of material depends on the temperature at which the food was packed.  We describe this dependence by saying that the treatments *interact*. -->
+
+<!-- Now, suppose that instead the means for each treatment combination are  -->
 <!-- \begin{center} -->
 <!-- 	\begin{tabular}{|p{0.9in}|p{0.9in}|p{0.9in}|p{0.9in}|p{0.8in}|} \hline  -->
 <!-- 		\multicolumn{2}{|p{1in}|}{} & \multicolumn{2}{|p{1.8in}|}{Temperature} &  \\ \hline  -->
@@ -213,21 +208,21 @@ Now, suppose that instead the means for each treatment combination are
 <!-- \end{center} -->
 
 
-Suppose we wanted to quantify the interaction between the treatments in the second example above.  We could do so by taking the difference of the simple effects of temperature:
-\[
-\left(\mu_{22} -\mu_{12} \right)-\left(\mu_{21} -\mu_{11} \right)=\left(6-4\right)-\left(3-2\right)=2-1=1
-\] 
-Alternatively, we could calculate the difference between the simple effects of material:
-\[
-\left(\mu_{22} -\mu_{21} \right)-\left(\mu_{12} -\mu_{11} \right)=\left(6-3\right)-\left(4-2\right)=3-2=1
-\] 
-Each of the above calculations are measures of an *interaction effect*.  In a 2 $\times$ 2 factorial design, an interaction effect is a ``difference of differences'', or a measure of how one factor effects the simple effects of the other factor.  It is not just coincidence that the two measures of the interaction above produce the same number (=1).  In fact, as we will show in a moment, in a 2 $\times$ 2 factorial design, there is only a single free difference (or degree of freedom) for the interaction effect.  Because there is only a single degree of freedom, the two differences of differences above must be equal.  (You might also be able to verify this with a little algebra.)
+<!-- Suppose we wanted to quantify the interaction between the treatments in the second example above.  We could do so by taking the difference of the simple effects of temperature: -->
+<!-- \[ -->
+<!-- \left(\mu_{22} -\mu_{12} \right)-\left(\mu_{21} -\mu_{11} \right)=\left(6-4\right)-\left(3-2\right)=2-1=1 -->
+<!-- \]  -->
+<!-- Alternatively, we could calculate the difference between the simple effects of material: -->
+<!-- \[ -->
+<!-- \left(\mu_{22} -\mu_{21} \right)-\left(\mu_{12} -\mu_{11} \right)=\left(6-3\right)-\left(4-2\right)=3-2=1 -->
+<!-- \]  -->
+<!-- Each of the above calculations are measures of an *interaction effect*.  In a 2 $\times$ 2 factorial design, an interaction effect is a ``difference of differences'', or a measure of how one factor effects the simple effects of the other factor.  It is not just coincidence that the two measures of the interaction above produce the same number (=1).  In fact, as we will show in a moment, in a 2 $\times$ 2 factorial design, there is only a single free difference (or degree of freedom) for the interaction effect.  Because there is only a single degree of freedom, the two differences of differences above must be equal.  (You might also be able to verify this with a little algebra.) -->
 
-**Perhaps the single greatest conceptual pitfall in the analysis of factorial designs is appreciating the difficulty of interpreting main effects when the experimental factors interact.**  When the two factors in an experiment interact, we can still define main effects mathematically.  In the example above, the main effect of temperature is now
-\[\bar{\mu}_{2+} -\bar{\mu}_{1+} =4.5-3=1.5\] 
-and the main effect of  material is now
-\[\bar{\mu}_{+2} -\bar{\mu}_{+1} =5-2.5=2.5.\] 
-Are these differences meaningful?  The answer usually depends on the scientific context of the data.  In the presence of an interaction, main effects are only meaningful if it makes sense to average over the levels of an experimental factor.  While averaging over the levels of one experimental factor may seem harmless for the (relatively mild) interaction above, consider what might happen with a more severe interaction, such as the one here:
+<!-- **Perhaps the single greatest conceptual pitfall in the analysis of factorial designs is appreciating the difficulty of interpreting main effects when the experimental factors interact.**  When the two factors in an experiment interact, we can still define main effects mathematically.  In the example above, the main effect of temperature is now -->
+<!-- \[\bar{\mu}_{2+} -\bar{\mu}_{1+} =4.5-3=1.5\]  -->
+<!-- and the main effect of  material is now -->
+<!-- \[\bar{\mu}_{+2} -\bar{\mu}_{+1} =5-2.5=2.5.\]  -->
+<!-- Are these differences meaningful?  The answer usually depends on the scientific context of the data.  In the presence of an interaction, main effects are only meaningful if it makes sense to average over the levels of an experimental factor.  While averaging over the levels of one experimental factor may seem harmless for the (relatively mild) interaction above, consider what might happen with a more severe interaction, such as the one here: -->
 <!-- \begin{center} -->
 <!-- \begin{tabular}{|p{0.9in}|p{0.9in}|p{0.9in}|p{0.9in}|p{0.8in}|} \hline  -->
 <!-- \multicolumn{2}{|p{1in}|}{} & \multicolumn{2}{|p{1.8in}|}{Temperature} &  \\ \hline  -->
@@ -237,33 +232,43 @@ Are these differences meaningful?  The answer usually depends on the scientific 
 <!-- \multicolumn{2}{|p{1in}|}{} & $\bar{\mu}_{1+} =3$ & $\bar{\mu}_{2+} =3$ & $\bar{\mu}_{++} =3$ \\ \hline  -->
 <!-- \end{tabular} -->
 <!-- \end{center} -->
-```{r echo = FALSE, fig.width = 8}
-par(oma=rep(0,4),mar=c(5,5,0,0),mfrow=c(1,2),las=1,bty='l')
+<!-- ```{r echo = FALSE, fig.width = 8} -->
+<!-- par(oma=rep(0,4),mar=c(5,5,0,0),mfrow=c(1,2),las=1,bty='l') -->
 
-plot(c(-0.5,1.5),c(0.5,5.5),type="n",xlab="Material",ylab="Shelf life",xaxt="n")
-axis(1,at=0:1,lab=c("F","P"))
-lines(c(0,1),c(2,4))
-lines(c(0,1),c(5,1),lty="dashed")
-points(c(0,1),c(2,4),pch="L")
-points(c(0,1),c(5,1),pch="H")
+<!-- plot(c(-0.5,1.5),c(0.5,5.5),type="n",xlab="Material",ylab="Shelf life",xaxt="n") -->
+<!-- axis(1,at=0:1,lab=c("F","P")) -->
+<!-- lines(c(0,1),c(2,4)) -->
+<!-- lines(c(0,1),c(5,1),lty="dashed") -->
+<!-- points(c(0,1),c(2,4),pch="L") -->
+<!-- points(c(0,1),c(5,1),pch="H") -->
 
-plot(c(-0.5,1.5),c(0.5,5.5),type="n",xlab="Temperature",ylab="Shelf life",xaxt="n")
-axis(1,at=0:1,lab=c("L","H"))
-lines(c(0,1),c(2,5))
-lines(c(0,1),c(4,1),lty="dashed")
-points(c(0,1),c(2,5),pch="F")
-points(c(0,1),c(4,1),pch="P")
-```
+<!-- plot(c(-0.5,1.5),c(0.5,5.5),type="n",xlab="Temperature",ylab="Shelf life",xaxt="n") -->
+<!-- axis(1,at=0:1,lab=c("L","H")) -->
+<!-- lines(c(0,1),c(2,5)) -->
+<!-- lines(c(0,1),c(4,1),lty="dashed") -->
+<!-- points(c(0,1),c(2,5),pch="F") -->
+<!-- points(c(0,1),c(4,1),pch="P") -->
+<!-- ``` -->
 
-In this case, the simple effects of temperature are equal and opposite.  (High temperature increases shelf life by 3 days for foods packed in foil, but decreases shelf life by 3 days for foods packed in plastic.)  Thus, the main effect of temperature is zero!  Certainly, it would be erroneous to conclude that temperature has no effect on shelf life based on the fact that the marginal means for the two temperature treatments are equal.  In this case, the only way to appropriately characterize the effects of temperature is to consider the simple effects.  The main effects are downright misleading.
+<!-- In this case, the simple effects of temperature are equal and opposite.  (High temperature increases shelf life by 3 days for foods packed in foil, but decreases shelf life by 3 days for foods packed in plastic.)  Thus, the main effect of temperature is zero!  Certainly, it would be erroneous to conclude that temperature has no effect on shelf life based on the fact that the marginal means for the two temperature treatments are equal.  In this case, the only way to appropriately characterize the effects of temperature is to consider the simple effects.  The main effects are downright misleading. -->
 
-Thus, the conventional approach to analyzing two-way factorial classifications is to **inspect the interaction first**.  If the interaction is not significant, then analyze main effects.  If the interaction is significant, then analyze simple effects.  Main effects and simple effects can be analyzed using the same approaches as a one-factor ANOVA (i.e., $F$-test for overall effects, followed by linear combinations and/or multiple comparisons procedures if the overall $F$-test is significant.)
+<!-- Thus, the conventional approach to analyzing two-way factorial classifications is to **inspect the interaction first**.  If the interaction is not significant, then analyze main effects.  If the interaction is significant, then analyze simple effects.  Main effects and simple effects can be analyzed using the same approaches as a one-factor ANOVA (i.e., $F$-test for overall effects, followed by linear combinations and/or multiple comparisons procedures if the overall $F$-test is significant.) -->
 
-## Analysis of a balanced 2 $\times$ 2 factorial experiment
+## 2 $\times$ 2 factorial design
+
+We will first study the simplest of all factorial designs, a 2-by-2 cross.  We will then progress to two-factor crosses in which each factor may have an arbitrary number of levels.  
+
+In a two-factor design, the two factors can be generically labeled as factors "A" and "B".  The scientific questions of most interest in a two-factor design are:
+
+ 1. Does the average response differ among the levels of factor A, and if so, how?
+
+ 2. Does the average response differ among the levels of factor B, and if so, how?
+
+ 3. Do the differences among the levels of factor A depend on the level of factor B, and vice versa?  If so, how?  That is to say, is there evidence of an *interaction* between the two factors?
 
 ### Example: Weight gain in rats
 
-In real life, cell means need to be estimated with data.  Consider the following example taken from @sokal1995biometry.  This experiment was designed to examine differences in food consumption among rats.  6 male rats and 6 female rats were used in the experiment.  Half the rats were fed fresh lard, and half the rats were fed rancid lard.  The response is total food consumption (in grams) over 73 days.  This is a 2 $\times$ 2 factorial design with a CRD.  The experiment is balanced.  
+Consider the following example taken from @sokal1995biometry.  This experiment was designed to examine differences in food consumption among rats.  6 male rats and 6 female rats were used in the experiment.  Half the rats were fed fresh lard (fat), and half the rats were fed rancid fat.  The response is total food consumption (in grams) over 73 days.  This is a 2 $\times$ 2 factorial design with a CRD.  The experiment is balanced.  
 
 <!-- \begin{center} -->
 <!-- \begin{tabular}{|p{1.1in}|p{1.1in}|p{1.1in}|p{1.1in}|} \hline  -->
@@ -275,9 +280,10 @@ In real life, cell means need to be estimated with data.  Consider the following
 <!-- \end{center} -->
 
 Here is some notation that we will use for two-factor experiments:
-+ $a$: number of levels of factor ``A'' (here, we'll set 'sex' as this factor, so $a = 2$.)
 
-+ $b$: number of levels of factor ``B'' (here, we'll set 'fat' as this factor, so $b = 2$.)
++ $a$: number of levels of factor "A" (here, we'll set 'sex' as this factor, so $a = 2$.)
+
++ $b$: number of levels of factor "B" (here, we'll set 'fat' as this factor, so $b = 2$.)
 
 + $i = 1, 2, \ldots, a$: an index to distinguish the different levels of factor A ($i = 1$ for males, $i = 2$ for females)
 
@@ -295,19 +301,23 @@ Here is some notation that we will use for two-factor experiments:
 
 + $\mu_{ij}$ : unknown population mean for the combination of level $i$ of factor A and level $j$ of factor B
 
-First, let's examine an interaction plot for the sample means in the rat diet data:
-```{r echo = FALSE}
+For a two-way layout, it is often convenient to visualize the differences among the treatment means with an *interaction plot*. (Other authors call these profile plots.)  To construct an interaction plot, write the levels of one factor along the horizontal axis, and use the vertical axis to denote the response.  Draw lines on the plot for each level of the other experimental factor. 
+Two possible interaction plots for the above means are:
+```{r rat-intxn, echo = FALSE, fig.width = 8, fig.cap = "Interaction plots of the rat weight-gain data"}
 male.fresh <- c(709,679,699)
 male.rancid <- c(592,538,476)
 female.fresh <- c(657,594,677)
 female.rancid <- c(508,505,539)
 
-plot(c(-0.5,1.5),c(500,700),type="n",xlab="Fat type",ylab="Weight gain",xaxt="n")
+par(mfrow = c(1,2))
+
+plot(c(-0.5,1.5),c(500,700),type="n",xlab="type of fat",ylab="Weight gain",xaxt="n")
 axis(1,at=0:1,lab=c("Fresh","Rancid"))
 lines(c(0,1)-.02,c(mean(male.fresh),mean(male.rancid)),col="blue",lwd=2)
 lines(c(0,1)+.02,c(mean(female.fresh),mean(female.rancid)),col="red",lwd=2)
 points(c(0,1)-.02,c(mean(male.fresh),mean(male.rancid)),pch="M",lwd=2)
 points(c(0,1)+.02,c(mean(female.fresh),mean(female.rancid)),pch="F",lwd=2)
+legend("topright", col = c("blue", "red"), leg = c("male", "female"), lty = "solid")
 
 #legend(0,35,leg=c("Control","Treated"),col=c("blue","red"),pch=c("C","T"))
 add.bars<-function(x,y,se,...) segments(x,y-se,x,y+se,...)
@@ -315,40 +325,98 @@ add.bars(0-.02,mean(male.fresh),sqrt(var(male.fresh))/sqrt(3),col="blue",lwd=2)
 add.bars(1-.02,mean(male.rancid),sqrt(var(male.rancid))/sqrt(3),col="blue",lwd=2)
 add.bars(0+.02,mean(female.fresh),sqrt(var(female.fresh))/sqrt(3),col="red",lwd=2)
 add.bars(1+.02,mean(female.rancid),sqrt(var(female.rancid))/sqrt(3),col="red",lwd=2)
+
+plot(c(-0.5,1.5),c(500,700),type="n",xlab="Sex",ylab="Weight gain",xaxt="n")
+axis(1,at=0:1,lab=c("Male","Female"))
+lines(c(0,1)-.02,c(mean(male.fresh),mean(female.fresh)),col="blue",lwd=2)
+lines(c(0,1)+.02,c(mean(male.rancid),mean(female.rancid)),col="red",lwd=2)
+points(c(0,1)-.02,c(mean(male.fresh),mean(female.fresh)),pch="F",lwd=2)
+points(c(0,1)+.02,c(mean(male.rancid),mean(female.rancid)),pch="R",lwd=2)
+legend("topright", col = c("blue", "red"), leg = c("fresh", "rancid"), lty = "solid")
+
+#legend(0,35,leg=c("Control","Treated"),col=c("blue","red"),pch=c("C","T"))
+add.bars<-function(x,y,se,...) segments(x,y-se,x,y+se,...)
+add.bars(0-.02,mean(male.fresh),sqrt(var(male.fresh))/sqrt(3),col="blue",lwd=2)
+add.bars(1-.02,mean(female.fresh),sqrt(var(female.fresh))/sqrt(3),col="blue",lwd=2)
+add.bars(0+.02,mean(male.rancid),sqrt(var(male.rancid))/sqrt(3),col="red",lwd=2)
+add.bars(1+.02,mean(female.rancid),sqrt(var(female.rancid))/sqrt(3),col="red",lwd=2)
 ```
 
-We might think that the above plot suggests an interaction, because the lines are not parallel.  However, even if there weren't an interaction, experimental error would probably cause the lines to be non-parallel.  Thus, while interaction plots are useful for visualizing the data from a factorial design, they are not suitable for determining statistical significance.  Instead, we need a statistical test to determine whether the apparent interaction is statistically significant.
+Notice how the two versions of the plot show the same information but emphasize different comparisons.  Which version you prefer is a matter of taste.
 
-Ina two-factor ANOVA, we can use a sum-of-squares decomposition to test for the statistical significance of the main effects of each factor, and the interaction effects between the factors.  (Tests for the statistical significance of the simple effects will require a little more work.)  To be explicit, a test for the main effects of factor A is a test of whether the marginal means associated with each level of factor A are equal. That is, we test $H_0$: $\bar{\mu}_{1+} =\bar{\mu}_{2+} =...=\bar{\mu}_{a+}$ vs.\ $H_a$: at least two marginal means for factor A differ.
+### Two-factor ANOVA hypothesis tests
 
-Similarly, tests for the main effects of factor B are tests of whether the marginal means associated with each level of factor B are equal: $H_0$: $\bar{\mu}_{+1} =\bar{\mu}_{+2} =...=\bar{\mu}_{+b}$ vs.\ $H_a$: at least two marginal means for factor B differ.
+The traditional approach to analyzing a two-factor design is through a two-factor ANOVA.  A two-factor ANOVA uses the variation among the group means to test for differences in the mean response across the levels of each factor and for an interaction between the factors. 
 
-It is a bit more difficult to write down the specific hypotheses associated with the test of the interaction.  Remember that in the absence of an interaction, the effects of the two experimental factors are additive.  In mathematical terms, this means that the difference $\mu_{ij} -\bar{\mu}_{++}$ is equal to sum of the differences $\bar{\mu}_{i+} -\bar{\mu}_{++}$ and $\bar{\mu}_{+j} -\bar{\mu}_{++}$.  In equations, then, the test for the interaction effects is a test of 
+To understand these comparisons, it is useful to have some additional terminology.  We define the average responses associated with each treatment combination (what we have written above a $\mu_{ij}$) as *cell means*.  (The name "cell mean" arises from the fact that we often think of each treatment combination as corresponding to a "cell" in a table in which each factor corresponds to one of the table's dimensions.)  A *marginal mean* is the average of all the cell means associated with one level of one factor, averaged over all the levels of the other factor(s).  For example, in the rat weight-gain data, the marginal mean associated with the male rats is
 \[
-H_0: \ \ \mu_{ij} -\bar{\mu}_{++} =\bar{\mu}_{+i} -\bar{\mu}_{++} +\bar{\mu}_{+j} -\bar{\mu}_{++}.
+\bar{\mu}_{1+} = \dfrac{\mu_{11} + \mu_{12}}{2}.
+\]
+Here, we've used the notational convention of using a plus (+) subscript to indicate that we are summing over the levels of an index.  Similarly, the marginal mean associated with rats fed fresh fat is
+\[
+\bar{\mu}_{+1} = \dfrac{\mu_{11} + \mu_{21}}{2}.
 \]
 
-Just as with a one-factor ANOVA, we can conduct each of these hypothesis tests using a sum-of-squares decomposition.  We'll begin by partitioning the sum-of-squares into sum-of-squares attributable to variation among the treatment groups and variation within the treatment groups:
-\begin{eqnarray*}
-\mbox{Total variation: } SS_{Total} & = & \sum_{i=1}^{a}\sum_{j=1}^{b}\sum_{k=1}^{n_{ij} }\left(y_{ijk} -\bar{y}_{+++} \right)^2   \\
-\mbox{Variation among groups: } SS_{Groups} & = & \sum_{i=1}^{a}\sum_{j=1}^{b}\sum_{k=1}^{n_{ij} }\left(\bar{y}_{ij+} -\bar{y}_{+++} \right)^2 \\
-\mbox{Variation within groups: } SS_{Error} & = & \sum_{i=1}^{a}\sum_{j=1}^{b}\sum_{k=1}^{n_{ij} }\left(y_{ijk} -\bar{y}_{ij+} \right)^2    
-\end{eqnarray*}
+#### Comparisons of marginal means
 
-Now, we will decompose the $SS_{Groups}$ into three separate SS: one for each of the two main effects, and one for the interaction.  Formulas for these sum-of-squares are:
-\begin{eqnarray*}
-	SS[A] & = & \sum_{i=1}^{a}\sum_{j=1}^{b}\sum_{k=1}^{n_{ij} }\left(\bar{y}_{i++} -\bar{y}_{+++} \right)^2 \\  
-	SS[B] & = & \sum_{i=1}^{a}\sum_{j=1}^{b}\sum_{k=1}^{n_{ij} }\left(\bar{y}_{+j+} -\bar{y}_{+++} \right)^2  \\ 
-	SS[AB] & = & \sum_{i=1}^{a}\sum_{j=1}^{b}\sum_{k=1}^{n_{ij} }\left(\bar{y}_{ij+} -\bar{y}_{i++} -\bar{y}_{+j+} +\bar{y}_{+++} \right)^2   
-\end{eqnarray*}
-where SS[AB] denotes the sum-of-squares for the interaction.  The formulas for SS[A] and SS[B] should make some sense: they consist of squared differences between the marginal means for one level of an experimental factor and the grand mean.  The formula for SS[AB] is a bit more mysterious.  Heuristically, the idea is this: with some algebra, the null hypothesis for no interaction $H_0$: $\mu_{ij} -\bar{\mu}_{++} =\bar{\mu}_{+i} -\bar{\mu}_{++} +\bar{\mu}_{+j} -\bar{\mu}_{++}$ can be re-written as $H_0$: $\mu_{ij} -\bar{\mu}_{+i} -\bar{\mu}_{+j} +\bar{\mu}_{++} =0$.  Thus, the term $\bar{y}_{ij+} -\bar{y}_{i++} -\bar{y}_{+j+} +\bar{y}_{+++}$ measures the extent to which the mean of group $ij$ departs this null hypothesis.
-
-In a two-way factorial design, when the data are balanced, SS[A], SS[B], and SS[AB] form a perfect decomposition of $SS_{Groups}$.  That is, 
+The two-factor ANOVA provides $F$-tests to test for differences among the marginal means of each factor.  In the rat example, one $F$-test tests the null hypothesis that there is no difference between the marginal means for male and female rats:
 \[
-SS_{Groups} = SS[A] + SS[B] + SS[AB]
+H_0: \bar{\mu}_{1+} =\bar{\mu}_{2+}
 \]
-Again, each sum-of-squares is calculated on the basis of a certain number of free differences.  To place the sum-of-squares on equal footing, we need to know how these df are partitioned among the sum-of-squares.  For a $a \times b$ factorial design, the number of df used to calculate each sum-of-squares breaks down in the following way:
+and another $F$-test tests the null hypothesis that there is no difference between the marginal means for the two tupes of fat:
+\[
+H_0: \bar{\mu}_{+1} =\bar{\mu}_{+2}.
+\]
+When there are more than two levels of one or both of the factors, these $F$-tests correspond to tests of equality of all the marginal means.  For example, when there are more than two levels of factor "A", the ANOVA $F$-test of this factor corresponds to the null hypothesis
+\[
+H_0: \bar{\mu}_{1+} =\bar{\mu}_{2+} = \ldots = \bar{\mu}_{a+}.
+\]
 
+Notice that each of these null hypotheses corresponds to a contrast of the cell means.  It may take a little work to see this, but we can do it.  For example, our test for a difference between the marginal means of the two types of fat can be re-expressed as
+the contrast
+\[
+\begin{align}
+\theta & = \bar{\mu}_{+1} -\bar{\mu}_{+2} \\
+       & = \dfrac{1}{2}\mu_{11} + \dfrac{1}{2}\mu_{21} -  \dfrac{1}{2}\mu_{12} - \dfrac{1}{2}\mu_{22}.
+\end{align}
+\]
+
+Because there are only two types of fat, the comparison between the two marginal means is a simple contrast.  More generally, the test for the equality of $a$ marginal means is a complex contrast that involves $a-1$ linearly independent (or non-redundant) simple contrasts.  
+
+We will sometimes refer to comparisons of marginal means as the *main-effects* comparisons associated with a particular factor.
+
+#### Interaction
+
+To think through the interaction, it is helpful to have a bit more terminology at our disposal.  We define the *simple effect* of a factor as the comparisons among the levels of one factor within the level(s) of the other factor(s).  For example, in the rat experiment, the simple effect of type of fat for male rats is the comparison between male rats fed fresh fat vs.\ male rats fed rancid fat.  In our notation, this corresponds to the difference 
+\[
+\theta_{\mbox{fat:male}} = \mu_{11} - \mu_{12}. 
+\]
+Note that this simple-effect comparison is a simple contrast of the cell means.  Similarly, we can define the simple effect of fat type for female rats as the comparison between female rats fed fresh fat vs.\ female rats fed rancid fat, or, in notation,
+\[
+\theta_{\mbox{fat:female}} = \mu_{21} - \mu_{22}. 
+\]
+
+An *interaction* is a comparison of simple effects.  In the rat data, the ANOVA $F$-test of the interaction corresponds to a test of
+\[
+H_0: \theta_{\mbox{fat:male}} = \theta_{\mbox{fat:female}}
+\]
+or
+\[
+H_0: \mu_{11} - \mu_{12} = \mu_{21} - \mu_{22}.
+\]
+Just as with regression, interactions go both ways: if the differences between the types of fat differs between male and female rats, then it also must be true that the differences between male and female rats depends on the type of fat. Notice also that, yet again, our test for an interaction can be expressed as a (in this case, simple) contrast of the cell means.
+
+The interaction plots in Figure \@ref(fig:rat-intxn) are helpful for visualizing what is meant by an interaction.  Consider the interaction plot on the left of Fig.\ \@ref(fig:rat-intxn) (with type of fat on the horizontal axis).  The simple effect of type of fat for male rats corresponds to the left-vs-right comparison for the blue (male) line.  The simple effect of type of fat for female rats corresponds to the same left-vs-right comparison for the red (female) line.  The interaction asks if these two simple effects are the same or different for male vs.\ female rats.
+
+Alternatively (and continuing to use the interaction plot on the left of Fig.\ \@ref(fig:rat-intxn)), the simple effect of sex with fresh fat corresponds to the blue-vs-red comparison on the left of the plot.  The simple effect of sex for rancid fat corresponds to the same blue-vs-red comparison on the right of the plot.  The interaction asks if these two simple effects are the same or different for fresh vs.\ rancid fat.
+
+#### Main-effects as averages of simple effects
+
+Now that we are equipped with the idea of simple effects, notice that we can also define the main-effects comparisons as the averages of the simple effects.   For example, the difference between the marginal mean for rats fed fresh fat vs.\ the marginal mean for rats fed rancid fat is just the average of the simple effects for type of fat in male and female rats.  With this recognition comes a crucial point: If the interaction is significant, then we need to be careful about analyzing the main effects, because the main effects are averaging over simple effects that we know to differ.  Thus, the conventional approach to analyzing two-way factorial classifications is to **inspect the interaction first**.  If the interaction is not significant, proceed to analyze main effects of each factor.  If the interaction is significant, then analyze simple effects, and interpret the main-effects comparison cautiously.
+
+#### Sum-of-squares decompositions
+
+To sum up so far: the two-factor ANOVA generates three $F$-tests: one to test for the equality of marginal means for the first factor, one to test for the equality of marginal means for the second factor, and one to test for the interaction between the two factors.  Each of these tests are (possibly complex) contrasts.  The tests of these contrasts proceed by computing the sum-of-squares for each contrasts and comparing this to the error sum-of-squares in the usual way.  The number of "free differences" (or linearly independent contrasts) associated with each contrasts is
 ```{r echo = FALSE}
 options(knitr.kable.NA = '') 
 
@@ -365,24 +433,33 @@ knitr::kable(format="html",
              escape = FALSE) 
 ```
 
-For the rat weight-gain example, the df accounting is
-```{r echo = FALSE}
-options(knitr.kable.NA = '') 
+Another way to think about this is that (for example) there are $a$ marginal means for factor A, hence there are $a-1$ differences among those means.  For the interaction, there are $b-1$ ways in which the $a-1$ differences among the levels of factor A can differ among the levels of factor B; hence, the interaction entails $(a-1)(b-1)$ free differences (or linearly independent contrasts).  
 
-sources <- c("Sex", "Fat", "Sex*Fat", "Error", "Total")
+Just as with a one-factor ANOVA, the sums-of-squares in a balanced two-factor ANOVA can be computed using computing formulas that involve nothing more than addition, subtraction, multiplication, and division.  These computing formulas were more important in the days before the advent of desktop computing.  While there may be some small historical value to seeing how this worked, we won't be computing these quantities by hand today.  The formulas follow for completeness, but don't feel compelled to study them.  
 
-df <- c("$1$", "$1$", "$1$", "$8$", "$11$")
+The computing formulas begin with the usual one-factor SS decomposition:
+\begin{eqnarray*}
+\mbox{Total variation: } SS_{Total} & = & \sum_{i=1}^{a}\sum_{j=1}^{b}\sum_{k=1}^{n_{ij} }\left(y_{ijk} -\bar{y}_{+++} \right)^2   \\
+\mbox{Variation among groups: } SS_{Groups} & = & \sum_{i=1}^{a}\sum_{j=1}^{b}\sum_{k=1}^{n_{ij} }\left(\bar{y}_{ij+} -\bar{y}_{+++} \right)^2 \\
+\mbox{Variation within groups: } SS_{Error} & = & \sum_{i=1}^{a}\sum_{j=1}^{b}\sum_{k=1}^{n_{ij} }\left(y_{ijk} -\bar{y}_{ij+} \right)^2    
+\end{eqnarray*}
 
-two_factor_anova_table <- data.frame(cbind(sources, df))
+Next, these formulas decompose the $SS_{Groups}$ into three separate SS: one for each of the two main effects, and one for the interaction.  Formulas for these sum-of-squares are:
+\begin{eqnarray*}
+	SS[A] & = & \sum_{i=1}^{a}\sum_{j=1}^{b}\sum_{k=1}^{n_{ij} }\left(\bar{y}_{i++} -\bar{y}_{+++} \right)^2 \\  
+	SS[B] & = & \sum_{i=1}^{a}\sum_{j=1}^{b}\sum_{k=1}^{n_{ij} }\left(\bar{y}_{+j+} -\bar{y}_{+++} \right)^2  \\ 
+	SS[AB] & = & \sum_{i=1}^{a}\sum_{j=1}^{b}\sum_{k=1}^{n_{ij} }\left(\bar{y}_{ij+} -\bar{y}_{i++} -\bar{y}_{+j+} +\bar{y}_{+++} \right)^2   
+\end{eqnarray*}
+where SS[AB] denotes the sum-of-squares for the interaction.  The formulas for SS[A] and SS[B] should make some sense: they consist of squared differences between the marginal means for one level of an experimental factor and the grand mean.  The formula for SS[AB] is a bit more mysterious.  Heuristically, the idea is this: with some algebra, the null hypothesis for no interaction $H_0$: $\mu_{ij} -\bar{\mu}_{++} =\bar{\mu}_{+i} -\bar{\mu}_{++} +\bar{\mu}_{+j} -\bar{\mu}_{++}$ can be re-written as $H_0$: $\mu_{ij} -\bar{\mu}_{+i} -\bar{\mu}_{+j} +\bar{\mu}_{++} =0$.  Thus, the term $\bar{y}_{ij+} -\bar{y}_{i++} -\bar{y}_{+j+} +\bar{y}_{+++}$ measures the extent to which the mean of group $ij$ departs this null hypothesis.
 
-colnames(two_factor_anova_table) = c("source", "df")
-                            
-knitr::kable(format="html",
-             two_factor_anova_table, 
-             escape = FALSE) 
-```
+In a two-way factorial design, when the data are balanced, SS[A], SS[B], and SS[AB] form a perfect decomposition of $SS_{Groups}$.  That is, 
+\[
+SS_{Groups} = SS[A] + SS[B] + SS[AB].
+\]
 
-To compare the sum-of-squares on equal footing, we need to calculate mean squares (MS), which are just equal to each sum-of-squares divided by its corresponding df.  Here's a sum-of-squares decomposition for the rat data:
+#### Back to the rat data
+
+Let's see how this works for the rat weight-gain data.  Here's a sum-of-squares decomposition for the rat data, along with the df associated with each term in the ANOVA:
 
 ```{} 
 		Source    df     SS     MS 
@@ -393,11 +470,11 @@ To compare the sum-of-squares on equal footing, we need to calculate mean square
 		Total     11  77570
 ```
 
-We can test for the statistical significance of the main effects of Sex and Fat, and for the interaction between Sex and Fat, by computing F-ratios.  F-ratios are simply the ratio of the MS for the factor being tested divided by the MS(Error).  For example, the F-ratio for the test of the interaction is
+We can test for the statistical significance of the main effects of Sex and Fat, and for the interaction between Sex and Fat, by computing $F$-ratios.  $F$-ratios are simply the ratio of the MS for the factor being tested divided by the MS(Error).  For example, the $F$-ratio for the test of the interaction is
 \[
 F = \dfrac{MS[AB]}{MSE} = \dfrac{919}{1458}  = 0.63
 \]
-We can calculate a p-value for the test of the null hypothesis that there is no interaction between the factors by comparing this statistic to an $F$-distribution with 1 numerator df and 8 denominator df.  (The numerator and denominator df are just the number of free differences used to calculate the MS in the numerator and denominator of the $F$ statistic, respectively.)  Because larger values of the $F$ statistic provide more evidence against the null hypothesis, $p$-values associated with the F-test are always one-tailed, and are the probability of observing a test statistic at least as large as the value observed.  Here, the probability of observing an $F$-statistic with 1 ndf and 8 ddf greater than or equal to 0.63 is $p=0.45$.  The $p$ value is large, so we have no evidence that the two factors in this experiment interact, with respect to their effect on weight gain.
+We can calculate a $p$-value for the test of the null hypothesis that there is no interaction between the factors by comparing this statistic to an $F$-distribution with 1 numerator df and 8 denominator df.  (The numerator and denominator df are just the number of free differences used to calculate the MS in the numerator and denominator of the $F$ statistic, respectively.)  Because larger values of the $F$ statistic provide more evidence against the null hypothesis, $p$-values associated with the F-test are always one-tailed, and are the probability of observing a test statistic at least as large as the value observed.  Here, the probability of observing an $F$-statistic with 1 ndf and 8 ddf greater than or equal to 0.63 is $p=0.45$.  The $p$ value is large, so we have no evidence that the two factors in this experiment interact, with respect to their effect on weight gain.
 
 We can conduct similar calculations to test for the main effects of 'sex' and 'fat', using MS[A] and MS[B], respectively.  We'll use these values to complete our ANOVA table for the rat example:
 ```{} 
@@ -411,15 +488,15 @@ We can conduct similar calculations to test for the main effects of 'sex' and 'f
 
 Thus, there is no evidence of an interaction between the factors.  Proceeding with an analysis of the main effects, there is no evidence that the marginal means for male vs.\ female rates differ ($p=0.146$), but there is strong evidence that the marginal means between fresh vs.\ rancid fat differ ($p = 0.0002$).
 
-Because the main effect of 'fat' is significant, we want to go further and say more about the sign and magnitude of this effect.  To do so, we'll form a contrast that quantifies the main effect of fat.  
+As with one-factor ANOVA, the two-factor ANOVA $F$-tests are usually just the beginning of our analysis.  We usually want to go further and to characterize how the means differ for any signficant effect that we've found.  In this case, because the main effect of 'fat' is significant, we want to go further and say more about the sign and magnitude of this effect.  To do so, we'll reformulate contrast that quantifies the main effect of fat.  
 \[
 \theta _{fat} =\bar{\mu}_{+2} -\bar{\mu}_{+1} =\frac{\mu_{12} +\mu_{22} }{2} -\frac{\mu_{11} +\mu_{21} }{2} 
 \] 
-We've written this contrast as the difference between the marginal mean for rancid fat and the marginal mean for fresh fat.  Thus, a positive value corresponds to rats gaining more weight when fed rancid fat, and a negative value corresponds to rats gaining more weight when fed fresh fat.  We first estimate the linear combination simply by plugging in sample means:
+We've written this contrast as the difference between the marginal mean for rancid fat and the marginal mean for fresh fat.  Thus, a positive value corresponds to rats gaining more weight when fed rancid fat, and a negative value corresponds to rats gaining more weight when fed fresh fat.  Of course, we'll usually estimate this effect and its standard error using software, but it's worth seeing that we can do the calculation by hand if we want to be doubly sure that the software is giving the right answer.  The contrast can be estimated by simply by plugging in sample means:
 \[
 {\hat{\theta }_{fat} =\dfrac{\bar{y}_{12+} +\bar{y}_{22+} }{2} -\dfrac{\bar{y}_{11+} +\bar{y}_{21+} }{2} }  {=\dfrac{535+517}{2} -\dfrac{696+643}{2} }  {=-143} 
 \] 
-Thus, we estimate that rats fed rancid fat gain 143g less weight than rats fed fresh fat.  Next, we estimate the standard error of this linear combination using a modification of the formula from linear combinations for one-factor ANOVA:
+Thus, we estimate that rats fed rancid fat gain 143g less weight than rats fed fresh fat.  The standard error can also be computed using a modification of the formula from linear combinations for one-factor ANOVA:
 \begin{eqnarray*}
 s_{\hat{\theta}} & = & \sqrt{\left\{\frac{c_{11}^2}{n_{11}} +\frac{c_{12}^2}{n_{12}} +\frac{c_{21}^2}{n_{21}} +\frac{c_{22}^2}{n_{22}} \right\} MS_{Error} } \\ 
 & = & \sqrt{\left\{\frac{\left(-1/2\right)^2 }{3} +\frac{\left(1/2\right)^2 }{3} +\frac{\left(-1/2\right)^2 }{3} +\frac{\left(1/2\right)^2 }{3} \right\}1458}  \\ 
@@ -527,7 +604,7 @@ Parameter                   Estimate  Standard Error    t Value    Pr > |t|
 Fresh v. rancid          -142.833333      22.0479276      -6.48      0.0002
 ```
 
-As always, SAS provides (for free) a p-value for the test of $H_0$: $\theta =0$ vs.\ $H_a$: $\theta \ne 0$.  For illustration's sake, we can also write linear combinations for the main effect of sex, and for the interaction effect.  One way to write these linear combinations is:
+As always, SAS provides (for free) a $p$-value for the test of $H_0$: $\theta =0$ vs.\ $H_a$: $\theta \ne 0$.  For illustration's sake, we can also write linear combinations for the main effect of sex, and for the interaction effect.  One way to write these linear combinations is:
 \[\theta _{sex} =\frac{\mu_{21} +\mu_{22} }{2} -\frac{\mu_{11} +\mu_{12} }{2} \] 
 and
 \[\theta _{int} =\left(\mu_{22} -\mu_{12} \right)-\left(\mu_{21} -\mu_{11} \right)\] 
@@ -563,7 +640,7 @@ Finally, the test the interaction between factors A and B is equivalent to a tes
 H_{0} :\left(\alpha \beta \right)_{11} =\left(\alpha \beta \right)_{12} =...=\left(\alpha \beta \right)_{ab} =0. 
 \]
 
-### A second example
+### A second example when the interaction is significant
 
 This example is taken from @steel1997principles.  In their words, 
 
@@ -789,47 +866,7 @@ knitr::kable(format="html",
 ```
 
 Thus, this two-factor ANOVA shows that there is no statistical evidence of an interaction ($F_{3, 16} = 1.76$, $p = 0.20$).  Because the interaction is not significant, it makes sense to analyze main effects.  There is very strong evidence of a main effect of shape ($F_{3, 16} = 143.5$, $p < 0.0001$) and a main effect of the acid treatment ($F_{1, 16}$ = 29.0, $p <  0.0001$). 
-
-#### Linear contrasts and multiple comparisons in the $a \times b$ design
-
-Because the main effects are significant (and the interaction is not significant), then we can use linear contrasts and multiple comparisons procedures to analyze the marginal means of both factors just as we would in a one-factor layout.  We'll illustrate both here for completeness, although the concepts should be familiar. 
-
-Example of a linear contrast:  Suppose that we wanted to ask if the average amount of resin collected from circular holes was different from the average resin collected from diagonal holes.  We can first define a linear contrast that quantifies the difference between these two marginal means:
-\[
-\theta =\frac{\mu_{11} +\mu_{12} }{2} -\frac{\mu_{21} +\mu_{22} }{2} 
-\] 
-Using all of our formulas from before, we could estimate this linear combination by plugging in sample means.  We could then estimate the standard error, and use the estimate and the standard error to test $H_{0} :\theta =0$ vs.\ $H_{a} :\theta \ne 0$.  To coerce SAS to do this for us, we need to do algebra with the effects parameters:
-\begin{eqnarray*}
-\theta  & = & \frac{\mu_{11} +\mu_{12} }{2} -\frac{\mu_{21} +\mu_{22} }{2} \\ 
-  & = & \frac{\left(\mu +\alpha _{1} +\beta _{1} +\left(\alpha \beta \right)_{11} \right)+...}{2} -\frac{\left(\mu +\alpha _{2} +\beta _{1} +\left(\alpha \beta \right)_{21} \right)+...}{2}  \\
-  & = & \alpha _{1} -\alpha _{2} +\frac{\left(\alpha \beta \right)_{11} +\left(\alpha \beta \right)_{12} }{2} -\frac{\left(\alpha \beta \right)_{21} +\left(\alpha \beta \right)_{22} }{2} 
-\end{eqnarray*}
-Thus, in SAS:
-
-```{}
-proc glm data=resin;
-  class shape acid;
-  model resin = shape acid shape*acid / solution;
-  estimate 'Circle vs. Diagonal' shape 0 1 -1 0 shape*acid 0 0 .5 .5 -.5 -.5 0 0;
-run;
-
-                                            Standard
-Parameter                   Estimate           Error    t Value    Pr > |t|
-Circle vs. Diagonal      -43.8333333      3.87656778     -11.31      <.0001
-```
-
-Thus, we conclude that there is strong evidence that diagonal holes produce more resin than circular holes.
-
-Notes:
-1.  PROC GLM orders the levels of experimental factors alphabetically.  Thus, the ordering for the shape factor above is check, circle, diagonal, slash.  Thus, the zeros are needed in the estimate statement because in SAS's coding circle corresponds to $i=2$ and diagonal corresponds to $i=3$.  
-	
-2. Also, if any of the coefficients have a training string of zeros, we can omit those from the ESTIMATE statement.  SAS will replace any missing coefficients with zeros.  The above ESTIMATE statement could have been equivalently written as
-	
-```{}
-estimate 'Circle vs. Diagonal' shape 0 1 -1 shape*acid 0 0 .5 .5 -.5 -.5;
-```
-	
-Alternatively, we could use a MEANS statement to compare treatment means using multiple comparisons. Here is code for a Tukey's HSD comparison of the marginal means for the hole shapes:
+Because the main effects are significant (and the interaction is not significant), then we can use linear contrasts and multiple comparisons procedures to analyze the marginal means of both factors just as we would in a one-factor layout.  For example, we could use a MEANS statement to compare treatment means using multiple comparisons. Here is code for a Tukey's HSD comparison of the marginal means for the hole shapes:
 
 ```{}
 proc glm data=resin;
@@ -850,6 +887,45 @@ D               13.667      6    circular
 ```
 
 Thus, all of the shapes are significantly different from one another.
+
+
+<!-- We'll illustrate both here for completeness, although the concepts should be familiar.  -->
+
+<!-- Example of a linear contrast:  Suppose that we wanted to ask if the average amount of resin collected from circular holes was different from the average resin collected from diagonal holes.  We can first define a linear contrast that quantifies the difference between these two marginal means: -->
+<!-- \[ -->
+<!-- \theta =\frac{\mu_{11} +\mu_{12} }{2} -\frac{\mu_{21} +\mu_{22} }{2}  -->
+<!-- \]  -->
+<!-- Using all of our formulas from before, we could estimate this linear combination by plugging in sample means.  We could then estimate the standard error, and use the estimate and the standard error to test $H_{0} :\theta =0$ vs.\ $H_{a} :\theta \ne 0$.  To coerce SAS to do this for us, we need to do algebra with the effects parameters: -->
+<!-- \begin{eqnarray*} -->
+<!-- \theta  & = & \frac{\mu_{11} +\mu_{12} }{2} -\frac{\mu_{21} +\mu_{22} }{2} \\  -->
+<!--   & = & \frac{\left(\mu +\alpha _{1} +\beta _{1} +\left(\alpha \beta \right)_{11} \right)+...}{2} -\frac{\left(\mu +\alpha _{2} +\beta _{1} +\left(\alpha \beta \right)_{21} \right)+...}{2}  \\ -->
+<!--   & = & \alpha _{1} -\alpha _{2} +\frac{\left(\alpha \beta \right)_{11} +\left(\alpha \beta \right)_{12} }{2} -\frac{\left(\alpha \beta \right)_{21} +\left(\alpha \beta \right)_{22} }{2}  -->
+<!-- \end{eqnarray*} -->
+<!-- Thus, in SAS: -->
+
+<!-- ```{} -->
+<!-- proc glm data=resin; -->
+<!--   class shape acid; -->
+<!--   model resin = shape acid shape*acid / solution; -->
+<!--   estimate 'Circle vs. Diagonal' shape 0 1 -1 0 shape*acid 0 0 .5 .5 -.5 -.5 0 0; -->
+<!-- run; -->
+
+<!--                                             Standard -->
+<!-- Parameter                   Estimate           Error    t Value    Pr > |t| -->
+<!-- Circle vs. Diagonal      -43.8333333      3.87656778     -11.31      <.0001 -->
+<!-- ``` -->
+
+<!-- Thus, we conclude that there is strong evidence that diagonal holes produce more resin than circular holes. -->
+
+<!-- Notes: -->
+<!-- 1.  PROC GLM orders the levels of experimental factors alphabetically.  Thus, the ordering for the shape factor above is check, circle, diagonal, slash.  Thus, the zeros are needed in the estimate statement because in SAS's coding circle corresponds to $i=2$ and diagonal corresponds to $i=3$.   -->
+
+<!-- 2. Also, if any of the coefficients have a training string of zeros, we can omit those from the ESTIMATE statement.  SAS will replace any missing coefficients with zeros.  The above ESTIMATE statement could have been equivalently written as -->
+
+<!-- ```{} -->
+<!-- estimate 'Circle vs. Diagonal' shape 0 1 -1 shape*acid 0 0 .5 .5 -.5 -.5; -->
+<!-- ``` -->
+	
 
 ### Example with a significant interaction
 
@@ -1009,11 +1085,11 @@ John Tukey developed a test for additivity with unreplicated factorial designs, 
 
 ## Missing cells
 
-An extreme case of unbalanced data occurs when there are no observations for one or more treatment combinations.  For example, consider the sheep data used to illustrate an interaction in a 2 $\times$ 2 factorial design, but suppose that there were no data for control sheep bled in the morning.  We say that the ``cell'' representing the treatment combination of control x morning bleeding is missing.
+An extreme case of unbalanced data occurs when there are no observations for one or more treatment combinations.  For example, consider the sheep data used to illustrate an interaction in a 2 $\times$ 2 factorial design, but suppose that there were no data for control sheep whose blood was drawn in the morning.  We say that the ``cell'' representing the treatment combination of control x morning bleeding is missing.
 
 There are three options for missing cells designs:
 
-1. Remove one of the levels of one experimental factor to eliminate the missing cell.  In the example above, we could eliminate the data from the drugged sheep bled in the morning, and just compare the sheep bled in the afternoon to look for a simple effect of drug vs.\ control.  Or, we could eliminate the data from the control sheep bled in the afternoon, and just look for a simple effect of morning vs.\ afternoon bleeding for sheep given the drug.  
+1. Remove one of the levels of one experimental factor to eliminate the missing cell.  In the example above, we could eliminate the data from the drugged sheep whose blood was drawn in the morning, and just compare the sheep with blood drawn in the afternoon to look for a simple effect of drug vs.\ control.  Or, we could eliminate the data from the control sheep with blood drawn in the afternoon, and just look for a simple effect of morning vs.\ afternoon bleeding for sheep given the drug.  
 	
 2. Treat the design as a one-factor layout, where each treatment combination is a separate level of the single experimental factor.
 	

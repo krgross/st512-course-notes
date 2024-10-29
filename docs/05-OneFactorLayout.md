@@ -415,7 +415,7 @@ If assumptions are violated, what can we do?  As with a two-sample $t$-test, the
 
 A second option with non-normal data is to try a non-parametric procedure.  A parametric method assumes that the data come from a population with a (so-called) parametric probability distribution.  A non-parametric method does not make any particular assumption about the distribution of the population(s) from which the data were collected.  The non-parametric equivalent to a one-factor ANOVA is the Kruskal-Wallis test.
 
-## Linear contrasts of group means
+## Linear contrasts of group means {#contrasts}
 
 If we reject the null hypothesis that all group means are equal in a one-factor ANOVA, we usually want to go further and characterize how the group means differ.  The approach that we use for characterizing differences among group means hinges on whether we wish to pursue pre-planned comparisons of the group means or if we wish to pursue comparisons that are suggested by the data.  The distinction here is that a pre-planned comparison is one that you planned to investigate before having collected the data.  Pre-planned comparisons can be analyzed using linear contrasts, which are the topic of this section.  On the other hand, comparisons suggested by the data should be analyzed with multiple-comparisons procedures, which we will study later.
 
