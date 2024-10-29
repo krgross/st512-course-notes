@@ -11,11 +11,11 @@ In this part of the notes, we study methods to compare data from several groups.
 
 ### A vocabulary for describing designed experiments
 
-However, because many of the examples in this part will arise from designed experiments, it is useful to have a scheme and an associated vocabulary for categorizing designed experiments.  We will see that our scheme aligns closely with the statsitical methods that we use to analyze the resulting data.  In other words, if we can identify the experimental design, then the design will often suggest the appropriate statistical analysis.
+Here we present a scheme and a vocabulary for describing designed experiments.  We will see that our scheme aligns closely with the statsitical methods that we use to analyze the resulting data.  In other words, if we can identify the experimental design, then the design will often suggest the appropriate statistical analysis.
 
-There are two basic elements of a designed experiment.  The *treatment structure* of an experiment describes how the different experimental treatments are constructed.  The *randomization structure* of an experiment describes how those experimental treatments are assigned among different units.  Some additional terminology is helpful here.  The *experimental unit* (EU) is the physical entity to which a treatment is assigned, while the *measurement unit* (MU) is the entity that is measured.  The measurement unit is often the same as the EU, but not always.  The *experimental error* is the variation in the response among EUs assigned to the same treatment.
+There are two basic elements of a designed experiment.  The *treatment structure* of an experiment describes how the different experimental treatments are constructed.  The *randomization structure* of an experiment describes how those experimental treatments are assigned among different units.  It is also useful to distinguish the entity to which the treatment is assigned from the entity that is measured.  The *experimental unit* (EU) is the physical entity to which a treatment is assigned, while the *measurement unit* (MU) is the entity that is measured.  The measurement unit is often the same as the EU, but not always.  The *experimental error* is the variation in the response among EUs assigned to the same treatment.
 
-As we will eventually see, the treatment and randomization structures of an experiment align tightly with the different components of a statistical model.  The *fixed effects* in a statistical model describe how the average response differs among the treatment groups.  The *random effects* in a statistical model describe how the replicate experimental units assigned to the same treatment vary.  (We will have more to say about the distinction between fixed vs.\ random effects later.)  In short, the treatment structure of an experiment determines how the fixed effects should be specified, and the randomization structure determines how the random effects should be specified.
+The treatment and randomization structures of an experiment align tightly with the different components of a statistical model.  The *fixed effects* in a statistical model describe how the average response differs among the treatment groups.  The *random effects* in a statistical model describe how the replicate experimental units assigned to the same treatment vary.  (We will have more to say about the distinction between fixed vs.\ random effects [later](#random-effects).  In short, the treatment structure of an experiment determines how the fixed effects should be specified, and the randomization structure determines how the random effects should be specified.
 
 ### Roadmap
 
@@ -27,13 +27,13 @@ Finally, we note that all of our study of designed experiments assumes that the 
 
 ### The simplest experiment
 
-The simplest type of treatment structure is a *one-factor layout*, also known as a one-factor classification or single-factor design.  A one-factor layout consists of a single experimental factor with 2 or more levels.  In a one-factor classification, the fixed-effects component of model are the mean responses for each treatment group.  
+The simplest type of treatment structure is a *one-factor layout*, also known as a one-factor classification or one-way layout or single-factor design.  A one-factor layout consists of a single experimental factor with 2 or more levels.  
 
-Here is an example from @moore1989introduction.  A researcher is interested in comparing three different methods of teaching reading on students' reading comprehension.  The methods are labeled (opaquely for our purposes) "Basal", "DRTA', and "Strat".  Let $\mu_B$, $\mu_D$, and $\mu_S$ denote the average student comprehension for each of the three treatments.  These three means are the "fixed-effects" component of the statistical model.  We are interested in comparing $\mu_B$, $\mu_D$, and $\mu_S$.
+Here is an example from @moore1989introduction.  A researcher is interested in comparing three different methods of teaching reading on students' reading comprehension.  The methods are labeled "Basal", "DRTA', and "Strat".  Let $\mu_B$, $\mu_D$, and $\mu_S$ denote the average student comprehension for each of the three treatments.  We are interested in comparing $\mu_B$, $\mu_D$, and $\mu_S$.
 
-As a bit of notation, it is usually awkward to distinguish statistical parameters by letter subscripts.  It is usually convenient to recode the parameters by numerical subscripts.  In this case, we might code the three mean responses as $\mu_1$, $\mu_2$, and $\mu_3$, referring to the average response for the " Basal", "DRTA', and "Strat" groups, respectively.  To be even more compact, we might refer to all three of these parameters as a group as $\mu_i$, where the index $i$ ranges from $i=1$ to $i=3$.
+As a bit of bookkeeping, it is usually awkward to distinguish statistical parameters by letter subscripts.  It is usually convenient to recode the parameters by numerical subscripts.  In this case, we might code the three mean responses as $\mu_1$, $\mu_2$, and $\mu_3$, referring to the average response for the " Basal", "DRTA', and "Strat" groups, respectively.  
 
-The simplest type of randomization structure is a *completely randomized design* (CRD).  The term "completely randomized design" is a good description of the randomization structure: in a CRD, treatments are assigned to EUs completely at random.  CRDs are appropriate when EUs do not differ in ways that are known to affect the response. When the EUs do differ in ways known to affect the response, there are other randomization structures that are preferable to a CRD.  A *balanced* CRD is each treatment is assigned to the same number of replicates.
+The simplest type of randomization structure is a *completely randomized design* (CRD).  The term "completely randomized design" virtually defines itself: in a CRD, treatments are assigned to EUs completely at random.  CRDs are appropriate when EUs do not differ in ways that are known to affect the response. When the EUs do differ in ways known to affect the response, there are other randomization structures that are preferable to a CRD.  A *balanced* CRD is each treatment is assigned to the same number of replicates.
 
 In the reading example, each of the three methods was randomly assigned to 22 different students.  One of the measures of reading comprehension in the data set is called "POST3".  The data for this response are shown in the strip chart below.
 
@@ -59,6 +59,8 @@ The statistical model that we use for analyzing a one-factor layout with a CRD i
 
 ## One-factor ANOVA: The basics
 
+### $F$-test to compare means
+
 To introduce one-factor ANOVA, we will use a data set from an observational study.  These data provide the calorie content for 20 randomly selected beef hotdogs, 17 randomly selected poultry hotdogs, and 17 randomly selected meat (!) hotdogs.  The data are shown in the stripchart below.
 <div class="figure" style="text-align: center">
 <img src="05-OneFactorLayout_files/figure-html/unnamed-chunk-3-1.png" alt="Strip chart of calorie content for hot dog data." width="480" />
@@ -69,7 +71,7 @@ Let $\mu_B$, $\mu_M$ and $\mu_P$ denote the average calorie content for beef, me
 
 Before we begin, we need to develop some notation.  Let $g$ denote the number of groups to be compared.  In the hot dog example, $g = 3$.  Let $i = 1,\ldots,g$ be an index that distinguishes the different populations.  The size of the random sample drawn from population $i$ is written $n_i$. When the sample sizes are the same in every group, we say that the data are balanced, and sometimes replace the individual sample sizes $n_i$  by a common sample size $n$.  Let $n_T = \sum_{i = 1}^g n_i$  denote the total number of data points in the data set.  Let $j=1, \ldots,n_i$ be an index that distinguishes the different data points within each sample; that is, $y_{ij}$  is observation $j$ from population $i$.  Finally, let $\mu_i$ denote the population mean for group $i$.
 
-We will also use the subscript ``+'' to indicate summation over the values of an index.  (The optional Oelhert text uses large dots instead of plus signs.)  For example, if we wanted to add together all the data points from the sample from group $i$, we could write
+We will also use the subscript "+" to indicate summation over the values of an index.   For example, if we wanted to add together all the data points from the sample from group $i$, we could write
 \[
 y_{i+} = \sum_{j=1}^{n_{ij}} y_{ij}
 \]
@@ -88,7 +90,9 @@ and the “grand mean” is written
 
 A word about subscripting: As we progress, the subscripting that we use will become increasingly complicated.  Remember that the basic rule for selecting a subscripting scheme is that each unique combination of subscripts must identify a unique data point.  In regression, one subscript was sufficient (i.e., $i = 1, \ldots, n$), because the value of $i$ was sufficient to specify a unique data point.  In ANOVA, we need one subscript to distinguish the different groups, and a second subscript to distinguish the individual observations within each group.  
 
-The basic hypothesis test of interest in a one-factor ANOVA is a test of $H_0$: $\mu_1 = \mu_2 = \ldots = \mu_g$  vs.\ the alternative that at least two group means differ.  As we will see below, this is identical to a model utility test in regression with indicators, and so we shouldn't be surprised that this is an $F$-test.  In the context of ANOVA, however, it is traditional to represent this test via a sums-of-squares decomposition.  To be fluent in the language of ANOVA, it is important to understand this representation also.  We begin by partitioning the variation in the data into two pieces: one quantifying the variation among populations and a second quantifying variation within populations.  
+The first order of business in an ANOVA is testing the null hypothesis that all the group means are equal, $H_0$: $\mu_1 = \mu_2 = \ldots = \mu_g$,  vs.\ the alternative that at least two group means differ.  As we will see below, this is identical to a model utility test in regression with indicators, and so we shouldn't be surprised that this is an $F$-test.  In the context of ANOVA, however, it is traditional to represent this test via a sums-of-squares decomposition.  This decomposition leads to computing formulas that were important in the era before desktop computing.
+
+We begin by partitioning the variation in the data into two pieces: one quantifying the variation among populations and a second quantifying variation within populations.^[As with the SS decomposition that lead to $R^2$ in an ANOVA, the SS decomposition here is actually the Pythagorean Theorem in action, albeit in a higher-dimensional space.]  
 \[
 \mbox{Total variation: } SS_{Total} = \sum_{i=1}^g \sum_{j=1}^{n_{ij}} \left( y_{ij} - \bar{y}_{++} \right)^2
 \]
@@ -413,13 +417,15 @@ A second option with non-normal data is to try a non-parametric procedure.  A pa
 
 ## Linear contrasts of group means
 
-If we reject the null hypothesis that all group means are equal in a one-factor ANOVA, we usually want to go further and characterize how the group means differ.  The approach that we use for characterizing differences among group means hinges on whether we wish to pursue pre-planned comparisons of the group means, or if we wish to pursue comparisons that are suggested by the data.  The distinction here is that a pre-planned comparison is one that you planned to investigate before having collected the data.  Pre-planned comparisons can be analyzed using linear contrasts, which are the topic of this section.  On the other hand, comparisons suggested by the data should be analyzed with multiple-comparisons procedures, which we will study later.
+If we reject the null hypothesis that all group means are equal in a one-factor ANOVA, we usually want to go further and characterize how the group means differ.  The approach that we use for characterizing differences among group means hinges on whether we wish to pursue pre-planned comparisons of the group means or if we wish to pursue comparisons that are suggested by the data.  The distinction here is that a pre-planned comparison is one that you planned to investigate before having collected the data.  Pre-planned comparisons can be analyzed using linear contrasts, which are the topic of this section.  On the other hand, comparisons suggested by the data should be analyzed with multiple-comparisons procedures, which we will study later.
 
-For pre-planned comparisons, the appropriate tools are linear contrasts.  A linear contrast generalizes the idea of a pairwise difference between two means.  A linear contrast is a special type of linear combination.  A linear combination, or weighted sum, of the group means is any expression that can be written as
+For pre-planned comparisons, the appropriate tools are linear contrasts.  A linear contrast generalizes the idea of a pairwise difference between two means.  A linear contrast is a special type of linear combination.  A *linear combination* of the group means is just a weighted sum of the group means.  It can be written as
 \[
 \theta = w_1 \mu_1 + w_2 \mu_2 + \ldots + w_g \mu_g.
 \]
-the $w$'s in the expression above are weights that we assign to each group mean.  We can treat a linear combination just like any other statistical parameter.  A linear contrast is a special case of a linear combination in which the weights add to 0:
+the $w$'s in the expression above are weights that we assign to each group mean.  We can treat a linear combination just like any other statistical parameter.  
+
+A *linear contrast* is a linear combination in which the weights add to 0:
 \[
 \sum_{i=1}^g w_i = 0.
 \]
@@ -434,7 +440,7 @@ We can estimate a linear contrast (or any linear combination) simply by plugging
 \[
 \hat{\theta}_1 = \bar{y}_{1+} - \bar{y}_{3+} = 156.9 - 118.8 = 38.1
 \]
-Like any estimate, our estimate of a linear contrast has a standard error.  While we will usually rely on software to compute the standard error for us, the expression for the standard error writes as T
+Like any estimate, our estimate of a linear contrast has a standard error.  While we will usually rely on software to compute the standard error for us, the expression for the standard error writes as 
 \[
 s_{\hat{\theta}} = \sqrt{\left\{\frac{w_1^2}{n_1} + \frac{w_2^2}{n_2} + \ldots + \frac{w_g^2}{n_g} \right\} MS_{Error}}
 \]
@@ -482,7 +488,7 @@ In the effects model, there is no unique way to estimate both the reference leve
 \[
 \hat{\mu} = 0, \ \ \hat{\alpha}_1 = 156.9, \ \ \hat{\alpha_2} = 158.7, \ \ \hat{\alpha_3} = 118.8
 \]
-or we could choose \\
+or we could choose
 \[
 \hat{\mu} = 100, \ \ \hat{\alpha}_1 = 56.9, \ \ \hat{\alpha_2} = 58.7, \ \  \hat{\alpha_3} = 18.8.
 \]
@@ -756,6 +762,7 @@ Control vs. non-controls               1     10.81683072     10.81683072     152
 Thus, we conclude that there is strong evidence that the non-control means are not all equal, and there is strong evidence that the average of the non-control groups is different from the control group.
 
 We make two notes before moving on:
+
 1.  In the pea example, you might notice that $SS(\theta_1, \theta_2, \theta_3) + SS(\theta_4) = SS_{Groups}$.  This is not always guaranteed to be true, but happens in this case because the contrasts in the first group are all orthogonal to $\theta_4$.  Orthogonality of contrasts is discussed in the additional material at the end of this installment of the notes.
 
 2.  It is a bit unsatisfying to not have any sense of how the sums of squares for a set of contrasts is calculated.  The best we can do here is to point out that a test that several contrasts are simultaneously equal to zero can alternatively be formulated as an $F$-test, using the machinery of "full" and "reduced" models that we studied in the context of multiple regression.  Indeed, it is exactly the same idea, and if we wrote the ANOVA model as a regression with indicator variables, we could test a set of contrasts among the group means using exactly the same approach.  Thus, it is no surprise that the test statistic for testing several simultaneous contrasts is an $F$-statistic.
@@ -777,21 +784,27 @@ The simplest way to control the strong familywise error rate is with a Bonferron
 p \leq \frac{\mathcal{E}}{K}.
 \]
 An interesting variation of the Bonferroni procedure was developed by @holm1979simple.  The steps of the Holm procedure are:
+
  1.  Sort the $p$-values from smallest to largest.  Use subscripts with parentheses to denote the sorted $p$-values, so that $p_{(1)} \leq p_{(2)} \leq \ldots \leq p_{(K)}$.
+
  2. Starting with the smallest $p$-value, reject the associated null hypothesis if
 	\[
 	p_{(j)} \leq \frac{\mathcal{E}}{K-j+1}.
 	\]
+
  3.  Continue until encountering a $p$-value for which the associated null hypothesis cannot be rejected.  Then stop: Neither the null hypothesis associated with this $p$-value, nor the null hypotheses associated with any larger $p$-values, are rejected.
 \end{enumerate}
 The Holm procedure also controls the strong familywise error rate.
 
 Another interesting variation of the Bonferroni procedure is due to @benjamini1995controlling.  This procedure only works with independent hypotheses, and it controls the FDR.  The steps of Benjamini \& Hochberg’s FDR procedure are:
+
  1. Sort the $p$-values from smallest to largest.  Use subscripts with parentheses to denote the sorted $p$-values, so that $p_{(1)} \leq p_{(2)} \leq \ldots \leq p_{(K)}$.
+
  2. Find the largest $p$-value for which
 	\[
 	p_{(j)} \leq \frac{j\mathcal{E}}{K}.
 	\]
+
  3.  Once the largest $p$-value for which the above is true has been found, reject both the null hypothesis associated with this $p$-value, and the null hypotheses associated with all smaller $p$-values.
 
 ### Multiple comparisons in ANOVA

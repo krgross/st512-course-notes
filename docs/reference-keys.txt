@@ -77,6 +77,7 @@ a-vocabulary-for-describing-designed-experiments
 roadmap
 the-simplest-experiment
 one-factor-anova-the-basics
+f-test-to-compare-means
 connections-between-one-factor-anova-and-other-statistical-procedures
 assumptions-in-anova
 linear-contrasts-of-group-means
