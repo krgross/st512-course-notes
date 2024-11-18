@@ -353,7 +353,7 @@ As a remark, note that the model above has only 6 df available to estimate the e
 
 ## Split-plot designs
 
-A split-plot experiment combines the ideas of blocking and subsampling in a clever way.  The essential feature of a split-plot experiment is that there are at least two experimental factors, and the factors are randomized to different EUs.  For example, consider a hypothetical 
+A split-plot experiment combines the ideas of blocking and subsampling in a clever way.  The essential feature of a split-plot experiment is that there are at least two experimental factors and the factors are randomized to different EUs, one of which nests the other.  For example, consider a hypothetical 
 experiment to evaluate the effect of 3 bacterial inoculation treatments applied to 2 grass cultivars (A vs.\ B).  The response variable is dry-weight yield.  Eight fields are available for the experiment. Suppose that the different inoculation treatments can be applied to different regions of the same field, but it is impossible to plant different cultivars in the same field.  Consequently,  cultivars are randomly assigned to fields as a balanced CRD.   Fields are then split into 3 thirds, and inoculation treatments are randomly assigned to each third.   Dry weight yield is then measured from each third for a total of 24 data points.  Here is an interaction plot of the means for each of the 6 treatment combinations:
 ```{r echo = FALSE}
 par(las=1,bty='l')
@@ -465,7 +465,7 @@ To explore the differences among the inoculation treatments, we'll use an LSMEAN
 ```{}
 proc mixed;
   class field cult inoc;
-  model drywt = cult|inoc / ddfm=satterth;
+  model drywt = cult|inoc / ddfm=satterthwaite;
   random field(cult);
   lsmeans inoc / pdiff adjust=tukey;
 run;
@@ -490,9 +490,9 @@ inoc    dea   liv     -3.3875    0.4199    12    -8.07    <.0001  Tukey-Kramer  
 
 Remarks:
 
-* The DDFM = SATTERTH option tells SAS to calculate df using a Satterthwaite approximation.  See below.
+* The DDFM = SATTERTHWAITE option tells SAS to calculate df using a Satterthwaite approximation.  See below.
 * The LSMEANS statement calculates the average response for each inoculation treatment (the split-plot factor) averaging over the levels of the whole-plot factor, cultivar.  The PDIFF option provides pairwise comparisons, and the ADJUST=TUKEY option adjusts these p-values for multiple comparisons.
-\end{enumerate}
+
 Analysis and interpretation:  There is no evidence of an interaction between cultivar and inoculation treatment ($F_{2,12} = 1.29$, $p= 0.31$).  There is no evidence of a main effect of cultivar ($F_{1,6} = 0.41$, $p= 0.54$).  There is strong evidence of a main effect of inoculation treatment ($F_{2,12} = 83.76$, $p<.0001$).  Pairwise comparisons of LSMEANS suggest that all inoculation treatments are significantly different from one another.  Variance component estimates suggest that the experimental error associated with the whole-plot is roughly twice as great as the experimental error associated with the split-plot (1.70 vs. 0.70).
 
 ### Denominator degrees of freedom in split-plot designs and the Satterthwaite approximation
@@ -505,7 +505,9 @@ The Kenward-Roger approximation is an (even more computationally intensive) alte
 
 ---
 
-<span style="color: gray;"> For classic experimental designs with balanced data and nested random effects (such as the split-plot examples encountered in these notes) the denominator df calculations for $F$-tests of the experimental treatment effects are incontrovertible.  For unbalanced data or more complicated designs, it is not clear that the usual $F$-statistics calculated to test the fixed effects actually have $F$-distributions. (That is to say, it is not clear that the sampling distribution of the test statistics actually takes an $F$-distribution when the experimental treatment has no effect.)  Famously, the routine for fitting linear mixed models in `R` (the `lmer` routine in the `lme4` library) does not compute $p$-values for these statistics, because the author of the routine was not convinced that any method for computing these $p$-values (including the methods implemented in PROC MIXED) could be justified.  While analysts commonly assume that the $p$-values reported by PROC MIXED are valid, one does so at their own risk for models with complicated arrangements of random effects.</span>
+<span style="color: gray;"> For classic experimental designs with balanced data and nested random effects (such as the split-plot examples encountered in these notes) the denominator df calculations for $F$-tests of the experimental treatment effects are beyond dispute.  For unbalanced data or more complicated designs, it is not clear that the usual $F$-statistics calculated to test the fixed effects actually have $F$-distributions. That is to say, it is not clear that the sampling distribution of the test statistics actually takes an $F$-distribution when the experimental treatment has no effect.  </span>
+
+<span style="color: gray;"> Notably, the authors of the PROC MIXED routine in SAS and the author of the program for fitting linear mixed models in `R` (the `lmer` routine in the `lme4` library) took very different approaches to navigating this ambiguity.  PROC MIXED will approximate the denominator df and provide corresponding $p$-values even when the quality of the approximation is unknown.  In `R`, the `lmer` program does not quote denominator df or corresponding $p$-values under any circumstance, because the author of the routine was not convinced that any method for computing these $p$-values (including the methods implemented in PROC MIXED) could be justified.  While the $p$-values reported by PROC MIXED are clearly valid for balanced designs with nested random effects, their validity for models with complicated arrangements of random effects is less clear.</span>
 
 ---
 
@@ -546,7 +548,7 @@ knitr::kable(format="html",
 
 Let’s also write down a model equation:
 \[
-y_{ijk} = \mu_{ij} + W_{ik} + \varepsilon_{ijk}
+y_{ijk} = \mu_{ij} + \varepsilon_{ijk}
 \]
 where 
 
@@ -554,14 +556,11 @@ where
 * $j = 1, 2, 3, 4$ indexes the four ages
 * $k = 1, 2, \ldots, n_i$ indexes for the replicate subjects for each gender
 * $\mu_{ij}$ is the average response for a child of gender $i$ at age $j$.
-* $W_{ik}$ is a random effect for the between-subject errors, $W_{ik} \sim \mathcal{N}\left(0, \sigma^2_W \right)$
 * $\varepsilon_{ijk}$ is residual (within-subject) error, $\varepsilon_{ijk} \sim \mathcal{N}\left(0, \sigma^2_{\varepsilon} \right)$
 
-As written, the model above is identical to a split-plot model.  In a split-plot analysis, we assume that the split-plot errors (the $\varepsilon$’s) are independent.  In a repeated measures analysis, we assume that the within-subject errors are correlated.  The goal of repeated-measures analysis is to draw valid inferences about the treatment effects while properly accounting for the correlations among the within-subject errors. 
+As written, the model above doesn't seem too different from the standard CRD.  The key is that the within-subject errors are not independent.  Instead, they may be correlated.  In a split-plot analysis, we accommodated positively correlated errors among observations from the same whole plot by introducing a separate random effect for the whole-plot.  Recall that a random whole-plot error is essentially a way of smuggling into the model a positive correlation among observations from the same whole plot.  However, in the split-plot model, any two measurements from the same whole plot are assumed to be have the same correlation.  In a repeated-measures design, we expect that the strength of the correlation of two measurements from the same subject will depend on how closely spaced the measurements are.  Thus a repeated-measures analysis usually requires a different model for the correlation of the within-subject errors than the split-plot model provides.
 
-The contemporary approach to analyzing repeated-measures data is to use mixed models.  The mixed models approach works by modeling the correlations of the several measurements on each subject.  
-
-We need to back up and develop some more notation.  For each subject, let $\rho_{mn}$ denote the correlation between measurements $m$ and $n$.  For the dental data, both $m$ and $n$ take the values from 1 to 4.  With the dental data, there are 6 unique pairs of measurements on each subject, and hence we need to find six distinct values of $\rho_{mn}$ to fully characterize the correlations among the several measurements on each subject.  While finding six values doesn't seem so bad, in other contexts when there are more measurements on each subject, the number of unique correlations that we need to estimate can get large quickly.  Thus it is often worthwhile to try to develop a parsimonious model for the within-subject correlations that allows us to characterize these correlations with a small number of parameters. 
+For each subject, let $\rho_{mn}$ denote the correlation between measurements $m$ and $n$.  For the dental data, both $m$ and $n$ take the values from 1 to 4.  With the dental data, there are 6 unique pairs of measurements on each subject, and hence we need to find six distinct values of $\rho_{mn}$ to fully characterize the correlations among the several measurements on each subject.  While finding six values doesn't seem so bad, in other contexts when there are more measurements on each subject, the number of unique correlations that we need to estimate can get large quickly.  Thus it is often worthwhile to try to develop a parsimonious model for the within-subject correlations that allows us to characterize these correlations with a small number of parameters. 
 
 We will examine three common models for the within-subject correlations.  In the PROC MIXED documentation, you'll find descriptions of nearly two dozen possible models for the within-subject correlations.  When discussing within-subject correlations, it is common to arrange these correlations in a *correlation matrix*.  A correlation matrix is a square matrix in which the element in row $i$ and column $j$ corresponds to the correlation $\rho_{ij}$.  For our purposes, the correlation matrix is just a handy bookkeeping device.  In other contexts, the matrix representation is useful to derive additional properties using matrix algebra, although we won't be using any of those results here.  
 
@@ -892,7 +891,7 @@ Age*Gender       1      79       6.30    0.0141
 
 If we repeat the competition among correlation structures with age considered as a numerical predictor, the CS correlation structure emerges as the best correlation structure.  Note that treating age as a continuous predictor leads us to a different conclusion about the significance of the age-by-gender interaction.  Which model should we use?
 
-Answer: Use AICC again to compete models against one another.  WARNING!  AIC / AICC values produced by PROC MIXED are not comparable among models with different fixed effects.  The reason is again technical and subtle (meaning you don’t need to know it for the sake of ST512, but you should be aware of what’s going on if you ever use this to analyze your own data):  There are several methods for estimating parameter values in mixed models.  The default method in PROC MIXED is restricted maximum likelihood, or REML.  REML estimates are found by separating the fixed-effect and random-effect components of the model and estimating each separately.  For this reason, the information provided in the “Fit Statistics” component of the PROC MIXED output can only be used to compare models with the same fixed-effect structure.  To compare models with different fixed-effect structures, PROC MIXED must be told to find parameter estimates using maximum likelihood (ML).  This is achieved by adding a METHOD = ML option to the initial call to PROC MIXED.
+Answer: Use AICC again to compete models against one another.  WARNING!  AIC / AICC values based on REML fits are not comparable among models with different fixed effects.  With the REML estimation scheme, the information provided in the “Fit Statistics” component of the PROC MIXED output can only be used to compare models with the same fixed-effect structure.  To compare models with different fixed-effect structures, PROC MIXED must be told to find parameter estimates using maximum likelihood (ML).  This is achieved by adding a METHOD = ML option to the initial call to PROC MIXED.
 
 ---
 
