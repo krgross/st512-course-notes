@@ -82,8 +82,8 @@ Contemporary statistical software allows anyone to fit complex statistical model
 
 It is high time for the scientific community to ask whether complex but opaque statistical analyses are in the best interest of science.  For most scientific studies, a simple and transparent analysis provides a more trustworthy vehicle to understanding for both the analyst and the analyst's audience.  These notes will emphasize methods that, when studied, are transparent enough to promote such an understanding. 
 
-*Everyone is a visual learner.*  
-No one is convinced by a $p$-value in isolation, Or at least no one should be, given the ease of making errors in statistical analysis.  When an analysis suggests a pattern in data, the best way to understand the pattern is to visualize it with a thoughtfully constructed graphic.  Unfortunately, these notes in their current state are not as richly illustrated as they should be.  Eventually, I hope the notes will contain a full set of graphics that exemplify how to visualize patterns revealed by statistical analysis.
+*Nearly everyone is a visual learner.*  
+No one is convinced by a $p$-value in isolation, or at least no one should be, given the ease of making errors in statistical analysis.  When an analysis suggests a pattern in data, the best way to understand the pattern is to visualize it with a thoughtfully constructed graphic.  Unfortunately, these notes in their current state are not as richly illustrated as they should be.  Eventually, I hope the notes will contain a full set of graphics that exemplify how to visualize patterns revealed by statistical analysis.
 
 ### Scope and coverage {-}
 
