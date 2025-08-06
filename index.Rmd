@@ -1,5 +1,5 @@
 --- 
-title: "ST 512 course notes"
+title: "Statistical analysis of designed experiments: yesterday, today, and tomorrow"
 author: "Kevin Gross"
 date: "`r Sys.Date()`"
 output:
@@ -15,7 +15,7 @@ documentclass: book
 bibliography: [st512.bib]
 biblio-style: apalike
 link-citations: yes
-description: "Course notes for ST 512, Statistical Methods for Researchers II."
+description: "An online text in statistical analysis using the linear model"
 ---
 
 ```{r}
@@ -57,7 +57,7 @@ See section 5.1 of Yihui Xie's bookdown book
 
 # Preface {-}
 
-The primary purpose of this document is to serve as a set of course notes for ST 512, Statistical Methods for Researchers II, taught at North Carolina State University.  ST 512 is the second semester of a traditional two-semester graduate-level sequence in statistical methods.  I eventually hope to convert these notes into an on-line text, but this is an ongoing process.  In the meanwhile, these notes are available for use by anyone associated with NCSU.
+This is a set of course notes to accompany the second semester of a traditional graduate-level sequence in statistical methods.  These notes aim both to introduce the linear model (e.g., regression and ANOVA) and adjacent methods and to serve as a reference for later consultation.
 
 ### Philosophy {-}
 
@@ -113,10 +113,13 @@ That said, the R code in these notes does not fully embrace the piping style of 
 
 As a practical matter, these notes are prepared in `bookdown` (@xie2022bookdown).  While it is possible to compile both R and SAS code on the fly in `bookdown`, the extensive output produced by SAS does not serve these notes well.  As a consequence, SAS output is condensed to show only the most salient portions of the output.
 
-
 ### Format of the notes {-}
 
 Advanced sections are indicated by section titles that begin with stars ($^\star$). Shorter sidebars for enrichment appear in <span style="color: gray;"> gray text </span> and are offset by horizontal rules (like the one following the acknowledgments).  This material may be skipped without loss. Sections that are in an early and rougher stage of development are indicated with section titles shown in *italics*.  
+
+### A word on the title {-}
+
+As statistical practice evolves, new methods come and go, but the linear model remains a cornerstone of applied data analysis.  The primary objective of these notes is to equip researchers to analyze their own data using contemporary methods.  That said, an exclusive focus on contemporary methods risks making the historical literature inaccessible.  These notes also aim to familiarize readers with past statistical practice so that they can understand the experiments of yesteryear. I think this is something of a unique aspect to these notes, and I have chosen the title accordingly.^[Sticklers would be right to note that the "yesterday" and "today" components of the title are better justified than the "tomorrow" part.  I claim no special ability to predict the future of statistics, and these notes make no attempt to do so.  I've added "tomorrow" to the title because the linear model is unlikely to be replaced anytime soon, and because leaving things at "yesterday and today" seems a bit flat.] 
 
 ### Acknowledgments and license {-}
 

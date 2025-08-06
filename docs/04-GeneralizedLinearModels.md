@@ -636,7 +636,7 @@ The $L_j$'s are our [l]ocation-specific random effects that capture any other st
 
 ## Implementation in SAS
 
- Donner party was a well-known group of settlers who got stuck in the Sierra Nevada snows in the winter of 1846-47.  The Donner party included 45 adults (defined here as individuals at least 15 years of age), of whom only 20 survived the famous winter @grayson1993differential.  We have a data set that includes age, gender, and fate for all 45 members of the party.  The first few records of the data set are:
+The Donner party was a well-known group of settlers who got stuck in the Sierra Nevada snows in the winter of 1846-47.  The Donner party included 45 adults (defined here as individuals at least 15 years of age), of whom only 20 survived the famous winter @grayson1993differential.  We have a data set that includes age, gender, and fate for all 45 members of the party.  The first few records of the data set are:
 
 ```{}
 age	gender	fate

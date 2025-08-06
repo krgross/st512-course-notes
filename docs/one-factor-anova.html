@@ -4,26 +4,26 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Chapter 5 One-factor ANOVA | ST 512 course notes</title>
-  <meta name="description" content="Course notes for ST 512, Statistical Methods for Researchers II." />
+  <title>Chapter 5 One-factor ANOVA | Statistical analysis of designed experiments: yesterday, today, and tomorrow</title>
+  <meta name="description" content="An online text in statistical analysis using the linear model" />
   <meta name="generator" content="bookdown 0.40 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="Chapter 5 One-factor ANOVA | ST 512 course notes" />
+  <meta property="og:title" content="Chapter 5 One-factor ANOVA | Statistical analysis of designed experiments: yesterday, today, and tomorrow" />
   <meta property="og:type" content="book" />
   
-  <meta property="og:description" content="Course notes for ST 512, Statistical Methods for Researchers II." />
+  <meta property="og:description" content="An online text in statistical analysis using the linear model" />
   
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Chapter 5 One-factor ANOVA | ST 512 course notes" />
+  <meta name="twitter:title" content="Chapter 5 One-factor ANOVA | Statistical analysis of designed experiments: yesterday, today, and tomorrow" />
   
-  <meta name="twitter:description" content="Course notes for ST 512, Statistical Methods for Researchers II." />
+  <meta name="twitter:description" content="An online text in statistical analysis using the linear model" />
   
 
 <meta name="author" content="Kevin Gross" />
 
 
-<meta name="date" content="2024-11-23" />
+<meta name="date" content="2025-08-06" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -166,6 +166,7 @@ div.csl-indent {
 <li class="chapter" data-level="" data-path="index.html"><a href="index.html#mathematical-level"><i class="fa fa-check"></i>Mathematical level</a></li>
 <li class="chapter" data-level="" data-path="index.html"><a href="index.html#computing"><i class="fa fa-check"></i>Computing</a></li>
 <li class="chapter" data-level="" data-path="index.html"><a href="index.html#format-of-the-notes"><i class="fa fa-check"></i>Format of the notes</a></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#a-word-on-the-title"><i class="fa fa-check"></i>A word on the title</a></li>
 <li class="chapter" data-level="" data-path="index.html"><a href="index.html#acknowledgments-and-license"><i class="fa fa-check"></i>Acknowledgments and license</a></li>
 </ul></li>
 <li class="part"><span><b>Part I: Regression modeling</b></span></li>
@@ -357,7 +358,7 @@ div.csl-indent {
       <div class="body-inner">
         <div class="book-header" role="navigation">
           <h1>
-            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">ST 512 course notes</a>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Statistical analysis of designed experiments: yesterday, today, and tomorrow</a>
           </h1>
         </div>
 
@@ -432,7 +433,7 @@ and the “grand mean” is written
 \]</span></p>
 <p>A word about subscripting: As we progress, the subscripting that we use will become increasingly complicated. Remember that the basic rule for selecting a subscripting scheme is that each unique combination of subscripts must identify a unique data point. In regression, one subscript was sufficient (i.e., <span class="math inline">\(i = 1, \ldots, n\)</span>), because the value of <span class="math inline">\(i\)</span> was sufficient to specify a unique data point. In ANOVA, we need one subscript to distinguish the different groups, and a second subscript to distinguish the individual observations within each group.</p>
 <p>The first order of business in an ANOVA is testing the null hypothesis that all the group means are equal, <span class="math inline">\(H_0\)</span>: <span class="math inline">\(\mu_1 = \mu_2 = \ldots = \mu_g\)</span>, vs. the alternative that at least two group means differ. As we will see below, this is identical to a model utility test in regression with indicators, and so we shouldn’t be surprised that this is an <span class="math inline">\(F\)</span>-test. In the context of ANOVA, however, it is traditional to represent this test via a sums-of-squares decomposition. This decomposition leads to computing formulas that were important in the era before desktop computing.</p>
-<p>We begin by partitioning the variation in the data into two pieces: one quantifying the variation among populations and a second quantifying variation within populations.<a href="#fn24" class="footnote-ref" id="fnref24"><sup>24</sup></a><br />
+<p>We begin by partitioning the variation in the data into two pieces: one quantifying the variation among populations and a second quantifying variation within populations.<a href="#fn25" class="footnote-ref" id="fnref25"><sup>25</sup></a><br />
 <span class="math display">\[
 \mbox{Total variation: } SS_{Total} = \sum_{i=1}^g \sum_{j=1}^{n_{ij}} \left( y_{ij} - \bar{y}_{++} \right)^2
 \]</span>
@@ -1540,8 +1541,8 @@ Sokal, Robert R, and F James Rohlf. 1995. <em>Biometry</em>. 3rd ed. New York: W
 </div>
 <div class="footnotes">
 <hr />
-<ol start="24">
-<li id="fn24"><p>As with the SS decomposition that lead to <span class="math inline">\(R^2\)</span> in an ANOVA, the SS decomposition here is actually the Pythagorean Theorem in action, albeit in a higher-dimensional space.<a href="one-factor-anova.html#fnref24" class="footnote-back">↩︎</a></p></li>
+<ol start="25">
+<li id="fn25"><p>As with the SS decomposition that lead to <span class="math inline">\(R^2\)</span> in an ANOVA, the SS decomposition here is actually the Pythagorean Theorem in action, albeit in a higher-dimensional space.<a href="one-factor-anova.html#fnref25" class="footnote-back">↩︎</a></p></li>
 </ol>
 </div>
             </section>
