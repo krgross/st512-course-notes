@@ -1,7 +1,7 @@
 --- 
 title: "Statistical analysis of designed experiments: yesterday, today, and tomorrow"
 author: "Kevin Gross"
-date: "2025-08-06"
+date: "2025-08-19"
 output:
   bookdown::gitbook:
     config:
@@ -24,8 +24,6 @@ knitr::opts_chunk$set(fig.width = 4, fig.height = 4, fig.align = "center")
 ```
 
 <!-- To compile, go to R Console, set working directory to the directory that contains the index file, and type
-
-output: bookdown::gitbook
 
 > bookdown::render_book("index.Rmd", "bookdown::gitbook")
 
@@ -114,13 +112,17 @@ That said, the R code in these notes does not fully embrace the piping style of 
 
 As a practical matter, these notes are prepared in `bookdown` (@xie2022bookdown).  While it is possible to compile both R and SAS code on the fly in `bookdown`, the extensive output produced by SAS does not serve these notes well.  As a consequence, SAS output is condensed to show only the most salient portions of the output.
 
+### LLMs in statistical analysis {-}
+
+LLMs (e.g., ChatGPT, Claude, etc.) can be a useful complement to contemporary data analysis.  In particular, LLMs can reduce the tedium of coding routine tasks and suggest solutions to coding riddles that extend beyond the routine.  That said, as of this writing, LLMs are not reliable for data analyses of moderate or substantial complexity.  In my experience, LLMs routinely make conceptual errors---which are often fatal to the analysis---when presented with non-trivial analysis tasks.  Unfortunately, LLMs seem unable to recognize their own mistakes, and they present flawed solutions with brazen confidence.  To use LLMs safely in such settings, human analysts must be able to recognize when LLMs have erred.  To develop that understanding, though, learners must first study and master the basics of statistical analysis.  Therefore, students still need to understand basic statistical methods, not because LLMs can't be trusted with basic analyses, but because mastery of the basics is mandatory for safely using LLMs to assist the more complex analyses that most students will face during their graduate careers.
+
 ### Format of the notes {-}
 
 Advanced sections are indicated by section titles that begin with stars ($^\star$). Shorter sidebars for enrichment appear in <span style="color: gray;"> gray text </span> and are offset by horizontal rules (like the one following the acknowledgments).  This material may be skipped without loss. Sections that are in an early and rougher stage of development are indicated with section titles shown in *italics*.  
 
 ### A word on the title {-}
 
-As statistical practice evolves, new methods come and go, but the linear model remains a cornerstone of applied data analysis.  The primary objective of these notes is to equip researchers to analyze their own data using contemporary methods.  That said, an exclusive focus on contemporary methods risks making the statistical methods in the historical literature inaccessible.  These notes also aim to contextualize contemporary methods in the broader history of statistical thought and to familiarize readers with past statistical practice so that they can understand the historical literature. I think this is something of a unique aspect to these notes, and I have chosen the title accordingly.^[Sticklers would be right to note that the "yesterday" and "today" components of the title are much better justified than the "tomorrow" part.  I claim no special ability to predict the future of statistics, and these notes make no attempt to do so.  I've added "tomorrow" to the title because I don't think the linear model will be replaced anytime soon, and because leaving things at "yesterday and today" sounds flat.] 
+As statistical practice evolves, new methods come and go, but the linear model remains a cornerstone of applied data analysis.  The primary objective of these notes is to equip researchers to analyze their own data using contemporary methods.  That said, an exclusive focus on contemporary methods risks making the historical literature inaccessible.  These notes also aim to familiarize readers with past statistical practice so that they can understand the experiments of yesteryear. I think this is something of a unique aspect to these notes, and I have chosen the title accordingly.^[Sticklers would be right to note that the "yesterday" and "today" components of the title are better justified than the "tomorrow" part.  I claim no special ability to predict the future of statistics, and these notes make no attempt to do so.  I've added "tomorrow" to the title because the linear model is unlikely to be replaced anytime soon, and because leaving things at "yesterday and today" seems a bit flat.] 
 
 ### Acknowledgments and license {-}
 

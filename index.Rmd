@@ -24,8 +24,6 @@ knitr::opts_chunk$set(fig.width = 4, fig.height = 4, fig.align = "center")
 
 <!-- To compile, go to R Console, set working directory to the directory that contains the index file, and type
 
-output: bookdown::gitbook
-
 > bookdown::render_book("index.Rmd", "bookdown::gitbook")
 
 To render a single chapter, use
@@ -112,6 +110,10 @@ Readers interested in using R professionally would be well served by consulting 
 That said, the R code in these notes does not fully embrace the piping style of the `tidyverse` ecosystem and the associated graphical facilities of `ggplot`.  I take this approach because the focus of these notes is on fitting and visualizing traditional statistical models, and it seems to me that the conventional style of R coding is still best suited for this purpose.  The piping style of the `tidyverse` seems better suited to data-science tasks such as wrangling with and visualizing large data sets.  As for `ggplot`, I prefer the style of coding in R's native graphical facilities, although `ggplot` can certainly produce high-quality graphics with relatively few lines of code.
 
 As a practical matter, these notes are prepared in `bookdown` (@xie2022bookdown).  While it is possible to compile both R and SAS code on the fly in `bookdown`, the extensive output produced by SAS does not serve these notes well.  As a consequence, SAS output is condensed to show only the most salient portions of the output.
+
+### LLMs in statistical analysis {-}
+
+LLMs (e.g., ChatGPT, Claude, etc.) can be a useful complement to contemporary data analysis.  In particular, LLMs can reduce the tedium of coding routine tasks and suggest solutions to coding riddles that extend beyond the routine.  That said, as of this writing, LLMs are not reliable for data analyses of moderate or substantial complexity.  In my experience, LLMs routinely make conceptual errors---which are often fatal to the analysis---when presented with non-trivial analysis tasks.  Unfortunately, LLMs seem unable to recognize their own mistakes, and they present flawed solutions with brazen confidence.  To use LLMs safely in such settings, human analysts must be able to recognize when LLMs have erred.  To develop that understanding, though, learners must first study and master the basics of statistical analysis.  Therefore, students still need to understand basic statistical methods, not because LLMs can't be trusted with basic analyses, but because mastery of the basics is mandatory for safely using LLMs to assist the more complex analyses that most students will face during their graduate careers.
 
 ### Format of the notes {-}
 

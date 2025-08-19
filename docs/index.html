@@ -23,7 +23,7 @@
 <meta name="author" content="Kevin Gross" />
 
 
-<meta name="date" content="2025-08-06" />
+<meta name="date" content="2025-08-19" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -165,6 +165,7 @@ div.csl-indent {
 <li class="chapter" data-level="" data-path="index.html"><a href="index.html#scope-and-coverage"><i class="fa fa-check"></i>Scope and coverage</a></li>
 <li class="chapter" data-level="" data-path="index.html"><a href="index.html#mathematical-level"><i class="fa fa-check"></i>Mathematical level</a></li>
 <li class="chapter" data-level="" data-path="index.html"><a href="index.html#computing"><i class="fa fa-check"></i>Computing</a></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#llms-in-statistical-analysis"><i class="fa fa-check"></i>LLMs in statistical analysis</a></li>
 <li class="chapter" data-level="" data-path="index.html"><a href="index.html#format-of-the-notes"><i class="fa fa-check"></i>Format of the notes</a></li>
 <li class="chapter" data-level="" data-path="index.html"><a href="index.html#a-word-on-the-title"><i class="fa fa-check"></i>A word on the title</a></li>
 <li class="chapter" data-level="" data-path="index.html"><a href="index.html#acknowledgments-and-license"><i class="fa fa-check"></i>Acknowledgments and license</a></li>
@@ -369,7 +370,7 @@ div.csl-indent {
 <div id="header">
 <h1 class="title">Statistical analysis of designed experiments: yesterday, today, and tomorrow</h1>
 <p class="author"><em>Kevin Gross</em></p>
-<p class="date"><em>2025-08-06</em></p>
+<p class="date"><em>2025-08-19</em></p>
 </div>
 <div id="preface" class="section level1 unnumbered hasAnchor">
 <h1>Preface<a href="index.html#preface" class="anchor-section" aria-label="Anchor link to header"></a></h1>
@@ -412,13 +413,17 @@ No one is convinced by a <span class="math inline">\(p\)</span>-value in isolati
 <p>That said, the R code in these notes does not fully embrace the piping style of the <code>tidyverse</code> ecosystem and the associated graphical facilities of <code>ggplot</code>. I take this approach because the focus of these notes is on fitting and visualizing traditional statistical models, and it seems to me that the conventional style of R coding is still best suited for this purpose. The piping style of the <code>tidyverse</code> seems better suited to data-science tasks such as wrangling with and visualizing large data sets. As for <code>ggplot</code>, I prefer the style of coding in R’s native graphical facilities, although <code>ggplot</code> can certainly produce high-quality graphics with relatively few lines of code.</p>
 <p>As a practical matter, these notes are prepared in <code>bookdown</code> (<span class="citation">Xie (<a href="#ref-xie2022bookdown">2022</a>)</span>). While it is possible to compile both R and SAS code on the fly in <code>bookdown</code>, the extensive output produced by SAS does not serve these notes well. As a consequence, SAS output is condensed to show only the most salient portions of the output.</p>
 </div>
+<div id="llms-in-statistical-analysis" class="section level3 unnumbered hasAnchor">
+<h3>LLMs in statistical analysis<a href="index.html#llms-in-statistical-analysis" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>LLMs (e.g., ChatGPT, Claude, etc.) can be a useful complement to contemporary data analysis. In particular, LLMs can reduce the tedium of coding routine tasks and suggest solutions to coding riddles that extend beyond the routine. That said, as of this writing, LLMs are not reliable for data analyses of moderate or substantial complexity. In my experience, LLMs routinely make conceptual errors—which are often fatal to the analysis—when presented with non-trivial analysis tasks. Unfortunately, LLMs seem unable to recognize their own mistakes, and they present flawed solutions with brazen confidence. To use LLMs safely in such settings, human analysts must be able to recognize when LLMs have erred. To develop that understanding, though, learners must first study and master the basics of statistical analysis. Therefore, students still need to understand basic statistical methods, not because LLMs can’t be trusted with basic analyses, but because mastery of the basics is mandatory for safely using LLMs to assist the more complex analyses that most students will face during their graduate careers.</p>
+</div>
 <div id="format-of-the-notes" class="section level3 unnumbered hasAnchor">
 <h3>Format of the notes<a href="index.html#format-of-the-notes" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>Advanced sections are indicated by section titles that begin with stars (<span class="math inline">\(^\star\)</span>). Shorter sidebars for enrichment appear in <span style="color: gray;"> gray text </span> and are offset by horizontal rules (like the one following the acknowledgments). This material may be skipped without loss. Sections that are in an early and rougher stage of development are indicated with section titles shown in <em>italics</em>.</p>
 </div>
 <div id="a-word-on-the-title" class="section level3 unnumbered hasAnchor">
 <h3>A word on the title<a href="index.html#a-word-on-the-title" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<p>As statistical practice evolves, new methods come and go, but the linear model remains a cornerstone of applied data analysis. The primary objective of these notes is to equip researchers to analyze their own data using contemporary methods. That said, an exclusive focus on contemporary methods risks making the statistical methods in the historical literature inaccessible. These notes also aim to contextualize contemporary methods in the broader history of statistical thought and to familiarize readers with past statistical practice so that they can understand the historical literature. I think this is something of a unique aspect to these notes, and I have chosen the title accordingly.<a href="#fn4" class="footnote-ref" id="fnref4"><sup>4</sup></a></p>
+<p>As statistical practice evolves, new methods come and go, but the linear model remains a cornerstone of applied data analysis. The primary objective of these notes is to equip researchers to analyze their own data using contemporary methods. That said, an exclusive focus on contemporary methods risks making the historical literature inaccessible. These notes also aim to familiarize readers with past statistical practice so that they can understand the experiments of yesteryear. I think this is something of a unique aspect to these notes, and I have chosen the title accordingly.<a href="#fn4" class="footnote-ref" id="fnref4"><sup>4</sup></a></p>
 </div>
 <div id="acknowledgments-and-license" class="section level3 unnumbered hasAnchor">
 <h3>Acknowledgments and license<a href="index.html#acknowledgments-and-license" class="anchor-section" aria-label="Anchor link to header"></a></h3>
@@ -451,7 +456,7 @@ Xie, Yihui. 2022. <em>Bookdown: Authoring Books and Technical Documents with r M
 <li id="fn1"><p>Again, to be clear, the formulas lack a compelling underlying logic because we are not engaging the linear algebra. If we embraced the linear algebra foundations, then the underlying logic would be clear indeed.<a href="index.html#fnref1" class="footnote-back">↩︎</a></p></li>
 <li id="fn2"><p>In this context, the term “observational data” is used to refer to data collected outside the context of a designed experiment. One might bicker that all data, even those data from designed experiments, must be “observed”, but this is the terminology that we have.<a href="index.html#fnref2" class="footnote-back">↩︎</a></p></li>
 <li id="fn3"><p>Indeed, we are probably not too far away from the rise of artificial intelligence-based statistical consulting, where anyone can upload a data set and answer a few questions about it in return for an AI’s analysis.<a href="index.html#fnref3" class="footnote-back">↩︎</a></p></li>
-<li id="fn4"><p>Sticklers would be right to note that the “yesterday” and “today” components of the title are much better justified than the “tomorrow” part. I claim no special ability to predict the future of statistics, and these notes make no attempt to do so. I’ve added “tomorrow” to the title because I don’t think the linear model will be replaced anytime soon, and because leaving things at “yesterday and today” sounds flat.<a href="index.html#fnref4" class="footnote-back">↩︎</a></p></li>
+<li id="fn4"><p>Sticklers would be right to note that the “yesterday” and “today” components of the title are better justified than the “tomorrow” part. I claim no special ability to predict the future of statistics, and these notes make no attempt to do so. I’ve added “tomorrow” to the title because the linear model is unlikely to be replaced anytime soon, and because leaving things at “yesterday and today” seems a bit flat.<a href="index.html#fnref4" class="footnote-back">↩︎</a></p></li>
 </ol>
 </div>
             </section>
