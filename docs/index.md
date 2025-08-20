@@ -1,7 +1,7 @@
 --- 
 title: "Statistical analysis of designed experiments: yesterday, today, and tomorrow"
 author: "Kevin Gross"
-date: "2025-08-19"
+date: "2025-08-20"
 output:
   bookdown::gitbook:
     config:
@@ -126,7 +126,7 @@ As statistical practice evolves, new methods come and go, but the linear model r
 
 ### Acknowledgments and license {-}
 
-I am deeply indebted to the R community (@r) for their project which has done no less than revolutionize data analysis in our times.  I also thank the developers of `bookdown` for providing the platform for these notes (@xie2022bookdown).
+I am deeply indebted to the R community (@r) for their project which has revolutionized data analysis in our times.  I also thank the developers of `bookdown` for providing the platform for these notes (@xie2022bookdown).
 
 These notes are provided under [version 3 of the GNU General Public License](https://www.gnu.org/licenses/gpl-3.0.en.html). 
 

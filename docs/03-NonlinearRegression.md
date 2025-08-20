@@ -422,7 +422,7 @@ library(mgcv)
 ```
 
 ```
-## This is mgcv 1.9-1. For overview type 'help("mgcv-package")'.
+## This is mgcv 1.9-3. For overview type 'help("mgcv-package")'.
 ```
 
 ``` r

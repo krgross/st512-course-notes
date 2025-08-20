@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>Chapter 5 One-factor ANOVA | Statistical analysis of designed experiments: yesterday, today, and tomorrow</title>
   <meta name="description" content="An online text in statistical analysis using the linear model" />
-  <meta name="generator" content="bookdown 0.40 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.43 and GitBook 2.6.7" />
 
   <meta property="og:title" content="Chapter 5 One-factor ANOVA | Statistical analysis of designed experiments: yesterday, today, and tomorrow" />
   <meta property="og:type" content="book" />
@@ -23,7 +23,7 @@
 <meta name="author" content="Kevin Gross" />
 
 
-<meta name="date" content="2025-08-19" />
+<meta name="date" content="2025-08-20" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -539,14 +539,14 @@ Total
 <p>In R, the ANOVA table is produced by fitting a linear model using lm(), and then passing that model fit to the command anova().</p>
 <div class="sourceCode" id="cb226"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb226-1"><a href="one-factor-anova.html#cb226-1" tabindex="-1"></a>fm1 <span class="ot">&lt;-</span> <span class="fu">lm</span>(calories <span class="sc">~</span> type, <span class="at">data =</span> hotdog)</span>
 <span id="cb226-2"><a href="one-factor-anova.html#cb226-2" tabindex="-1"></a><span class="fu">anova</span>(fm1) </span></code></pre></div>
-<pre><code>Analysis of Variance Table
-
-Response: calories
-          Df Sum Sq Mean Sq F value    Pr(&gt;F)    
-type       2  17692  8846.1  16.074 3.862e-06 ***
-Residuals 51  28067   550.3                      
----
-Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+<pre><code>## Analysis of Variance Table
+## 
+## Response: calories
+##           Df Sum Sq Mean Sq F value    Pr(&gt;F)    
+## type       2  17692  8846.1  16.074 3.862e-06 ***
+## Residuals 51  28067   550.3                      
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
 <p>For the sake of these notes, we can make the ANOVA table look a bit nicer using the following code.</p>
 <div class="sourceCode" id="cb228"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb228-1"><a href="one-factor-anova.html#cb228-1" tabindex="-1"></a><span class="fu">options</span>(<span class="at">knitr.kable.NA =</span> <span class="st">&#39;&#39;</span>) </span>
 <span id="cb228-2"><a href="one-factor-anova.html#cb228-2" tabindex="-1"></a><span class="fu">anova</span>(fm1) <span class="sc">%&gt;%</span> knitr<span class="sc">::</span><span class="fu">kable</span>(<span class="at">format =</span> <span class="st">&quot;html&quot;</span>)</span></code></pre></div>
@@ -668,12 +668,12 @@ Corrected Total             53     45759.33333</code></pre>
 <p><img src="05-OneFactorLayout_files/figure-html/unnamed-chunk-7-1.png" width="480" style="display: block; margin: auto;" /></p>
 <div class="sourceCode" id="cb232"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb232-1"><a href="one-factor-anova.html#cb232-1" tabindex="-1"></a>fm2 <span class="ot">&lt;-</span> <span class="fu">lm</span>(sodium <span class="sc">~</span> type, <span class="at">data =</span> hotdog)</span>
 <span id="cb232-2"><a href="one-factor-anova.html#cb232-2" tabindex="-1"></a><span class="fu">anova</span>(fm2)</span></code></pre></div>
-<pre><code>Analysis of Variance Table
-
-Response: sodium
-          Df Sum Sq Mean Sq F value Pr(&gt;F)
-type       2  31739 15869.4  1.7778 0.1793
-Residuals 51 455249  8926.4               </code></pre>
+<pre><code>## Analysis of Variance Table
+## 
+## Response: sodium
+##           Df Sum Sq Mean Sq F value Pr(&gt;F)
+## type       2  31739 15869.4  1.7778 0.1793
+## Residuals 51 455249  8926.4</code></pre>
 <p>There is no evidence that the average sodium content of meat, beef, and poultry hot dogs differ (<span class="math inline">\(F_{2,51}=1.78\)</span>, <span class="math inline">\(p=0.18\)</span>).</p>
 </div>
 <div id="connections-between-one-factor-anova-and-other-statistical-procedures" class="section level3 hasAnchor" number="5.2.2">
@@ -684,25 +684,25 @@ y=\beta_0 +\beta_1 x_1 +\beta_2 x_2 + \epsilon
 \]</span>
 where <span class="math inline">\(x_1\)</span> and <span class="math inline">\(x_2\)</span> are indicator variables to code for the different types of hotdogs. We can ask if the data contain evidence that the different types of hotdogs have different calorie contents on average by testing <span class="math inline">\(H_0\)</span>: <span class="math inline">\(\beta_1 = \beta_2 = 0\)</span>. In this particular case, the <span class="math inline">\(F\)</span>-test that we need is the model utility test. We’ll just find this test directly in the R output.</p>
 <div class="sourceCode" id="cb234"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb234-1"><a href="one-factor-anova.html#cb234-1" tabindex="-1"></a><span class="fu">summary</span>(fm1)</span></code></pre></div>
-<pre><code>
-Call:
-lm(formula = calories ~ type, data = hotdog)
-
-Residuals:
-    Min      1Q  Median      3Q     Max 
--51.706 -18.492  -5.278  22.500  36.294 
-
-Coefficients:
-            Estimate Std. Error t value Pr(&gt;|t|)    
-(Intercept)  156.850      5.246  29.901  &lt; 2e-16 ***
-typeMeat       1.856      7.739   0.240    0.811    
-typePoultry  -38.085      7.739  -4.921 9.39e-06 ***
----
-Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
-
-Residual standard error: 23.46 on 51 degrees of freedom
-Multiple R-squared:  0.3866,    Adjusted R-squared:  0.3626 
-F-statistic: 16.07 on 2 and 51 DF,  p-value: 3.862e-06</code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = calories ~ type, data = hotdog)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -51.706 -18.492  -5.278  22.500  36.294 
+## 
+## Coefficients:
+##             Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)  156.850      5.246  29.901  &lt; 2e-16 ***
+## typeMeat       1.856      7.739   0.240    0.811    
+## typePoultry  -38.085      7.739  -4.921 9.39e-06 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 23.46 on 51 degrees of freedom
+## Multiple R-squared:  0.3866, Adjusted R-squared:  0.3626 
+## F-statistic: 16.07 on 2 and 51 DF,  p-value: 3.862e-06</code></pre>
 <p>Note that the test statistic and <span class="math inline">\(p\)</span>-value for the model utility test are exactly the same as the test statistic and <span class="math inline">\(p\)</span>-value from the ANOVA <span class="math inline">\(F\)</span>-test.</p>
 <p>One-factor ANOVA also generalizes a two-sample <span class="math inline">\(t\)</span>-test. To illustrate, consider the data below, which show body temperatures for 65 randomly selected women and 65 randomly selected men.</p>
 <div class="sourceCode" id="cb236"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb236-1"><a href="one-factor-anova.html#cb236-1" tabindex="-1"></a>bodytemp <span class="ot">&lt;-</span> <span class="fu">read.table</span>(<span class="st">&quot;data/bodytemp.txt&quot;</span>, <span class="at">head =</span> T, <span class="at">stringsAsFactors =</span> T)</span>
@@ -710,27 +710,27 @@ F-statistic: 16.07 on 2 and 51 DF,  p-value: 3.862e-06</code></pre>
 <p><img src="05-OneFactorLayout_files/figure-html/unnamed-chunk-9-1.png" width="480" style="display: block; margin: auto;" />
 Suppose we want to study the difference in average body temperature between men and women. In an introductory course you might have conducted this analysis with a two-sample <span class="math inline">\(t\)</span>-test. Here is how to implement this <span class="math inline">\(t\)</span>-test in R.</p>
 <div class="sourceCode" id="cb237"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb237-1"><a href="one-factor-anova.html#cb237-1" tabindex="-1"></a><span class="fu">t.test</span>(bodytemp <span class="sc">~</span> gender, <span class="at">data =</span> bodytemp, <span class="at">var.equal =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
-<pre><code>
-    Two Sample t-test
-
-data:  bodytemp by gender
-t = 2.2854, df = 128, p-value = 0.02393
-alternative hypothesis: true difference in means between group female and group male is not equal to 0
-95 percent confidence interval:
- 0.03882216 0.53963938
-sample estimates:
-mean in group female   mean in group male 
-            98.39385             98.10462 </code></pre>
+<pre><code>## 
+##  Two Sample t-test
+## 
+## data:  bodytemp by gender
+## t = 2.2854, df = 128, p-value = 0.02393
+## alternative hypothesis: true difference in means between group female and group male is not equal to 0
+## 95 percent confidence interval:
+##  0.03882216 0.53963938
+## sample estimates:
+## mean in group female   mean in group male 
+##             98.39385             98.10462</code></pre>
 <p>The <span class="math inline">\(p\)</span>-value of 0.0239 suggests that there is reasonably strong evidence of a difference in average body temperature for males and females. Compare this output with a one-factor ANOVA analysis:</p>
 <div class="sourceCode" id="cb239"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb239-1"><a href="one-factor-anova.html#cb239-1" tabindex="-1"></a><span class="fu">anova</span>(<span class="fu">lm</span>(bodytemp <span class="sc">~</span> gender, <span class="at">data =</span> bodytemp))</span></code></pre></div>
-<pre><code>Analysis of Variance Table
-
-Response: bodytemp
-           Df Sum Sq Mean Sq F value  Pr(&gt;F)  
-gender      1  2.719 2.71877  5.2232 0.02393 *
-Residuals 128 66.626 0.52052                  
----
-Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+<pre><code>## Analysis of Variance Table
+## 
+## Response: bodytemp
+##            Df Sum Sq Mean Sq F value  Pr(&gt;F)  
+## gender      1  2.719 2.71877  5.2232 0.02393 *
+## Residuals 128 66.626 0.52052                  
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
 <p>The <span class="math inline">\(p\)</span>-values are exactly the same, because one-factor ANOVA with two groups is identical to a two-sample <span class="math inline">\(t\)</span>-test (with a pooled variance).</p>
 </div>
 <div id="assumptions-in-anova" class="section level3 hasAnchor" number="5.2.3">
@@ -1566,42 +1566,42 @@ Sokal, Robert R, and F James Rohlf. 1995. <em>Biometry</em>. 3rd ed. New York: W
 <script>
 gitbook.require(["gitbook"], function(gitbook) {
 gitbook.start({
-"sharing": {
-"github": false,
-"facebook": true,
-"twitter": true,
-"linkedin": false,
-"weibo": false,
-"instapaper": false,
-"vk": false,
-"whatsapp": false,
-"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
-},
-"fontsettings": {
-"theme": "white",
-"family": "serif",
-"size": 2
-},
-"edit": {
-"link": null,
-"text": null
-},
-"history": {
-"link": null,
-"text": null
-},
-"view": {
-"link": null,
-"text": null
-},
-"download": null,
-"search": {
-"engine": "fuse",
-"options": null
-},
-"toc": {
-"collapse": "section"
-}
+  "sharing": {
+    "github": false,
+    "facebook": true,
+    "twitter": true,
+    "linkedin": false,
+    "weibo": false,
+    "instapaper": false,
+    "vk": false,
+    "whatsapp": false,
+    "all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+  },
+  "fontsettings": {
+    "theme": "white",
+    "family": "serif",
+    "size": 2
+  },
+  "edit": {
+    "link": null,
+    "text": null
+  },
+  "history": {
+    "link": null,
+    "text": null
+  },
+  "view": {
+    "link": null,
+    "text": null
+  },
+  "download": null,
+  "search": {
+    "engine": "fuse",
+    "options": null
+  },
+  "toc": {
+    "collapse": "section"
+  }
 });
 });
 </script>

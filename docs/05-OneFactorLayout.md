@@ -165,14 +165,14 @@ anova(fm1)
 ```
 
 ```
-Analysis of Variance Table
-
-Response: calories
-          Df Sum Sq Mean Sq F value    Pr(>F)    
-type       2  17692  8846.1  16.074 3.862e-06 ***
-Residuals 51  28067   550.3                      
----
-Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## Analysis of Variance Table
+## 
+## Response: calories
+##           Df Sum Sq Mean Sq F value    Pr(>F)    
+## type       2  17692  8846.1  16.074 3.862e-06 ***
+## Residuals 51  28067   550.3                      
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 ```
 
 For the sake of these notes, we can make the ANOVA table look a bit nicer using the following code.
@@ -293,12 +293,12 @@ anova(fm2)
 ```
 
 ```
-Analysis of Variance Table
-
-Response: sodium
-          Df Sum Sq Mean Sq F value Pr(>F)
-type       2  31739 15869.4  1.7778 0.1793
-Residuals 51 455249  8926.4               
+## Analysis of Variance Table
+## 
+## Response: sodium
+##           Df Sum Sq Mean Sq F value Pr(>F)
+## type       2  31739 15869.4  1.7778 0.1793
+## Residuals 51 455249  8926.4
 ```
 There is no evidence that the average sodium content of meat, beef, and poultry hot dogs differ ($F_{2,51}=1.78$, $p=0.18$).
 
@@ -315,25 +315,25 @@ summary(fm1)
 ```
 
 ```
-
-Call:
-lm(formula = calories ~ type, data = hotdog)
-
-Residuals:
-    Min      1Q  Median      3Q     Max 
--51.706 -18.492  -5.278  22.500  36.294 
-
-Coefficients:
-            Estimate Std. Error t value Pr(>|t|)    
-(Intercept)  156.850      5.246  29.901  < 2e-16 ***
-typeMeat       1.856      7.739   0.240    0.811    
-typePoultry  -38.085      7.739  -4.921 9.39e-06 ***
----
-Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
-
-Residual standard error: 23.46 on 51 degrees of freedom
-Multiple R-squared:  0.3866,	Adjusted R-squared:  0.3626 
-F-statistic: 16.07 on 2 and 51 DF,  p-value: 3.862e-06
+## 
+## Call:
+## lm(formula = calories ~ type, data = hotdog)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -51.706 -18.492  -5.278  22.500  36.294 
+## 
+## Coefficients:
+##             Estimate Std. Error t value Pr(>|t|)    
+## (Intercept)  156.850      5.246  29.901  < 2e-16 ***
+## typeMeat       1.856      7.739   0.240    0.811    
+## typePoultry  -38.085      7.739  -4.921 9.39e-06 ***
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Residual standard error: 23.46 on 51 degrees of freedom
+## Multiple R-squared:  0.3866,	Adjusted R-squared:  0.3626 
+## F-statistic: 16.07 on 2 and 51 DF,  p-value: 3.862e-06
 ```
 
 Note that the test statistic and $p$-value for the model utility test are exactly the same as the test statistic and $p$-value from the ANOVA $F$-test.   
@@ -353,17 +353,17 @@ t.test(bodytemp ~ gender, data = bodytemp, var.equal = TRUE)
 ```
 
 ```
-
-	Two Sample t-test
-
-data:  bodytemp by gender
-t = 2.2854, df = 128, p-value = 0.02393
-alternative hypothesis: true difference in means between group female and group male is not equal to 0
-95 percent confidence interval:
- 0.03882216 0.53963938
-sample estimates:
-mean in group female   mean in group male 
-            98.39385             98.10462 
+## 
+## 	Two Sample t-test
+## 
+## data:  bodytemp by gender
+## t = 2.2854, df = 128, p-value = 0.02393
+## alternative hypothesis: true difference in means between group female and group male is not equal to 0
+## 95 percent confidence interval:
+##  0.03882216 0.53963938
+## sample estimates:
+## mean in group female   mean in group male 
+##             98.39385             98.10462
 ```
 The $p$-value of 0.0239 suggests that there is reasonably strong evidence of a difference in average body temperature for males and females.  Compare this output with a one-factor ANOVA analysis:
 
@@ -372,14 +372,14 @@ anova(lm(bodytemp ~ gender, data = bodytemp))
 ```
 
 ```
-Analysis of Variance Table
-
-Response: bodytemp
-           Df Sum Sq Mean Sq F value  Pr(>F)  
-gender      1  2.719 2.71877  5.2232 0.02393 *
-Residuals 128 66.626 0.52052                  
----
-Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## Analysis of Variance Table
+## 
+## Response: bodytemp
+##            Df Sum Sq Mean Sq F value  Pr(>F)  
+## gender      1  2.719 2.71877  5.2232 0.02393 *
+## Residuals 128 66.626 0.52052                  
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 ```
 The $p$-values are exactly the same, because one-factor ANOVA with two groups is identical to a two-sample $t$-test (with a pooled variance).
 

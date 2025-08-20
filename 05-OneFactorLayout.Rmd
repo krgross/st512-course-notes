@@ -4,7 +4,7 @@
 
 ```{r echo = FALSE, message = FALSE}
 library(magrittr)  # for piping
-library(SASmarkdown)
+# library(SASmarkdown)  # SASMarkdown is no longer available on CRAN, but there are archived versions there.  I can download and install locally if I want to use it, but I don't think I use this any more.
 # library(kableExtra) generates an error; might need to update R version to make this work
 
 # for help using SAS in Markdown see 
