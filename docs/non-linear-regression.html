@@ -1,0 +1,648 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Chapter 3 Non-linear regression | Statistical analysis of designed experiments: yesterday, today, and tomorrow</title>
+  <meta name="description" content="An online text in statistical analysis using the linear model" />
+  <meta name="generator" content="bookdown 0.43 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Chapter 3 Non-linear regression | Statistical analysis of designed experiments: yesterday, today, and tomorrow" />
+  <meta property="og:type" content="book" />
+  
+  <meta property="og:description" content="An online text in statistical analysis using the linear model" />
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Chapter 3 Non-linear regression | Statistical analysis of designed experiments: yesterday, today, and tomorrow" />
+  
+  <meta name="twitter:description" content="An online text in statistical analysis using the linear model" />
+  
+
+<meta name="author" content="Kevin Gross" />
+
+
+<meta name="date" content="2025-09-16" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="multiple-regression.html"/>
+<link rel="next" href="generalized-linear-models.html"/>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<style type="text/css">
+  
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+</style>
+<style type="text/css">
+/* Used with Pandoc 2.11+ new --citeproc when CSL is used */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}
+</style>
+
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Preface</a>
+<ul>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#philosophy"><i class="fa fa-check"></i>Philosophy</a></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#scope-and-coverage"><i class="fa fa-check"></i>Scope and coverage</a></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#mathematical-level"><i class="fa fa-check"></i>Mathematical level</a></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#computing"><i class="fa fa-check"></i>Computing</a></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#llms-in-statistical-analysis"><i class="fa fa-check"></i>LLMs in statistical analysis</a></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#format-of-the-notes"><i class="fa fa-check"></i>Format of the notes</a></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#a-word-on-the-title"><i class="fa fa-check"></i>A word on the title</a></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#acknowledgments-and-license"><i class="fa fa-check"></i>Acknowledgments and license</a></li>
+</ul></li>
+<li class="part"><span><b>Part I: Regression modeling</b></span></li>
+<li class="chapter" data-level="1" data-path="simple-linear-regression.html"><a href="simple-linear-regression.html"><i class="fa fa-check"></i><b>1</b> Simple linear regression</a>
+<ul>
+<li class="chapter" data-level="1.1" data-path="simple-linear-regression.html"><a href="simple-linear-regression.html#the-basics-of-slr"><i class="fa fa-check"></i><b>1.1</b> The basics of SLR</a></li>
+<li class="chapter" data-level="1.2" data-path="simple-linear-regression.html"><a href="simple-linear-regression.html#least-squares-estimation"><i class="fa fa-check"></i><b>1.2</b> Least-squares estimation</a></li>
+<li class="chapter" data-level="1.3" data-path="simple-linear-regression.html"><a href="simple-linear-regression.html#inference-for-the-slope"><i class="fa fa-check"></i><b>1.3</b> Inference for the slope</a>
+<ul>
+<li class="chapter" data-level="1.3.1" data-path="simple-linear-regression.html"><a href="simple-linear-regression.html#standard-errors"><i class="fa fa-check"></i><b>1.3.1</b> Standard errors</a></li>
+<li class="chapter" data-level="1.3.2" data-path="simple-linear-regression.html"><a href="simple-linear-regression.html#confidence-intervals"><i class="fa fa-check"></i><b>1.3.2</b> Confidence intervals</a></li>
+<li class="chapter" data-level="1.3.3" data-path="simple-linear-regression.html"><a href="simple-linear-regression.html#statistical-hypothesis-tests"><i class="fa fa-check"></i><b>1.3.3</b> Statistical hypothesis tests</a></li>
+<li class="chapter" data-level="1.3.4" data-path="simple-linear-regression.html"><a href="simple-linear-regression.html#inference-for-the-intercept"><i class="fa fa-check"></i><b>1.3.4</b> Inference for the intercept</a></li>
+</ul></li>
+<li class="chapter" data-level="1.4" data-path="simple-linear-regression.html"><a href="simple-linear-regression.html#sums-of-squares-decomposition-and-r2"><i class="fa fa-check"></i><b>1.4</b> Sums of squares decomposition and <span class="math inline">\(R^2\)</span></a></li>
+<li class="chapter" data-level="1.5" data-path="simple-linear-regression.html"><a href="simple-linear-regression.html#diagnostic-plots"><i class="fa fa-check"></i><b>1.5</b> Diagnostic plots</a>
+<ul>
+<li class="chapter" data-level="1.5.1" data-path="simple-linear-regression.html"><a href="simple-linear-regression.html#residuals-vs.-fitted-values"><i class="fa fa-check"></i><b>1.5.1</b> Residuals vs. fitted values</a></li>
+<li class="chapter" data-level="1.5.2" data-path="simple-linear-regression.html"><a href="simple-linear-regression.html#residuals-vs.-predictors"><i class="fa fa-check"></i><b>1.5.2</b> Residuals vs. predictor(s)</a></li>
+<li class="chapter" data-level="1.5.3" data-path="simple-linear-regression.html"><a href="simple-linear-regression.html#residuals-vs.-other-variables"><i class="fa fa-check"></i><b>1.5.3</b> Residuals vs. other variables</a></li>
+<li class="chapter" data-level="1.5.4" data-path="simple-linear-regression.html"><a href="simple-linear-regression.html#normal-probability-plot"><i class="fa fa-check"></i><b>1.5.4</b> Normal probability plot</a></li>
+</ul></li>
+<li class="chapter" data-level="1.6" data-path="simple-linear-regression.html"><a href="simple-linear-regression.html#consequences-of-violating-model-assumptions-and-possible-fixes"><i class="fa fa-check"></i><b>1.6</b> Consequences of violating model assumptions, and possible fixes</a>
+<ul>
+<li class="chapter" data-level="1.6.1" data-path="simple-linear-regression.html"><a href="simple-linear-regression.html#linearity"><i class="fa fa-check"></i><b>1.6.1</b> Linearity</a></li>
+<li class="chapter" data-level="1.6.2" data-path="simple-linear-regression.html"><a href="simple-linear-regression.html#independence"><i class="fa fa-check"></i><b>1.6.2</b> Independence</a></li>
+<li class="chapter" data-level="1.6.3" data-path="simple-linear-regression.html"><a href="simple-linear-regression.html#constant-variance"><i class="fa fa-check"></i><b>1.6.3</b> Constant variance</a></li>
+<li class="chapter" data-level="1.6.4" data-path="simple-linear-regression.html"><a href="simple-linear-regression.html#normality"><i class="fa fa-check"></i><b>1.6.4</b> Normality</a></li>
+</ul></li>
+<li class="chapter" data-level="1.7" data-path="simple-linear-regression.html"><a href="simple-linear-regression.html#prediction-with-regression-models"><i class="fa fa-check"></i><b>1.7</b> Prediction with regression models</a></li>
+<li class="chapter" data-level="1.8" data-path="simple-linear-regression.html"><a href="simple-linear-regression.html#regression-design"><i class="fa fa-check"></i><b>1.8</b> Regression design</a>
+<ul>
+<li class="chapter" data-level="1.8.1" data-path="simple-linear-regression.html"><a href="simple-linear-regression.html#choice-of-predictor-values"><i class="fa fa-check"></i><b>1.8.1</b> Choice of predictor values</a></li>
+<li class="chapter" data-level="1.8.2" data-path="simple-linear-regression.html"><a href="simple-linear-regression.html#powerSLR"><i class="fa fa-check"></i><b>1.8.2</b> Power</a></li>
+</ul></li>
+<li class="chapter" data-level="1.9" data-path="simple-linear-regression.html"><a href="simple-linear-regression.html#centering-the-predictor"><i class="fa fa-check"></i><b>1.9</b> <span class="math inline">\(^\star\)</span>Centering the predictor</a></li>
+<li class="chapter" data-level="" data-path="simple-linear-regression.html"><a href="simple-linear-regression.html#appendix-a-fitting-the-slr-model-in-r"><i class="fa fa-check"></i>Appendix A: Fitting the SLR model in R</a></li>
+<li class="chapter" data-level="" data-path="simple-linear-regression.html"><a href="simple-linear-regression.html#appendix-b-regression-models-in-sas-proc-reg"><i class="fa fa-check"></i>Appendix B: Regression models in SAS PROC REG</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="multiple-regression.html"><a href="multiple-regression.html"><i class="fa fa-check"></i><b>2</b> Multiple regression</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="multiple-regression.html"><a href="multiple-regression.html#multiple-regression-basics"><i class="fa fa-check"></i><b>2.1</b> Multiple regression basics</a>
+<ul>
+<li class="chapter" data-level="2.1.1" data-path="multiple-regression.html"><a href="multiple-regression.html#ideas-that-carry-over-from-slr-to-multiple-regression"><i class="fa fa-check"></i><b>2.1.1</b> Ideas that carry over from SLR to multiple regression</a></li>
+<li class="chapter" data-level="2.1.2" data-path="multiple-regression.html"><a href="multiple-regression.html#interpreting-partial-regression-coefficients."><i class="fa fa-check"></i><b>2.1.2</b> Interpreting partial regression coefficients.</a></li>
+<li class="chapter" data-level="2.1.3" data-path="multiple-regression.html"><a href="multiple-regression.html#visualizing-a-multiple-regression-model"><i class="fa fa-check"></i><b>2.1.3</b> Visualizing a multiple regression model</a></li>
+<li class="chapter" data-level="2.1.4" data-path="multiple-regression.html"><a href="multiple-regression.html#statistical-inference-for-partial-regression-coefficients"><i class="fa fa-check"></i><b>2.1.4</b> Statistical inference for partial regression coefficients</a></li>
+<li class="chapter" data-level="2.1.5" data-path="multiple-regression.html"><a href="multiple-regression.html#prediction"><i class="fa fa-check"></i><b>2.1.5</b> Prediction</a></li>
+</ul></li>
+<li class="chapter" data-level="2.2" data-path="multiple-regression.html"><a href="multiple-regression.html#F-test"><i class="fa fa-check"></i><b>2.2</b> <span class="math inline">\(F\)</span>-tests for several regression coefficients</a>
+<ul>
+<li class="chapter" data-level="2.2.1" data-path="multiple-regression.html"><a href="multiple-regression.html#basic-machinery"><i class="fa fa-check"></i><b>2.2.1</b> Basic machinery</a></li>
+<li class="chapter" data-level="2.2.2" data-path="multiple-regression.html"><a href="multiple-regression.html#model-utility-test"><i class="fa fa-check"></i><b>2.2.2</b> Model utility test</a></li>
+</ul></li>
+<li class="chapter" data-level="2.3" data-path="multiple-regression.html"><a href="multiple-regression.html#categorical-predictors"><i class="fa fa-check"></i><b>2.3</b> Categorical predictors</a></li>
+<li class="chapter" data-level="2.4" data-path="multiple-regression.html"><a href="multiple-regression.html#regression-interactions"><i class="fa fa-check"></i><b>2.4</b> Interactions between predictors</a></li>
+<li class="chapter" data-level="2.5" data-path="multiple-regression.html"><a href="multiple-regression.html#collinearity"><i class="fa fa-check"></i><b>2.5</b> (Multi-)Collinearity</a></li>
+<li class="chapter" data-level="2.6" data-path="multiple-regression.html"><a href="multiple-regression.html#variable-selection-choosing-the-best-model"><i class="fa fa-check"></i><b>2.6</b> Variable selection: Choosing the best model</a>
+<ul>
+<li class="chapter" data-level="2.6.1" data-path="multiple-regression.html"><a href="multiple-regression.html#model-selection-and-inference"><i class="fa fa-check"></i><b>2.6.1</b> Model selection and inference</a></li>
+<li class="chapter" data-level="2.6.2" data-path="multiple-regression.html"><a href="multiple-regression.html#ranking-methods"><i class="fa fa-check"></i><b>2.6.2</b> Ranking methods</a></li>
+<li class="chapter" data-level="2.6.3" data-path="multiple-regression.html"><a href="multiple-regression.html#sequential-methods"><i class="fa fa-check"></i><b>2.6.3</b> Sequential methods</a></li>
+</ul></li>
+<li class="chapter" data-level="2.7" data-path="multiple-regression.html"><a href="multiple-regression.html#leverage-influential-points-and-standardized-residuals"><i class="fa fa-check"></i><b>2.7</b> Leverage, influential points, and standardized residuals</a>
+<ul>
+<li class="chapter" data-level="2.7.1" data-path="multiple-regression.html"><a href="multiple-regression.html#leverage"><i class="fa fa-check"></i><b>2.7.1</b> Leverage</a></li>
+<li class="chapter" data-level="2.7.2" data-path="multiple-regression.html"><a href="multiple-regression.html#standardized-residuals"><i class="fa fa-check"></i><b>2.7.2</b> Standardized residuals</a></li>
+<li class="chapter" data-level="2.7.3" data-path="multiple-regression.html"><a href="multiple-regression.html#cooks-distance"><i class="fa fa-check"></i><b>2.7.3</b> Cook’s distance</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="multiple-regression.html"><a href="multiple-regression.html#appendix-regression-as-a-linear-algebra-problem"><i class="fa fa-check"></i>Appendix: Regression as a linear algebra problem</a>
+<ul>
+<li class="chapter" data-level="" data-path="multiple-regression.html"><a href="multiple-regression.html#singular-or-pathological-design-matrices"><i class="fa fa-check"></i>Singular, or pathological, design matrices</a></li>
+<li class="chapter" data-level="" data-path="multiple-regression.html"><a href="multiple-regression.html#additional-results"><i class="fa fa-check"></i>Additional results</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="non-linear-regression.html"><a href="non-linear-regression.html"><i class="fa fa-check"></i><b>3</b> Non-linear regression</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="non-linear-regression.html"><a href="non-linear-regression.html#polynomial-regression"><i class="fa fa-check"></i><b>3.1</b> Polynomial regression</a></li>
+<li class="chapter" data-level="3.2" data-path="non-linear-regression.html"><a href="non-linear-regression.html#nls"><i class="fa fa-check"></i><b>3.2</b> Non-linear least squares</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="generalized-linear-models.html"><a href="generalized-linear-models.html"><i class="fa fa-check"></i><b>4</b> Generalized linear models</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="generalized-linear-models.html"><a href="generalized-linear-models.html#poisson-regression"><i class="fa fa-check"></i><b>4.1</b> Poisson regression</a></li>
+<li class="chapter" data-level="4.2" data-path="generalized-linear-models.html"><a href="generalized-linear-models.html#binary-responses"><i class="fa fa-check"></i><b>4.2</b> Binary responses</a>
+<ul>
+<li class="chapter" data-level="4.2.1" data-path="generalized-linear-models.html"><a href="generalized-linear-models.html#individual-binary-responses-tb-in-boar"><i class="fa fa-check"></i><b>4.2.1</b> Individual binary responses: TB in boar</a></li>
+<li class="chapter" data-level="4.2.2" data-path="generalized-linear-models.html"><a href="generalized-linear-models.html#grouped-binary-data-industrial-melanism"><i class="fa fa-check"></i><b>4.2.2</b> Grouped binary data: Industrial melanism</a></li>
+</ul></li>
+<li class="chapter" data-level="4.3" data-path="generalized-linear-models.html"><a href="generalized-linear-models.html#implementation-in-sas"><i class="fa fa-check"></i><b>4.3</b> Implementation in SAS</a>
+<ul>
+<li class="chapter" data-level="4.3.1" data-path="generalized-linear-models.html"><a href="generalized-linear-models.html#complete-separation"><i class="fa fa-check"></i><b>4.3.1</b> Complete separation</a></li>
+</ul></li>
+</ul></li>
+<li class="part"><span><b>Part II: Statistical learning</b></span></li>
+<li class="chapter" data-level="5" data-path="smoothing.html"><a href="smoothing.html"><i class="fa fa-check"></i><b>5</b> Smoothing</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="smoothing.html"><a href="smoothing.html#nearest-neighbor-methods"><i class="fa fa-check"></i><b>5.1</b> Nearest-neighbor methods</a></li>
+<li class="chapter" data-level="5.2" data-path="smoothing.html"><a href="smoothing.html#loess-smoothers"><i class="fa fa-check"></i><b>5.2</b> Loess smoothers</a></li>
+<li class="chapter" data-level="5.3" data-path="smoothing.html"><a href="smoothing.html#splines"><i class="fa fa-check"></i><b>5.3</b> Splines</a></li>
+<li class="chapter" data-level="5.4" data-path="smoothing.html"><a href="smoothing.html#generalized-additive-models-gams"><i class="fa fa-check"></i><b>5.4</b> Generalized additive models (GAMs)</a></li>
+</ul></li>
+<li class="part"><span><b>Part III: Designed experiments</b></span></li>
+<li class="chapter" data-level="6" data-path="one-factor-anova.html"><a href="one-factor-anova.html"><i class="fa fa-check"></i><b>6</b> One-factor ANOVA</a>
+<ul>
+<li class="chapter" data-level="6.1" data-path="one-factor-anova.html"><a href="one-factor-anova.html#grouped-data-and-the-design-of-experiments-doe-an-overview"><i class="fa fa-check"></i><b>6.1</b> Grouped data and the design of experiments (DoE): an overview</a>
+<ul>
+<li class="chapter" data-level="6.1.1" data-path="one-factor-anova.html"><a href="one-factor-anova.html#a-vocabulary-for-describing-designed-experiments"><i class="fa fa-check"></i><b>6.1.1</b> A vocabulary for describing designed experiments</a></li>
+<li class="chapter" data-level="6.1.2" data-path="one-factor-anova.html"><a href="one-factor-anova.html#roadmap"><i class="fa fa-check"></i><b>6.1.2</b> Roadmap</a></li>
+<li class="chapter" data-level="6.1.3" data-path="one-factor-anova.html"><a href="one-factor-anova.html#the-simplest-experiment"><i class="fa fa-check"></i><b>6.1.3</b> The simplest experiment</a></li>
+</ul></li>
+<li class="chapter" data-level="6.2" data-path="one-factor-anova.html"><a href="one-factor-anova.html#one-factor-anova-the-basics"><i class="fa fa-check"></i><b>6.2</b> One-factor ANOVA: The basics</a>
+<ul>
+<li class="chapter" data-level="6.2.1" data-path="one-factor-anova.html"><a href="one-factor-anova.html#f-test-to-compare-means"><i class="fa fa-check"></i><b>6.2.1</b> <span class="math inline">\(F\)</span>-test to compare means</a></li>
+<li class="chapter" data-level="6.2.2" data-path="one-factor-anova.html"><a href="one-factor-anova.html#connections-between-one-factor-anova-and-other-statistical-procedures"><i class="fa fa-check"></i><b>6.2.2</b> Connections between one-factor ANOVA and other statistical procedures</a></li>
+<li class="chapter" data-level="6.2.3" data-path="one-factor-anova.html"><a href="one-factor-anova.html#assumptions-in-anova"><i class="fa fa-check"></i><b>6.2.3</b> Assumptions in ANOVA</a></li>
+</ul></li>
+<li class="chapter" data-level="6.3" data-path="one-factor-anova.html"><a href="one-factor-anova.html#contrasts"><i class="fa fa-check"></i><b>6.3</b> Linear contrasts of group means</a></li>
+<li class="chapter" data-level="6.4" data-path="one-factor-anova.html"><a href="one-factor-anova.html#using-sas-the-effects-parameterization-of-the-one-factor-anova"><i class="fa fa-check"></i><b>6.4</b> Using SAS: The effects parameterization of the one-factor ANOVA</a>
+<ul>
+<li class="chapter" data-level="6.4.1" data-path="one-factor-anova.html"><a href="one-factor-anova.html#effects-model-parameterization-of-the-one-factor-anova-model"><i class="fa fa-check"></i><b>6.4.1</b> Effects-model parameterization of the one-factor ANOVA model</a></li>
+<li class="chapter" data-level="6.4.2" data-path="one-factor-anova.html"><a href="one-factor-anova.html#sas-implementation-of-the-one-factor-anova-model-in-proc-glm"><i class="fa fa-check"></i><b>6.4.2</b> SAS implementation of the one-factor ANOVA model in PROC GLM</a></li>
+<li class="chapter" data-level="6.4.3" data-path="one-factor-anova.html"><a href="one-factor-anova.html#using-the-estimate-and-contrast-statements-for-linear-contrasts-in-proc-glm"><i class="fa fa-check"></i><b>6.4.3</b> Using the ESTIMATE and CONTRAST statements for linear contrasts in PROC GLM</a></li>
+</ul></li>
+<li class="chapter" data-level="6.5" data-path="one-factor-anova.html"><a href="one-factor-anova.html#linear-contrasts-revisited-testing-multiple-simultaneous-contrasts"><i class="fa fa-check"></i><b>6.5</b> Linear contrasts revisited: Testing multiple simultaneous contrasts</a></li>
+<li class="chapter" data-level="6.6" data-path="one-factor-anova.html"><a href="one-factor-anova.html#multiple-comparisons"><i class="fa fa-check"></i><b>6.6</b> Multiple comparisons</a>
+<ul>
+<li class="chapter" data-level="6.6.1" data-path="one-factor-anova.html"><a href="one-factor-anova.html#multiple-testing-in-general"><i class="fa fa-check"></i><b>6.6.1</b> Multiple testing in general</a></li>
+<li class="chapter" data-level="6.6.2" data-path="one-factor-anova.html"><a href="one-factor-anova.html#bonferroni-and-bonferroni-like-procedures"><i class="fa fa-check"></i><b>6.6.2</b> Bonferroni and Bonferroni-like procedures</a></li>
+<li class="chapter" data-level="6.6.3" data-path="one-factor-anova.html"><a href="one-factor-anova.html#multiple-comparisons-in-anova"><i class="fa fa-check"></i><b>6.6.3</b> Multiple comparisons in ANOVA</a></li>
+</ul></li>
+<li class="chapter" data-level="6.7" data-path="one-factor-anova.html"><a href="one-factor-anova.html#general-strategy-for-analyzing-data-from-a-crd-with-a-one-factor-treatment-structure"><i class="fa fa-check"></i><b>6.7</b> General strategy for analyzing data from a CRD with a one-factor treatment structure</a></li>
+<li class="chapter" data-level="6.8" data-path="one-factor-anova.html"><a href="one-factor-anova.html#starpower-and-sample-size-determination-in-anova"><i class="fa fa-check"></i><b>6.8</b> <span class="math inline">\(^\star\)</span>Power and sample-size determination in ANOVA</a></li>
+<li class="chapter" data-level="6.9" data-path="one-factor-anova.html"><a href="one-factor-anova.html#starorthogonal-contrasts"><i class="fa fa-check"></i><b>6.9</b> <span class="math inline">\(^\star\)</span>Orthogonal contrasts</a></li>
+<li class="chapter" data-level="6.10" data-path="one-factor-anova.html"><a href="one-factor-anova.html#starpolynomial-trends"><i class="fa fa-check"></i><b>6.10</b> <span class="math inline">\(^\star\)</span>Polynomial trends</a></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="factorial-experiments.html"><a href="factorial-experiments.html"><i class="fa fa-check"></i><b>7</b> Factorial experiments</a>
+<ul>
+<li class="chapter" data-level="7.1" data-path="factorial-experiments.html"><a href="factorial-experiments.html#combining-factors-crossed-vs.-nested-designs"><i class="fa fa-check"></i><b>7.1</b> Combining factors: Crossed vs. nested designs</a></li>
+<li class="chapter" data-level="7.2" data-path="factorial-experiments.html"><a href="factorial-experiments.html#times-2-factorial-design"><i class="fa fa-check"></i><b>7.2</b> 2 <span class="math inline">\(\times\)</span> 2 factorial design</a>
+<ul>
+<li class="chapter" data-level="7.2.1" data-path="factorial-experiments.html"><a href="factorial-experiments.html#example-weight-gain-in-rats"><i class="fa fa-check"></i><b>7.2.1</b> Example: Weight gain in rats</a></li>
+<li class="chapter" data-level="7.2.2" data-path="factorial-experiments.html"><a href="factorial-experiments.html#two-factor-anova-hypothesis-tests"><i class="fa fa-check"></i><b>7.2.2</b> Two-factor ANOVA hypothesis tests</a></li>
+<li class="chapter" data-level="7.2.3" data-path="factorial-experiments.html"><a href="factorial-experiments.html#analysis-using-proc-glm-in-sas"><i class="fa fa-check"></i><b>7.2.3</b> Analysis using PROC GLM in SAS</a></li>
+<li class="chapter" data-level="7.2.4" data-path="factorial-experiments.html"><a href="factorial-experiments.html#effects-notation-for-the-two-factor-anova"><i class="fa fa-check"></i><b>7.2.4</b> Effects notation for the two-factor ANOVA</a></li>
+<li class="chapter" data-level="7.2.5" data-path="factorial-experiments.html"><a href="factorial-experiments.html#a-second-example-when-the-interaction-is-significant"><i class="fa fa-check"></i><b>7.2.5</b> A second example when the interaction is significant</a></li>
+</ul></li>
+<li class="chapter" data-level="7.3" data-path="factorial-experiments.html"><a href="factorial-experiments.html#a-times-b-factorial-designs"><i class="fa fa-check"></i><b>7.3</b> <span class="math inline">\(a \times b\)</span> factorial designs</a>
+<ul>
+<li class="chapter" data-level="7.3.1" data-path="factorial-experiments.html"><a href="factorial-experiments.html#example-without-a-significant-interaction"><i class="fa fa-check"></i><b>7.3.1</b> Example without a significant interaction</a></li>
+<li class="chapter" data-level="7.3.2" data-path="factorial-experiments.html"><a href="factorial-experiments.html#example-with-a-significant-interaction"><i class="fa fa-check"></i><b>7.3.2</b> Example with a significant interaction</a></li>
+</ul></li>
+<li class="chapter" data-level="7.4" data-path="factorial-experiments.html"><a href="factorial-experiments.html#unreplicated-factorial-designs"><i class="fa fa-check"></i><b>7.4</b> Unreplicated factorial designs</a></li>
+<li class="chapter" data-level="7.5" data-path="factorial-experiments.html"><a href="factorial-experiments.html#missing-cells"><i class="fa fa-check"></i><b>7.5</b> Missing cells</a></li>
+<li class="chapter" data-level="7.6" data-path="factorial-experiments.html"><a href="factorial-experiments.html#more-than-two-factors"><i class="fa fa-check"></i><b>7.6</b> More than two factors</a></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="ancova.html"><a href="ancova.html"><i class="fa fa-check"></i><b>8</b> ANCOVA</a></li>
+<li class="chapter" data-level="9" data-path="random-effects.html"><a href="random-effects.html"><i class="fa fa-check"></i><b>9</b> Random effects</a>
+<ul>
+<li class="chapter" data-level="9.1" data-path="random-effects.html"><a href="random-effects.html#fixed-vs.-random-effects-the-big-picture"><i class="fa fa-check"></i><b>9.1</b> Fixed vs. random effects: the big picture</a></li>
+<li class="chapter" data-level="9.2" data-path="random-effects.html"><a href="random-effects.html#random-effects-models"><i class="fa fa-check"></i><b>9.2</b> Random-effects models</a></li>
+<li class="chapter" data-level="9.3" data-path="random-effects.html"><a href="random-effects.html#subsampling"><i class="fa fa-check"></i><b>9.3</b> Subsampling</a>
+<ul>
+<li class="chapter" data-level="9.3.1" data-path="random-effects.html"><a href="random-effects.html#equal-subsamples-per-eu"><i class="fa fa-check"></i><b>9.3.1</b> Equal subsamples per EU</a></li>
+</ul></li>
+<li class="chapter" data-level="9.4" data-path="random-effects.html"><a href="random-effects.html#starmathematical-foundations"><i class="fa fa-check"></i><b>9.4</b> <span class="math inline">\(^\star\)</span>Mathematical foundations</a>
+<ul>
+<li class="chapter" data-level="9.4.1" data-path="random-effects.html"><a href="random-effects.html#probability-refresher"><i class="fa fa-check"></i><b>9.4.1</b> Probability refresher</a></li>
+<li class="chapter" data-level="9.4.2" data-path="random-effects.html"><a href="random-effects.html#application-to-models-with-random-effects"><i class="fa fa-check"></i><b>9.4.2</b> Application to models with random effects</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="10" data-path="blocked-designs.html"><a href="blocked-designs.html"><i class="fa fa-check"></i><b>10</b> Blocked designs</a>
+<ul>
+<li class="chapter" data-level="10.1" data-path="blocked-designs.html"><a href="blocked-designs.html#randomized-complete-block-designs"><i class="fa fa-check"></i><b>10.1</b> Randomized complete block designs</a>
+<ul>
+<li class="chapter" data-level="10.1.1" data-path="blocked-designs.html"><a href="blocked-designs.html#should-a-blocking-factor-be-a-fixed-or-random-effect"><i class="fa fa-check"></i><b>10.1.1</b> *Should a blocking factor be a fixed or random effect?</a></li>
+</ul></li>
+<li class="chapter" data-level="10.2" data-path="blocked-designs.html"><a href="blocked-designs.html#latin-squares-designs"><i class="fa fa-check"></i><b>10.2</b> Latin-squares designs</a></li>
+<li class="chapter" data-level="10.3" data-path="blocked-designs.html"><a href="blocked-designs.html#split-plot-designs"><i class="fa fa-check"></i><b>10.3</b> Split-plot designs</a>
+<ul>
+<li class="chapter" data-level="10.3.1" data-path="blocked-designs.html"><a href="blocked-designs.html#denominator-degrees-of-freedom-in-split-plot-designs-and-the-satterthwaite-approximation"><i class="fa fa-check"></i><b>10.3.1</b> Denominator degrees of freedom in split-plot designs and the Satterthwaite approximation</a></li>
+</ul></li>
+<li class="chapter" data-level="10.4" data-path="blocked-designs.html"><a href="blocked-designs.html#repeated-measures"><i class="fa fa-check"></i><b>10.4</b> Repeated measures</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="bibliography.html"><a href="bibliography.html"><i class="fa fa-check"></i>Bibliography</a></li>
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Statistical analysis of designed experiments: yesterday, today, and tomorrow</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="non-linear-regression" class="section level1 hasAnchor" number="3">
+<h1><span class="header-section-number">Chapter 3</span> Non-linear regression<a href="non-linear-regression.html#non-linear-regression" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<p>In this chapter, we examine several methods for characterizing non-linear associations between a predictor variable and the response. To keep things simple, we return to focusing on settings with a single predictor. However, the ideas in this chapter can readily be incorporated into models with several predictor variables.</p>
+<div id="polynomial-regression" class="section level2 hasAnchor" number="3.1">
+<h2><span class="header-section-number">3.1</span> Polynomial regression<a href="non-linear-regression.html#polynomial-regression" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Polynomial regression uses the machinery of multiple regression to model non-linear relationships. A <span class="math inline">\(k^{th}\)</span> order polynomial regression model is
+<span class="math display">\[
+y=\beta_0 +\beta_1 x+\beta_2 x^2 +\beta_3 x^{3} +\ldots +\beta_k x^{k} +\varepsilon
+\]</span>
+where the error term is subject to the standard regression assumptions. In practice, the most commonly used models are quadratic (<span class="math inline">\(k=2\)</span>) and cubic (<span class="math inline">\(k=3\)</span>) polynomials.</p>
+<p>Before proceeding, a historical note is worthwhile. It used to be that polynomial regression was the only way to accommodate non-linear relationships in regression models. In the present day, <a href="non-linear-regression.html#nls">non-linear least squares</a> allows us to fit a much richer set of non-linear models to data. However, in complex models (especially complex ANOVA models for designed experiments), there are still cases where it is easier to add a quadratic term to accommodate a non-linear association than it is to adopt the machinery of non-linear least squares. Thus, it is still worthwhile to know a little bit about polynomial regression, but don’t shoehorn every non-linear association into a polynomial regression if an alternative non-linear model is more suitable.</p>
+<p><em>Example.</em> In the cars data, the relationship between highway mpg and vehicle weight is clearly non-linear:</p>
+<div class="sourceCode" id="cb120"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb120-1"><a href="non-linear-regression.html#cb120-1" tabindex="-1"></a>cars <span class="ot">&lt;-</span> <span class="fu">read.table</span>(<span class="st">&quot;data/cars.txt&quot;</span>, <span class="at">head =</span> T, <span class="at">stringsAsFactors =</span> T)</span>
+<span id="cb120-2"><a href="non-linear-regression.html#cb120-2" tabindex="-1"></a><span class="fu">with</span>(cars, <span class="fu">plot</span>(mpghw <span class="sc">~</span> weight, <span class="at">xlab =</span> <span class="st">&quot;Vehicle weight (lbs)&quot;</span>, <span class="at">ylab =</span> <span class="st">&quot;Highway mpg&quot;</span>))</span></code></pre></div>
+<p><img src="03-NonlinearRegression_files/figure-html/unnamed-chunk-1-1.png" width="480" style="display: block; margin: auto;" /></p>
+<p>To fit a quadratic model, we could manually create a predictor equal to weight-squared. Or, in R, we could create the weight-squared predictor within the call to “lm” by using the following syntax:</p>
+<div class="sourceCode" id="cb121"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb121-1"><a href="non-linear-regression.html#cb121-1" tabindex="-1"></a>quad <span class="ot">&lt;-</span> <span class="fu">lm</span>(mpghw <span class="sc">~</span> weight <span class="sc">+</span> <span class="fu">I</span>(weight<span class="sc">^</span><span class="dv">2</span>), <span class="at">data =</span> cars)</span>
+<span id="cb121-2"><a href="non-linear-regression.html#cb121-2" tabindex="-1"></a><span class="fu">summary</span>(quad)</span></code></pre></div>
+<pre><code>## 
+## Call:
+## lm(formula = mpghw ~ weight + I(weight^2), data = cars)
+## 
+## Residuals:
+##      Min       1Q   Median       3Q      Max 
+## -13.4386  -1.8216   0.1789   2.3617   7.5031 
+## 
+## Coefficients:
+##               Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)  9.189e+01  6.332e+00  14.511  &lt; 2e-16 ***
+## weight      -2.293e-02  3.119e-03  -7.353 1.64e-11 ***
+## I(weight^2)  1.848e-06  3.739e-07   4.942 2.24e-06 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 3.454 on 136 degrees of freedom
+## Multiple R-squared:  0.7634, Adjusted R-squared:  0.7599 
+## F-statistic: 219.4 on 2 and 136 DF,  p-value: &lt; 2.2e-16</code></pre>
+<p>In the quadratic regression <span class="math inline">\(y=\beta_0 +\beta_1 x+\beta_2 x^2 +\varepsilon\)</span>, the test of <span class="math inline">\(H_0\)</span>: <span class="math inline">\(\beta_2=0\)</span> vs. <span class="math inline">\(H_a\)</span>: <span class="math inline">\(\beta_2 \ne 0\)</span> is tantamount to a test of whether the quadratic model provides a significantly better fit than the linear model. In this case, we can conclusively reject <span class="math inline">\(H_0\)</span>: <span class="math inline">\(\beta_2=0\)</span> in favor of <span class="math inline">\(H_a\)</span>: <span class="math inline">\(\beta_2 \ne 0\)</span> , and thus conclude that the quadratic model provides a significantly better fit than the linear model.</p>
+<p>However, in the context of the quadratic model, the test of <span class="math inline">\(H_0\)</span>: <span class="math inline">\(\beta_1=0\)</span> vs. <span class="math inline">\(H_a\)</span>: <span class="math inline">\(\beta_1 \ne 0\)</span> doesn’t give us much useful information. In the context of the quadratic model, the null hypothesis <span class="math inline">\(H_0\)</span>: <span class="math inline">\(\beta_1=0\)</span> is equivalent to the model <span class="math inline">\(y=\beta_0 +\beta_2 x^2 +\varepsilon\)</span>. This is a strange model, and there is no reason why we should consider it. Thus, we disregard the inference for <span class="math inline">\(\beta_1\)</span>, and (by similar logic) we disregard the inference for <span class="math inline">\(\beta_0\)</span> as well.</p>
+<p>If a quadratic model is good, will the cubic model <span class="math inline">\(y=\beta_0 +\beta_1 x+\beta_2 x^2 +\beta_3 x^{3} +\varepsilon\)</span> be even better? Let’s see:</p>
+<div class="sourceCode" id="cb123"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb123-1"><a href="non-linear-regression.html#cb123-1" tabindex="-1"></a>cubic <span class="ot">&lt;-</span> <span class="fu">lm</span>(mpghw <span class="sc">~</span> weight <span class="sc">+</span> <span class="fu">I</span>(weight<span class="sc">^</span><span class="dv">2</span>) <span class="sc">+</span> <span class="fu">I</span>(weight<span class="sc">^</span><span class="dv">3</span>), <span class="at">data =</span> cars)</span>
+<span id="cb123-2"><a href="non-linear-regression.html#cb123-2" tabindex="-1"></a><span class="fu">summary</span>(cubic)</span></code></pre></div>
+<pre><code>## 
+## Call:
+## lm(formula = mpghw ~ weight + I(weight^2) + I(weight^3), data = cars)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -13.247  -1.759   0.281   2.411   7.225 
+## 
+## Coefficients:
+##               Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)  1.164e+02  2.697e+01   4.318 3.03e-05 ***
+## weight      -4.175e-02  2.033e-02  -2.054    0.042 *  
+## I(weight^2)  6.504e-06  4.984e-06   1.305    0.194    
+## I(weight^3) -3.715e-10  3.966e-10  -0.937    0.351    
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 3.456 on 135 degrees of freedom
+## Multiple R-squared:  0.7649, Adjusted R-squared:  0.7597 
+## F-statistic: 146.4 on 3 and 135 DF,  p-value: &lt; 2.2e-16</code></pre>
+<p>In the cubic model, the test of <span class="math inline">\(H_0\)</span>: <span class="math inline">\(\beta_3=0\)</span> vs. <span class="math inline">\(H_a\)</span>: <span class="math inline">\(\beta_3 \ne 0\)</span> is tantamount to a test of whether the cubic model provides a significantly better fit than the quadratic model. The <span class="math inline">\(p\)</span>-value associated with the cubic term suggests that the cubic model does not provide a statistically significant improvement in fit compared to the quadratic model.</p>
+<p>At this point, you might wonder if we are limited only to comparing models of adjacent orders, that is, quadratic vs. linear, cubic vs. quadratic, etc. The answer is no — we can, for example, test whether a cubic model provides a significantly better fit than a linear model. To do so, we would have to test <span class="math inline">\(H_0\)</span>: <span class="math inline">\(\beta_2 = \beta_3 = 0\)</span> in the cubic model. We can test this null hypothesis with an <span class="math inline">\(F\)</span>-test.</p>
+<p>Even though as cubic model does not offer a significantly better fit than a quadratic model, we have not necessarily ruled out the possibility that a higher-order polynomial model might provide a significantly better fit. However, higher-order polynomials (beyond a cubic) are typically difficult to justify on scientific grounds, and offend our sense of parsimony. Plus, a plot of the quadratic model and the associated residuals suggest that a quadratic model captures the trend in the data well:</p>
+<div class="sourceCode" id="cb125"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb125-1"><a href="non-linear-regression.html#cb125-1" tabindex="-1"></a><span class="fu">with</span>(cars, <span class="fu">plot</span>(mpghw <span class="sc">~</span> weight, <span class="at">xlab =</span> <span class="st">&quot;Vehicle weight (lbs)&quot;</span>, <span class="at">ylab =</span> <span class="st">&quot;Highway mpg&quot;</span>))</span>
+<span id="cb125-2"><a href="non-linear-regression.html#cb125-2" tabindex="-1"></a>  </span>
+<span id="cb125-3"><a href="non-linear-regression.html#cb125-3" tabindex="-1"></a>quad <span class="ot">&lt;-</span> <span class="fu">with</span>(cars, <span class="fu">lm</span>(mpghw <span class="sc">~</span> weight <span class="sc">+</span> <span class="fu">I</span>(weight<span class="sc">^</span><span class="dv">2</span>)))</span>
+<span id="cb125-4"><a href="non-linear-regression.html#cb125-4" tabindex="-1"></a>quad.coef <span class="ot">&lt;-</span> <span class="fu">as.vector</span>(<span class="fu">coefficients</span>(quad))</span>
+<span id="cb125-5"><a href="non-linear-regression.html#cb125-5" tabindex="-1"></a></span>
+<span id="cb125-6"><a href="non-linear-regression.html#cb125-6" tabindex="-1"></a>quad.fit <span class="ot">&lt;-</span> <span class="cf">function</span>(x) quad.coef[<span class="dv">1</span>] <span class="sc">+</span> quad.coef[<span class="dv">2</span>] <span class="sc">*</span> x <span class="sc">+</span> quad.coef[<span class="dv">3</span>] <span class="sc">*</span> x<span class="sc">^</span><span class="dv">2</span></span>
+<span id="cb125-7"><a href="non-linear-regression.html#cb125-7" tabindex="-1"></a>  </span>
+<span id="cb125-8"><a href="non-linear-regression.html#cb125-8" tabindex="-1"></a><span class="fu">curve</span>(quad.fit, <span class="at">from =</span> <span class="fu">min</span>(cars<span class="sc">$</span>weight), <span class="at">to =</span> <span class="fu">max</span>(cars<span class="sc">$</span>weight), <span class="at">add =</span> <span class="cn">TRUE</span>, <span class="at">col =</span> <span class="st">&quot;red&quot;</span>)</span></code></pre></div>
+<p><img src="03-NonlinearRegression_files/figure-html/unnamed-chunk-4-1.png" width="480" style="display: block; margin: auto;" /></p>
+<div class="sourceCode" id="cb126"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb126-1"><a href="non-linear-regression.html#cb126-1" tabindex="-1"></a><span class="fu">plot</span>(<span class="at">x =</span> <span class="fu">fitted</span>(quad), <span class="at">y =</span> <span class="fu">resid</span>(quad), <span class="at">xlab =</span> <span class="st">&quot;Fitted values&quot;</span>, <span class="at">ylab =</span> <span class="st">&quot;Residuals&quot;</span>)</span>
+<span id="cb126-2"><a href="non-linear-regression.html#cb126-2" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">h =</span> <span class="dv">0</span>, <span class="at">lty =</span> <span class="st">&quot;dashed&quot;</span>)</span></code></pre></div>
+<p><img src="03-NonlinearRegression_files/figure-html/unnamed-chunk-4-2.png" width="480" style="display: block; margin: auto;" /></p>
+<p>Therefore, the quadratic model clearly provides the best low-order polynomial fit to these data.</p>
+<p>Finally, it doesn’t make sense to consider models that include higher-order terms without lower-order terms. For example, we wouldn’t usually consider a cubic model without an intercept, or a quadratic model without a linear term. Geometrically, these models are constrained in particular ways. If such a constraint makes sense scientifically, entertaining the model may be warranted, but this situation arises only rarely. Thus, our strategy for fitting polynomial models is to choose the lowest-order model that provides a reasonable fit to the data, and whose highest-order term is statistically significant.</p>
+<!-- %[A word about terminology:  The term {\em linear} in MLR indicates that the mean component of the model is linear in the unknown model parameters (the $\beta$'s), not linear in the predictors.  The model  $y=\beta_0 +\beta_1 x+\beta_2 x^2 +\varepsilon $ can be fit using MLR because the mean component $\beta_0 +\beta_1 x+\beta_2 x^2 $  is a linear function of its unknown parameters.  An example of a non-linear model that we wouldn't be able to estimate using MLR is $y=e^{\beta_1 x} +\varepsilon $. ] -->
+<!-- %## Variable selection in polynomial regression: The Goldilocks problem} -->
+<!-- % -->
+<!-- %% Note: I've commented this section out for the time being because I don't have the R code to recreate the figure.   -->
+<!-- % -->
+<!-- %Polynomial regression provides a convenient framework to discuss the costs of making a model too "big" (i.e., having too many terms) or too "small" (too few terms).  Statisticians refer to the tension between models that are too big and models that are too small as a \textbf{bias-variance trade-off.} -->
+<!-- % -->
+<!-- %Each of the data sets below were generated with the model $y=20-4x+x^2 +\varepsilon $.  There are three different data sets, one per column.  In the top row, the data are fitted with a linear regression.  In the middle row, the data are fitted with a quadratic regression.  In the bottom row, the data are fitted with a 5$^{th}$-order polynomial. -->
+<!-- % -->
+<!-- %In the top row, the signal component of the statistical model is not sufficiently flexible to capture the quadratic relationship between the predictor and the response.  Thus, if we tried to use this model for prediction, predictions made at (say) \textit{x }= 2 would routinely be overestimates.  In the statistical jargon, we would say that these predictions are biased (in this case, they are negatively biased at \textit{x }= 2.) -->
+<!-- % -->
+<!-- %In the bottom row, the signal component of the statistical model is too flexible.  These models "overfit" the data, in the sense that they treat some of the "error" as "signal", resulting in bumps and dips in the fitted curve that are not "real".  Thus, if we used these models to predict future observations, the predictions would not be systematically biased, but they would be highly variable from one data set to the next. -->
+<!-- % -->
+<!-- %This phenomenon is characteristic of all statistical models, not just polynomial regression.  In statistics, the tendency of models that are too "small" to be biased, and of models that are too "big" to lead to highly variable out-of-sample prediction is called the bias-variance trade-off.  There is a premium on finding a model that is neither too big nor too small, and thus properly partitions signal from noise.  Of course, this is not easy, because we never know what the true model actually is!  Techniques for choosing models that are neither too big nor too small are called model selection methods.  We will have more to say about model selection later. -->
+</div>
+<div id="nls" class="section level2 hasAnchor" number="3.2">
+<h2><span class="header-section-number">3.2</span> Non-linear least squares<a href="non-linear-regression.html#nls" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Today, software is readily available to fit non-linear models to data using the same least-squares criterion that we use to estimate parameters in the linear model. The computation involved in fitting a non-linear model is fundamentally different from the computation involved in a linear model. A primary difference is that there is no all-purpose formula like <span class="math inline">\(\hat{\mathbf{\beta}}=\left(\mathbf{X}&#39;\mathbf{X}\right)^{-1} \mathbf{X}&#39;\mathbf{Y}\)</span> available for the non-linear model. Therefore, parameter estimates (and their standard errors) have to be found using a numerical algorithm. (We’ll see more about what this means in a moment.) However, these algorithms are sufficiently well developed that they now appear in most common statistical software packages, such as R, SAS, or others. In R, the command that we use to fit a non-linear model is <code>nls</code>, for [n]on-linear [l]east [s]quares. In SAS, non-linear models can be fit using PROC NLIN.</p>
+<p><em>Ex. Puromycin.</em> This example is taken directly from the text <em>Nonlinear regression analysis and its applications</em>, by D.M. Bates and D.G. Watts <span class="citation">Bates and Watts (<a href="#ref-bates1988nonlinear">1988</a>)</span>. The data themselves are from Treloar (1974, MS Thesis, Univ of Toronto), who studied the relationship between the velocity of an enzymatic reaction (the response, measured in counts / minute<span class="math inline">\(^2\)</span>) vs. the concentration of a particular substrate (the predictor, measured in parts per million). The experiment was conducted in the presence of the antibiotic Puromycin. The data are shown below.</p>
+<div class="sourceCode" id="cb127"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb127-1"><a href="non-linear-regression.html#cb127-1" tabindex="-1"></a>puromycin <span class="ot">&lt;-</span> <span class="fu">read.table</span>(<span class="st">&quot;data/puromycin.txt&quot;</span>, <span class="at">head =</span> T, <span class="at">stringsAsFactors =</span> T)</span>
+<span id="cb127-2"><a href="non-linear-regression.html#cb127-2" tabindex="-1"></a><span class="fu">with</span>(puromycin, <span class="fu">plot</span>(velocity <span class="sc">~</span> conc, <span class="at">xlab =</span> <span class="st">&quot;concentration&quot;</span>, <span class="at">ylab =</span> <span class="st">&quot;velocity&quot;</span>))</span></code></pre></div>
+<p><img src="03-NonlinearRegression_files/figure-html/unnamed-chunk-5-1.png" width="384" style="display: block; margin: auto;" /></p>
+<p>It is hypothesized that these data can be described by the Michaelis-Menten model for puromycin kinetics. The Michaelis-Menten model is:
+<span class="math display">\[
+y=\frac{\theta_1 x}{\theta_2 +x} +\varepsilon
+\]</span>
+We continue to assume that the errors are iid normal with mean 0 and unknown but constant variance, i.e., <span class="math inline">\(\varepsilon_i \sim \mathcal{N}\left(0,\sigma_{\varepsilon}^2 \right)\)</span>.</p>
+<p>With non-linear models, it is helpful if one can associate each of the parameters with a particular feature of the best-fitting curve. With these data, it seems that the best fitting curve is one that will increase at a decelerating rate until it approaches an asymptote. A little algebra shows that we can interpret <span class="math inline">\(\theta_1\)</span> directly as the asymptote (that is, the limiting value of the curve as <span class="math inline">\(x\)</span> gets large), and <span class="math inline">\(\theta_2\)</span> as the value of the predictor at which the fitted curve reaches one-half of its asymptotic value.</p>
+<p>To estimate parameters, we can define a least-squares criterion just as before. That is to say, the least-squares estimates of <span class="math inline">\(\theta_1\)</span> and <span class="math inline">\(\theta_2\)</span> will be the values that minimize
+<span class="math display">\[
+SSE=\sum_{i=1}^ne_i^2 = \sum_{i=1}^n\left(y_i -\hat{y}_i \right)^2  =\sum_{i=1}^n\left(y_i -\left[\frac{\hat{\theta }_1 x_i }{\hat{\theta }_{2} +x_i } \right]\right)^2  
+\]</span></p>
+<!-- The commented code below was an attempt to draw an SSE surface using ChatGPT. ChatGPT generated the figure, but it's ugly here.  Not going to try to sort it out. -->
+<!-- The left panel of the plot below shows the $SSE$ as a function of $\theta_1$ and $\theta_2$, with a contour plot lying in the $(\theta_1, \theta_2)$ plane.  The right panel shows just the a contour plot. The red X shows the position of the parameter values that minimizes the SSE. -->
+<!-- ```{r echo = FALSE} -->
+<!-- # code from ChatGPT 5 -->
+<!-- th1_hat <- 212.7 -->
+<!-- th2_hat <- 0.06412 -->
+<!-- sse_fun <- function(th1, th2) { -->
+<!--   x <- puromycin$conc -->
+<!--   y <- puromycin$velocity -->
+<!--   yhat <- th1 * x / (th2 + x) -->
+<!--   sum((y - yhat)^2) -->
+<!-- } -->
+<!-- th1_seq <- seq(150, 260, length.out = 140) -->
+<!-- th2_seq <- seq(0.01, 0.50, length.out = 140) -->
+<!-- ZZ <- outer(th1_seq, th2_seq, Vectorize(function(a, b) sse_fun(a, b))) -->
+<!-- zmin <- min(ZZ) -->
+<!-- ## 3D surface -->
+<!-- pr <- persp(th1_seq, th2_seq, t(ZZ), -->
+<!--             xlab = expression(theta[1]), -->
+<!--             ylab = expression(theta[2]), -->
+<!--             zlab = "ESS", -->
+<!--             theta = 40, phi = 25, ticktype = "detailed", -->
+<!--             main = "SSE surface with LSE and floor contours") -->
+<!-- ## LSE point and a drop line to the floor -->
+<!-- z_hat <- sse_fun(th1_hat, th2_hat) -->
+<!-- p_hat  <- trans3d(th1_hat, th2_hat, z_hat, pmat = pr) -->
+<!-- p_floor <- trans3d(th1_hat, th2_hat, zmin, pmat = pr) -->
+<!-- points(p_hat, pch = 19, cex = 1.2) -->
+<!-- segments(p_hat$x, p_hat$y, p_floor$x, p_floor$y, lty = 1) -->
+<!-- ## Shadow (floor) contours: compute contour lines, then project with trans3d() -->
+<!-- cls <- contourLines(th1_seq, th2_seq, t(ZZ), nlevels = 15) -->
+<!-- for (cl in cls) { -->
+<!--   tp <- trans3d(cl$x, cl$y, rep(zmin, length(cl$x)), pmat = pr) -->
+<!--   lines(tp, lwd = 0.6) -->
+<!-- } -->
+<!-- ``` -->
+<p>Unlike with the linear model, there is no formula that can be solved directly to find the least-squares estimates. Instead, the least-squares estimates (and their standard errors) must be found using a numerical minimization algorithm. That is, the computer will use a routine to iteratively try different parameter values (in an intelligent manner) and proceed until it thinks it has found a set of parameter values that minimize the SSE (within a certain tolerance).</p>
+<p>While we can trust that the numerical minimization routine implemented by R or SAS is a reasonably good one, all numerical minimization routines rely critically on finding a good set of starting values for the parameters. That is, unlike in a linear model, we must initiate the algorithm with a reasonable guess of the parameter values that is in the ballpark of the least-squares estimates. Here is where it is especially beneficial to have direct interpretations of the model parameters. Based on our previous analysis, we might choose a starting values of (say) <span class="math inline">\(\theta_1 = 200\)</span> and <span class="math inline">\(\theta_2 = 0.1\)</span>. (Note that R will try to find starting values if they aren’t provided. However, the documentation to nls says that these starting values are a “very cheap guess”.)</p>
+<p>Equipped with our choice of starting values, we are ready to find the least-squares estimates using <code>nls</code>:</p>
+<div class="sourceCode" id="cb128"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb128-1"><a href="non-linear-regression.html#cb128-1" tabindex="-1"></a>fm1 <span class="ot">&lt;-</span> <span class="fu">nls</span>(velocity <span class="sc">~</span> theta1 <span class="sc">*</span> conc <span class="sc">/</span> (theta2 <span class="sc">+</span> conc), <span class="at">data =</span> puromycin, </span>
+<span id="cb128-2"><a href="non-linear-regression.html#cb128-2" tabindex="-1"></a>             <span class="at">start =</span> <span class="fu">list</span>(<span class="at">theta1 =</span> <span class="dv">200</span>, <span class="at">theta2 =</span> <span class="fl">0.1</span>))</span>
+<span id="cb128-3"><a href="non-linear-regression.html#cb128-3" tabindex="-1"></a><span class="fu">summary</span>(fm1)</span></code></pre></div>
+<pre><code>## 
+## Formula: velocity ~ theta1 * conc/(theta2 + conc)
+## 
+## Parameters:
+##         Estimate Std. Error t value Pr(&gt;|t|)    
+## theta1 2.127e+02  6.947e+00  30.615 3.24e-11 ***
+## theta2 6.412e-02  8.281e-03   7.743 1.57e-05 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 10.93 on 10 degrees of freedom
+## 
+## Number of iterations to convergence: 6 
+## Achieved convergence tolerance: 6.093e-06</code></pre>
+<p>In the call to <code>nls</code>, the first argument is a formula where we specify the non-linear model that we wish to fit. In this data set, “velocity” is the response and “conc” is the predictor. The last argument to <code>nls</code> is a list of starting values. The list contains one starting value for each parameter in the model. (In R, “lists” are like vectors, except that lists can contain things other than numbers.)</p>
+<p>The output shows that the least squares estimates are <span class="math inline">\(\hat{\theta}_1 =212.7\)</span> and <span class="math inline">\(\hat{\theta}_2 =0.064\)</span>. We also get estimated standard errors for each of the parameters, as well as <span class="math inline">\(t\)</span>-tests of <span class="math inline">\(H_0\)</span>: <span class="math inline">\(\theta =0\)</span> vs. <span class="math inline">\(H_a\)</span>: <span class="math inline">\(\theta \ne 0\)</span>. Note that the <span class="math inline">\(t\)</span>-tests are not particularly useful in this case — there’s no reason why we would entertain the possibility that either <span class="math inline">\(\theta_1\)</span> or <span class="math inline">\(\theta_2\)</span> are equal to 0.</p>
+<p>The last portion of the output from nls tells us about the performance of the numerical algorithm that was used to find the least-squares estimates. We won’t delve into this information here, but if you need to use non-linear least squares for something important, be sure to acquaint yourself with what this output means. Like linear least-squares, there are cases where non-linear least squares will not work (or will not work well), and it is this portion of the output that will give you a clue when you’ve encountered one of these cases.</p>
+<p>We can examine the model fit by overlaying a fitted curve:</p>
+<div class="sourceCode" id="cb130"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb130-1"><a href="non-linear-regression.html#cb130-1" tabindex="-1"></a><span class="fu">with</span>(puromycin, <span class="fu">plot</span>(velocity <span class="sc">~</span> conc, <span class="at">xlab =</span> <span class="st">&quot;concentration&quot;</span>, <span class="at">ylab =</span> <span class="st">&quot;velocity&quot;</span>))</span>
+<span id="cb130-2"><a href="non-linear-regression.html#cb130-2" tabindex="-1"></a>mm.fit <span class="ot">&lt;-</span> <span class="cf">function</span>(x) (<span class="fl">212.7</span> <span class="sc">*</span> x) <span class="sc">/</span> (<span class="fl">0.06412</span> <span class="sc">+</span> x)</span>
+<span id="cb130-3"><a href="non-linear-regression.html#cb130-3" tabindex="-1"></a><span class="fu">curve</span>(mm.fit, <span class="at">from =</span> <span class="fu">min</span>(puromycin<span class="sc">$</span>conc), <span class="at">to =</span> <span class="fu">max</span>(puromycin<span class="sc">$</span>conc), <span class="at">col =</span> <span class="st">&quot;red&quot;</span>, <span class="at">add =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
+<p><img src="03-NonlinearRegression_files/figure-html/unnamed-chunk-7-1.png" width="384" style="display: block; margin: auto;" /></p>
+<p>It is instructive to compare the fit of this non-linear model with the fit from a few polynomial regressions. Neither the quadratic nor the cubic models fits very well in this case. Polynomial models often have a difficult time handling a data set with an asymptote. In this case, the Michaelis-Menten model clearly seems preferable.</p>
+<div class="sourceCode" id="cb131"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb131-1"><a href="non-linear-regression.html#cb131-1" tabindex="-1"></a>quad <span class="ot">&lt;-</span> <span class="fu">lm</span>(velocity <span class="sc">~</span> conc <span class="sc">+</span> <span class="fu">I</span>(conc<span class="sc">^</span><span class="dv">2</span>), <span class="at">data =</span> puromycin)</span>
+<span id="cb131-2"><a href="non-linear-regression.html#cb131-2" tabindex="-1"></a>cubic <span class="ot">&lt;-</span> <span class="fu">lm</span>(velocity <span class="sc">~</span> conc <span class="sc">+</span> <span class="fu">I</span>(conc<span class="sc">^</span><span class="dv">2</span>) <span class="sc">+</span> <span class="fu">I</span>(conc<span class="sc">^</span><span class="dv">3</span>), <span class="at">data =</span> puromycin)</span>
+<span id="cb131-3"><a href="non-linear-regression.html#cb131-3" tabindex="-1"></a></span>
+<span id="cb131-4"><a href="non-linear-regression.html#cb131-4" tabindex="-1"></a>quad.coef <span class="ot">&lt;-</span> <span class="fu">as.vector</span>(<span class="fu">coefficients</span>(quad))</span>
+<span id="cb131-5"><a href="non-linear-regression.html#cb131-5" tabindex="-1"></a>quad.fit <span class="ot">&lt;-</span> <span class="cf">function</span>(x) quad.coef[<span class="dv">1</span>] <span class="sc">+</span> quad.coef[<span class="dv">2</span>] <span class="sc">*</span> x <span class="sc">+</span> quad.coef[<span class="dv">3</span>] <span class="sc">*</span> x<span class="sc">^</span><span class="dv">2</span></span>
+<span id="cb131-6"><a href="non-linear-regression.html#cb131-6" tabindex="-1"></a></span>
+<span id="cb131-7"><a href="non-linear-regression.html#cb131-7" tabindex="-1"></a>cubic.coef <span class="ot">&lt;-</span> <span class="fu">as.vector</span>(<span class="fu">coefficients</span>(cubic))</span>
+<span id="cb131-8"><a href="non-linear-regression.html#cb131-8" tabindex="-1"></a>cubic.fit <span class="ot">&lt;-</span> <span class="cf">function</span>(x) cubic.coef[<span class="dv">1</span>] <span class="sc">+</span> cubic.coef[<span class="dv">2</span>] <span class="sc">*</span> x <span class="sc">+</span> cubic.coef[<span class="dv">3</span>] <span class="sc">*</span> x<span class="sc">^</span><span class="dv">2</span> <span class="sc">+</span> cubic.coef[<span class="dv">4</span>] <span class="sc">*</span> x<span class="sc">^</span><span class="dv">3</span></span>
+<span id="cb131-9"><a href="non-linear-regression.html#cb131-9" tabindex="-1"></a>  </span>
+<span id="cb131-10"><a href="non-linear-regression.html#cb131-10" tabindex="-1"></a><span class="fu">with</span>(puromycin, <span class="fu">plot</span>(velocity <span class="sc">~</span> conc, <span class="at">xlab =</span> <span class="st">&quot;concentration&quot;</span>, <span class="at">ylab =</span> <span class="st">&quot;velocity&quot;</span>, <span class="at">ylim =</span> <span class="fu">c</span>(<span class="fu">min</span>(velocity), <span class="dv">230</span>)))</span>
+<span id="cb131-11"><a href="non-linear-regression.html#cb131-11" tabindex="-1"></a><span class="fu">curve</span>(quad.fit, <span class="at">from =</span> <span class="fu">min</span>(puromycin<span class="sc">$</span>conc), <span class="at">to =</span> <span class="fu">max</span>(puromycin<span class="sc">$</span>conc), <span class="at">add =</span> <span class="cn">TRUE</span>, <span class="at">col =</span> <span class="st">&quot;blue&quot;</span>)</span>
+<span id="cb131-12"><a href="non-linear-regression.html#cb131-12" tabindex="-1"></a><span class="fu">curve</span>(cubic.fit, <span class="at">from =</span> <span class="fu">min</span>(puromycin<span class="sc">$</span>conc), <span class="at">to =</span> <span class="fu">max</span>(puromycin<span class="sc">$</span>conc), <span class="at">add =</span> <span class="cn">TRUE</span>, <span class="at">col =</span> <span class="st">&quot;forestgreen&quot;</span>)</span>
+<span id="cb131-13"><a href="non-linear-regression.html#cb131-13" tabindex="-1"></a>  </span>
+<span id="cb131-14"><a href="non-linear-regression.html#cb131-14" tabindex="-1"></a><span class="fu">legend</span>(<span class="at">x =</span> <span class="fl">0.6</span>, <span class="at">y =</span> <span class="dv">100</span>, <span class="at">legend =</span> <span class="fu">c</span>(<span class="st">&quot;quadratic&quot;</span>, <span class="st">&quot;cubic&quot;</span>), <span class="at">col =</span> <span class="fu">c</span>(<span class="st">&quot;blue&quot;</span>, <span class="st">&quot;darkgreen&quot;</span>), <span class="at">lty =</span> <span class="st">&quot;solid&quot;</span>, <span class="at">bty =</span> <span class="st">&quot;n&quot;</span>)</span></code></pre></div>
+<p><img src="03-NonlinearRegression_files/figure-html/unnamed-chunk-8-1.png" width="384" style="display: block; margin: auto;" /></p>
+
+</div>
+</div>
+<h3>Bibliography<a href="bibliography.html#bibliography" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div id="refs" class="references csl-bib-body hanging-indent" entry-spacing="0">
+<div id="ref-bates1988nonlinear" class="csl-entry">
+Bates, Douglas M, and Donald G Watts. 1988. <em>Nonlinear Regression Analysis and Its Applications</em>. Wiley.
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="multiple-regression.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="generalized-linear-models.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+  "sharing": {
+    "github": false,
+    "facebook": true,
+    "twitter": true,
+    "linkedin": false,
+    "weibo": false,
+    "instapaper": false,
+    "vk": false,
+    "whatsapp": false,
+    "all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+  },
+  "fontsettings": {
+    "theme": "white",
+    "family": "serif",
+    "size": 2
+  },
+  "edit": {
+    "link": null,
+    "text": null
+  },
+  "history": {
+    "link": null,
+    "text": null
+  },
+  "view": {
+    "link": null,
+    "text": null
+  },
+  "download": null,
+  "search": {
+    "engine": "fuse",
+    "options": null
+  },
+  "toc": {
+    "collapse": "section"
+  }
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

@@ -58,14 +58,9 @@ leverage-influential-points-and-standardized-residuals
 leverage
 standardized-residuals
 cooks-distance
-non-linear-regression-and-smoothing
+non-linear-regression
 polynomial-regression
 nls
-starsmoothing-methods
-nearest-neighbor-methods
-loess-smoothers
-splines
-generalized-additive-models-gams
 generalized-linear-models
 poisson-regression
 binary-responses
@@ -73,6 +68,11 @@ individual-binary-responses-tb-in-boar
 grouped-binary-data-industrial-melanism
 implementation-in-sas
 complete-separation
+smoothing
+nearest-neighbor-methods
+loess-smoothers
+splines
+generalized-additive-models-gams
 one-factor-anova
 grouped-data-and-the-design-of-experiments-doe-an-overview
 a-vocabulary-for-describing-designed-experiments
