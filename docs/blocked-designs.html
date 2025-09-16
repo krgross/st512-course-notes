@@ -23,7 +23,7 @@
 <meta name="author" content="Kevin Gross" />
 
 
-<meta name="date" content="2025-08-20" />
+<meta name="date" content="2025-09-16" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -243,15 +243,16 @@ div.csl-indent {
 <li class="chapter" data-level="" data-path="multiple-regression.html"><a href="multiple-regression.html#additional-results"><i class="fa fa-check"></i>Additional results</a></li>
 </ul></li>
 </ul></li>
-<li class="chapter" data-level="3" data-path="non-linear-regression-models.html"><a href="non-linear-regression-models.html"><i class="fa fa-check"></i><b>3</b> Non-linear regression models</a>
+<li class="chapter" data-level="3" data-path="non-linear-regression-and-smoothing.html"><a href="non-linear-regression-and-smoothing.html"><i class="fa fa-check"></i><b>3</b> Non-linear regression and smoothing</a>
 <ul>
-<li class="chapter" data-level="3.1" data-path="non-linear-regression-models.html"><a href="non-linear-regression-models.html#polynomial-regression"><i class="fa fa-check"></i><b>3.1</b> Polynomial regression</a></li>
-<li class="chapter" data-level="3.2" data-path="non-linear-regression-models.html"><a href="non-linear-regression-models.html#nls"><i class="fa fa-check"></i><b>3.2</b> Non-linear least squares</a></li>
-<li class="chapter" data-level="3.3" data-path="non-linear-regression-models.html"><a href="non-linear-regression-models.html#starsmoothing-methods"><i class="fa fa-check"></i><b>3.3</b> <em><span class="math inline">\(^\star\)</span>Smoothing methods</em></a>
+<li class="chapter" data-level="3.1" data-path="non-linear-regression-and-smoothing.html"><a href="non-linear-regression-and-smoothing.html#polynomial-regression"><i class="fa fa-check"></i><b>3.1</b> Polynomial regression</a></li>
+<li class="chapter" data-level="3.2" data-path="non-linear-regression-and-smoothing.html"><a href="non-linear-regression-and-smoothing.html#nls"><i class="fa fa-check"></i><b>3.2</b> Non-linear least squares</a></li>
+<li class="chapter" data-level="3.3" data-path="non-linear-regression-and-smoothing.html"><a href="non-linear-regression-and-smoothing.html#starsmoothing-methods"><i class="fa fa-check"></i><b>3.3</b> <em><span class="math inline">\(^\star\)</span>Smoothing methods</em></a>
 <ul>
-<li class="chapter" data-level="3.3.1" data-path="non-linear-regression-models.html"><a href="non-linear-regression-models.html#loess-smoothers"><i class="fa fa-check"></i><b>3.3.1</b> Loess smoothers</a></li>
-<li class="chapter" data-level="3.3.2" data-path="non-linear-regression-models.html"><a href="non-linear-regression-models.html#splines"><i class="fa fa-check"></i><b>3.3.2</b> Splines</a></li>
-<li class="chapter" data-level="3.3.3" data-path="non-linear-regression-models.html"><a href="non-linear-regression-models.html#generalized-additive-models-gams"><i class="fa fa-check"></i><b>3.3.3</b> Generalized additive models (GAMs)</a></li>
+<li class="chapter" data-level="3.3.1" data-path="non-linear-regression-and-smoothing.html"><a href="non-linear-regression-and-smoothing.html#nearest-neighbor-methods"><i class="fa fa-check"></i><b>3.3.1</b> Nearest-neighbor methods</a></li>
+<li class="chapter" data-level="3.3.2" data-path="non-linear-regression-and-smoothing.html"><a href="non-linear-regression-and-smoothing.html#loess-smoothers"><i class="fa fa-check"></i><b>3.3.2</b> Loess smoothers</a></li>
+<li class="chapter" data-level="3.3.3" data-path="non-linear-regression-and-smoothing.html"><a href="non-linear-regression-and-smoothing.html#splines"><i class="fa fa-check"></i><b>3.3.3</b> Splines</a></li>
+<li class="chapter" data-level="3.3.4" data-path="non-linear-regression-and-smoothing.html"><a href="non-linear-regression-and-smoothing.html#generalized-additive-models-gams"><i class="fa fa-check"></i><b>3.3.4</b> Generalized additive models (GAMs)</a></li>
 </ul></li>
 </ul></li>
 <li class="chapter" data-level="4" data-path="generalized-linear-models.html"><a href="generalized-linear-models.html"><i class="fa fa-check"></i><b>4</b> Generalized linear models</a>
@@ -416,8 +417,8 @@ mean of x
 <!-- \end{center} -->
 <p>This is a randomized complete block design (RCBD). A RCBD consists of several blocks, each of which is divided into several homogeneous EUs. Treatments are randomly assigned to EUs within each block. A blocked design is “complete” when each level of the experimental treatment is represented at least once in every block. In contrast, a blocked design is “incomplete” when some experimental treatments are missing from one or more blocks.<a href="#fn28" class="footnote-ref" id="fnref28"><sup>28</sup></a> A <em>standard</em> RCBD is one in which every treatment (or every treatment combination) is assigned to exactly one EU in each block.</p>
 <p>The classical way to analyze data from an RCBD is to include the block as an additional factor in the ANOVA, albeit a factor that is not engaged in interactions with the treatment factors. For the grip strength data, we would treat “subject” (the person) as a blocking factor.</p>
-<div class="sourceCode" id="cb310"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb310-1"><a href="blocked-designs.html#cb310-1" tabindex="-1"></a>grip <span class="ot">&lt;-</span> <span class="fu">read.table</span>(<span class="st">&quot;data/gripall-long.txt&quot;</span>, <span class="at">head =</span> T, <span class="at">stringsAsFactors =</span> T)</span>
-<span id="cb310-2"><a href="blocked-designs.html#cb310-2" tabindex="-1"></a><span class="fu">summary</span>(grip)</span></code></pre></div>
+<div class="sourceCode" id="cb316"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb316-1"><a href="blocked-designs.html#cb316-1" tabindex="-1"></a>grip <span class="ot">&lt;-</span> <span class="fu">read.table</span>(<span class="st">&quot;data/gripall-long.txt&quot;</span>, <span class="at">head =</span> T, <span class="at">stringsAsFactors =</span> T)</span>
+<span id="cb316-2"><a href="blocked-designs.html#cb316-2" tabindex="-1"></a><span class="fu">summary</span>(grip)</span></code></pre></div>
 <pre><code>##     subject          hand        strength    
 ##  AA     :  2   dominant:145   Min.   :119.0  
 ##  AB     :  2   off     :145   1st Qu.:216.2  
@@ -426,8 +427,8 @@ mean of x
 ##  AE     :  2                  3rd Qu.:362.5  
 ##  AF     :  2                  Max.   :503.0  
 ##  (Other):278</code></pre>
-<div class="sourceCode" id="cb312"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb312-1"><a href="blocked-designs.html#cb312-1" tabindex="-1"></a>fm1 <span class="ot">&lt;-</span> <span class="fu">lm</span>(strength <span class="sc">~</span> subject <span class="sc">+</span> hand, <span class="at">data =</span> grip)</span>
-<span id="cb312-2"><a href="blocked-designs.html#cb312-2" tabindex="-1"></a><span class="fu">anova</span>(fm1)</span></code></pre></div>
+<div class="sourceCode" id="cb318"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb318-1"><a href="blocked-designs.html#cb318-1" tabindex="-1"></a>fm1 <span class="ot">&lt;-</span> <span class="fu">lm</span>(strength <span class="sc">~</span> subject <span class="sc">+</span> hand, <span class="at">data =</span> grip)</span>
+<span id="cb318-2"><a href="blocked-designs.html#cb318-2" tabindex="-1"></a><span class="fu">anova</span>(fm1)</span></code></pre></div>
 <pre><code>## Analysis of Variance Table
 ## 
 ## Response: strength

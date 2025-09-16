@@ -58,10 +58,11 @@ leverage-influential-points-and-standardized-residuals
 leverage
 standardized-residuals
 cooks-distance
-non-linear-regression-models
+non-linear-regression-and-smoothing
 polynomial-regression
 nls
 starsmoothing-methods
+nearest-neighbor-methods
 loess-smoothers
 splines
 generalized-additive-models-gams

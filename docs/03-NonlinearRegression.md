@@ -1,4 +1,4 @@
-# Non-linear regression models
+# Non-linear regression and smoothing
 
 
 
@@ -156,7 +156,56 @@ To estimate parameters, we can define a least-squares criterion just as before. 
 \[
 SSE=\sum_{i=1}^ne_i^2 = \sum_{i=1}^n\left(y_i -\hat{y}_i \right)^2  =\sum_{i=1}^n\left(y_i -\left[\frac{\hat{\theta }_1 x_i }{\hat{\theta }_{2} +x_i } \right]\right)^2  
 \] 
-However, unlike with the linear model, there is no formula that can be solved directly to find the least-squares estimates.  Instead, the least-squares estimates (and their standard errors) must be found using a numerical minimization algorithm.  That is, the computer will use a routine to iteratively try different parameter values (in an intelligent manner) and proceed until it thinks it has found a set of parameter values that minimize the SSE (within a certain tolerance).  
+
+<!-- The commented code below was an attempt to draw an SSE surface using ChatGPT. ChatGPT generated the figure, but it's ugly here.  Not going to try to sort it out. -->
+
+<!-- The left panel of the plot below shows the $SSE$ as a function of $\theta_1$ and $\theta_2$, with a contour plot lying in the $(\theta_1, \theta_2)$ plane.  The right panel shows just the a contour plot. The red X shows the position of the parameter values that minimizes the SSE. -->
+
+<!-- ```{r echo = FALSE} -->
+<!-- # code from ChatGPT 5 -->
+
+<!-- th1_hat <- 212.7 -->
+<!-- th2_hat <- 0.06412 -->
+
+<!-- sse_fun <- function(th1, th2) { -->
+
+<!--   x <- puromycin$conc -->
+<!--   y <- puromycin$velocity -->
+
+<!--   yhat <- th1 * x / (th2 + x) -->
+<!--   sum((y - yhat)^2) -->
+<!-- } -->
+
+<!-- th1_seq <- seq(150, 260, length.out = 140) -->
+<!-- th2_seq <- seq(0.01, 0.50, length.out = 140) -->
+
+<!-- ZZ <- outer(th1_seq, th2_seq, Vectorize(function(a, b) sse_fun(a, b))) -->
+<!-- zmin <- min(ZZ) -->
+
+<!-- ## 3D surface -->
+<!-- pr <- persp(th1_seq, th2_seq, t(ZZ), -->
+<!--             xlab = expression(theta[1]), -->
+<!--             ylab = expression(theta[2]), -->
+<!--             zlab = "ESS", -->
+<!--             theta = 40, phi = 25, ticktype = "detailed", -->
+<!--             main = "SSE surface with LSE and floor contours") -->
+
+<!-- ## LSE point and a drop line to the floor -->
+<!-- z_hat <- sse_fun(th1_hat, th2_hat) -->
+<!-- p_hat  <- trans3d(th1_hat, th2_hat, z_hat, pmat = pr) -->
+<!-- p_floor <- trans3d(th1_hat, th2_hat, zmin, pmat = pr) -->
+<!-- points(p_hat, pch = 19, cex = 1.2) -->
+<!-- segments(p_hat$x, p_hat$y, p_floor$x, p_floor$y, lty = 1) -->
+
+<!-- ## Shadow (floor) contours: compute contour lines, then project with trans3d() -->
+<!-- cls <- contourLines(th1_seq, th2_seq, t(ZZ), nlevels = 15) -->
+<!-- for (cl in cls) { -->
+<!--   tp <- trans3d(cl$x, cl$y, rep(zmin, length(cl$x)), pmat = pr) -->
+<!--   lines(tp, lwd = 0.6) -->
+<!-- } -->
+<!-- ``` -->
+
+Unlike with the linear model, there is no formula that can be solved directly to find the least-squares estimates.  Instead, the least-squares estimates (and their standard errors) must be found using a numerical minimization algorithm.  That is, the computer will use a routine to iteratively try different parameter values (in an intelligent manner) and proceed until it thinks it has found a set of parameter values that minimize the SSE (within a certain tolerance).  
 
 While we can trust that the numerical minimization routine implemented by R or SAS is a reasonably good one, all numerical minimization routines rely critically on finding a good set of starting values for the parameters.  That is, unlike in a linear model, we must initiate the algorithm with a reasonable guess of the parameter values that is in the ballpark of the least-squares estimates.  Here is where it is especially beneficial to have direct interpretations of the model parameters.  Based on our previous analysis, we might choose a starting values of (say) $\theta_1 = 200$ and $\theta_2 = 0.1$.  (Note that R will try to find starting values if they aren't provided.  However, the documentation to nls says that these starting values are a "very cheap guess".)
 
@@ -224,16 +273,13 @@ legend(x = 0.6, y = 100, legend = c("quadratic", "cubic"), col = c("blue", "dark
 
 ## *$^\star$Smoothing methods*
 
-Sometimes, all we want to do is to generate a curve that characterizes the relationship between two variables, and we don't necessarily care about describing that curve with a parameterized equation.  This section describes several methods for doing so.  The contents of this section are in an early stage of development.
+Sometimes, all we want to do is to generate a curve that characterizes the relationship between two variables, and we don't necessarily care about describing that curve with a parameterized equation.  This section describes several methods for doing so with a single predictor.  (Many of these methods can be naturally extended to have several predictors.)  This section illustrates some of these ideas.  This section is in an early stage of development.
 
-### Loess smoothers
-
-"Loess" is an acronym for [lo]cal regr[ess]ion.  Nomenclature can be a bit frustrating with loess models. As we will see later, some versions of loess models use weighted least squares instead of ordinary least squares, and are called "lowess" models to emphasize the use of weighted least squares.   However, the basic `R` routine for fitting lo(w)ess models is called `loess`, but uses the weighted least-squares fitting with its default factory settings.  We will illustrate loess smoothers with the bioluminescence data found in the ISIT data set.  These data can be found by visiting the webpage for the book "Mixed Effects Models and Extensions in Ecology with R" by Zuur et al. (@zuur2009mixed).  
+As a running example, we will consider a data set originally published by @gillibrand2007deep, and analyzed extensively in the textbook by @zuur2009mixed.  Zuur et al. say that these data describe the number of sources of "pelagic bioluminescence along a depth gradient in the northeast Atlantic Ocean."  We focus particulary on the data at station 16.  The pattern that we wish to characterize is shown below.
 
 
 ``` r
 ## download the data from the book's website
-
 isit <- read.table("data/ISIT.txt", head = T)
 
 ## extract the data from station 16
@@ -248,6 +294,134 @@ with(st16, plot(sources ~ depth))
 ```
 
 <img src="03-NonlinearRegression_files/figure-html/unnamed-chunk-9-1.png" width="480" style="display: block; margin: auto;" />
+
+### Nearest-neighbor methods
+
+<!-- Some coding assistance in this section from ChatGPT 5. -->
+
+The simplest of all possible smoothing methods is a $k$-nearest neighbor method.  For this method, the value of the smooth at a target depth ($x$) is given by the average of the response ($y$) values of the $k$ nearest observed depths to $x$. We implement this with `kknn::kknn()` using `kernel = "rectangular"`, which assigns equal weights to the `k` nearest neighbors.
+
+
+
+
+``` r
+depth_grid <- data.frame(depth = seq(min(st16$depth), max(st16$depth), length.out = 300))
+
+fit_knn_grid <- function(train_df, new_df, k) {
+  mod <- kknn::kknn(
+    formula = sources ~ depth,
+    train = train_df,
+    test  = new_df,
+    k     = k,
+    kernel = "rectangular"
+  )
+  data.frame(depth = new_df$depth, fit = fitted(mod))
+}
+```
+
+
+``` r
+Ks_demo <- c(5, 15, 31)
+cols <- 1:length(Ks_demo)  # base palette
+
+par(mfrow = c(1, 3))
+
+for (i in seq_along(Ks_demo)) {
+  # Base scatter
+  with(st16, plot(depth, sources, pch = 19, cex = 0.7,
+       xlab = "Depth", ylab = "Sources"))
+  
+# Add k-NN smooth lines
+
+  k <- Ks_demo[i]
+  pred <- fit_knn_grid(st16, depth_grid, k)
+  lines(pred$depth, pred$fit, lwd = 2, col = cols[i])
+}
+
+legend("topright", legend = paste("k =", Ks_demo),
+       col = cols, lwd = 2, bty = "n")
+```
+
+<img src="03-NonlinearRegression_files/figure-html/unnamed-chunk-10-1.png" width="720" style="display: block; margin: auto;" />
+
+As $k$ increases, the trend becomes smoother.
+
+To find the best `k`, we use cross-validation.  Here, we evaluate a set of odd `k` values with 10-fold cross-validation and choose the `k` that minimizes out-of-fold SSE.  
+
+
+``` r
+set.seed(1)
+
+n <- nrow(st16)
+Kfold <- 10
+fold_id <- sample(rep(1:Kfold, length.out = n))
+
+# Compute the minimum possible training size across folds
+fold_sizes <- as.numeric(table(fold_id))
+min_train_size <- min(n - fold_sizes)  # worst-case training rows
+
+# Cap k by this minimum training size (and by 61 as before), and use odd k >= 3
+max_k_allowed <- max(3, min(61, min_train_size))
+Ks <- seq(3, max_k_allowed, by = 2)
+
+cv_mse <- numeric(length(Ks))
+names(cv_mse) <- Ks
+
+for (j in seq_along(Ks)) {
+  k <- Ks[j]
+  mse_fold <- numeric(Kfold)
+  for (f in 1:Kfold) {
+    train_df <- st16[fold_id != f, , drop = FALSE]
+    test_df  <- st16[fold_id == f, , drop = FALSE]
+    if (nrow(test_df) == 0 || nrow(train_df) < k) { 
+      mse_fold[f] <- NA_real_; 
+      next 
+    }
+    mod <- kknn::kknn(sources ~ depth, train = train_df, test = test_df,
+                      k = k, kernel = "rectangular")
+    mse_fold[f] <- mean((test_df$sources - as.numeric(fitted(mod)))^2, na.rm = TRUE)
+  }
+  cv_mse[j] <- mean(mse_fold, na.rm = TRUE)
+}
+
+best_k <- as.integer(names(cv_mse)[which.min(cv_mse)])
+best_k
+```
+
+```
+## [1] 3
+```
+
+
+``` r
+plot(as.integer(names(cv_mse)), cv_mse, type = "b",
+     xlab = "Number of Neighbors (k)", ylab = "Out-of-fold MSE",
+     main = "10-fold CV to Choose k")
+grid()
+abline(v = best_k, lty = 2)
+text(best_k, min(cv_mse, na.rm = TRUE), labels = paste("best k =", best_k),
+     pos = 4, cex = 0.9)
+```
+
+<img src="03-NonlinearRegression_files/figure-html/cv-plot-1.png" width="576" style="display: block; margin: auto;" />
+
+In this case, cross-validations suggests we should set $k=3$!.  Here's the final fit with $k=3$.
+
+
+``` r
+pred_final <- fit_knn_grid(st16, depth_grid, best_k)
+
+plot(st16$depth, st16$sources, pch = 19, cex = 0.7,
+     xlab = "Depth", ylab = "Sources",
+     main = paste("k-NN Smoother with CV-selected k =", best_k))
+lines(pred_final$depth, pred_final$fit, lwd = 2)
+```
+
+<img src="03-NonlinearRegression_files/figure-html/final-fit-1.png" width="624" style="display: block; margin: auto;" />
+
+### Loess smoothers
+
+A loess smoother takes the logic of $k$-nearest neighbor fitting one step further. Now, instead of simply averaging the $k$ nearest neighbors, we fit a regression model to the nearest neighbors, and use the predicted value of the regression trend as our smooth.  "Loess" is an acronym for [lo]cal regr[ess]ion.  Nomenclature can be a bit frustrating with loess models. As we will see later, some versions of loess models use weighted least squares instead of ordinary least squares, and are called "lowess" models to emphasize the use of weighted least squares.   However, the basic `R` routine for fitting lo(w)ess models is called `loess`, but uses the weighted least-squares fitting with its default factory settings.  
 
 Fit a loess smoother using the factory settings:
 
@@ -302,7 +476,7 @@ lines(x   = depth.vals,
       lty = "dashed")
 ```
 
-<img src="03-NonlinearRegression_files/figure-html/unnamed-chunk-11-1.png" width="480" style="display: block; margin: auto;" />
+<img src="03-NonlinearRegression_files/figure-html/unnamed-chunk-12-1.png" width="480" style="display: block; margin: auto;" />
 
 Examine the residuals:
 
@@ -323,7 +497,7 @@ plot(st16.lo$residuals ~ st16$depth)
 abline(h = 0, lty = "dotted")
 ```
 
-<img src="03-NonlinearRegression_files/figure-html/unnamed-chunk-12-1.png" width="480" style="display: block; margin: auto;" />
+<img src="03-NonlinearRegression_files/figure-html/unnamed-chunk-13-1.png" width="480" style="display: block; margin: auto;" />
 
 Let's look at how changing the span changes the fit.  We'll write a custom function to fit a LOESS curve, and then call the function with various values for the span.
 
@@ -376,19 +550,19 @@ Now we'll call the function several times, each time chanigng the value of the `
 PlotLoessFit(x = st16$depth, y = st16$sources, span = 0.5)
 ```
 
-<img src="03-NonlinearRegression_files/figure-html/unnamed-chunk-14-1.png" width="480" style="display: block; margin: auto;" />
+<img src="03-NonlinearRegression_files/figure-html/unnamed-chunk-15-1.png" width="480" style="display: block; margin: auto;" />
 
 ``` r
 PlotLoessFit(x = st16$depth, y = st16$sources, span = 0.25)
 ```
 
-<img src="03-NonlinearRegression_files/figure-html/unnamed-chunk-14-2.png" width="480" style="display: block; margin: auto;" />
+<img src="03-NonlinearRegression_files/figure-html/unnamed-chunk-15-2.png" width="480" style="display: block; margin: auto;" />
 
 ``` r
 PlotLoessFit(x = st16$depth, y = st16$sources, span = 0.1)
 ```
 
-<img src="03-NonlinearRegression_files/figure-html/unnamed-chunk-14-3.png" width="480" style="display: block; margin: auto;" />
+<img src="03-NonlinearRegression_files/figure-html/unnamed-chunk-15-3.png" width="480" style="display: block; margin: auto;" />
 
 Let's try a loess fit with a locally linear regression:
 
@@ -397,7 +571,7 @@ Let's try a loess fit with a locally linear regression:
 PlotLoessFit(x = st16$depth, y = st16$sources, span = 0.25, degree = 1)
 ```
 
-<img src="03-NonlinearRegression_files/figure-html/unnamed-chunk-15-1.png" width="480" style="display: block; margin: auto;" />
+<img src="03-NonlinearRegression_files/figure-html/unnamed-chunk-16-1.png" width="480" style="display: block; margin: auto;" />
 
 ### Splines
 
@@ -430,7 +604,7 @@ st16.rspline <- mgcv::gam(sources ~ s(depth, k = 6, fx = TRUE), data = st16)
 plot(st16.rspline, se = TRUE)
 ```
 
-<img src="03-NonlinearRegression_files/figure-html/unnamed-chunk-16-1.png" width="480" style="display: block; margin: auto;" />
+<img src="03-NonlinearRegression_files/figure-html/unnamed-chunk-17-1.png" width="480" style="display: block; margin: auto;" />
 
 Note that the plot includes only the portion of the model attributable to the covariate effect.  This is because we have actually fit an additive model (e.g., a GAM).  
 
@@ -452,7 +626,7 @@ lines(x = depth.vals, y = st16.fit$fit + 2 * st16.fit$se.fit, lty = "dashed")
 lines(x = depth.vals, y = st16.fit$fit - 2 * st16.fit$se.fit, lty = "dashed")
 ```
 
-<img src="03-NonlinearRegression_files/figure-html/unnamed-chunk-17-1.png" width="480" style="display: block; margin: auto;" />
+<img src="03-NonlinearRegression_files/figure-html/unnamed-chunk-18-1.png" width="480" style="display: block; margin: auto;" />
 
 We see that this particular fit is not flexible enough to capture the trend in luminescence at low depth.
 
@@ -496,7 +670,7 @@ st16.spline <- mgcv::gam(sources ~ s(depth), data = st16)
 plot(st16.spline, se = TRUE)  # note that the plot does not include the intercept
 ```
 
-<img src="03-NonlinearRegression_files/figure-html/unnamed-chunk-19-1.png" width="480" style="display: block; margin: auto;" />
+<img src="03-NonlinearRegression_files/figure-html/unnamed-chunk-20-1.png" width="480" style="display: block; margin: auto;" />
 
 Again, we make a plot that includes both the points and the fit
 
@@ -517,7 +691,7 @@ lines(x = depth.vals, y = st16.fit$fit + 2 * st16.fit$se.fit, lty = "dashed")
 lines(x = depth.vals, y = st16.fit$fit - 2 * st16.fit$se.fit, lty = "dashed")
 ```
 
-<img src="03-NonlinearRegression_files/figure-html/unnamed-chunk-20-1.png" width="480" style="display: block; margin: auto;" />
+<img src="03-NonlinearRegression_files/figure-html/unnamed-chunk-21-1.png" width="480" style="display: block; margin: auto;" />
 
 Let's ask for a summary:
 
@@ -715,7 +889,7 @@ The output reports the partial regression coefficient for the lone quantitative 
 plot(bird.gam1)
 ```
 
-<img src="03-NonlinearRegression_files/figure-html/unnamed-chunk-27-1.png" width="480" style="display: block; margin: auto;" /><img src="03-NonlinearRegression_files/figure-html/unnamed-chunk-27-2.png" width="480" style="display: block; margin: auto;" /><img src="03-NonlinearRegression_files/figure-html/unnamed-chunk-27-3.png" width="480" style="display: block; margin: auto;" /><img src="03-NonlinearRegression_files/figure-html/unnamed-chunk-27-4.png" width="480" style="display: block; margin: auto;" /><img src="03-NonlinearRegression_files/figure-html/unnamed-chunk-27-5.png" width="480" style="display: block; margin: auto;" />
+<img src="03-NonlinearRegression_files/figure-html/unnamed-chunk-28-1.png" width="480" style="display: block; margin: auto;" /><img src="03-NonlinearRegression_files/figure-html/unnamed-chunk-28-2.png" width="480" style="display: block; margin: auto;" /><img src="03-NonlinearRegression_files/figure-html/unnamed-chunk-28-3.png" width="480" style="display: block; margin: auto;" /><img src="03-NonlinearRegression_files/figure-html/unnamed-chunk-28-4.png" width="480" style="display: block; margin: auto;" /><img src="03-NonlinearRegression_files/figure-html/unnamed-chunk-28-5.png" width="480" style="display: block; margin: auto;" />
 
 In the interest of time, we take a casual approach to variable selection here.  We'll drop smooth terms that are clearly not significant to obtain:
 
@@ -753,7 +927,7 @@ summary(bird.gam2)
 plot(bird.gam2)
 ```
 
-<img src="03-NonlinearRegression_files/figure-html/unnamed-chunk-28-1.png" width="480" style="display: block; margin: auto;" />
+<img src="03-NonlinearRegression_files/figure-html/unnamed-chunk-29-1.png" width="480" style="display: block; margin: auto;" />
 
 Note that the GRAZE variable is currently treated as a numerical predictor.  We'll try fitting a model with GRAZE as a factor.  First we'll create a new variable that treats GRAZE as a factor.  We'll use the `summary` command to confirm that the new variable fGRAZE is indeed a factor.
 
@@ -786,7 +960,7 @@ bird.gam3 <- gam(ABUND ~ s(L.AREA) + fGRAZE, data = bird)
 plot(bird.gam3)
 ```
 
-<img src="03-NonlinearRegression_files/figure-html/unnamed-chunk-30-1.png" width="480" style="display: block; margin: auto;" />
+<img src="03-NonlinearRegression_files/figure-html/unnamed-chunk-31-1.png" width="480" style="display: block; margin: auto;" />
 
 ``` r
 summary(bird.gam3)
@@ -870,7 +1044,7 @@ plot(x = bird$GRAZE, y = bird.gam4$residuals)
 abline(h = 0, lty = "dashed")
 ```
 
-<img src="03-NonlinearRegression_files/figure-html/unnamed-chunk-33-1.png" width="480" style="display: block; margin: auto;" />
+<img src="03-NonlinearRegression_files/figure-html/unnamed-chunk-34-1.png" width="480" style="display: block; margin: auto;" />
 
 Both the plot and the model output suggest that the effect of grazing is primarily due to lower bird abundance in the most heavily grazed category.
 
