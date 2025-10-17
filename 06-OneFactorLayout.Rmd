@@ -301,237 +301,87 @@ If assumptions are violated, what can we do?  As with a two-sample $t$-test, the
 
 A second option with non-normal data is to try a non-parametric procedure.  A parametric method assumes that the data come from a population with a (so-called) parametric probability distribution.  A non-parametric method does not make any particular assumption about the distribution of the population(s) from which the data were collected.  The non-parametric equivalent to a one-factor ANOVA is the Kruskal-Wallis test.
 
-## Linear contrasts of group means {#contrasts}
+## Contrasts of group means {#contrasts}
 
-If we reject the null hypothesis that all group means are equal in a one-factor ANOVA, we usually want to go further and characterize how the group means differ.  The approach that we use for characterizing differences among group means hinges on whether we wish to pursue pre-planned comparisons of the group means or if we wish to pursue comparisons that are suggested by the data.  The distinction here is that a pre-planned comparison is one that you planned to investigate before having collected the data.  Pre-planned comparisons can be analyzed using linear contrasts, which are the topic of this section.  On the other hand, comparisons suggested by the data should be analyzed with multiple-comparisons procedures, which we will study later.
+If we reject the null hypothesis that all group means are equal in a one-factor ANOVA, we usually want to go further and characterize how the group means differ.  The approach that we use to characterize differences among group means depends on whether we are interested in pre-planned comparisons of the group means or in comparisons that are suggested by the data.  A pre-planned comparison is one that you planned to investigate before having collected the data.  Pre-planned comparisons can be analyzed using linear contrasts, which are the topic of this section.  Comparisons suggested by the data should be analyzed with [multiple-comparisons procedures](#multiple-testing), which we will study later.
 
-For pre-planned comparisons, the appropriate tools are linear contrasts.  A linear contrast generalizes the idea of a pairwise difference between two means.  A linear contrast is a special type of linear combination.  A *linear combination* of the group means is just a weighted sum of the group means.  It can be written as
+### Simple contrasts
+
+A linear contrast generalizes the idea of a pairwise difference between two means.  A linear contrast is a special type of linear combination.  A *linear combination* of the group means is a weighted sum of the group means.  It can be written as
 \[
 \theta = w_1 \mu_1 + w_2 \mu_2 + \ldots + w_g \mu_g.
 \]
 the $w$'s in the expression above are weights that we assign to each group mean.  We can treat a linear combination just like any other statistical parameter.  
 
-A *linear contrast* is a linear combination in which the weights add to 0:
+A (simple) *linear contrast* is a linear combination in which the weights add to 0:
 \[
 \sum_{i=1}^g w_i = 0.
 \]
+If all the group means are equal, then the true value of any contrast will be 0.  A little algebra will verify this claim. A single linear contrast is also called a simple contrast.  Later, we will encounter complex contrasts, which are collections of simple contrasts.
 
-*Example.*  Consider the hotdog data.  Number the groups alphabetically, such that $\mu_1$, $\mu_2$, and $\mu_3$ are the average calorie content for beef, meat, and poultry hotdogs, respectively.  A linear contrast that compares the average calorie content of beef hotdogs vs. poultry hotdogs is
+*Example.*  Consider the hotdog data.  Let $\mu_B$, $\mu_M$, and $\mu_P$ denote the average calorie content for beef, meat, and poultry hotdogs, respectively.  A linear contrast that compares the average calorie content of beef hotdogs vs. poultry hotdogs is
 \[
-\theta_1 = \mu_1 - \mu_3
+\theta_1 = \mu_B - \mu_P = (+1) \times \mu_B + 0 \times \mu_M + (-1) \times \mu_P.
 \]
-If all the group means are equal, then the true value of any contrast will be 0.  (A little algebra will verify this claim.)  For this reason, we are almost always interested in testing the null hypothesis that a contrast is equal to 0, vs. the two-sided alternative that it is not equal to 0.
 
-We can estimate a linear contrast (or any linear combination) simply by plugging in sample means for population means.  For the contrast above
+For a contrast, we are almost always interested in testing the null hypothesis that the contrast is 0 ($H_0: \theta_1 = 0$) against the alternative that the difference is not 0 ($H_a: \theta_1 \ne 0$).  Typically, this happens by computing a sum-of-squares associated with the contrast.  There's a formula for the sum-of-squares for a contrast, but it isn't enlightening, so we'll let the computer do the computations.  We'll present output here and focus on coding [later](#sas-contrasts).
+
+The sum-of-squares associated with the contrast $\theta_1$ is $SS(\theta_1) = 13328$.  To test $H_0: \theta_1 = 0$, we must first convert this sum-of-squares to a mean-square by dividing by the number of degrees of freedom associated with the contrast.  For a simple contrast, the associated df is 1.  We then compare the mean-square for the contrast to the MSE via an $F$-statistic.  For the contrast $\theta_1$, this plays out as
 \[
-\hat{\theta}_1 = \bar{y}_{1+} - \bar{y}_{3+} = 156.9 - 118.8 = 38.1
+F_{1,51} = \frac{MS(\theta_1)}{MS_{Error}} = \frac{SS(\theta_1) / 1}{SS_{Error} / (n_T - g)} = \frac{13328/1}{28067/51} = 24.22.
 \]
-Like any estimate, our estimate of a linear contrast has a standard error.  While we will usually rely on software to compute the standard error for us, the expression for the standard error writes as 
-\[
-s_{\hat{\theta}} = \sqrt{\left\{\frac{w_1^2}{n_1} + \frac{w_2^2}{n_2} + \ldots + \frac{w_g^2}{n_g} \right\} MS_{Error}}
-\]
-Perhaps the one thing to be gained from this formula is to consider the trivial linear combination $\theta = \mu_1$.  You will notice that the formula for the standard error reproduces the familiar formula for a sample mean.  
+Comparing to an $F_{1,51}$ distribution yields a $p$-value $<0.0001$.
 
-Confidence intervals for $\theta$ can be found by using critical values from a $t$-distribution with $n_T - g$ df.  (We use $n_T - g$ df because this is the number of df for the $MS_{Error}$.)  We can also test $H_0: \theta = \theta_0$ vs.\ any appropriate alternative hypothesis by calculating the $t$-statistic
-\[
-t = \frac{\hat{\theta} - \theta_0}{s_{\hat{\theta}}}
-\]  
-and comparing the value of the test statistic to a $t$-distribution with $n_T - g$ df.
+<!-- We can estimate a linear contrast (or any linear combination) simply by plugging in sample means for population means.  For the contrast above -->
+<!-- \[ -->
+<!-- \hat{\theta}_1 = \bar{y}_{1+} - \bar{y}_{3+} = 156.9 - 118.8 = 38.1 -->
+<!-- \] -->
+<!-- Like any estimate, our estimate of a linear contrast has a standard error.  While we will usually rely on software to compute the standard error for us, the expression for the standard error writes as  -->
+<!-- \[ -->
+<!-- s_{\hat{\theta}} = \sqrt{\left\{\frac{w_1^2}{n_1} + \frac{w_2^2}{n_2} + \ldots + \frac{w_g^2}{n_g} \right\} MS_{Error}} -->
+<!-- \] -->
+<!-- Perhaps the one thing to be gained from this formula is to consider the trivial linear combination $\theta = \mu_1$.  You will notice that the formula for the standard error reproduces the familiar formula for a sample mean.   -->
 
-*Example.* Suppose we wanted to investigate the difference between the average calorie content of beef hotdogs and the average calorie content of poultry hotdogs.  We have already expressed this difference as $\theta_1 = \mu_1 - \mu_3$, and estimated this difference as $\hat{\theta}_1 = 38.1$.  Now, to draw statistical inferences, we calculate the standard error of $\hat{\theta}_1$:
-\[
-s_{\hat{\theta}_1} = \sqrt{\left\{\frac{1^2}{20} + \frac{0^2}{17} + \frac{(-1)^2}{17} \right\} 550.3} =7.74.
-\]
-By finding the appropriate critical value from a $t$-distribution with $n_T - g = 54 - 3 = 51$ df, a 95\% CI for $\theta_1$  is $38.1 \pm 2.008 \times 7.74 = (22.6, 53.6)$.  Finally, to test $H_0: \theta_1 = 0$ vs.\ $H_0: \theta_1 \ne 0$, calculate the $t$-statistic
-\[
-t = \frac{38.1 - 0}{7.74} = 4.92
-\]
-and compare to a $t$-distribution with 51 df to generate a $p$-value of $9.4 \times 10^{-6}$.  Thus, there is overwhelming evidence that beef and poultry hotdogs differ in their average calorie content.
+<!-- Confidence intervals for $\theta$ can be found by using critical values from a $t$-distribution with $n_T - g$ df.  (We use $n_T - g$ df because this is the number of df for the $MS_{Error}$.)  We can also test $H_0: \theta = \theta_0$ vs.\ any appropriate alternative hypothesis by calculating the $t$-statistic -->
+<!-- \[ -->
+<!-- t = \frac{\hat{\theta} - \theta_0}{s_{\hat{\theta}}} -->
+<!-- \]   -->
+<!-- and comparing the value of the test statistic to a $t$-distribution with $n_T - g$ df. -->
 
-## Using SAS: The effects parameterization of the one-factor ANOVA
+<!-- *Example.* Suppose we wanted to investigate the difference between the average calorie content of beef hotdogs and the average calorie content of poultry hotdogs.  We have already expressed this difference as $\theta_1 = \mu_1 - \mu_3$, and estimated this difference as $\hat{\theta}_1 = 38.1$.  Now, to draw statistical inferences, we calculate the standard error of $\hat{\theta}_1$: -->
+<!-- \[ -->
+<!-- s_{\hat{\theta}_1} = \sqrt{\left\{\frac{1^2}{20} + \frac{0^2}{17} + \frac{(-1)^2}{17} \right\} 550.3} =7.74. -->
+<!-- \] -->
+<!-- By finding the appropriate critical value from a $t$-distribution with $n_T - g = 54 - 3 = 51$ df, a 95\% CI for $\theta_1$  is $38.1 \pm 2.008 \times 7.74 = (22.6, 53.6)$.  Finally, to test $H_0: \theta_1 = 0$ vs.\ $H_a: \theta_1 \ne 0$, calculate the $t$-statistic -->
+<!-- \[ -->
+<!-- t = \frac{38.1 - 0}{7.74} = 4.92 -->
+<!-- \] -->
+<!-- and compare to a $t$-distribution with 51 df to generate a $p$-value of $9.4 \times 10^{-6}$.  Thus, there is overwhelming evidence that beef and poultry hotdogs differ in their average calorie content. -->
 
-We will see that we can use SAS PROC GLM to do calculations for linear contrasts.  In preparation for doing so, we must learn about the model parameterization that PROC GLM uses for ANOVA models --- a parameterization called the "effects parameterization" (or "effects model").  This parameterization is not unique to SAS, and is commonly found in many statistics texts.  The effects parameterization seems like overkill for a one-factor ANOVA, but it will be more useful when we contemplate multi-factor ANOVA later.  
+### Complex contrasts
 
-### Effects-model parameterization of the one-factor ANOVA model
-
-The effects model simply re-expresses the mean of each treatment group as the sum of an overall reference level and a unique ``effect'' for that treatment group.  That is,
-\[
-\mu_i = \mu + \alpha_i.
-\]
-Here, $\mu$ is a reference level (alternatively called an intercept), and $\alpha_i$ is the “effect” of the group $i$.  For the moment, we will be intentionally vague about what we mean by a "reference level" and an "effect", and we will clarify later.  We can go one step further and write the one-factor ANOVA model for the entire data set as
-\[
-y_{ij} = \mu_i + \epsilon_{ij} = \mu + \alpha_i + \epsilon_{ij}
-\]
-where the $\epsilon_{ij}$'s are residual errors that take the usual assumptions of normality, independence, and constant variance.  In the effects representation, the standard ANOVA null hypothesis of equality of the group means can be re-written as $H_0$: $\alpha_1 = \alpha_2 = \ldots \ \alpha_g = 0$.
-
-The problem with the effects model is that it is *overparameterized*.  For example, consider the calorie data from the hot dog data set.  The average calorie content for each type of hotdog is:
+A complex contrast is a collection of several *linearly independent* contrasts.  "Linear independence" is a bit of a mouthful, but the idea is straightforward.  Several contrasts are linearly independent if they are not redundant.  Conversely, a collection of contrasts are not linearly independent if a subset of the contrasts equaling 0 dictates that another contrast in the collection must also equal 0.  For example, consider the hot-dog data, and consider the three contrasts
 \begin{eqnarray*}
-	\bar{y}_{1+} & = & 156.9 \mbox{   beef}\\
-	\bar{y}_{2+} & = & 158.7 \mbox{   meat}\\
-	\bar{y}_{3+} & = & 118.8 \mbox{   poultry.}\\
-\end{eqnarray*}
-In the effects model, there is no unique way to estimate both the reference level and the individual effect parameters for each hot dog type.  For example, we could choose 
-\[
-\hat{\mu} = 0, \ \ \hat{\alpha}_1 = 156.9, \ \ \hat{\alpha_2} = 158.7, \ \ \hat{\alpha_3} = 118.8
-\]
-or we could choose
-\[
-\hat{\mu} = 100, \ \ \hat{\alpha}_1 = 56.9, \ \ \hat{\alpha_2} = 58.7, \ \  \hat{\alpha_3} = 18.8.
-\]
-There is no way to discriminate between these two (or many other) possibilities.  Thus, there is no unique set of best parameter estimates in the effects model.  In order to estimate the parameters in the effects model, we need to impose a constraint.  There are two commonly used constraints.  The first is the sum-to-zero constraint:
-\[
-\sum_{i=1}^g \alpha_i = 0.
-\]
-Under the sum-to-zero constraint, our parameter estimates for the hotdog example are:
-\[
-\hat{\mu} = 144.8, \ \ \hat{\alpha}_1 = 12.1, \ \ \hat{\alpha_2} = 13.9, \ \ \hat{\alpha_3} = -26.0.
-\]
-Under the sum-to-zero constraint, $\mu$ is the average of the individual group means, and the effects parameters are the differences between the individual group means and $\mu$.
-
-When the data are not balanced, another choice for the sum-to-zero constraint is to set $\mu$ equal to the grand mean, where the grand mean is weighted by the differences in sample sizes among the groups:
-\[
-\mu = \frac{1}{n_T} \sum_{i=1}^g n_i \mu_i
-\]
-With this definition of $\mu$, the weighted sum of the $\alpha_i$'s will equal zero: $\sum_{i=1}^g n_i \alpha_i = 0$.  With the hotdog data, there are 20 beef hotdogs, and 17 of each of the meat and poultry hotdogs, so that under this constraint
-\[
-\hat{\mu} = 145.4, \hat{\alpha}_1 = 11.5, \hat{\alpha_2} = 13.3, \hat{\alpha_3} = -26.6.
-\]
-The second commonly used constraint is the set-to-zero constraint.  In the set-to-zero constraint, we choose one of the groups to serve as a reference and constrain its effect to be 0.  If one of the treatment groups is a control, it makes sense to constrain the effect of the control group to 0.  If there is no control group, then the choice of which effect to constrain = 0 is arbitrary. 
-
-For the hotdog example, suppose we constrain $\alpha_3 = 0$.  The remaining parameter estimates are:
-\[
-\hat{\mu} = 118.8, \hat{\alpha}_1 = 38.1, \hat{\alpha_2} = 39.9, \hat{\alpha_3} = 0.
-\]
-The set-to-zero constraint is exactly like choosing a reference level in regression with indicators.  Under the set-to-zero constraint, $\mu$ is the average response of the reference group, and the effects parameters $\alpha_i$ are the differences between the other individual group means and the reference group.
-
-### SAS implementation of the one-factor ANOVA model in PROC GLM
-
-SAS has several procedures (or PROCs) that can be used for a one-factor ANOVA analysis.  We'll be using PROC GLM, where GLM stands for General Linear Model.  The term "general linear model" encompasses both regression and ANOVA.  Thus, PROC GLM can be used for regression modeling as well. Note, however, that in statistical terminology "general linear model" is distinct from "generalized linear model".  The latter is a term that refers specifically to models with non-normal errors (such as logistic regression), and is a type of model that we will encounter later in ST512.
-
-At a minimum, PROC GLM code for a one-factor ANOVA model requires two components.  First, a CLASS statement is used to declare which of the variables in the data set are categorical variables.  Second, a MODEL statement is used to identify the response variable (placed on the left-hand side of the equals sign) and the categorical variable that identifies the factor that distinguishes the groups (placed on the right-hand side of the equals sign).  For example, the hot-dog data contains three variables: a categorical variable called "type" that specifies the type of hot dog, and then two response variables labeled `calorie' and `sodium'.  PROC GLM code for a one-factor ANOVA model for the calorie data is:
-````{}
-proc glm data=hotdog;
-  class type; /* declare categorical variables here */
-  model calorie = type;
-run;
-````
-Note that in SAS, all lines must end with a semicolon (;).  Also, comments can be placed between the symbols /* and */.
-
-When PROC GLM fits a one-factor ANOVA model, it uses the effects parameterization with a set-to-zero constraint.  We can ask SAS to display least-squares parameter estimates for this model by adding a SOLUTION option to the MODEL statement in PROC GLM.  Here's an example with the hotdog data:
-````{}
-proc glm;
-  class type;
-  model calorie = type / solution;
-run;  
-
-Dependent Variable: calorie
-                                            Standard
-Parameter                 Estimate             Error    t Value    Pr > |t|
-
-Intercept              118.7647059 B      5.68970197      20.87      <.0001
-type      Beef          38.0852941 B      7.73883135       4.92      <.0001
-type      Meat          39.9411765 B      8.04645369       4.96      <.0001
-type      Poultry        0.0000000 B       .                .         .
-
-NOTE: The X`X matrix has been found to be singular, and a generalized inverse was used to
-solve the normal equations.  Terms whose estimates are followed by the letter 'B'
-are not uniquely estimable.
-````
-
-<!-- Note: I had to change the prime mark used to show matrix transpose in the NOTE so that Markdown did not interpret the quote as a fence. -->
-
-Thus, SAS has chosen "poultry" as the reference group.  (The default in PROC GLM is to designate as the reference the group that is last alphabetically.)  The B's that appear by the parameter estimates and the NOTE that SAS provides warn us that the parameter estimates would be different under a different constraint. 
-
-### Using the ESTIMATE and CONTRAST statements for linear contrasts in PROC GLM
-
-PROC GLM includes two facilities for linear contrasts: the ESTIMATE statement for any linear combination, and the CONTRAST statement specifically for contrasts.  The ESTIMATE statement calculates an estimate, a standard error, and a $t$-test of $H_0$: $\theta = 0$ vs.\ $H_a$: $\theta \ne 0$.  The CONTRAST statement is restricted to contrasts, but has the capacity to test several linearly independent contrasts simultaneously.  (We haven't discussed testing several contrasts simultaneously yet, though we will.)
-
-To use either the ESTIMATE or CONTRAST statement, we must re-code our contrast in terms of the effects parameterization.  Consider the contrast $\theta_1 = \mu_1 - \mu_3$.  Re-expressing this contrast in terms of the effects parameterization yields
-\begin{eqnarray*}
-  \theta_1 & = & \mu_1 - \mu_3	\\
-    & = & (\mu + \alpha_1) - (\mu + \alpha_3) \\
-    & = & \alpha_1 - \alpha_3 
-\end{eqnarray*}
-Once the linear contrasts have been re-expressed in terms of the effects model, we simply pass the coefficients of the effects parameters to SAS in the ESTIMATE or CONTRAST statement.  In the examples above, the only terms included are effects associated with the classification factor 'type'.  (This will get more complicated for multi-factor ANOVA models.)  Here is an example of how we might use ESTIMATE statements for $\theta_1$:
-
-```{}
-proc glm data = hotdog; 
-  class type;
-  model calorie = type;
-  estimate 'Beef vs. Poultry' type 1 0 -1 / e;
-run;
-
-The GLM Procedure
-
-Dependent Variable: calorie
-
-                                             Standard
-Parameter                    Estimate           Error    t Value    Pr > |t|
-Beef vs. Poultry           38.0852941      7.73883135       4.92      <.0001
-
-Coefficients for Estimate Beef vs. Poultry
-
-Intercept                    0
-
-type      Beef               1
-type      Meat               0
-type      Poul              -1
-```
-Notes:
-1. The title that appears in single quotes is just a label that helps you remember which linear combination is which.
-2. SAS orders the effects parameters alphabetically.  Be careful!  Check to make sure that you’ve specified the order of the coefficients correctly.  The `e' option at the end of the estimate statement provides a listing of the coefficients in tabular form, lined up against the model parameters.  This provides a good way to double check whether your code is correct.
-3.  For each linear combination, SAS provides a test of $H_0: \theta = 0$ vs.\ $H_0: \theta \ne 0$.  Of course, you can use the SAS output to calculate CIs or execute other hypothesis tests of interest.
-
-As another example, consider the linear combination $\theta_2 = \mu_1$.  Expressed in terms of the effects-model parameterization, this combination is simply $\theta_2 = \mu + \alpha_1$.  SAS calls the reference level the 'intercept', so we could find this linear combination using the ESTIMATE statement as:
-```{}
-proc glm data=hotdog;
-  class type;
-  model calorie = type;
-  estimate 'Beef mean' intercept 1 type 1 0 0;
-run;
-
-                                            Standard
-Parameter                   Estimate           Error    t Value    Pr > |t|
-Beef mean                 156.850000      5.24564602      29.90      <.0001
-```
-
-*Technical note:* An unfortunate consequence of using the effects-model parameterization is that it is possible to write down linear combinations of the effects parameters that do not correspond to a linear combination of the group means.  We say that these functions are "not estimable".  For example, consider the function $\mu + \alpha_1 + \alpha_2$.  (An even simpler example of a function that is not estimable is just $\alpha_1$.) Even though we can write this function down as a mathematical formula, its value will depend on the constraint that we choose to estimate the model parameters.  (You can try this for yourself.  Choose two of the constraints for the hotdog data, and evaluate this function based on those constraints.  You'll see that the value of this function differs depending on the constraint that is chosen.)  However, we have said that the choice of a constraint is arbitrary.  Therefore, we are only interested in functions whose values are the same, regardless of the constraint chosen.  If you try to estimate a function that is not estimable in SAS, SAS will produce an error message.
-
-Of course, if we start with a linear combination of group means, and then convert that combination to its representation with the effects model parameters, we’ll be guaranteed to have an estimable function.  So, it’s best to always start with the group means, and then work from the group means to the parameters of the effect model, instead of starting directly with the parameters of the effects model.
-
-## Linear contrasts revisited: Testing multiple simultaneous contrasts
-
-We can do more with linear contrasts than just test whether single contrasts are equal to zero.  This discussion becomes technical, but it will pay off down the road.
-
-*Technical idea 1*: Linear independence.
-Several contrasts are linearly independent if they are not redundant.  Conversely, a collection of contrasts contains a linear dependence if several of the contrasts equaling 0 dictates that one of the other contrasts must equal 0.  For example, consider the hot-dog data, and consider the three contrasts
-\begin{eqnarray*}
-\theta_1 & = & \mu_1 - \mu_2 \\
-\theta_2 & = & \mu_1 - \mu_3 \\
-\theta_3 & = & \mu_2 - \mu_3 \\
+\theta_1 & = & \mu_B - \mu_M \\
+\theta_2 & = & \mu_B - \mu_P \\
+\theta_3 & = & \mu_M - \mu_P \\
 \end{eqnarray*}
 These contrasts are linearly dependent, because if $\theta_1 = 0$ and $\theta_2 = 0$, then it must be true that $\theta_3 = 0$.  In other words, $\theta_3$ is redundant with $\theta_1$ and $\theta_2$.  
 
-The power of contrasts is that we are not just limited to testing one contrast at a time, but can test whether several linearly independent contrasts are simultaneously equal to 0.  For example, in the hotdog data, and using the contrasts as defined above, we can test $H_0$: $\theta_1 = \theta_2 = 0$, vs.\ the alternative that at least one of $\theta_1$ and $\theta_2$ is not 0.  Of course, $H_0$: $\theta_1 = \theta_2 = 0$ is equivalent to $H_0$: $\mu_1 = \mu_2 = \mu_3$, the usual null hypothesis of equality of group means.  Thus, contrasts give us an alternative route to understanding the ANOVA $F$-test.  This alternative route will become useful when we consider ANOVA for factorial designs later.
+We test a complex contrast by testing whether all the simple contrasts it contains equal $0$.  For example, in the hotdog data, and using the contrasts as defined above, we can test $H_0$: $\theta_1 = \theta_2 = 0$, vs.\ the alternative that at least one of $\theta_1$ and $\theta_2$ is not 0.  Of course, $H_0$: $\theta_1 = \theta_2 = 0$ is equivalent to $H_0$: $\mu_B = \mu_M = \mu_P$, the usual null hypothesis of equality of group means.  Thus, contrasts give us an alternative route to understanding the ANOVA $F$-test.  This alternative route will become useful when we consider ANOVA for factorial designs later.
 
-Suppose we have a collection of $k$ linearly independent contrasts, which we denote as $\theta_1, \theta_2, \ldots, \theta_k$.  We can use an $F$-test to test the null hypothesis that all $k$ contrasts are equal to zero.  The $F$-test involves finding a sum of squares for the collection of contrasts, which we will write as $SS(\theta_1, \theta_2, \ldots, \theta_k)$, and has $k$ df.  Unfortunately, the formula for $SS(\theta_1, \theta_2, \ldots, \theta_k)$ isn’t one that we can calculate by hand, but thankfully PROC GLM can do the computation for us.  To test the null hypothesis that all $k$ contrasts are equal to zero, we construct an $F$ test in the usual way:
+Suppose we have a complex contrasts that consists of $k$ linearly independent contrasts, which we denote as $\theta_1, \theta_2, \ldots, \theta_k$.  We can use an $F$-test to test the null hypothesis that all $k$ contrasts are equal to zero.  The $F$-test involves finding a sum of squares for the collection of contrasts, which we will write as $SS(\theta_1, \theta_2, \ldots, \theta_k)$, and has $k$ df.  We usually can't calculate $SS(\theta_1, \theta_2, \ldots, \theta_k)$ by hand, but a computer can do so for us.  To test the null hypothesis that all $k$ contrasts are equal to zero, we construct an $F$ test in the usual way:
 \[
 F = \frac{MS(\theta_1, \theta_2, \ldots, \theta_k)}{MSE} = \frac{SS(\theta_1, \theta_2, \ldots, \theta_k) / k}{MSE}
 \]
-In PROC GLM, we can use the CONTRAST statement to execute this $F$-test.  To do so, we must re-code all of the contrasts in terms of the effects model, and then include all the contrasts in a single CONTRAST statement.  For example, to test $H_0$: $\theta_1 = \theta_2 = 0$ with the hotdog data, we first re-write each contrast in terms of the effect parameters:
-\begin{eqnarray*}
-\theta_1 & = & \mu_1 - \mu_2 \\
-& = & \alpha_1 - \alpha_2 \\
-\theta_2 & = & \mu_1 - \mu_3 \\
-& = & \alpha_1 - \alpha_3
-\end{eqnarray*}
-Now we include both contrasts in a single CONTRAST statement
+Here's PROC GLM code in SAS to test $H_0$: $\theta_1 = \theta_2 = 0$ (see the section on [PROC GLM](#sas-contrasts) for explanation of coding). 
 ```{}
 proc glm data=hotdog;
   class type;
   model calorie = type;
-  contrast 'B vs M, B vs P' type 1 -1 0,
-                            type 1 0 -1;
+  /* --------------------------- B  M  P --*/
+  contrast 'B vs M, B vs P' type 1 -1  0,
+                            type 1  0 -1;
 run;
 
                                         Sum of
@@ -545,20 +395,21 @@ Contrast                    DF     Contrast SS     Mean Square    F Value    Pr 
 B vs M, B vs P               2     17692.19510      8846.09755      16.07    <.0001
 ```
 
-The results of the test of $H_0$: $\theta_1 = \theta_2 = 0$ are included in the portion of the output labeled 'Contrast'.  Note that, of course, the $F$-test of $H_0$: $\theta_1 = \theta_2 = 0$ yields exactly the same result as the $F$-test of $H_0$: $\mu_1 = \mu_2 = \mu_3$, which should not surprise us.
+The $F$-test of $H_0$: $\theta_1 = \theta_2 = 0$ yields exactly the same result as the $F$-test of $H_0$: $\mu_1 = \mu_2 = \mu_3$, which should not surprise us.
 
-Let us collect what we have learned so far.  With $g$ groups, the ANOVA $F$-test that all the group means are equal, that is, of $H_0$: $\mu_1 = \mu_2 =  \ldots = \mu_g$ is equivalent to a test of $g-1$ linearly independent contrasts among the group means.  In other words, the differences among $g$ group means are completely captured by $g-1$ linearly independent contrasts of those group means.  Note that there are many possible sets of $g-1$ linearly independent contrasts that can be used to test the equality of group means.  For example, in the hot-dog data, we could also define the contrasts
+Let us collect what we have learned so far.  With $g$ groups, the ANOVA $F$-test that all the group means are equal, that is, of $H_0$: $\mu_1 = \mu_2 =  \ldots = \mu_g$ is equivalent to a test of $g-1$ linearly independent contrasts among the group means.  Note that there are many possible sets of $g-1$ linearly independent contrasts that can be used to test the equality of group means.  For example, in the hot-dog data, we could also define the contrasts
 \begin{eqnarray*}
 	\theta_3 & = & \mu_2 - \mu_3 \\
-	\theta_4 & = & \mu_1 - \frac{\mu_2 + \mu_3}{2}.
+	\theta_4 & = & 2 \mu_1 - (\mu_2 + \mu_3).
 \end{eqnarray*}
 Because $\theta_3$ and $\theta_4$ are linearly independent contrasts, a test of $H_0$: $\theta_3 = \theta_4 = 0$ should also yield the same $F$-statistic, and in fact it does:
 ```{}
 proc glm data=hotdog;
   class type;
   model calorie = type;
-  contrast 'two more contrasts' type 0 1 -1,
-                                type 1 -.5 -.5;
+  /* ------------------------------- B  M  P --*/
+  contrast 'two more contrasts' type 0  1 -1,
+                                type 2 -1 -1;
 run;
 
 Contrast                    DF     Contrast SS     Mean Square    F Value    Pr > F
@@ -567,11 +418,13 @@ two more contrasts           2     17692.19510      8846.09755      16.07    <.0
 
 So what is the point, if all we have done is to recreate the familiar $F$-test for equality of means?  We will see that contrasts actually allow us to go much further.  This is illustrated in the next example.
 
-*Example.} An experiment is conducted to investigate the effects of five different sugar treatments on the length (in mm) of pea sections grown in tissue culture.  The five treatments are: a control (no sugar added), +2\% sucrose, +2\% fructose, +2\% glucose, and +1\% fructose +1\% glucose.  The data are balanced, with $n = 10$ replicates per treatment.  A stripchart of the data is shown below.
+*Example.* An experiment is conducted to investigate the effects of five different sugar treatments on the length (in mm) of pea sections grown in tissue culture.  The five treatments are: a control (no sugar added), +2\% sucrose, +2\% fructose, +2\% glucose, and +1\% fructose +1\% glucose.  The data are balanced, with $n = 10$ replicates per treatment.  These data appear in @sokal1995biometry.  A stripchart of the data is shown below.
 ```{r}
 pea <- read.table("data/pea.txt", head = T, stringsAsFactors = T)
 with(pea, stripchart(length ~ trt, method = "jitter", pch = 16))
 ```
+Notice that the equal variance assumption is suspect here, as the variance of the control group looks larger than the variances of the other groups.  We might want to analyze the log of the response to stabilize the variance, but for now we will continue to analyze the raw data.
+
 The usual one-factor ANOVA allows us to reject the null hypothesis of no difference among group means:
 ```{}
                       Sum of       Mean
@@ -580,77 +433,289 @@ Model           4     14.001      3.500      49.37    <.0001
 Error          45      3.190      0.071
 Total          49     17.191
 ```
-Suppose that we wanted to compare the means for the four non-control treatments.  Because there are four such treatments, we can find three linearly independent contrasts that capture the differences among these four treatments.  One possible choice of contrasts is
-\begin{eqnarray*}
-	\theta_1 & = & \mu_f - \mu_{gf} \\
-	\theta_2 & = & \mu_g - \mu_{gf} \\
-	\theta_3 & = & \mu_s - \mu_{gf} 
-\end{eqnarray*}
-where the subscripts indicate the particular treatment.  We can test for whether the four treatment means differ by testing $H_0$: $\theta_1 = \theta_2 = \theta_3 = 0$, which we can test using the CONTRAST statement, and include the E option to make sure we have coded the contrasts correctly:
-```{}
-proc glm data = pea;
-  class trt;
-  model length = trt;
-  contrast 'Differences among non-controls' trt -1 1 0 0 0,
-                                            trt -1 0 1 0 0,
-                                            trt -1 0 0 1 0 / e;
-run;
 
-Coefficients for Contrast Differences among non-controls
+There are several further comparisons of these data that we might have deemed interesting before examining the data.  These include:
 
-                            Row 1           Row 2           Row 3
+1. Does the control differ from the average of the non-control treatments?
 
-Intercept                       0               0               0
+2. Does the fructose / glucose blend differ from the average of the pure fructose and pure glucose treatments?
 
-trt       1g1f                 -1              -1              -1
-trt       2f                    1               0               0
-trt       2g                    0               1               0
-trt       2s                    0               0               1
-trt       control               0               0               0
+3. Do the three pure sugar treatments differ?
 
+The first two of these are simple contrasts, and the last is a complex contrast.
 
-Contrast                              DF     Contrast SS     Mean Square    F Value    Pr > F
-Differences among non-controls         3      3.18402000      1.06134000      14.97    <.0001
-```
-Suppose we are also interested in whether the sugar-addition treatments (averaged together) differ from the control.  We can test for this difference using the single df contrast:
+Using subscripts to distinguish treatment means, the first contrast can be expressed as 
 \[
-\theta_4 = \mu_c - \frac{\mu_{gf} + \mu_{f} + \mu{g} + \mu_{s}}{4}.
+\theta_1 = \mu_c - \frac{\mu_{fg} + \mu_{f} + \mu_{g} + \mu_{s}}{4}.
 \]
-We add this test to our PROC GLM code as follows:
-```{}
-proc glm data = pea;
+For any contrast, we can multiply the entire contrast by a number without changing the meaning of the null hypothesis that the contrast equals $0$.  It is sometimes handy to keep the coefficients that multiply the treatment means as whole numbers, so we will rewrite this contrast as 
+\[
+\theta_1 = 4\mu_c - (\mu_{fg} + \mu_{f} + \mu_{g} + \mu_{s}).
+\]
+
+The second contrast writes as
+\[
+\theta_2 = 2\mu_{fg} - (\mu_{f} + \mu_{g}).
+\]
+
+The third contrast is a complex contrast that contains two linearly independent simple contrasts.  One way to write these simple contrasts is 
+\begin{eqnarray*}
+	\theta_3 & = & \mu_f - \mu_g \\
+	\theta_4 & = & \mu_g - \mu_s. 
+\end{eqnarray*}
+
+Here is PROC GLM code to test for each of these three contrasts, and the output it generates:
+```
+proc glm data=pea;
   class trt;
-  model length = trt;
-  contrast 'Differences among non-controls' trt -1 1 0 0 0,
-                                            trt -1 0 1 0 0,
-                                            trt -1 0 0 1 0;
-  contrast 'Control vs. non-controls' trt -0.25 -0.25 -0.25 -0.25 1 / e;
+  model length = trt / solution;
+  /*-------------------------------------1f1g   2f   2g   2s ctrl --*/
+  contrast 'Control vs. sugars'      trt   -1   -1   -1   -1    4;
+  contrast 'Mixed vs pure f, pure g' trt    2   -1   -1    0    0;
+  contrast 'Diffs among pure sugars' trt    0    1    0   -1    0,
+                                     trt    0    0    1   -1    0;
 run;
 
-Coefficients for Contrast Control vs. non-controls
+Contrast                       DF     Contrast SS     Mean Square    F Value    Pr > F
+Control vs. sugars              1     10.81683072     10.81683072     152.56    <.0001
+Mixed vs pure f, pure g         1      0.04873500      0.04873500       0.69    0.4114
+Diffs among pure sugars         2      2.55847920      1.27923960      18.04    <.0001
 
-Intercept                       0
-
-trt       1g1f              -0.25
-trt       2f                -0.25
-trt       2g                -0.25
-trt       2s                -0.25
-trt       control               1
-
-
-Contrast                              DF     Contrast SS     Mean Square    F Value    Pr > F
-Differences among non-controls         3      3.18402000      1.06134000      14.97    <.0001
-Control vs. non-controls               1     10.81683072     10.81683072     152.56    <.0001
 ```
-Thus, we conclude that there is strong evidence that the non-control means are not all equal, and there is strong evidence that the average of the non-control groups is different from the control group.
 
-We make two notes before moving on:
+It is often a nice touch to present contrasts of pre-planned comparisons as part of the ANOVA table, like so:
+```
+                                        Sum of
+Source                      DF         Squares     Mean Square    F Value    Pr > F
+Groups                       4     14.00085072      3.50021268      49.37    <.0001
+  Ctrl. vs sugars              1     10.81683072   10.81683072     152.56    <.0001       
+  Mixed vs pure f, pure g      1      0.04873500    0.04873500       0.69    0.4114
+  Diffs among pure sugars      2      2.55847920    1.27923960      18.04    <.0001
+Error                       45      3.19051800      0.07090040
+Total                       49     17.19136872
+```
 
-1.  In the pea example, you might notice that $SS(\theta_1, \theta_2, \theta_3) + SS(\theta_4) = SS_{Groups}$.  This is not always guaranteed to be true, but happens in this case because the contrasts in the first group are all orthogonal to $\theta_4$.  Orthogonality of contrasts is discussed in the additional material at the end of this installment of the notes.
 
-2.  It is a bit unsatisfying to not have any sense of how the sums of squares for a set of contrasts is calculated.  The best we can do here is to point out that a test that several contrasts are simultaneously equal to zero can alternatively be formulated as an $F$-test, using the machinery of "full" and "reduced" models that we studied in the context of multiple regression.  Indeed, it is exactly the same idea, and if we wrote the ANOVA model as a regression with indicator variables, we could test a set of contrasts among the group means using exactly the same approach.  Thus, it is no surprise that the test statistic for testing several simultaneous contrasts is an $F$-statistic.
+---
 
-## Multiple comparisons
+<span style="color: gray;"> It is a bit unsatisfying to not have any sense of how the sums of squares for a set of contrasts is calculated.  The best we can do here is to point out that a test that several contrasts are simultaneously equal to zero can alternatively be formulated as an $F$-test, using the machinery of "full" and "reduced" models that we studied in the context of multiple regression.  Indeed, it is exactly the same idea, and if we wrote the ANOVA model as a regression with indicator variables, we could test a set of contrasts among the group means using exactly the same approach.  Thus, it is no surprise that the test statistic for testing several simultaneous contrasts is an $F$-statistic.</span>
+
+---
+
+### Orthogonal contrasts
+
+We have already seen that if several contrasts are not (completely) redundant, they are *linearly independent*.  Linearly independent contrasts might still share some information, however.  For example, the contrasts $\theta_1 = \mu_1 - \mu_2$ and $\theta_2 = \mu_1 - \mu_3$ are linearly independent, but they both depend in the same way on $\mu_1$.  Thus, if we happen to draw a sample from group 1 that is unusual in some regard, the event of drawing that sample will affect our tests of both $H_0$: $\theta_1 = 0$ and $H_0$: $\theta_2 = 0$ in the same way.
+
+There is a stronger notion of independence among contrasts called *orthogonality*.  (You might remember that *orthogonal* is a synonym for *perpendicular*.)   Here is how orthogonality is defined.  Two contrasts $\theta_1 = \sum_{i=1}^g c_i \mu_i$ and $\theta_2 = \sum_{i=1}^g d_i \mu_i$ are orthogonal if and only if
+\[
+\sum_{i=1}^g \frac{c_i d_i}{n_i} = 0.
+\]
+Note that if two contrasts are orthogonal, then they must also be linearly independent.  However, two contrasts that are linearly independent may or may not be orthogonal.\footnote{To run with the geometric idea for a bit, if we think about a contrasts as vectors in a plane, two contrasts are orthogonal if they are perpendicular.  Two contrasts are linearly independent as long as they are not parallel.  Thus, two contrasts that are orthogonal (perpendicular) are necessarily linearly independent (not parallel), but two contrasts that are linearly independent (not parallel) may or may not be orthogonal (perpendicular).}
+
+Complex contrasts can also be orthogonal.  Consider two complex contrasts, where the first is comprised of the simple contrasts $\theta_1, \theta_2, \ldots, \theta_k$, and the second is comprised of the simple contrasts $\phi_1, \phi_2, \ldots, \phi_l$.  These two complex contrasts are orthogonal if every simple contrast in the first complex contrast is orthogonal to every simple contrast in the second complex contrast.  Note that the simple contrasts within complex contrasts may or may not be orthogonal to each other; whether or not they are orthogonal with each other is irrelevant.  All we care about is whether the simple contrasts in the first complex contasts are orthogonal to the simple contrasts in the second complex contrast. 
+
+The major upshot is that if two complex contrasts are orthogonal, then their sums of squares are additive.  That is,
+\[
+SS(\theta_1, \theta_2, \ldots, \theta_k, \phi_1, \phi_2, \ldots, \phi_l) = SS(\theta_1, \theta_2, \ldots, \theta_k) + SS(\phi_1, \phi_2, \ldots, \phi_l).
+\]
+That is, the sum-of-squares for the combined complex contrast can be partitioned into the sum-of-squares for the first complex contrast plus the sum-of-squares for the second complex contrast.
+
+In the pea example above, note that the complex contasts are *not* orthogonal.  Thus, we have $SS(\theta_1) + SS(\theta_2) + SS(\theta_3, \theta_4) \neq SS_{Groups}$.  However, suppose we redefine the second contrast as the difference between the fructose / glucose blend and the average of the three pure sugar treatments, that is, replace $\theta_2$ with
+\[
+\theta_{2a} = 3\mu_{fg} - (\mu_{f} + \mu_{g} + \mu_s).
+\]
+Now the contrasts $\theta_1$, $\theta_{2a}$, and the complex constrast $(\theta_3$, $\theta_4$) are orthogonal, and so $SS(\theta_1) + SS(\theta_{2a}) + SS(\theta_3, \theta_4) = SS_{Groups}$.  The code below illustrates:
+```
+proc glm data=pea;
+  class trt;
+  model length = trt / solution;
+  /*-------------------------------------1f1g   2f   2g   2s ctrl --*/
+  contrast 'Control vs. sugars'      trt   -1   -1   -1   -1    4;
+  contrast 'Mixed vs pure sugars   ' trt    3   -1   -1   -1    0;
+  contrast 'Diffs among pure sugars' trt    0    1    0   -1    0,
+                                     trt    0    0    1   -1    0;
+run;
+
+Contrast                       DF     Contrast SS     Mean Square    F Value    Pr > F
+Control vs. sugars              1     10.81683072     10.81683072     152.56    <.0001
+Mixed vs pure sugars            1      0.62554080      0.62554080       8.82    0.0048
+Diffs among pure sugars         2      2.55847920      1.27923960      18.04    <.0001
+```
+
+We might modify the ANOVA table accordingly:
+```
+                                        Sum of
+Source                      DF         Squares     Mean Square    F Value    Pr > F
+Groups                       4     14.00085072      3.50021268      49.37    <.0001
+  Ctrl. vs sugars              1     10.81683072   10.81683072     152.56    <.0001       
+  Mixed vs pure sugars         1      0.62554080    0.62554080       8.82    0.0048
+  Diffs among pure sugars      2      2.55847920    1.27923960      18.04    <.0001
+Error                       45      3.19051800      0.07090040
+Total                       49     17.19136872
+```
+
+While orthogonality is nice, it is something of a fringe benefit (@quinn2002experimental).  Contrasts should be designed to match the comparisons of scientific interest; the comparisons of interest should not be arranged to generate orthogonal contrasts.
+
+The natural question that arises is: When should we expect orthogonality?  One doesn't just stumble onto sets of orthogonal contrasts by chance.  There are three types of experiments where sets of orthogonal contrasts can be expected.  If you are able to recognize these types of experiments, you can use orthogonal contrasts to create an especially thorough and satisfying analysis.  The three types of experiments that support sets of orthogonal contrasts are:
+
+ 1. Factorial experiments.  By a large margin, factorial experiments (in which treatment groups are formed by crossing multiple experimental factors) are the most important context for orthogonal contrasts.  We will study factorial experiments in depth in the next installment of the notes, and thus will say no more about them here.
+ 
+ 2. Experiments in which the treatment groups cluster into a hierarchy, and the data are balanced.  The pea experiment above could provides an example.  The five treatment groups naturally cluster into a group of sugar-addition treatments and a singleton control group.  In this type of experiment, we can find a set of contrasts to test for differences among the treatment means within each cluster, and another set of contrasts to test for differences among the clusters, exactly as we have done with the pea data. 
+ 
+3. Experiments in which the treatment groups are formed by different levels of a quantitative variable.  We study this scenario in more depth below.
+
+	
+<!-- 	As a second example of an experiment in which treatment groups cluster into a hierarchy, suppose that we have a balanced experiment with six treatment groups: one control group, three treatments that involve adding different types of sugars, and two treatments that involve adding different types of starches.   With 6 treatment groups, we can find 5 linearly independent contrasts to capture the differences among the treatment groups.  These 5 contrasts can be broken down into the following groups: -->
+<!--  + A set of two linearly independent contrasts that compare the means of the three sugar treatments. -->
+<!--  + A single contrast that compares the means of the two starch treatments. -->
+<!--  + A set of two linearly independent contrasts that compare (i) the control group, (ii) the average of the sugar treatments, and (iii) the average of the starch treatments. -->
+
+<!-- 	Alternatively, we might take the two contrasts in the last group above and break those down further into one contrast that compares the control group with the average of the five non-control groups, and a second contrast that compares the average of the sugar treatments to the average of the starch treatments. -->
+	
+	
+### Polynomial contrasts
+
+Consider the following data set.  Pott (1992) conducted an experiment to investigate the effect of added dietary molybdenum (Mo) on the molybdenum concentrations of sheep kidneys.  Twenty (20) sheep were randomly assigned to one of four diets, where the diets differed only in the amount of supplementary molybdenum (0, 15, 30 and 45 ppm).  Five sheep were assigned to each diet, and the Mo concentration in the kidney was measured after 14 days.  The data are shown below:
+```{r}
+molybdenum <- read.csv("data/molybdenum.csv", head = T)
+with(molybdenum, stripchart(conc ~ diet, method = "jitter", pch = 16))
+```
+Should we model these data with an ANOVA or a regression?  In this case, the treatment groups are formed by different values of a quantitative variable --- in this case, the amount of supplementary molybdenum in the diet.  Many experiments form treatment groups in this way.  Often, the data exhibit a clear trend with respect to the quantitative variable, as the sheep example does.  This is easier to see if we plot the molybdenum variable on the horizontal axis, as we would if this were a regression design:
+```{r}
+with(molybdenum, plot(conc ~ diet, xlab = "molybdenum addition (ppm)", ylab = "kidney Mo", pch = 16))
+```
+THis plot makes it clear that, as with much biological data, the variance increases as the average response increases.  We should analyze the log of the response to stabilize the variance.
+```{r}
+with(molybdenum, plot(log(conc) ~ diet, xlab = "molybdenum addition (ppm)", ylab = "log(kidney Mo)", pch = 16))
+```
+Now we can essentially have our cake and eat it too, by using polynomial contrasts to characterize the underlying trend within the context of an ANOVA.
+
+Our strategy is to decompose the $SS_{Groups}$ into sums-of-squares that capture the polynomial component of the underlying trend.  That is, with four treatment groups (such as we have with the sheep data), we can partition the $SS_{Groups}$ as
+\[
+SS_{Groups} = SS(\theta_1) + SS(\theta_2) + SS(\theta_3)
+\]
+
+where $\theta_1$ captures the linear trend in the group means, $\theta_2$ captures the quadratic trend in the group means, and $\theta_3$ captures the cubic trend in the group means.  Additionally, we want all of these contrasts to be orthogonal to one another.  
+
+If the data are balanced, and if the treatment groups are equally spaced  with respect to the quantitative variable used to construct them, then coefficients for orthogonal polynomial contrasts can be found in a table, such as Table D.6 of Oehlert.  The sheep data satisfy these special conditions, so we can go ahead and use Table D.6 in Oehlert to find that the orthogonal polynomial contrasts are:
+\begin{eqnarray*}
+\theta_1 & = & -3 \mu_1 - \mu_2 + \mu_3 + 3 \mu_4 \\
+\theta_2 & = & \mu_1 - \mu_2 - \mu_3 + \mu_4 \\
+\theta_3 & = & - \mu_1 + 3 \mu_2 - 3 \mu_3 + \mu_4 
+\end{eqnarray*}
+where $\mu_1$, $\mu_2$, $\mu_3$, and $\mu_4$ are the means for the treatment groups with 0, 15, 30 and 45 ppm supplementary molybdenum, respectively.
+```
+proc glm data = sheep;
+  class diet;
+  model logy = diet;
+  contrast 'Linear' diet -3 -1 1 3;
+  contrast 'Quadratic' diet 1 -1 -1 1;
+  contrast 'Cubic' diet -1 3 -3 1;
+run; 
+
+The GLM Procedure
+Dependent Variable: conc
+
+                                        Sum of
+Source                      DF         Squares     Mean Square    F Value    Pr > F
+Model                        3      2.89623371      0.96541124      12.26    0.0002
+Error                       16      1.26006314      0.07875395
+Corrected Total             19      4.15629685
+
+Contrast                    DF     Contrast SS     Mean Square    F Value    Pr > F
+Linear                       1      2.63828807      2.63828807      33.50    <.0001
+Quadratic                    1      0.24832056      0.24832056       3.15    0.0948
+Cubic                        1      0.00962508      0.00962508       0.12    0.7312
+```
+Thus we see that the linear trend is statistically significant (i.e., we can reject $H_0$: $\theta_1 = 0$), but neither the quadratic nor the cubic trends are statistically significant.
+
+Our usual hope is that we can explain the trend in the group means parsimoniously with a small number of low-order polynomial contrasts.  In this case, it is common to pool the higher-order, non-significant contrasts together into a single sum-of-squares that we will call the "lack-of-fit".  With the sheep data, we can pool the quadratic and cubic contrasts together into a lack-of-fit term, as shown below:
+```
+proc glm data = sheep;
+  class diet;
+  model logy = diet;
+  contrast 'Linear' diet -3 -1 1 3;
+  contrast 'Lack-of-fit' diet 1 -1 -1 1,
+                         diet -1 3 -3 1;
+run; 
+
+Contrast                    DF     Contrast SS     Mean Square    F Value    Pr > F
+Linear                       1      2.63828807      2.63828807      33.50    <.0001
+Lack-of-fit                  2      0.25794564      0.12897282       1.64    0.2254
+```
+We conclude that there is strong evidence that the treatment groups differ, and the differences among the treatment groups are parsimoniously explained by a linear trend.  As before, it makes for a nice touch to combine this all into one ANOVA table:
+```
+                                        Sum of
+Source                      DF         Squares     Mean Square    F Value    Pr > F
+Groups                       3      2.89623371      0.96541124      12.26    0.0002
+  Linear                       1      2.63828807    2.63828807      33.50    <.0001
+  Lack-of-fit                  2      0.25794564    0.12897282       1.64    0.2254
+Error                       16      1.26006314      0.07875395
+Total                       19      4.15629685
+```
+
+If data are not balanced, or if the treatment groups are not equally spaced with respect to the quantitative covariate that defines them, specialized software can be used to find the coefficients for orthogonal polynomial contrasts.^[The sums-of-squares for orthogonal polynomial contrasts can also be found by fitting polynomial regression models of increasingly higher order. It will turn out that the decrease in the SSE (or increase in the model sum-of-squares) obtained by increasing the degree of the polynomial by one exactly equals the sum-of-squares for the corresponding polynomial trend.  For example, the sum-of-squares associated with the quadratic contrast can also be found by fitting linear and quadratic regression models, and taking the difference in the model sum-of-squares between the two fits.]
+
+<!-- However, an easier alternative is to find the sums-of-squares for each contrasts by fitting polynomial regression models.  The key here is that the sum-of-squares for a polynomial regression model is equal to the sum of the sums-of-squares for the respective polynomial contrasts.  That is, with four or more treatment groups, -->
+<!-- \begin{eqnarray*} -->
+<!-- 	SS(\mbox{Linear regression}) & = & SS(\theta_1) \\ -->
+<!-- 	SS(\mbox{Quadratic regression}) & = & SS(\theta_1) + SS(\theta_2) \\ -->
+<!-- 	SS(\mbox{Cubic regression}) & = & SS(\theta_1) + SS(\theta_2) + SS(\theta_3)  -->
+<!-- \end{eqnarray*} -->
+<!-- and so on.  So, let's suppose we've misplaced our table of orthogonal polynomial contrasts.  We can still calculate the sum-of-squares for each polynomial contrast by fitting a series of polynomial regression models.  For example, to find $SS(\theta_1)$, we fit a linear regression to the sheep data: -->
+<!-- ``` -->
+<!-- proc glm data = sheep; -->
+<!--   model logy = diet; -->
+<!-- run;  -->
+
+<!-- The GLM Procedure -->
+<!-- Dependent Variable: conc -->
+
+<!--                                         Sum of -->
+<!-- Source                      DF         Squares     Mean Square    F Value    Pr > F -->
+<!-- Model                        1      2.63828807      2.63828807      31.28    <.0001 -->
+<!-- Error                       18      1.51800878      0.08433382 -->
+<!-- Corrected Total             19      4.15629685 -->
+
+<!-- ``` -->
+<!-- (Note the absence of a CLASS statement in the PROC GLM program above.  Without a CLASS statement, PROC GLM interprets `conc' as a quantitative predictor.)   To find $SS(\theta_1)$, we simply use $SS(\theta_1) = SS(\mbox{Linear regression}) = 2.638$.  Now, to find $SS(\theta_2)$, we need to fit a quadratic regression: -->
+<!-- ``` -->
+<!-- proc glm data = sheep; -->
+<!--   model logy = diet diet*diet; -->
+<!-- run;  -->
+
+<!-- The GLM Procedure -->
+<!-- Dependent Variable: conc -->
+
+<!--                                         Sum of -->
+<!-- Source                      DF         Squares     Mean Square    F Value    Pr > F -->
+<!-- Model                        2      2.88660863      1.44330432      19.32    <.0001 -->
+<!-- Error                       17      1.26968822      0.07468754 -->
+<!-- Corrected Total             19      4.15629685 -->
+<!-- ``` -->
+<!-- Now, $SS(\theta_2) = SS(\mbox{Quadratic regression}) - SS(\mbox{Linear regression}) = 2.889 - 2.638 = 0.248$.  Finally, to find $SS(\theta_3)$, we could fit a cubic regression: -->
+<!-- ``` -->
+<!-- proc glm data = sheep; -->
+<!--   model logy = diet diet*diet diet*diet*diet; -->
+<!-- run;  -->
+
+
+<!-- The GLM Procedure -->
+<!-- Dependent Variable: conc -->
+
+<!--                                         Sum of -->
+<!-- Source                      DF         Squares     Mean Square    F Value    Pr > F -->
+<!-- Model                        3      2.89623371      0.96541124      12.26    0.0002 -->
+<!-- Error                       16      1.26006314      0.07875395 -->
+<!-- Corrected Total             19      4.15629685 -->
+
+<!-- ``` -->
+<!-- or we could have just recognized that $SS(\mbox{Cubic regression}) = SS_{Groups}$.  In either case, we now have $SS(\theta_3) = SS(\mbox{Cubic regression}) - SS(\mbox{Quadratic regression}) = 2.896 - 2.887 = 0.009$.   We have thus found the sums-of-squares associated with each polynomial contrasts without having to use the table in Oehlert.  Thankfully, this method of finding the sums-of-squares associated with each polynomial contrasts will work any time the treatment groups are formed by different levels of a quantitative variable, and does not require either balance or equally spaced treatment groups. -->
+
+
+
+
+## Multiple comparisons {#multiple-testing}
 In contrast to pre-planned comparisons, when we just want to describe how population means differ, we need tools for multiple comparisons.  Multiple comparisons are a concern any time we conduct several hypothesis tests in the context of a single analysis or experiment.  We will introduce the general ideas behind multiple comparisons first, before proceeding to a specific discussion of how these ideas apply in the context of comparing means from a one-factor ANOVA.
 
 ### Multiple testing in general
@@ -939,16 +1004,16 @@ Roswell.NM - Stafford.K      -0.17300    -0.31683 -0.02917  ***
 Barnard.KS - Stafford.K      -0.34933    -0.49317 -0.20550  ***
 ```
 
-## General strategy for analyzing data from a CRD with a one-factor treatment structure
+<!-- ## General strategy for analyzing data from a CRD with a one-factor treatment structure -->
 
- 1. Plot the data.  Determine if assumptions of normality and constant variance within treatment groups are appropriate.
- 2. If ANOVA assumptions are appropriate, use an $F$-test to test for differences among treatments.
- 3.  If the $F$-test in step 2 provides evidence of a treatment effect, use linear contrasts to investigate pre-planned comparisons, and/or use a multiple comparisons procedure to characterize differences among treatments.
- 4.  Report the following:
-	 + Sample sizes.
-	 + Estimates of treatment means, and a measure of the statistical uncertainty in the treatment mean (either a standard error or a CI).
-	 + Outcome of the $F$-test for a treatment effect.
-	 + If the $F$-test provides evidence of a treatment effect, also report tests of contrasts or multiple comparisons.
+<!--  1. Plot the data.  Determine if assumptions of normality and constant variance within treatment groups are appropriate. -->
+<!--  2. If ANOVA assumptions are appropriate, use an $F$-test to test for differences among treatments. -->
+<!--  3.  If the $F$-test in step 2 provides evidence of a treatment effect, use linear contrasts to investigate pre-planned comparisons, and/or use a multiple comparisons procedure to characterize differences among treatments. -->
+<!--  4.  Report the following: -->
+<!-- 	 + Sample sizes. -->
+<!-- 	 + Estimates of treatment means, and a measure of the statistical uncertainty in the treatment mean (either a standard error or a CI). -->
+<!-- 	 + Outcome of the $F$-test for a treatment effect. -->
+<!-- 	 + If the $F$-test provides evidence of a treatment effect, also report tests of contrasts or multiple comparisons. -->
 	 
 	 
 ## $^\star$Power and sample-size determination in ANOVA
@@ -976,185 +1041,158 @@ To make sense of these charts, one needs to be able to calculate something calle
 \]
 As the non-centrality parameter increases, power also increases.  Thus, we see that power increases as either the sample sizes increase, the differences among the group means increase, or the error variance decreases.
 
-## $^\star$Orthogonal contrasts
+## Using SAS: The effects parameterization of the one-factor ANOVA {#sas-contrasts}
 
-We have already seen that if several contrasts are not (completely) redundant, they are called *linearly independent}.  Linearly independent contrasts might still share some information, however.  For example, the contrasts $\theta_1 = \mu_1 - \mu_2$ and $\theta_2 = \mu_1 - \mu_3$ are linearly independent, but they both depend in the same way on $\mu_1$.  Thus, if we happen to draw a sample from group 1 that is unusual in some regard, the event of drawing that sample will affect our tests of both $H_0$: $\theta_1 = 0$ and $H_0$: $\theta_2 = 0$ in the same way.
+SAS has several procedures (or PROCs) that can be used for a one-factor ANOVA analysis.  We'll be using PROC GLM, where GLM stands for General Linear Model.  The term "general linear model" encompasses both regression and ANOVA.  Thus, PROC GLM can be used for regression modeling as well. 
 
-There is a stronger notion of independence among contrasts called *orthogonality*.  (You might remember that *orthogonal* is a synonym for *perpendicular*.)   Here is how orthogonality is defined.  Two contrasts $\theta_1 = \sum_{i=1}^g c_i \mu_i$ and $\theta_2 = \sum_{i=1}^g d_i \mu_i$ are orthogonal if and only if
+At a minimum, PROC GLM code for a one-factor ANOVA model requires two components.  First, a CLASS statement is used to declare which of the variables in the data set are categorical variables.  Second, a MODEL statement is used to identify the response variable (placed on the left-hand side of the equals sign) and the categorical variable that identifies the factor that distinguishes the groups (placed on the right-hand side of the equals sign).  For example, in the hot dog data, the categorical variable called "type" specifies the type of hot dog, and the response variable is labeled "calorie".  PROC GLM code for a one-factor ANOVA model for the calorie data is:
+````{}
+proc glm data=hotdog;
+  class type; /* declare categorical variables here */
+  model calorie = type;
+run;
+````
+Note that in SAS, all lines must end with a semicolon (;).  Also, comments can be placed between the symbols /* and */.
+
+### Effects-model parameterization of the one-factor ANOVA model
+
+PROC GLM uses a model parameterization called the "effects parameterization" (or "effects model").  This parameterization is not unique to SAS, and is commonly found in many statistics texts.  The effects parameterization seems like overkill for a one-factor ANOVA, but it will be more useful when we contemplate multi-factor ANOVA later.  
+
+The effects model simply re-expresses the mean of each treatment group as the sum of an overall reference level and a unique "effect" for that treatment group.  That is,
 \[
-\sum_{i=1}^g \frac{c_i d_i}{n_i} = 0.
+\mu_i = \mu + \alpha_i.
 \]
-Note that orthogonality is a stronger condition that linear independence.  If two contrasts are orthogonal, then they must also be linearly independent.  However, two contrasts that are linearly independent may or may not be orthogonal.\footnote{To run with the geometric idea for a bit, if we think about a contrasts as vectors in a plane, two contrasts are orthogonal if they are perpendicular.  Two contrasts are linearly independent as long as they are not parallel.  Thus, two contrasts that are orthogonal (perpendicular) are necessarily linearly independent (not parallel), but two contrasts that are linearly independent (not parallel) may or may not be orthogonal (perpendicular).}
-
-Groups of linear contrasts can also be orthogonal.  Consider two groups of contrasts, where we denote the first group as $\theta_1, \theta_2, \ldots, \theta_k$, and the second group as $\phi_1, \phi_2, \ldots, \phi_l$.  These two groups are orthogonal if every contrast in the first group is orthogonal to every contrast in the second group.  Note that the contrasts within each group may or may not be orthogonal to each other; whether or not they are orthogonal with each other is irrelevant.  All we care about is whether the contrasts in the first group are orthogonal to the contrasts in the second group. 
-
-The major upshot is that if two groups of contrasts are orthogonal, then their sums of squares are additive.  That is,
+Here, $\mu$ is a reference level (alternatively called an intercept), and $\alpha_i$ is the “effect” of the group $i$.  For the moment, we will be intentionally vague about what we mean by a "reference level" and an "effect", and we will clarify later.  We can go one step further and write the one-factor ANOVA model for the entire data set as
 \[
-SS(\theta_1, \theta_2, \ldots, \theta_k, \phi_1, \phi_2, \ldots, \phi_l) = SS(\theta_1, \theta_2, \ldots, \theta_k) + SS(\phi_1, \phi_2, \ldots, \phi_l).
+y_{ij} = \mu_i + \epsilon_{ij} = \mu + \alpha_i + \epsilon_{ij}
 \]
-That is, the sum-of-squares for the entire collection can be partitioned into the sum-of-squares for the first group plus the sum-of-squares for the second group.
+where the $\epsilon_{ij}$'s are residual errors that take the usual assumptions of normality, independence, and constant variance.  In the effects representation, the standard ANOVA null hypothesis of equality of the group means can be re-written as $H_0$: $\alpha_1 = \alpha_2 = \ldots = \alpha_g = 0$.
 
-In the pea example above, note that the four contrasts $\theta_1, \theta_2, \theta_3, \theta_4$ provide four linearly independent contrasts that completely capture the differences among the 5 treatment groups.  Thus, we have $SS(\theta_1, \theta_2, \theta_3, \theta_4) = SS_{Groups}$.  Second, it turns out that the group $\theta_1$, $\theta_2$, $\theta_3$ is orthogonal to the singleton group $\theta_4$, and thus we have $SS(\theta_1, \theta_2, \theta_3) + SS(\theta_4) = SS_{Groups}$.  When the $SS_{Groups}$ can be partitioned into SS for two or more groups of orthogonal contrasts, it makes for a particularly nice touch to add this partition to our ANOVA table:
-```
-Source         DF    Squares     Square    F Value    Pr > F
-
-Model           4     14.001      3.500      49.37    <.0001
-  Non-controls    3      3.184    1.061      14.97    <.0001
-  Ctrl vs. non    1     10.817   10.817     152.56    <.0001
-Error          45      3.190      0.071
-Total          49     17.191
-```
-Following convention, we indent the tests that partition the overall test of the treatment groups.
-
-The natural question that arises is: When should we expect orthogonality?  One doesn't just stumble onto sets of orthogonal contrasts by chance.  There are three types of experiments where sets of orthogonal contrasts can be expected.  If you are able to recognize these types of experiments, you can use orthogonal contrasts to create an especially thorough and satisfying analysis.  The three types of experiments that support sets of orthogonal contrasts are:
-
- 1. Factorial experiments.  By a large margin, factorial experiments (in which treatment groups are formed by crossing multiple experimental factors) are the most important context for orthogonal contrasts.  We will study factorial experiments in depth in the next installment of the notes, and thus will say no more about them here.
- 2. Experiments in which the treatment groups cluster into a hierarchy, and the data are balanced.  The pea experiment above provides an example.  The five treatment groups naturally cluster into a group of sugar-addition treatments and a singleton control group.  In this type of experiment, we can find a set of contrasts to test for differences among the treatment means within each cluster, and another set of contrasts to test for differences among the clusters, exactly as we have done with the pea data. 
-	
-	As a second example of an experiment in which treatment groups cluster into a hierarchy, suppose that we have a balanced experiment with six treatment groups: one control group, three treatments that involve adding different types of sugars, and two treatments that involve adding different types of starches.   With 6 treatment groups, we can find 5 linearly independent contrasts to capture the differences among the treatment groups.  These 5 contrasts can be broken down into the following groups:
- + A set of two linearly independent contrasts that compare the means of the three sugar treatments.
- + A single contrast that compares the means of the two starch treatments.
- + A set of two linearly independent contrasts that compare (i) the control group, (ii) the average of the sugar treatments, and (iii) the average of the starch treatments.
- 
-	Alternatively, we might take the two contrasts in the last group above and break those down further into one contrast that compares the control group with the average of the five non-control groups, and a second contrast that compares the average of the sugar treatments to the average of the starch treatments.
-	
-	3. Experiments in which the treatment groups are formed by different levels of a quantitative variable.  We study this scenario in more depth below.
-
-## $^\star$Polynomial trends
-
-Consider the following data set.  Pott (1992) conducted an experiment to investigate the effect of added dietary molybdenum (Mo) on the molybdenum concentrations of sheep kidneys.  Twenty (20) sheep were randomly assigned to one of four diets, where the diets differed only in the amount of supplementary molybdenum (0, 15, 30 and 45 ppm).  Five sheep were assigned to each diet, and the Mo concentration in the kidney was measured after 14 days.  The data are shown below:
-```{r}
-molybdenum <- read.csv("data/molybdenum.csv", head = T)
-with(molybdenum, stripchart(conc ~ diet, method = "jitter", pch = 16))
-```
-Should we model these data with an ANOVA or a regression?  In this case, the treatment groups are formed by different values of a quantitative variable --- in this case, the amount of supplementary molybdenum in the diet.  Many experiments form treatment groups in this way.  Often, the data exhibit a clear trend with respect to the quantitative variable, as the sheep example does.  This is easier to see if we plot the molybdenum variable on the horizontal axis, as we would if this were a regression design:
-```{r}
-with(molybdenum, plot(conc ~ diet, xlab = "molybdenum addition (ppm)", ylab = "kidney Mo", pch = 16))
-```
-THis plot makes it clear that, as with much biological data, the variance increases as the average response increases.  We should analyze the log of the response to stabilize the variance.
-```{r}
-with(molybdenum, plot(log(conc) ~ diet, xlab = "molybdenum addition (ppm)", ylab = "log(kidney Mo)", pch = 16))
-```
-Now we can essentially have our cake and eat it too, by using polynomial contrasts to characterize the underlying trend within the context of an ANOVA.
-
-Our strategy is to decompose the $SS_{Groups}$ into sums-of-squares that capture the polynomial component of the underlying trend.  That is, with four treatment groups (such as we have with the sheep data), we can partition the $SS_{Groups}$ as
-\[
-SS_{Groups} = SS(\theta_1) + SS(\theta_2) + SS(\theta_3)
-\]
-
-where $\theta_1$ captures the linear trend in the group means, $\theta_2$ captures the quadratic trend in the group means, and $\theta_3$ captures the cubic trend in the group means.  Additionally, we want all of these contrasts to be orthogonal to one another.  
-
-There are two different computational approaches to calculating the sums of squares for orthogonal polynomial contrasts, but they will both yield the same answer.  If the data are balanced, and if the treatment groups are equally spaced  with respect to the quantitative variable used to construct them, then coefficients for orthogonal polynomial contrasts can be found in a table, such as Table D.6 of Oehlert.  The sheep data satisfy these special conditions, so we can go ahead and use Table D.6 in Oehlert to find that the orthogonal polynomial contrasts are:
+The problem with the effects model is that it is *overparameterized*.  For example, consider the calorie data from the hot dog data set.  The average calorie content for each type of hotdog is:
 \begin{eqnarray*}
-\theta_1 & = & -3 \mu_1 - \mu_2 + \mu_3 + 3 \mu_4 \\
-\theta_2 & = & \mu_1 - \mu_2 - \mu_3 + \mu_4 \\
-\theta_3 & = & - \mu_1 + 3 \mu_2 - 3 \mu_3 + \mu_4 
+	\bar{y}_{1+} & = & 156.9 \mbox{  calories, for beef}\\
+	\bar{y}_{2+} & = & 158.7 \mbox{  calories, for meat}\\
+	\bar{y}_{3+} & = & 118.8 \mbox{  calories, for poultry.}\\
 \end{eqnarray*}
-where $\mu_1$, $\mu_2$, $\mu_3$, and $\mu_4$ are the means for the treatment groups with 0, 15, 30 and 45 ppm supplementary molybdenum, respectively.
-```
-proc glm data = sheep;
-  class diet;
-  model logy = diet;
-  contrast 'Linear' diet -3 -1 1 3;
-  contrast 'Quadratic' diet 1 -1 -1 1;
-  contrast 'Cubic' diet -1 3 -3 1;
-run; 
+In the effects model, there is no unique way to estimate both the reference level and the individual effect parameters for each hot dog type.  For example, we could choose 
+\[
+\hat{\mu} = 0, \ \ \hat{\alpha}_1 = 156.9, \ \ \hat{\alpha_2} = 158.7, \ \ \hat{\alpha_3} = 118.8
+\]
+or we could choose
+\[
+\hat{\mu} = 100, \ \ \hat{\alpha}_1 = 56.9, \ \ \hat{\alpha_2} = 58.7, \ \  \hat{\alpha_3} = 18.8.
+\]
+There is no way to discriminate between these two (or many other) possibilities.  Thus, there is no unique set of best parameter estimates in the effects model.  To estimate the parameters in the effects model, we need to impose a constraint.  There are two commonly used constraints.  The first is the sum-to-zero constraint:
+\[
+\sum_{i=1}^g \alpha_i = 0.
+\]
+Under the sum-to-zero constraint, our parameter estimates for the hotdog example are:
+\[
+\hat{\mu} = 144.8, \ \ \hat{\alpha}_1 = 12.1, \ \ \hat{\alpha_2} = 13.9, \ \ \hat{\alpha_3} = -26.0.
+\]
+Under the sum-to-zero constraint, $\mu$ is the average of the individual group means, and the effects parameters are the differences between the individual group means and $\mu$.^[When the data are not balanced, another choice for the sum-to-zero constraint is to set $\mu$ equal to the grand mean, where the grand mean is weighted by the differences in sample sizes among the groups: $\mu = \frac{1}{n_T} \sum_{i=1}^g n_i \mu_i$.  With this definition of $\mu$, the weighted sum of the $\alpha_i$'s will equal zero: $\sum_{i=1}^g n_i \alpha_i = 0$.]
 
-The GLM Procedure
-Dependent Variable: conc
+The second commonly used constraint is the set-to-zero constraint.  In the set-to-zero constraint, we choose one of the groups to serve as a reference and constrain its effect to be $0$.  If one of the treatment groups is a control, it makes sense to constrain the effect of the control group to $0$.  If there is no control group, then the choice of which effect to constrain = 0 is arbitrary. 
 
-                                        Sum of
-Source                      DF         Squares     Mean Square    F Value    Pr > F
-Model                        3      2.89623371      0.96541124      12.26    0.0002
-Error                       16      1.26006314      0.07875395
-Corrected Total             19      4.15629685
+For the hotdog example, suppose we constrain $\alpha_3 = 0$.  The remaining parameter estimates are:
+\[
+\hat{\mu} = 118.8, \hat{\alpha}_1 = 38.1, \hat{\alpha_2} = 39.9, \hat{\alpha_3} = 0.
+\]
+The set-to-zero constraint is exactly like choosing a reference level in regression with indicators.  Under the set-to-zero constraint, $\mu$ is the average response of the reference group, and the effects parameters $\alpha_i$ are the differences between the other individual group means and the reference group.
 
-Contrast                    DF     Contrast SS     Mean Square    F Value    Pr > F
-Linear                       1      2.63828807      2.63828807      33.50    <.0001
-Quadratic                    1      0.24832056      0.24832056       3.15    0.0948
-Cubic                        1      0.00962508      0.00962508       0.12    0.7312
-```
-Thus we see that the linear trend is statistically significant (i.e., we can reject $H_0$: $\theta_1 = 0$), but neither the quadratic nor the cubic trends are statistically significant.
 
-Our usual hope is that we can explain the trend in the group means parsimoniously with a small number of low-order polynomial contrasts.  In this case, it is common to pool the higher-order, non-significant contrasts together into a single sum-of-squares that we will call the "lack-of-fit".  With the sheep data, we can pool the quadratic and cubic contrasts together into a lack-of-fit term, as shown below:
-```
-proc glm data = sheep;
-  class diet;
-  model logy = diet;
-  contrast 'Linear' diet -3 -1 1 3;
-  contrast 'Lack-of-fit' diet 1 -1 -1 1,
-                         diet -1 3 -3 1;
-run; 
+When PROC GLM fits a one-factor ANOVA model, it uses the effects parameterization with a set-to-zero constraint.  We can ask SAS to display least-squares parameter estimates for this model by adding a SOLUTION option to the MODEL statement in PROC GLM.  Here's an example with the hotdog data:
+````{}
+proc glm;
+  class type;
+  model calorie = type / solution;
+run;  
 
-Contrast                    DF     Contrast SS     Mean Square    F Value    Pr > F
-Linear                       1      2.63828807      2.63828807      33.50    <.0001
-Lack-of-fit                  2      0.25794564      0.12897282       1.64    0.2254
-```
-We conclude that there is strong evidence that the treatment groups differ, and the differences among the treatment groups are parsimoniously explained by a linear trend.  As before, it makes for a nice touch to combine this all into one ANOVA table:
-```
-                                        Sum of
-Source                      DF         Squares     Mean Square    F Value    Pr > F
-Groups                       3      2.89623371      0.96541124      12.26    0.0002
-  Linear                       1      2.63828807    2.63828807      33.50    <.0001
-  Lack-of-fit                  2      0.25794564    0.12897282       1.64    0.2254
-Error                       16      1.26006314      0.07875395
-Total                       19      4.15629685
-```
+Dependent Variable: calorie
+                                            Standard
+Parameter                 Estimate             Error    t Value    Pr > |t|
 
-Tables of orthogonal polynomial contrasts are nice, but the requirements for balanced data and equally spaced groups seem quite restrictive.  What can we do when these conditions are not met?  It is possible to use specialized software to find the coefficients for orthogonal polynomial contrasts when the data are not balanced, and/or when the treatment groups are not equally spaced.  
+Intercept              118.7647059 B      5.68970197      20.87      <.0001
+type      Beef          38.0852941 B      7.73883135       4.92      <.0001
+type      Meat          39.9411765 B      8.04645369       4.96      <.0001
+type      Poultry        0.0000000 B       .                .         .
 
-However, an easier alternative is to find the sums-of-squares for each contrasts by fitting polynomial regression models.  The key here is that the sum-of-squares for a polynomial regression model is equal to the sum of the sums-of-squares for the respective polynomial contrasts.  That is, with four or more treatment groups,
+NOTE: The X`X matrix has been found to be singular, and a generalized inverse was used to
+solve the normal equations.  Terms whose estimates are followed by the letter 'B'
+are not uniquely estimable.
+````
+
+<!-- Note: I had to change the prime mark used to show matrix transpose in the NOTE so that Markdown did not interpret the quote as a fence. -->
+
+Thus, SAS has chosen "poultry" as the reference group.  (The default in PROC GLM is to designate as the reference the group that is last alphabetically.)  The B's that appear by the parameter estimates and the NOTE that SAS provides warn us that the parameter estimates would be different under a different constraint. 
+
+
+
+### Coding contrasts in PROC GLM
+
+PROC GLM includes two facilities for linear contrasts: the ESTIMATE statement for any linear combination, and the CONTRAST statement specifically for contrasts.  The ESTIMATE statement calculates an estimate, a standard error, and a $t$-test of $H_0$: $\theta = 0$ vs.\ $H_a$: $\theta \ne 0$.  The CONTRAST statement conducts $F$-tests of simple or complex contrasts.
+
+To use either the ESTIMATE or CONTRAST statement, we must re-code each linear combination or simple contrast in terms of the effects parameterization.  Consider the contrast $\theta_1 = \mu_1 - \mu_3$.  Re-expressing this contrast in terms of the effects parameterization yields
 \begin{eqnarray*}
-	SS(\mbox{Linear regression}) & = & SS(\theta_1) \\
-	SS(\mbox{Quadratic regression}) & = & SS(\theta_1) + SS(\theta_2) \\
-	SS(\mbox{Cubic regression}) & = & SS(\theta_1) + SS(\theta_2) + SS(\theta_3) 
+  \theta_1 & = & \mu_1 - \mu_3	\\
+    & = & (\mu + \alpha_1) - (\mu + \alpha_3) \\
+    & = & \alpha_1 - \alpha_3 
 \end{eqnarray*}
-and so on.  So, let's suppose we've misplaced our table of orthogonal polynomial contrasts.  We can still calculate the sum-of-squares for each polynomial contrast by fitting a series of polynomial regression models.  For example, to find $SS(\theta_1)$, we fit a linear regression to the sheep data:
-```
-proc glm data = sheep;
-  model logy = diet;
-run; 
+Once the linear contrasts have been re-expressed in terms of the effects model, we simply pass the coefficients of the effects parameters to SAS in the ESTIMATE or CONTRAST statement.  In the examples above, the only terms included are effects associated with the classification factor 'type'.  (This will get more complicated for multi-factor ANOVA models.)  Here is an example of how we might use ESTIMATE statements for $\theta_1$:
+
+```{}
+proc glm data = hotdog; 
+  class type;
+  model calorie = type;
+  estimate 'Beef vs. Poultry' type 1 0 -1 / e;
+run;
 
 The GLM Procedure
-Dependent Variable: conc
 
-                                        Sum of
-Source                      DF         Squares     Mean Square    F Value    Pr > F
-Model                        1      2.63828807      2.63828807      31.28    <.0001
-Error                       18      1.51800878      0.08433382
-Corrected Total             19      4.15629685
+Dependent Variable: calorie
 
+                                             Standard
+Parameter                    Estimate           Error    t Value    Pr > |t|
+Beef vs. Poultry           38.0852941      7.73883135       4.92      <.0001
+
+Coefficients for Estimate Beef vs. Poultry
+
+Intercept                    0
+
+type      Beef               1
+type      Meat               0
+type      Poul              -1
 ```
-(Note the absence of a CLASS statement in the PROC GLM program above.  Without a CLASS statement, PROC GLM interprets `conc' as a quantitative predictor.)   To find $SS(\theta_1)$, we simply use $SS(\theta_1) = SS(\mbox{Linear regression}) = 2.638$.  Now, to find $SS(\theta_2)$, we need to fit a quadratic regression:
+Notes:
+
+1. The title that appears in single quotes is just a label that helps you remember which linear combination is which.
+
+2. SAS orders the effects parameters alphabetically.  Be careful!  Check to make sure that you’ve specified the order of the coefficients correctly.  The "e" option at the end of the estimate statement provides a listing of the coefficients in tabular form, lined up against the model parameters.  This provides a good way to double check whether your code is correct.
+
+3.  For each linear combination, SAS provides a test of $H_0: \theta = 0$ vs.\ $H_0: \theta \ne 0$.  Of course, you can use the SAS output to calculate CIs or to conduct other hypothesis tests of interest.
+
+As another example, consider the linear combination $\theta_2 = \mu_1$.  Expressed in terms of the effects-model parameterization, this combination is simply $\theta_2 = \mu + \alpha_1$.  SAS calls the reference level the 'intercept', so we could find this linear combination using the ESTIMATE statement as:
+```{}
+proc glm data=hotdog;
+  class type;
+  model calorie = type;
+  estimate 'Beef mean' intercept 1 type 1 0 0;
+run;
+
+                                            Standard
+Parameter                   Estimate           Error    t Value    Pr > |t|
+Beef mean                 156.850000      5.24564602      29.90      <.0001
 ```
-proc glm data = sheep;
-  model logy = diet diet*diet;
-run; 
 
-The GLM Procedure
-Dependent Variable: conc
+---
 
-                                        Sum of
-Source                      DF         Squares     Mean Square    F Value    Pr > F
-Model                        2      2.88660863      1.44330432      19.32    <.0001
-Error                       17      1.26968822      0.07468754
-Corrected Total             19      4.15629685
-```
-Now, $SS(\theta_2) = SS(\mbox{Quadratic regression}) - SS(\mbox{Linear regression}) = 2.889 - 2.638 = 0.248$.  Finally, to find $SS(\theta_3)$, we could fit a cubic regression:
-```
-proc glm data = sheep;
-  model logy = diet diet*diet diet*diet*diet;
-run; 
+<span style="color: gray;"> An unfortunate consequence of using the effects-model parameterization is that it is possible to write down linear combinations of the effects parameters that do not correspond to a linear combination of the group means.  We say that these functions are "not estimable".  For example, consider the function $\mu + \alpha_1 + \alpha_2$.  (An even simpler example of a function that is not estimable is just $\alpha_1$.) Even though we can write this function down as a mathematical formula, its value will depend on the constraint that we choose to estimate the model parameters.  However, we have said that the choice of a constraint is arbitrary.  Therefore, we are only interested in functions whose values are the same, regardless of the constraint chosen.  If you try to estimate a function that is not estimable in SAS, SAS will produce an error message.
+
+<span style="color: gray;"> Of course, if we start with a linear combination of group means, and then convert that combination to its representation with the effects model parameters, we’ll be guaranteed to have an estimable function.  So, it’s best to always start with the group means, and then work from the group means to the parameters of the effect model, instead of starting directly with the parameters of the effects model.</span>
+
+---
 
 
-The GLM Procedure
-Dependent Variable: conc
 
-                                        Sum of
-Source                      DF         Squares     Mean Square    F Value    Pr > F
-Model                        3      2.89623371      0.96541124      12.26    0.0002
-Error                       16      1.26006314      0.07875395
-Corrected Total             19      4.15629685
 
-```
-or we could have just recognized that $SS(\mbox{Cubic regression}) = SS_{Groups}$.  In either case, we now have $SS(\theta_3) = SS(\mbox{Cubic regression}) - SS(\mbox{Quadratic regression}) = 2.896 - 2.887 = 0.009$.   We have thus found the sums-of-squares associated with each polynomial contrasts without having to use the table in Oehlert.  Thankfully, this method of finding the sums-of-squares associated with each polynomial contrasts will work any time the treatment groups are formed by different levels of a quantitative variable, and does not require either balance or equally spaced treatment groups.
+
