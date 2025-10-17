@@ -504,142 +504,6 @@ s_{\hat{\theta}} & = & \sqrt{\left\{\frac{c_{11}^2}{n_{11}} +\frac{c_{12}^2}{n_{
 \end{eqnarray*}
 Finally, if we wanted a 95\% CI for this linear combination, we could form one by taking the appropriate critical values from a t-distribution with 8 df.  (Here, 8 df because the MSE is calculated based on 8 df).  Here, the appropriate critical value is 2.306, so a 95\% CI for the main effect of fat is -143g $\pm$ 2.306 $\times$ 22.0g = (-92g, -194g).
 
-### Analysis using PROC GLM in SAS
-
-We can have SAS do these calculations for us.  In PROC GLM, we can obtain these calculations with the code:
-
-```{}
-proc glm data=rat;
-  class trt sex fat;
-  model food = sex fat sex*fat;
-run;
-```
-
-Edited output:
-
-```{}
-                                        Sum of
-Source                      DF         Squares     Mean Square    F Value    Pr > F
-Model                        3     65903.58333     21967.86111      15.06    0.0012
-Error                        8     11666.66667      1458.33333
-Corrected Total             11     77570.25000
-
-Source                      DF     Type III SS     Mean Square    F Value    Pr > F
-sex                          1      3780.75000      3780.75000       2.59    0.1460
-fat                          1     61204.08333     61204.08333      41.97    0.0002
-sex*fat                      1       918.75000       918.75000       0.63    0.4503
-```
-
-Let's note the following:
-
-1. In the model statement, we can use a vertical bar as shorthand for including both main effects and interactions.  The code below would produce identical output to the code above:
-	
-```{}
-proc glm data=rat;
-  class trt sex fat;
-  model food = sex|fat;
-run;
-```
-	
-2. PROC GLM provides two tables.  The first is the sum-of-squares breakdown and associated ANOVA F-test if we were just treating the data as a one-factor ANOVA.  That is, the $F$-test in the first table is a test of $H_0$: $\mu_{11} =\mu_{12} =\mu_{21} =...=\mu_{ab}$. (This is equivalent to a model-utility test in multiple regression.)  The second table of output provides $F$-tests for the main and interaction effects.
-	
-3. PROC GLM provides two sum-of-squares decompositions, one which it calls Type I and another which it calls Type III.  Type I and Type III sum-of-squares are identical for balanced factorial designs.  They are not identical for unbalanced designs.  We will discuss the differences for unbalanced designs later.
-
-We can also have PROC GLM calculate linear combinations of cell means for us.  To do so, though, we need to understand the *effects-model* coding that PROC GLM uses to represent the two-factor ANOVA model.
-
-### Effects notation for the two-factor ANOVA
-
-For a two-factor ANOVA, we extend our effects-model notation in the following way: 
-\[
-\mu_{ij} =\mu +\alpha_i +\beta_j +\left(\alpha \beta \right)_{ij}
-\] 
-Here, $\mu$ is the reference level, $\alpha_i$ is the "effect" of level $i$ of factor A, $\beta_j$ is the "effect" of level $j$ of factor B, and $\left(\alpha \beta \right)_{ij}$ is the interaction between level $i$ of factor A and level $j$ of factor B.  In one-factor ANOVA, we saw that it was not possible to estimate all the $\alpha_i$'s uniquely, so we had to impose a constraint.  A similar phenomenon prevails in the two-factor model.  How many constraints do we need?  The key equivalence is that the number of effects parameters that we can estimate is equal to the number of df for each effect in the df accounting.
-
-<!-- Here are the rules for dfs and constraints in the 2 $\times$ 2 factorial design.  For the main effects of factor A, there are 2 parameters and 1 df, so we must constrain one of the $\alpha_i$'s to be equal to 0.  For the main effects of factor B, there are also 2 parameters and 1 df, so we must constrain one of the $\beta_j$'s to be equal to 0.  For the interaction effects, there are 4 interaction parameters $\left(\alpha \beta \right)_{11} ,\left(\alpha \beta \right)_{12} ,\left(\alpha \beta \right)_{21} ,\left(\alpha \beta \right)_{22}$, but only 1 df for the interaction, so we must constrain 3 of the interaction effects to be equal to zero. -->
-
-<!-- Another way to think about the set-to-zero constraints is to relate the two-factor ANOVA model to regression with indicators.  More information about this equivalence can be found in a later section in this chapter of the notes. -->
-
-Again, PROC GLM uses set-to-zero constraints.  We can see the constraints by calling for SAS's parameter estimates with the SOLUTION option to the MODEL statement in PROC GLM:
-
-```{}
-proc glm data=rat;
-  class trt sex fat;
-  model food = sex|fat / solution;
-run;
-
-The GLM Procedure
-                                                  Standard
-Parameter                       Estimate             Error    t Value    Pr > |t|
-Intercept                    535.3333333 B     22.04792759      24.28      <.0001
-sex       female             -18.0000000 B     31.18047822      -0.58      0.5796
-sex       male                 0.0000000 B       .                .         .
-fat       fresh              160.3333333 B     31.18047822       5.14      0.0009
-fat       rancid               0.0000000 B       .                .         .
-sex*fat   female fresh       -35.0000000 B     44.09585518      -0.79      0.4503
-sex*fat   female rancid        0.0000000 B       .                .         .
-sex*fat   male fresh           0.0000000 B       .                .         .
-sex*fat   male rancid          0.0000000 B       .                .         .
-
-NOTE: The X'X matrix has been found to be singular, and a generalized inverse was used to
-solve the normal equations.  Terms whose estimates are followed by the letter 'B'
-are not uniquely estimable.
-```
-
-Now, to calculate the main effect of fat using SAS, we have to recode our linear combination in terms of the parameters in the effects model.  Here goes:
-\begin{eqnarray*} 
-\theta _{fat} & = & \frac{1}{2} \left(\mu_{12} +\mu_{22} -\mu_{11} -\mu_{21} \right) \\
- & = & \frac{1}{2} \left(\mu +\alpha _{1} +\beta _{2} +\left(\alpha \beta \right)_{12} +\mu +\alpha _{2} +\beta _{2} +\left(\alpha \beta \right)_{22} -\mu -\alpha _{1} -\beta _{1} -\left(\alpha \beta \right)_{11} -\mu -\alpha _{2} -\beta _{1} -\left(\alpha \beta \right)_{21} \right) \\
- & = & \frac{1}{2} \left(2\beta _{2} +\left(\alpha \beta \right)_{12} +\left(\alpha \beta \right)_{22} -2\beta _{1} -\left(\alpha \beta \right)_{11} -\left(\alpha \beta \right)_{21} \right) \\ 
- & = & -\beta _{1} +\beta _{2} -\frac{1}{2} \left(\alpha \beta \right)_{11} +\frac{1}{2} \left(\alpha \beta \right)_{12} -\frac{1}{2} \left(\alpha \beta \right)_{21} +\frac{1}{2} \left(\alpha \beta \right)_{22} 
-\end{eqnarray*}
-Now we can read off the coefficients from  the last line of the expression above and feed them into an ESTIMATE statement.  Note that this combination only involves parameters for the 'fat' effect and the interaction:
-```{}
-proc glm data=rat;
-  class trt sex fat;
-  model food = sex|fat;
-  estimate 'Fresh v. rancid' fat -1 1 sex*fat -.5 .5 -.5 .5;   
-run;                                            
-
-Parameter                   Estimate  Standard Error    t Value    Pr > |t|
-Fresh v. rancid          -142.833333      22.0479276      -6.48      0.0002
-```
-
-As always, SAS provides (for free) a $p$-value for the test of $H_0$: $\theta =0$ vs.\ $H_a$: $\theta \ne 0$.  For illustration's sake, we can also write linear combinations for the main effect of sex, and for the interaction effect.  One way to write these linear combinations is:
-\[\theta _{sex} =\frac{\mu_{21} +\mu_{22} }{2} -\frac{\mu_{11} +\mu_{12} }{2} \] 
-and
-\[\theta _{int} =\left(\mu_{22} -\mu_{12} \right)-\left(\mu_{21} -\mu_{11} \right)\] 
-Using PROC GLM, we estimate these effects as
-
-```{}
-proc glm data=rat;
-  class trt sex fat;
-  model food = trt;
-  estimate 'Fresh v. rancid' fat -1 1 sex*fat -.5 .5 -.5 .5; 
-  estimate 'Male v. female'  sex -1 1 sex*fat -.5 -.5 .5 .5; 
-  estimate 'Interaction'     sex*fat 1 -1 -1 1;
-run;         
-                       
-Parameter                   Estimate  Standard Error    t Value    Pr > |t|
-Fresh v. rancid          -142.833333      22.0479276      -6.48      0.0002
-Male v. female            -35.500000      22.0479276      -1.61      0.1460
-Interaction                35.000000      44.0958552       0.79      0.4503
-```
-
-Thus, to summarize our analysis of this experiment:  There is no evidence of a statistically significant sex effect.  There is strong evidence of an effect of fat on food consumption ($F_{1,8} = 41.97$, $p=0.0002$).  Rats fed rancid fat consumed on average 142.9g (s.e. 22.0g) less food than rats fed fresh fat. 
-
-Just as with one-factor ANOVA, the effects notation also gives us another way to write the null hypotheses for the main effects and interaction effects.  The test of the main effects of factor A is equivalent to a test of 
-\[
-H_{0} :\alpha _{1} =\alpha _{2} =...=\alpha _{a} =0.
-\]
-The test of the main effects of factor B is equivalent to a test of 
-\[
-H_{0} :\beta _{1} =\beta _{2} =...=\beta _{b} =0.
-\]
-Finally, the test the interaction between factors A and B is equivalent to a test of 
-\[
-H_{0} :\left(\alpha \beta \right)_{11} =\left(\alpha \beta \right)_{12} =...=\left(\alpha \beta \right)_{ab} =0. 
-\]
-
 ### A second example when the interaction is significant
 
 This example is taken from @steel1997principles.  In their words, 
@@ -1328,6 +1192,138 @@ Simple effect of movement when temperature = warm:
 
 A final note: unreplicated three-way factorial designs are not uncommon in the life sciences.  To analyze these designs, one typically assumes that there is no second-order interaction, and uses the df that would have been absorbed by the second-order interaction as the df for error.  Some will argue that higher-order interactions are rare in nature, and thus assuming that they do not occur is justified.  Whether you agree with this or view it as a just-so rationalization is up to you.
 
+
+## Analysis using PROC GLM in SAS
+
+Consider again the rat weight-gain data.  To use PROC GLM to compute the two-factor ANOVA table, we would use
+
+```{}
+proc glm data=rat;
+  class trt sex fat;
+  model food = sex fat sex*fat;
+run;
+```
+
+The ANOVA $F$-tests are contained in the output:
+
+```{}
+                                        Sum of
+Source                      DF         Squares     Mean Square    F Value    Pr > F
+Model                        3     65903.58333     21967.86111      15.06    0.0012
+Error                        8     11666.66667      1458.33333
+Corrected Total             11     77570.25000
+
+Source                      DF     Type III SS     Mean Square    F Value    Pr > F
+sex                          1      3780.75000      3780.75000       2.59    0.1460
+fat                          1     61204.08333     61204.08333      41.97    0.0002
+sex*fat                      1       918.75000       918.75000       0.63    0.4503
+```
+
+The first portion of the output above gives the sum-of-squares breakdown and associated ANOVA $F$-test if we were just treating the data as a one-factor ANOVA.  That is, the $F$-test in the first table is a test of $H_0$: $\mu_{11} =\mu_{12} =\mu_{21} =...=\mu_{ab}$. (This is equivalent to a model-utility test in multiple regression.)  The second portion of the output provides $F$-tests for the main and interaction effects.
+
+PROC GLM also provides two sum-of-squares decompositions, one which it calls Type I and another which it calls Type III.  Type I and Type III sum-of-squares are identical for balanced factorial designs.  They are not identical for unbalanced designs.  We will discuss the differences for unbalanced designs later.
+
+In the model statement, we can use a vertical bar as shorthand for including both main effects and interactions.  The code below would produce identical output to the code above:
+	
+```{}
+proc glm data=rat;
+  class trt sex fat;
+  model food = sex|fat;
+run;
+```
+
+### Effects notation for the two-factor ANOVA
+
+We can also have PROC GLM calculate linear combinations of cell means for us.  To do so, though, we need to understand the *effects-model* coding of the two-factor ANOVA model.  For a two-factor ANOVA, we extend our effects-model notation in the following way: 
+\[
+\mu_{ij} =\mu +\alpha_i +\beta_j +\left(\alpha \beta \right)_{ij}
+\] 
+Here, $\mu$ is the reference level, $\alpha_i$ is the "effect" of level $i$ of factor A, $\beta_j$ is the "effect" of level $j$ of factor B, and $\left(\alpha \beta \right)_{ij}$ is the interaction between level $i$ of factor A and level $j$ of factor B.  In one-factor ANOVA, we saw that it was not possible to estimate all the $\alpha_i$'s uniquely, so we had to impose a constraint.  A similar phenomenon prevails in the two-factor model.  How many constraints do we need?  The key equivalence is that the number of effects parameters that we can estimate is equal to the number of df for each effect in the df accounting.
+
+<!-- Here are the rules for dfs and constraints in the 2 $\times$ 2 factorial design.  For the main effects of factor A, there are 2 parameters and 1 df, so we must constrain one of the $\alpha_i$'s to be equal to 0.  For the main effects of factor B, there are also 2 parameters and 1 df, so we must constrain one of the $\beta_j$'s to be equal to 0.  For the interaction effects, there are 4 interaction parameters $\left(\alpha \beta \right)_{11} ,\left(\alpha \beta \right)_{12} ,\left(\alpha \beta \right)_{21} ,\left(\alpha \beta \right)_{22}$, but only 1 df for the interaction, so we must constrain 3 of the interaction effects to be equal to zero. -->
+
+<!-- Another way to think about the set-to-zero constraints is to relate the two-factor ANOVA model to regression with indicators.  More information about this equivalence can be found in a later section in this chapter of the notes. -->
+
+Again, PROC GLM uses set-to-zero constraints.  We can see the constraints by calling for SAS's parameter estimates with the SOLUTION option to the MODEL statement in PROC GLM:
+
+```{}
+proc glm data=rat;
+  class trt sex fat;
+  model food = sex|fat / solution;
+run;
+
+The GLM Procedure
+                                                  Standard
+Parameter                       Estimate             Error    t Value    Pr > |t|
+Intercept                    535.3333333 B     22.04792759      24.28      <.0001
+sex       female             -18.0000000 B     31.18047822      -0.58      0.5796
+sex       male                 0.0000000 B       .                .         .
+fat       fresh              160.3333333 B     31.18047822       5.14      0.0009
+fat       rancid               0.0000000 B       .                .         .
+sex*fat   female fresh       -35.0000000 B     44.09585518      -0.79      0.4503
+sex*fat   female rancid        0.0000000 B       .                .         .
+sex*fat   male fresh           0.0000000 B       .                .         .
+sex*fat   male rancid          0.0000000 B       .                .         .
+
+NOTE: The X'X matrix has been found to be singular, and a generalized inverse was used to
+solve the normal equations.  Terms whose estimates are followed by the letter 'B'
+are not uniquely estimable.
+```
+
+Now, to calculate the main effect of fat using SAS, we have to recode our linear combination in terms of the parameters in the effects model.  Here goes:
+\begin{eqnarray*} 
+\theta _{fat} & = & \frac{1}{2} \left(\mu_{12} +\mu_{22} -\mu_{11} -\mu_{21} \right) \\
+ & = & \frac{1}{2} \left(\mu +\alpha _{1} +\beta _{2} +\left(\alpha \beta \right)_{12} +\mu +\alpha _{2} +\beta _{2} +\left(\alpha \beta \right)_{22} -\mu -\alpha _{1} -\beta _{1} -\left(\alpha \beta \right)_{11} -\mu -\alpha _{2} -\beta _{1} -\left(\alpha \beta \right)_{21} \right) \\
+ & = & \frac{1}{2} \left(2\beta _{2} +\left(\alpha \beta \right)_{12} +\left(\alpha \beta \right)_{22} -2\beta _{1} -\left(\alpha \beta \right)_{11} -\left(\alpha \beta \right)_{21} \right) \\ 
+ & = & -\beta _{1} +\beta _{2} -\frac{1}{2} \left(\alpha \beta \right)_{11} +\frac{1}{2} \left(\alpha \beta \right)_{12} -\frac{1}{2} \left(\alpha \beta \right)_{21} +\frac{1}{2} \left(\alpha \beta \right)_{22} 
+\end{eqnarray*}
+Now we can read off the coefficients from  the last line of the expression above and feed them into an ESTIMATE statement.  Note that this combination only involves parameters for the 'fat' effect and the interaction:
+```{}
+proc glm data=rat;
+  class trt sex fat;
+  model food = sex|fat;
+  estimate 'Fresh v. rancid' fat -1 1 sex*fat -.5 .5 -.5 .5;   
+run;                                            
+
+Parameter                   Estimate  Standard Error    t Value    Pr > |t|
+Fresh v. rancid          -142.833333      22.0479276      -6.48      0.0002
+```
+
+As always, SAS provides (for free) a $p$-value for the test of $H_0$: $\theta =0$ vs.\ $H_a$: $\theta \ne 0$.  For illustration's sake, we can also write linear combinations for the main effect of sex, and for the interaction effect.  One way to write these linear combinations is:
+\[\theta _{sex} =\frac{\mu_{21} +\mu_{22} }{2} -\frac{\mu_{11} +\mu_{12} }{2} \] 
+and
+\[\theta _{int} =\left(\mu_{22} -\mu_{12} \right)-\left(\mu_{21} -\mu_{11} \right)\] 
+Using PROC GLM, we estimate these effects as
+
+```{}
+proc glm data=rat;
+  class trt sex fat;
+  model food = trt;
+  estimate 'Fresh v. rancid' fat -1 1 sex*fat -.5 .5 -.5 .5; 
+  estimate 'Male v. female'  sex -1 1 sex*fat -.5 -.5 .5 .5; 
+  estimate 'Interaction'     sex*fat 1 -1 -1 1;
+run;         
+                       
+Parameter                   Estimate  Standard Error    t Value    Pr > |t|
+Fresh v. rancid          -142.833333      22.0479276      -6.48      0.0002
+Male v. female            -35.500000      22.0479276      -1.61      0.1460
+Interaction                35.000000      44.0958552       0.79      0.4503
+```
+
+Thus, to summarize our analysis of this experiment:  There is no evidence of a statistically significant sex effect.  There is strong evidence of an effect of fat on food consumption ($F_{1,8} = 41.97$, $p=0.0002$).  Rats fed rancid fat consumed on average 142.9g (s.e. 22.0g) less food than rats fed fresh fat. 
+
+Just as with one-factor ANOVA, the effects notation also gives us another way to write the null hypotheses for the main effects and interaction effects.  The test of the main effects of factor A is equivalent to a test of 
+\[
+H_{0} :\alpha _{1} =\alpha _{2} =...=\alpha _{a} =0.
+\]
+The test of the main effects of factor B is equivalent to a test of 
+\[
+H_{0} :\beta _{1} =\beta _{2} =...=\beta _{b} =0.
+\]
+Finally, the test the interaction between factors A and B is equivalent to a test of 
+\[
+H_{0} :\left(\alpha \beta \right)_{11} =\left(\alpha \beta \right)_{12} =...=\left(\alpha \beta \right)_{ab} =0. 
+\]
 
 
 <!-- ## Advanced topic: equivalence between two-factor ANOVA and regression with indicators} -->
