@@ -109,8 +109,6 @@ interaction
 main-effects-as-averages-of-simple-effects
 sum-of-squares-decompositions
 back-to-the-rat-data
-analysis-using-proc-glm-in-sas
-effects-notation-for-the-two-factor-anova
 a-second-example-when-the-interaction-is-significant
 a-times-b-factorial-designs
 example-without-a-significant-interaction
@@ -118,7 +116,12 @@ example-with-a-significant-interaction
 unreplicated-factorial-designs
 missing-cells
 more-than-two-factors
+analysis-using-proc-glm-in-sas
+effects-notation-for-the-two-factor-anova
 ancova
+common-slopes-model
+separate-slopes-model
+further-reading
 random-effects
 fixed-vs.-random-effects-the-big-picture
 random-effects-models

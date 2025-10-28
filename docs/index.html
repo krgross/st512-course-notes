@@ -23,7 +23,7 @@
 <meta name="author" content="Kevin Gross" />
 
 
-<meta name="date" content="2025-10-17" />
+<meta name="date" content="2025-10-27" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -311,9 +311,7 @@ div.csl-indent {
 <ul>
 <li class="chapter" data-level="7.2.1" data-path="factorial-experiments.html"><a href="factorial-experiments.html#example-weight-gain-in-rats"><i class="fa fa-check"></i><b>7.2.1</b> Example: Weight gain in rats</a></li>
 <li class="chapter" data-level="7.2.2" data-path="factorial-experiments.html"><a href="factorial-experiments.html#two-factor-anova-hypothesis-tests"><i class="fa fa-check"></i><b>7.2.2</b> Two-factor ANOVA hypothesis tests</a></li>
-<li class="chapter" data-level="7.2.3" data-path="factorial-experiments.html"><a href="factorial-experiments.html#analysis-using-proc-glm-in-sas"><i class="fa fa-check"></i><b>7.2.3</b> Analysis using PROC GLM in SAS</a></li>
-<li class="chapter" data-level="7.2.4" data-path="factorial-experiments.html"><a href="factorial-experiments.html#effects-notation-for-the-two-factor-anova"><i class="fa fa-check"></i><b>7.2.4</b> Effects notation for the two-factor ANOVA</a></li>
-<li class="chapter" data-level="7.2.5" data-path="factorial-experiments.html"><a href="factorial-experiments.html#a-second-example-when-the-interaction-is-significant"><i class="fa fa-check"></i><b>7.2.5</b> A second example when the interaction is significant</a></li>
+<li class="chapter" data-level="7.2.3" data-path="factorial-experiments.html"><a href="factorial-experiments.html#a-second-example-when-the-interaction-is-significant"><i class="fa fa-check"></i><b>7.2.3</b> A second example when the interaction is significant</a></li>
 </ul></li>
 <li class="chapter" data-level="7.3" data-path="factorial-experiments.html"><a href="factorial-experiments.html#a-times-b-factorial-designs"><i class="fa fa-check"></i><b>7.3</b> <span class="math inline">\(a \times b\)</span> factorial designs</a>
 <ul>
@@ -323,8 +321,17 @@ div.csl-indent {
 <li class="chapter" data-level="7.4" data-path="factorial-experiments.html"><a href="factorial-experiments.html#unreplicated-factorial-designs"><i class="fa fa-check"></i><b>7.4</b> Unreplicated factorial designs</a></li>
 <li class="chapter" data-level="7.5" data-path="factorial-experiments.html"><a href="factorial-experiments.html#missing-cells"><i class="fa fa-check"></i><b>7.5</b> Missing cells</a></li>
 <li class="chapter" data-level="7.6" data-path="factorial-experiments.html"><a href="factorial-experiments.html#more-than-two-factors"><i class="fa fa-check"></i><b>7.6</b> More than two factors</a></li>
+<li class="chapter" data-level="7.7" data-path="factorial-experiments.html"><a href="factorial-experiments.html#analysis-using-proc-glm-in-sas"><i class="fa fa-check"></i><b>7.7</b> Analysis using PROC GLM in SAS</a>
+<ul>
+<li class="chapter" data-level="7.7.1" data-path="factorial-experiments.html"><a href="factorial-experiments.html#effects-notation-for-the-two-factor-anova"><i class="fa fa-check"></i><b>7.7.1</b> Effects notation for the two-factor ANOVA</a></li>
 </ul></li>
-<li class="chapter" data-level="8" data-path="ancova.html"><a href="ancova.html"><i class="fa fa-check"></i><b>8</b> ANCOVA</a></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="ancova.html"><a href="ancova.html"><i class="fa fa-check"></i><b>8</b> ANCOVA</a>
+<ul>
+<li class="chapter" data-level="8.1" data-path="ancova.html"><a href="ancova.html#common-slopes-model"><i class="fa fa-check"></i><b>8.1</b> Common-slopes model</a></li>
+<li class="chapter" data-level="8.2" data-path="ancova.html"><a href="ancova.html#separate-slopes-model"><i class="fa fa-check"></i><b>8.2</b> Separate-slopes model</a></li>
+<li class="chapter" data-level="8.3" data-path="ancova.html"><a href="ancova.html#further-reading"><i class="fa fa-check"></i><b>8.3</b> Further reading</a></li>
+</ul></li>
 <li class="chapter" data-level="9" data-path="random-effects.html"><a href="random-effects.html"><i class="fa fa-check"></i><b>9</b> Random effects</a>
 <ul>
 <li class="chapter" data-level="9.1" data-path="random-effects.html"><a href="random-effects.html#fixed-vs.-random-effects-the-big-picture"><i class="fa fa-check"></i><b>9.1</b> Fixed vs. random effects: the big picture</a></li>
@@ -373,7 +380,7 @@ div.csl-indent {
 <div id="header">
 <h1 class="title">Statistical analysis of designed experiments: yesterday, today, and tomorrow</h1>
 <p class="author"><em>Kevin Gross</em></p>
-<p class="date"><em>2025-10-17</em></p>
+<p class="date"><em>2025-10-27</em></p>
 </div>
 <div id="preface" class="section level1 unnumbered hasAnchor">
 <h1>Preface<a href="index.html#preface" class="anchor-section" aria-label="Anchor link to header"></a></h1>
@@ -387,13 +394,13 @@ When it comes to statistics, researchers cannot necessarily rely on their common
 <p><em>The route to conceptual understanding is the detailed study of basic methods.</em><br />
 However, one does not develop a deep conceptual understanding merely by discussing concepts. Instead, conceptual understanding is honed in part by studying the details of particular methods to understand why those details matter. When we study the details of a method, the expectation is not that the student will remember those details in perpetuity. Indeed, practicing scientists are unlikely anyway to remember details about statistical methods that they do not use routinely. (This is not a knock on practicing scientists, but is instead simply a statement about the limitations of human memory.) Instead, the point of studying statistical methods in detail is to strengthen conceptual understanding by exploring statistical methods at a reasonably deep level. Examining details now will also make those details more recognizable if and when one faces a future data-analysis task that requires re-engaging those details. That said, the ultimate emphasis of this course is not on the details of the methods, but is instead on the ideas, concepts, and reasoning that underlie statistical thinking. I hope that these notes will deepen readers’ conceptual understanding of statistics and by doing so strengthen their effectiveness as scientists.</p>
 <p><em>Except when it comes to sums-of-squares decompositions in ANOVA.</em><br />
-The exception to the statement above is ANOVA and the associated sums-of-squares decompositions. At this mathemtical level — that is, without assuming a familiarity with linear algebra — sums-of-squares decompositions and the associated ANOVA tables are poor vehicles for developing conceptual understanding. Instead, they fill texts with inscrutable tables tethered to formulas that lack a compelling underlying logic.<a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a> ANOVA is still worth learning — especially for the analysis of designed experiments — but unless the underlying linear algebra is engaged, ANOVA is more usefully approached as a special case of a regression model. For this reason, these notes introduce regression modeling first and ANOVA second, reversing the path taken by most texts.</p>
+The exception to the statement above is ANOVA and the associated sums-of-squares decompositions. Sums-of-squares decompositions and the associated ANOVA tables make sense only when engaging the underlying linear algebra. Without engaging the linear-algebra foundations, sums-of-squares tables fill texts with inscrutable tables that are poor vehicles for developing a conceptual understanding.<a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a> ANOVA is still worth learning — especially for the analysis of designed experiments — but unless the underlying linear algebra is engaged, ANOVA is more usefully approached as a special case of a regression model. For this reason, these notes introduce regression modeling first and ANOVA second, reversing the path taken by most texts.</p>
 <p><em>Confidence intervals deserve more emphasis, and hypothesis tests less.</em><br />
 Hypothesis tests have become the primary route to inference in contemporary science, likely because they are the de facto evidentiary standard for announcing results in the scientific literature. This is unfortunate, because statistical significance provides only the thinnest of summaries of pattern in data. Confidence intervals, on the other hand (or even standard errors), are often relegated to a secondary role, even though they provide a richer basis for characterizing pattern and uncertainty. In the fullness of time, these notes will seek to promote the reporting of confidence intervals or standard errors as opposed to hypothesis tests as the primary vehicle for inference.</p>
 <p><em>Simplicity in statistical analysis is a virtue.</em><br />
 Contemporary statistical software allows anyone to fit complex statistical models. However, just because one can fit a complex model does not mean that one should. For a statistical analysis to have scientific value, it must be understood by both the analyst and the analyst’s audience. Unfortunately, many contemporary statistical methods produce opaque analyses that are impossible for the informed reader to understand without a substantial and unusual investment of time and energy. (It doesn’t help that, in the scientific literature, the details of contemporary analyses are buried in supplementary material that escapes the scrutiny of most reviewers, but that’s another matter.) As a result, informed and well-intentioned readers of the scientific literature have little choice but to accept the analysis at face value without understanding the genesis of the announced results. This state of affairs does not serve science well.</p>
 <p>It is high time for the scientific community to ask whether complex but opaque statistical analyses are in the best interest of science. For most scientific studies, a simple and transparent analysis provides a more trustworthy vehicle to understanding for both the analyst and the analyst’s audience. These notes will emphasize methods that, when studied, are transparent enough to promote such an understanding.</p>
-<p><em>Nearly everyone is a visual learner.</em><br />
+<p><em>Visualization is everything.</em><br />
 No one is convinced by a <span class="math inline">\(p\)</span>-value in isolation, or at least no one should be, given the ease of making errors in statistical analysis. When an analysis suggests a pattern in data, the best way to understand the pattern is to visualize it with a thoughtfully constructed graphic. Unfortunately, these notes in their current state are not as richly illustrated as they should be. Eventually, I hope the notes will contain a full set of graphics that exemplify how to visualize patterns revealed by statistical analysis.</p>
 </div>
 <div id="scope-and-coverage" class="section level3 unnumbered hasAnchor">

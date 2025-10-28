@@ -23,7 +23,7 @@
 <meta name="author" content="Kevin Gross" />
 
 
-<meta name="date" content="2025-10-17" />
+<meta name="date" content="2025-10-27" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -54,6 +54,70 @@
 <script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
 
 
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
 
 <style type="text/css">
   
@@ -95,7 +159,6 @@ div.csl-indent {
       <nav role="navigation">
 
 <ul class="summary">
-<li class="part"><span><b>Part I: Regression modeling</b></span></li>
 <li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Preface</a>
 <ul>
 <li class="chapter" data-level="" data-path="index.html"><a href="index.html#philosophy"><i class="fa fa-check"></i>Philosophy</a></li>
@@ -106,69 +169,73 @@ div.csl-indent {
 <li class="chapter" data-level="" data-path="index.html"><a href="index.html#format-of-the-notes"><i class="fa fa-check"></i>Format of the notes</a></li>
 <li class="chapter" data-level="" data-path="index.html"><a href="index.html#a-word-on-the-title"><i class="fa fa-check"></i>A word on the title</a></li>
 <li class="chapter" data-level="" data-path="index.html"><a href="index.html#acknowledgments-and-license"><i class="fa fa-check"></i>Acknowledgments and license</a></li>
-<li class="chapter" data-level="0.1" data-path="index.html"><a href="index.html#the-basics-of-slr"><i class="fa fa-check"></i><b>0.1</b> The basics of SLR</a></li>
-<li class="chapter" data-level="0.2" data-path="index.html"><a href="index.html#least-squares-estimation"><i class="fa fa-check"></i><b>0.2</b> Least-squares estimation</a></li>
-<li class="chapter" data-level="0.3" data-path="index.html"><a href="index.html#inference-for-the-slope"><i class="fa fa-check"></i><b>0.3</b> Inference for the slope</a>
-<ul>
-<li class="chapter" data-level="0.3.1" data-path="index.html"><a href="index.html#standard-errors"><i class="fa fa-check"></i><b>0.3.1</b> Standard errors</a></li>
-<li class="chapter" data-level="0.3.2" data-path="index.html"><a href="index.html#confidence-intervals"><i class="fa fa-check"></i><b>0.3.2</b> Confidence intervals</a></li>
-<li class="chapter" data-level="0.3.3" data-path="index.html"><a href="index.html#statistical-hypothesis-tests"><i class="fa fa-check"></i><b>0.3.3</b> Statistical hypothesis tests</a></li>
-<li class="chapter" data-level="0.3.4" data-path="index.html"><a href="index.html#inference-for-the-intercept"><i class="fa fa-check"></i><b>0.3.4</b> Inference for the intercept</a></li>
 </ul></li>
-<li class="chapter" data-level="0.4" data-path="index.html"><a href="index.html#sums-of-squares-decomposition-and-r2"><i class="fa fa-check"></i><b>0.4</b> Sums of squares decomposition and <span class="math inline">\(R^2\)</span></a></li>
-<li class="chapter" data-level="0.5" data-path="index.html"><a href="index.html#diagnostic-plots"><i class="fa fa-check"></i><b>0.5</b> Diagnostic plots</a>
+<li class="part"><span><b>Part I: Regression modeling</b></span></li>
+<li class="chapter" data-level="1" data-path="simple-linear-regression.html"><a href="simple-linear-regression.html"><i class="fa fa-check"></i><b>1</b> Simple linear regression</a>
 <ul>
-<li class="chapter" data-level="0.5.1" data-path="index.html"><a href="index.html#residuals-vs.-fitted-values"><i class="fa fa-check"></i><b>0.5.1</b> Residuals vs. fitted values</a></li>
-<li class="chapter" data-level="0.5.2" data-path="index.html"><a href="index.html#residuals-vs.-predictors"><i class="fa fa-check"></i><b>0.5.2</b> Residuals vs. predictor(s)</a></li>
-<li class="chapter" data-level="0.5.3" data-path="index.html"><a href="index.html#residuals-vs.-other-variables"><i class="fa fa-check"></i><b>0.5.3</b> Residuals vs. other variables</a></li>
-<li class="chapter" data-level="0.5.4" data-path="index.html"><a href="index.html#normal-probability-plot"><i class="fa fa-check"></i><b>0.5.4</b> Normal probability plot</a></li>
+<li class="chapter" data-level="1.1" data-path="simple-linear-regression.html"><a href="simple-linear-regression.html#the-basics-of-slr"><i class="fa fa-check"></i><b>1.1</b> The basics of SLR</a></li>
+<li class="chapter" data-level="1.2" data-path="simple-linear-regression.html"><a href="simple-linear-regression.html#least-squares-estimation"><i class="fa fa-check"></i><b>1.2</b> Least-squares estimation</a></li>
+<li class="chapter" data-level="1.3" data-path="simple-linear-regression.html"><a href="simple-linear-regression.html#inference-for-the-slope"><i class="fa fa-check"></i><b>1.3</b> Inference for the slope</a>
+<ul>
+<li class="chapter" data-level="1.3.1" data-path="simple-linear-regression.html"><a href="simple-linear-regression.html#standard-errors"><i class="fa fa-check"></i><b>1.3.1</b> Standard errors</a></li>
+<li class="chapter" data-level="1.3.2" data-path="simple-linear-regression.html"><a href="simple-linear-regression.html#confidence-intervals"><i class="fa fa-check"></i><b>1.3.2</b> Confidence intervals</a></li>
+<li class="chapter" data-level="1.3.3" data-path="simple-linear-regression.html"><a href="simple-linear-regression.html#statistical-hypothesis-tests"><i class="fa fa-check"></i><b>1.3.3</b> Statistical hypothesis tests</a></li>
+<li class="chapter" data-level="1.3.4" data-path="simple-linear-regression.html"><a href="simple-linear-regression.html#inference-for-the-intercept"><i class="fa fa-check"></i><b>1.3.4</b> Inference for the intercept</a></li>
 </ul></li>
-<li class="chapter" data-level="0.6" data-path="index.html"><a href="index.html#consequences-of-violating-model-assumptions-and-possible-fixes"><i class="fa fa-check"></i><b>0.6</b> Consequences of violating model assumptions, and possible fixes</a>
+<li class="chapter" data-level="1.4" data-path="simple-linear-regression.html"><a href="simple-linear-regression.html#sums-of-squares-decomposition-and-r2"><i class="fa fa-check"></i><b>1.4</b> Sums of squares decomposition and <span class="math inline">\(R^2\)</span></a></li>
+<li class="chapter" data-level="1.5" data-path="simple-linear-regression.html"><a href="simple-linear-regression.html#diagnostic-plots"><i class="fa fa-check"></i><b>1.5</b> Diagnostic plots</a>
 <ul>
-<li class="chapter" data-level="0.6.1" data-path="index.html"><a href="index.html#linearity"><i class="fa fa-check"></i><b>0.6.1</b> Linearity</a></li>
-<li class="chapter" data-level="0.6.2" data-path="index.html"><a href="index.html#independence"><i class="fa fa-check"></i><b>0.6.2</b> Independence</a></li>
-<li class="chapter" data-level="0.6.3" data-path="index.html"><a href="index.html#constant-variance"><i class="fa fa-check"></i><b>0.6.3</b> Constant variance</a></li>
-<li class="chapter" data-level="0.6.4" data-path="index.html"><a href="index.html#normality"><i class="fa fa-check"></i><b>0.6.4</b> Normality</a></li>
+<li class="chapter" data-level="1.5.1" data-path="simple-linear-regression.html"><a href="simple-linear-regression.html#residuals-vs.-fitted-values"><i class="fa fa-check"></i><b>1.5.1</b> Residuals vs. fitted values</a></li>
+<li class="chapter" data-level="1.5.2" data-path="simple-linear-regression.html"><a href="simple-linear-regression.html#residuals-vs.-predictors"><i class="fa fa-check"></i><b>1.5.2</b> Residuals vs. predictor(s)</a></li>
+<li class="chapter" data-level="1.5.3" data-path="simple-linear-regression.html"><a href="simple-linear-regression.html#residuals-vs.-other-variables"><i class="fa fa-check"></i><b>1.5.3</b> Residuals vs. other variables</a></li>
+<li class="chapter" data-level="1.5.4" data-path="simple-linear-regression.html"><a href="simple-linear-regression.html#normal-probability-plot"><i class="fa fa-check"></i><b>1.5.4</b> Normal probability plot</a></li>
 </ul></li>
-<li class="chapter" data-level="0.7" data-path="index.html"><a href="index.html#prediction-with-regression-models"><i class="fa fa-check"></i><b>0.7</b> Prediction with regression models</a></li>
-<li class="chapter" data-level="0.8" data-path="index.html"><a href="index.html#regression-design"><i class="fa fa-check"></i><b>0.8</b> Regression design</a>
+<li class="chapter" data-level="1.6" data-path="simple-linear-regression.html"><a href="simple-linear-regression.html#consequences-of-violating-model-assumptions-and-possible-fixes"><i class="fa fa-check"></i><b>1.6</b> Consequences of violating model assumptions, and possible fixes</a>
 <ul>
-<li class="chapter" data-level="0.8.1" data-path="index.html"><a href="index.html#choice-of-predictor-values"><i class="fa fa-check"></i><b>0.8.1</b> Choice of predictor values</a></li>
-<li class="chapter" data-level="0.8.2" data-path="index.html"><a href="index.html#powerSLR"><i class="fa fa-check"></i><b>0.8.2</b> Power</a></li>
+<li class="chapter" data-level="1.6.1" data-path="simple-linear-regression.html"><a href="simple-linear-regression.html#linearity"><i class="fa fa-check"></i><b>1.6.1</b> Linearity</a></li>
+<li class="chapter" data-level="1.6.2" data-path="simple-linear-regression.html"><a href="simple-linear-regression.html#independence"><i class="fa fa-check"></i><b>1.6.2</b> Independence</a></li>
+<li class="chapter" data-level="1.6.3" data-path="simple-linear-regression.html"><a href="simple-linear-regression.html#constant-variance"><i class="fa fa-check"></i><b>1.6.3</b> Constant variance</a></li>
+<li class="chapter" data-level="1.6.4" data-path="simple-linear-regression.html"><a href="simple-linear-regression.html#normality"><i class="fa fa-check"></i><b>1.6.4</b> Normality</a></li>
 </ul></li>
-<li class="chapter" data-level="0.9" data-path="index.html"><a href="index.html#centering-the-predictor"><i class="fa fa-check"></i><b>0.9</b> <span class="math inline">\(^\star\)</span>Centering the predictor</a></li>
-<li class="chapter" data-level="" data-path="index.html"><a href="index.html#appendix-a-fitting-the-slr-model-in-r"><i class="fa fa-check"></i>Appendix A: Fitting the SLR model in R</a></li>
-<li class="chapter" data-level="" data-path="index.html"><a href="index.html#appendix-b-regression-models-in-sas-proc-reg"><i class="fa fa-check"></i>Appendix B: Regression models in SAS PROC REG</a></li>
+<li class="chapter" data-level="1.7" data-path="simple-linear-regression.html"><a href="simple-linear-regression.html#prediction-with-regression-models"><i class="fa fa-check"></i><b>1.7</b> Prediction with regression models</a></li>
+<li class="chapter" data-level="1.8" data-path="simple-linear-regression.html"><a href="simple-linear-regression.html#regression-design"><i class="fa fa-check"></i><b>1.8</b> Regression design</a>
+<ul>
+<li class="chapter" data-level="1.8.1" data-path="simple-linear-regression.html"><a href="simple-linear-regression.html#choice-of-predictor-values"><i class="fa fa-check"></i><b>1.8.1</b> Choice of predictor values</a></li>
+<li class="chapter" data-level="1.8.2" data-path="simple-linear-regression.html"><a href="simple-linear-regression.html#powerSLR"><i class="fa fa-check"></i><b>1.8.2</b> Power</a></li>
 </ul></li>
-<li class="chapter" data-level="1" data-path="multiple-regression.html"><a href="multiple-regression.html"><i class="fa fa-check"></i><b>1</b> Multiple regression</a>
-<ul>
-<li class="chapter" data-level="1.1" data-path="multiple-regression.html"><a href="multiple-regression.html#multiple-regression-basics"><i class="fa fa-check"></i><b>1.1</b> Multiple regression basics</a>
-<ul>
-<li class="chapter" data-level="1.1.1" data-path="multiple-regression.html"><a href="multiple-regression.html#ideas-that-carry-over-from-slr-to-multiple-regression"><i class="fa fa-check"></i><b>1.1.1</b> Ideas that carry over from SLR to multiple regression</a></li>
-<li class="chapter" data-level="1.1.2" data-path="multiple-regression.html"><a href="multiple-regression.html#interpreting-partial-regression-coefficients."><i class="fa fa-check"></i><b>1.1.2</b> Interpreting partial regression coefficients.</a></li>
-<li class="chapter" data-level="1.1.3" data-path="multiple-regression.html"><a href="multiple-regression.html#visualizing-a-multiple-regression-model"><i class="fa fa-check"></i><b>1.1.3</b> Visualizing a multiple regression model</a></li>
-<li class="chapter" data-level="1.1.4" data-path="multiple-regression.html"><a href="multiple-regression.html#statistical-inference-for-partial-regression-coefficients"><i class="fa fa-check"></i><b>1.1.4</b> Statistical inference for partial regression coefficients</a></li>
-<li class="chapter" data-level="1.1.5" data-path="multiple-regression.html"><a href="multiple-regression.html#prediction"><i class="fa fa-check"></i><b>1.1.5</b> Prediction</a></li>
+<li class="chapter" data-level="1.9" data-path="simple-linear-regression.html"><a href="simple-linear-regression.html#centering-the-predictor"><i class="fa fa-check"></i><b>1.9</b> <span class="math inline">\(^\star\)</span>Centering the predictor</a></li>
+<li class="chapter" data-level="" data-path="simple-linear-regression.html"><a href="simple-linear-regression.html#appendix-a-fitting-the-slr-model-in-r"><i class="fa fa-check"></i>Appendix A: Fitting the SLR model in R</a></li>
+<li class="chapter" data-level="" data-path="simple-linear-regression.html"><a href="simple-linear-regression.html#appendix-b-regression-models-in-sas-proc-reg"><i class="fa fa-check"></i>Appendix B: Regression models in SAS PROC REG</a></li>
 </ul></li>
-<li class="chapter" data-level="1.2" data-path="multiple-regression.html"><a href="multiple-regression.html#F-test"><i class="fa fa-check"></i><b>1.2</b> <span class="math inline">\(F\)</span>-tests for several regression coefficients</a>
+<li class="chapter" data-level="2" data-path="multiple-regression.html"><a href="multiple-regression.html"><i class="fa fa-check"></i><b>2</b> Multiple regression</a>
 <ul>
-<li class="chapter" data-level="1.2.1" data-path="multiple-regression.html"><a href="multiple-regression.html#basic-machinery"><i class="fa fa-check"></i><b>1.2.1</b> Basic machinery</a></li>
-<li class="chapter" data-level="1.2.2" data-path="multiple-regression.html"><a href="multiple-regression.html#model-utility-test"><i class="fa fa-check"></i><b>1.2.2</b> Model utility test</a></li>
+<li class="chapter" data-level="2.1" data-path="multiple-regression.html"><a href="multiple-regression.html#multiple-regression-basics"><i class="fa fa-check"></i><b>2.1</b> Multiple regression basics</a>
+<ul>
+<li class="chapter" data-level="2.1.1" data-path="multiple-regression.html"><a href="multiple-regression.html#ideas-that-carry-over-from-slr-to-multiple-regression"><i class="fa fa-check"></i><b>2.1.1</b> Ideas that carry over from SLR to multiple regression</a></li>
+<li class="chapter" data-level="2.1.2" data-path="multiple-regression.html"><a href="multiple-regression.html#interpreting-partial-regression-coefficients."><i class="fa fa-check"></i><b>2.1.2</b> Interpreting partial regression coefficients.</a></li>
+<li class="chapter" data-level="2.1.3" data-path="multiple-regression.html"><a href="multiple-regression.html#visualizing-a-multiple-regression-model"><i class="fa fa-check"></i><b>2.1.3</b> Visualizing a multiple regression model</a></li>
+<li class="chapter" data-level="2.1.4" data-path="multiple-regression.html"><a href="multiple-regression.html#statistical-inference-for-partial-regression-coefficients"><i class="fa fa-check"></i><b>2.1.4</b> Statistical inference for partial regression coefficients</a></li>
+<li class="chapter" data-level="2.1.5" data-path="multiple-regression.html"><a href="multiple-regression.html#prediction"><i class="fa fa-check"></i><b>2.1.5</b> Prediction</a></li>
 </ul></li>
-<li class="chapter" data-level="1.3" data-path="multiple-regression.html"><a href="multiple-regression.html#categorical-predictors"><i class="fa fa-check"></i><b>1.3</b> Categorical predictors</a></li>
-<li class="chapter" data-level="1.4" data-path="multiple-regression.html"><a href="multiple-regression.html#regression-interactions"><i class="fa fa-check"></i><b>1.4</b> Interactions between predictors</a></li>
-<li class="chapter" data-level="1.5" data-path="multiple-regression.html"><a href="multiple-regression.html#collinearity"><i class="fa fa-check"></i><b>1.5</b> (Multi-)Collinearity</a></li>
-<li class="chapter" data-level="1.6" data-path="multiple-regression.html"><a href="multiple-regression.html#variable-selection-choosing-the-best-model"><i class="fa fa-check"></i><b>1.6</b> Variable selection: Choosing the best model</a>
+<li class="chapter" data-level="2.2" data-path="multiple-regression.html"><a href="multiple-regression.html#F-test"><i class="fa fa-check"></i><b>2.2</b> <span class="math inline">\(F\)</span>-tests for several regression coefficients</a>
 <ul>
-<li class="chapter" data-level="1.6.1" data-path="multiple-regression.html"><a href="multiple-regression.html#model-selection-and-inference"><i class="fa fa-check"></i><b>1.6.1</b> Model selection and inference</a></li>
-<li class="chapter" data-level="1.6.2" data-path="multiple-regression.html"><a href="multiple-regression.html#ranking-methods"><i class="fa fa-check"></i><b>1.6.2</b> Ranking methods</a></li>
-<li class="chapter" data-level="1.6.3" data-path="multiple-regression.html"><a href="multiple-regression.html#sequential-methods"><i class="fa fa-check"></i><b>1.6.3</b> Sequential methods</a></li>
+<li class="chapter" data-level="2.2.1" data-path="multiple-regression.html"><a href="multiple-regression.html#basic-machinery"><i class="fa fa-check"></i><b>2.2.1</b> Basic machinery</a></li>
+<li class="chapter" data-level="2.2.2" data-path="multiple-regression.html"><a href="multiple-regression.html#model-utility-test"><i class="fa fa-check"></i><b>2.2.2</b> Model utility test</a></li>
 </ul></li>
-<li class="chapter" data-level="1.7" data-path="multiple-regression.html"><a href="multiple-regression.html#leverage-influential-points-and-standardized-residuals"><i class="fa fa-check"></i><b>1.7</b> Leverage, influential points, and standardized residuals</a>
+<li class="chapter" data-level="2.3" data-path="multiple-regression.html"><a href="multiple-regression.html#categorical-predictors"><i class="fa fa-check"></i><b>2.3</b> Categorical predictors</a></li>
+<li class="chapter" data-level="2.4" data-path="multiple-regression.html"><a href="multiple-regression.html#regression-interactions"><i class="fa fa-check"></i><b>2.4</b> Interactions between predictors</a></li>
+<li class="chapter" data-level="2.5" data-path="multiple-regression.html"><a href="multiple-regression.html#collinearity"><i class="fa fa-check"></i><b>2.5</b> (Multi-)Collinearity</a></li>
+<li class="chapter" data-level="2.6" data-path="multiple-regression.html"><a href="multiple-regression.html#variable-selection-choosing-the-best-model"><i class="fa fa-check"></i><b>2.6</b> Variable selection: Choosing the best model</a>
 <ul>
-<li class="chapter" data-level="1.7.1" data-path="multiple-regression.html"><a href="multiple-regression.html#leverage"><i class="fa fa-check"></i><b>1.7.1</b> Leverage</a></li>
-<li class="chapter" data-level="1.7.2" data-path="multiple-regression.html"><a href="multiple-regression.html#standardized-residuals"><i class="fa fa-check"></i><b>1.7.2</b> Standardized residuals</a></li>
-<li class="chapter" data-level="1.7.3" data-path="multiple-regression.html"><a href="multiple-regression.html#cooks-distance"><i class="fa fa-check"></i><b>1.7.3</b> Cook’s distance</a></li>
+<li class="chapter" data-level="2.6.1" data-path="multiple-regression.html"><a href="multiple-regression.html#model-selection-and-inference"><i class="fa fa-check"></i><b>2.6.1</b> Model selection and inference</a></li>
+<li class="chapter" data-level="2.6.2" data-path="multiple-regression.html"><a href="multiple-regression.html#ranking-methods"><i class="fa fa-check"></i><b>2.6.2</b> Ranking methods</a></li>
+<li class="chapter" data-level="2.6.3" data-path="multiple-regression.html"><a href="multiple-regression.html#sequential-methods"><i class="fa fa-check"></i><b>2.6.3</b> Sequential methods</a></li>
+</ul></li>
+<li class="chapter" data-level="2.7" data-path="multiple-regression.html"><a href="multiple-regression.html#leverage-influential-points-and-standardized-residuals"><i class="fa fa-check"></i><b>2.7</b> Leverage, influential points, and standardized residuals</a>
+<ul>
+<li class="chapter" data-level="2.7.1" data-path="multiple-regression.html"><a href="multiple-regression.html#leverage"><i class="fa fa-check"></i><b>2.7.1</b> Leverage</a></li>
+<li class="chapter" data-level="2.7.2" data-path="multiple-regression.html"><a href="multiple-regression.html#standardized-residuals"><i class="fa fa-check"></i><b>2.7.2</b> Standardized residuals</a></li>
+<li class="chapter" data-level="2.7.3" data-path="multiple-regression.html"><a href="multiple-regression.html#cooks-distance"><i class="fa fa-check"></i><b>2.7.3</b> Cook’s distance</a></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="multiple-regression.html"><a href="multiple-regression.html#appendix-regression-as-a-linear-algebra-problem"><i class="fa fa-check"></i>Appendix: Regression as a linear algebra problem</a>
 <ul>
@@ -176,116 +243,121 @@ div.csl-indent {
 <li class="chapter" data-level="" data-path="multiple-regression.html"><a href="multiple-regression.html#additional-results"><i class="fa fa-check"></i>Additional results</a></li>
 </ul></li>
 </ul></li>
-<li class="chapter" data-level="2" data-path="non-linear-regression.html"><a href="non-linear-regression.html"><i class="fa fa-check"></i><b>2</b> Non-linear regression</a>
+<li class="chapter" data-level="3" data-path="non-linear-regression.html"><a href="non-linear-regression.html"><i class="fa fa-check"></i><b>3</b> Non-linear regression</a>
 <ul>
-<li class="chapter" data-level="2.1" data-path="non-linear-regression.html"><a href="non-linear-regression.html#polynomial-regression"><i class="fa fa-check"></i><b>2.1</b> Polynomial regression</a></li>
-<li class="chapter" data-level="2.2" data-path="non-linear-regression.html"><a href="non-linear-regression.html#nls"><i class="fa fa-check"></i><b>2.2</b> Non-linear least squares</a></li>
+<li class="chapter" data-level="3.1" data-path="non-linear-regression.html"><a href="non-linear-regression.html#polynomial-regression"><i class="fa fa-check"></i><b>3.1</b> Polynomial regression</a></li>
+<li class="chapter" data-level="3.2" data-path="non-linear-regression.html"><a href="non-linear-regression.html#nls"><i class="fa fa-check"></i><b>3.2</b> Non-linear least squares</a></li>
 </ul></li>
-<li class="chapter" data-level="3" data-path="generalized-linear-models.html"><a href="generalized-linear-models.html"><i class="fa fa-check"></i><b>3</b> Generalized linear models</a>
+<li class="chapter" data-level="4" data-path="generalized-linear-models.html"><a href="generalized-linear-models.html"><i class="fa fa-check"></i><b>4</b> Generalized linear models</a>
 <ul>
-<li class="chapter" data-level="3.1" data-path="generalized-linear-models.html"><a href="generalized-linear-models.html#poisson-regression"><i class="fa fa-check"></i><b>3.1</b> Poisson regression</a></li>
-<li class="chapter" data-level="3.2" data-path="generalized-linear-models.html"><a href="generalized-linear-models.html#binary-responses"><i class="fa fa-check"></i><b>3.2</b> Binary responses</a>
+<li class="chapter" data-level="4.1" data-path="generalized-linear-models.html"><a href="generalized-linear-models.html#poisson-regression"><i class="fa fa-check"></i><b>4.1</b> Poisson regression</a></li>
+<li class="chapter" data-level="4.2" data-path="generalized-linear-models.html"><a href="generalized-linear-models.html#binary-responses"><i class="fa fa-check"></i><b>4.2</b> Binary responses</a>
 <ul>
-<li class="chapter" data-level="3.2.1" data-path="generalized-linear-models.html"><a href="generalized-linear-models.html#individual-binary-responses-tb-in-boar"><i class="fa fa-check"></i><b>3.2.1</b> Individual binary responses: TB in boar</a></li>
-<li class="chapter" data-level="3.2.2" data-path="generalized-linear-models.html"><a href="generalized-linear-models.html#grouped-binary-data-industrial-melanism"><i class="fa fa-check"></i><b>3.2.2</b> Grouped binary data: Industrial melanism</a></li>
+<li class="chapter" data-level="4.2.1" data-path="generalized-linear-models.html"><a href="generalized-linear-models.html#individual-binary-responses-tb-in-boar"><i class="fa fa-check"></i><b>4.2.1</b> Individual binary responses: TB in boar</a></li>
+<li class="chapter" data-level="4.2.2" data-path="generalized-linear-models.html"><a href="generalized-linear-models.html#grouped-binary-data-industrial-melanism"><i class="fa fa-check"></i><b>4.2.2</b> Grouped binary data: Industrial melanism</a></li>
 </ul></li>
-<li class="chapter" data-level="3.3" data-path="generalized-linear-models.html"><a href="generalized-linear-models.html#implementation-in-sas"><i class="fa fa-check"></i><b>3.3</b> Implementation in SAS</a>
+<li class="chapter" data-level="4.3" data-path="generalized-linear-models.html"><a href="generalized-linear-models.html#implementation-in-sas"><i class="fa fa-check"></i><b>4.3</b> Implementation in SAS</a>
 <ul>
-<li class="chapter" data-level="3.3.1" data-path="generalized-linear-models.html"><a href="generalized-linear-models.html#complete-separation"><i class="fa fa-check"></i><b>3.3.1</b> Complete separation</a></li>
+<li class="chapter" data-level="4.3.1" data-path="generalized-linear-models.html"><a href="generalized-linear-models.html#complete-separation"><i class="fa fa-check"></i><b>4.3.1</b> Complete separation</a></li>
 </ul></li>
 </ul></li>
 <li class="part"><span><b>Part II: Statistical learning</b></span></li>
-<li class="chapter" data-level="4" data-path="smoothing.html"><a href="smoothing.html"><i class="fa fa-check"></i><b>4</b> Smoothing</a>
+<li class="chapter" data-level="5" data-path="smoothing.html"><a href="smoothing.html"><i class="fa fa-check"></i><b>5</b> Smoothing</a>
 <ul>
-<li class="chapter" data-level="4.1" data-path="smoothing.html"><a href="smoothing.html#nearest-neighbor-methods"><i class="fa fa-check"></i><b>4.1</b> Nearest-neighbor methods</a></li>
-<li class="chapter" data-level="4.2" data-path="smoothing.html"><a href="smoothing.html#loess-smoothers"><i class="fa fa-check"></i><b>4.2</b> Loess smoothers</a></li>
-<li class="chapter" data-level="4.3" data-path="smoothing.html"><a href="smoothing.html#splines"><i class="fa fa-check"></i><b>4.3</b> Splines</a></li>
-<li class="chapter" data-level="4.4" data-path="smoothing.html"><a href="smoothing.html#generalized-additive-models-gams"><i class="fa fa-check"></i><b>4.4</b> Generalized additive models (GAMs)</a></li>
+<li class="chapter" data-level="5.1" data-path="smoothing.html"><a href="smoothing.html#nearest-neighbor-methods"><i class="fa fa-check"></i><b>5.1</b> Nearest-neighbor methods</a></li>
+<li class="chapter" data-level="5.2" data-path="smoothing.html"><a href="smoothing.html#loess-smoothers"><i class="fa fa-check"></i><b>5.2</b> Loess smoothers</a></li>
+<li class="chapter" data-level="5.3" data-path="smoothing.html"><a href="smoothing.html#splines"><i class="fa fa-check"></i><b>5.3</b> Splines</a></li>
+<li class="chapter" data-level="5.4" data-path="smoothing.html"><a href="smoothing.html#generalized-additive-models-gams"><i class="fa fa-check"></i><b>5.4</b> Generalized additive models (GAMs)</a></li>
 </ul></li>
 <li class="part"><span><b>Part III: Designed experiments</b></span></li>
-<li class="chapter" data-level="5" data-path="one-factor-anova.html"><a href="one-factor-anova.html"><i class="fa fa-check"></i><b>5</b> One-factor ANOVA</a>
+<li class="chapter" data-level="6" data-path="one-factor-anova.html"><a href="one-factor-anova.html"><i class="fa fa-check"></i><b>6</b> One-factor ANOVA</a>
 <ul>
-<li class="chapter" data-level="5.1" data-path="one-factor-anova.html"><a href="one-factor-anova.html#grouped-data-and-the-design-of-experiments-doe-an-overview"><i class="fa fa-check"></i><b>5.1</b> Grouped data and the design of experiments (DoE): an overview</a>
+<li class="chapter" data-level="6.1" data-path="one-factor-anova.html"><a href="one-factor-anova.html#grouped-data-and-the-design-of-experiments-doe-an-overview"><i class="fa fa-check"></i><b>6.1</b> Grouped data and the design of experiments (DoE): an overview</a>
 <ul>
-<li class="chapter" data-level="5.1.1" data-path="one-factor-anova.html"><a href="one-factor-anova.html#a-vocabulary-for-describing-designed-experiments"><i class="fa fa-check"></i><b>5.1.1</b> A vocabulary for describing designed experiments</a></li>
-<li class="chapter" data-level="5.1.2" data-path="one-factor-anova.html"><a href="one-factor-anova.html#roadmap"><i class="fa fa-check"></i><b>5.1.2</b> Roadmap</a></li>
-<li class="chapter" data-level="5.1.3" data-path="one-factor-anova.html"><a href="one-factor-anova.html#the-simplest-experiment"><i class="fa fa-check"></i><b>5.1.3</b> The simplest experiment</a></li>
+<li class="chapter" data-level="6.1.1" data-path="one-factor-anova.html"><a href="one-factor-anova.html#a-vocabulary-for-describing-designed-experiments"><i class="fa fa-check"></i><b>6.1.1</b> A vocabulary for describing designed experiments</a></li>
+<li class="chapter" data-level="6.1.2" data-path="one-factor-anova.html"><a href="one-factor-anova.html#roadmap"><i class="fa fa-check"></i><b>6.1.2</b> Roadmap</a></li>
+<li class="chapter" data-level="6.1.3" data-path="one-factor-anova.html"><a href="one-factor-anova.html#the-simplest-experiment"><i class="fa fa-check"></i><b>6.1.3</b> The simplest experiment</a></li>
 </ul></li>
-<li class="chapter" data-level="5.2" data-path="one-factor-anova.html"><a href="one-factor-anova.html#one-factor-anova-the-basics"><i class="fa fa-check"></i><b>5.2</b> One-factor ANOVA: The basics</a>
+<li class="chapter" data-level="6.2" data-path="one-factor-anova.html"><a href="one-factor-anova.html#one-factor-anova-the-basics"><i class="fa fa-check"></i><b>6.2</b> One-factor ANOVA: The basics</a>
 <ul>
-<li class="chapter" data-level="5.2.1" data-path="one-factor-anova.html"><a href="one-factor-anova.html#f-test-to-compare-means"><i class="fa fa-check"></i><b>5.2.1</b> <span class="math inline">\(F\)</span>-test to compare means</a></li>
-<li class="chapter" data-level="5.2.2" data-path="one-factor-anova.html"><a href="one-factor-anova.html#connections-between-one-factor-anova-and-other-statistical-procedures"><i class="fa fa-check"></i><b>5.2.2</b> Connections between one-factor ANOVA and other statistical procedures</a></li>
-<li class="chapter" data-level="5.2.3" data-path="one-factor-anova.html"><a href="one-factor-anova.html#assumptions-in-anova"><i class="fa fa-check"></i><b>5.2.3</b> Assumptions in ANOVA</a></li>
+<li class="chapter" data-level="6.2.1" data-path="one-factor-anova.html"><a href="one-factor-anova.html#f-test-to-compare-means"><i class="fa fa-check"></i><b>6.2.1</b> <span class="math inline">\(F\)</span>-test to compare means</a></li>
+<li class="chapter" data-level="6.2.2" data-path="one-factor-anova.html"><a href="one-factor-anova.html#connections-between-one-factor-anova-and-other-statistical-procedures"><i class="fa fa-check"></i><b>6.2.2</b> Connections between one-factor ANOVA and other statistical procedures</a></li>
+<li class="chapter" data-level="6.2.3" data-path="one-factor-anova.html"><a href="one-factor-anova.html#assumptions-in-anova"><i class="fa fa-check"></i><b>6.2.3</b> Assumptions in ANOVA</a></li>
 </ul></li>
-<li class="chapter" data-level="5.3" data-path="one-factor-anova.html"><a href="one-factor-anova.html#contrasts"><i class="fa fa-check"></i><b>5.3</b> Contrasts of group means</a>
+<li class="chapter" data-level="6.3" data-path="one-factor-anova.html"><a href="one-factor-anova.html#contrasts"><i class="fa fa-check"></i><b>6.3</b> Contrasts of group means</a>
 <ul>
-<li class="chapter" data-level="5.3.1" data-path="one-factor-anova.html"><a href="one-factor-anova.html#simple-contrasts"><i class="fa fa-check"></i><b>5.3.1</b> Simple contrasts</a></li>
-<li class="chapter" data-level="5.3.2" data-path="one-factor-anova.html"><a href="one-factor-anova.html#complex-contrasts"><i class="fa fa-check"></i><b>5.3.2</b> Complex contrasts</a></li>
-<li class="chapter" data-level="5.3.3" data-path="one-factor-anova.html"><a href="one-factor-anova.html#orthogonal-contrasts"><i class="fa fa-check"></i><b>5.3.3</b> Orthogonal contrasts</a></li>
-<li class="chapter" data-level="5.3.4" data-path="one-factor-anova.html"><a href="one-factor-anova.html#polynomial-contrasts"><i class="fa fa-check"></i><b>5.3.4</b> Polynomial contrasts</a></li>
+<li class="chapter" data-level="6.3.1" data-path="one-factor-anova.html"><a href="one-factor-anova.html#simple-contrasts"><i class="fa fa-check"></i><b>6.3.1</b> Simple contrasts</a></li>
+<li class="chapter" data-level="6.3.2" data-path="one-factor-anova.html"><a href="one-factor-anova.html#complex-contrasts"><i class="fa fa-check"></i><b>6.3.2</b> Complex contrasts</a></li>
+<li class="chapter" data-level="6.3.3" data-path="one-factor-anova.html"><a href="one-factor-anova.html#orthogonal-contrasts"><i class="fa fa-check"></i><b>6.3.3</b> Orthogonal contrasts</a></li>
+<li class="chapter" data-level="6.3.4" data-path="one-factor-anova.html"><a href="one-factor-anova.html#polynomial-contrasts"><i class="fa fa-check"></i><b>6.3.4</b> Polynomial contrasts</a></li>
 </ul></li>
-<li class="chapter" data-level="5.4" data-path="one-factor-anova.html"><a href="one-factor-anova.html#multiple-testing"><i class="fa fa-check"></i><b>5.4</b> Multiple comparisons</a>
+<li class="chapter" data-level="6.4" data-path="one-factor-anova.html"><a href="one-factor-anova.html#multiple-testing"><i class="fa fa-check"></i><b>6.4</b> Multiple comparisons</a>
 <ul>
-<li class="chapter" data-level="5.4.1" data-path="one-factor-anova.html"><a href="one-factor-anova.html#multiple-testing-in-general"><i class="fa fa-check"></i><b>5.4.1</b> Multiple testing in general</a></li>
-<li class="chapter" data-level="5.4.2" data-path="one-factor-anova.html"><a href="one-factor-anova.html#bonferroni-and-bonferroni-like-procedures"><i class="fa fa-check"></i><b>5.4.2</b> Bonferroni and Bonferroni-like procedures</a></li>
-<li class="chapter" data-level="5.4.3" data-path="one-factor-anova.html"><a href="one-factor-anova.html#multiple-comparisons-in-anova"><i class="fa fa-check"></i><b>5.4.3</b> Multiple comparisons in ANOVA</a></li>
+<li class="chapter" data-level="6.4.1" data-path="one-factor-anova.html"><a href="one-factor-anova.html#multiple-testing-in-general"><i class="fa fa-check"></i><b>6.4.1</b> Multiple testing in general</a></li>
+<li class="chapter" data-level="6.4.2" data-path="one-factor-anova.html"><a href="one-factor-anova.html#bonferroni-and-bonferroni-like-procedures"><i class="fa fa-check"></i><b>6.4.2</b> Bonferroni and Bonferroni-like procedures</a></li>
+<li class="chapter" data-level="6.4.3" data-path="one-factor-anova.html"><a href="one-factor-anova.html#multiple-comparisons-in-anova"><i class="fa fa-check"></i><b>6.4.3</b> Multiple comparisons in ANOVA</a></li>
 </ul></li>
-<li class="chapter" data-level="5.5" data-path="one-factor-anova.html"><a href="one-factor-anova.html#starpower-and-sample-size-determination-in-anova"><i class="fa fa-check"></i><b>5.5</b> <span class="math inline">\(^\star\)</span>Power and sample-size determination in ANOVA</a></li>
-<li class="chapter" data-level="5.6" data-path="one-factor-anova.html"><a href="one-factor-anova.html#sas-contrasts"><i class="fa fa-check"></i><b>5.6</b> Using SAS: The effects parameterization of the one-factor ANOVA</a>
+<li class="chapter" data-level="6.5" data-path="one-factor-anova.html"><a href="one-factor-anova.html#starpower-and-sample-size-determination-in-anova"><i class="fa fa-check"></i><b>6.5</b> <span class="math inline">\(^\star\)</span>Power and sample-size determination in ANOVA</a></li>
+<li class="chapter" data-level="6.6" data-path="one-factor-anova.html"><a href="one-factor-anova.html#sas-contrasts"><i class="fa fa-check"></i><b>6.6</b> Using SAS: The effects parameterization of the one-factor ANOVA</a>
 <ul>
-<li class="chapter" data-level="5.6.1" data-path="one-factor-anova.html"><a href="one-factor-anova.html#effects-model-parameterization-of-the-one-factor-anova-model"><i class="fa fa-check"></i><b>5.6.1</b> Effects-model parameterization of the one-factor ANOVA model</a></li>
-<li class="chapter" data-level="5.6.2" data-path="one-factor-anova.html"><a href="one-factor-anova.html#coding-contrasts-in-proc-glm"><i class="fa fa-check"></i><b>5.6.2</b> Coding contrasts in PROC GLM</a></li>
-</ul></li>
-</ul></li>
-<li class="chapter" data-level="6" data-path="factorial-experiments.html"><a href="factorial-experiments.html"><i class="fa fa-check"></i><b>6</b> Factorial experiments</a>
-<ul>
-<li class="chapter" data-level="6.1" data-path="factorial-experiments.html"><a href="factorial-experiments.html#combining-factors-crossed-vs.-nested-designs"><i class="fa fa-check"></i><b>6.1</b> Combining factors: Crossed vs. nested designs</a></li>
-<li class="chapter" data-level="6.2" data-path="factorial-experiments.html"><a href="factorial-experiments.html#times-2-factorial-design"><i class="fa fa-check"></i><b>6.2</b> 2 <span class="math inline">\(\times\)</span> 2 factorial design</a>
-<ul>
-<li class="chapter" data-level="6.2.1" data-path="factorial-experiments.html"><a href="factorial-experiments.html#example-weight-gain-in-rats"><i class="fa fa-check"></i><b>6.2.1</b> Example: Weight gain in rats</a></li>
-<li class="chapter" data-level="6.2.2" data-path="factorial-experiments.html"><a href="factorial-experiments.html#two-factor-anova-hypothesis-tests"><i class="fa fa-check"></i><b>6.2.2</b> Two-factor ANOVA hypothesis tests</a></li>
-<li class="chapter" data-level="6.2.3" data-path="factorial-experiments.html"><a href="factorial-experiments.html#a-second-example-when-the-interaction-is-significant"><i class="fa fa-check"></i><b>6.2.3</b> A second example when the interaction is significant</a></li>
-</ul></li>
-<li class="chapter" data-level="6.3" data-path="factorial-experiments.html"><a href="factorial-experiments.html#a-times-b-factorial-designs"><i class="fa fa-check"></i><b>6.3</b> <span class="math inline">\(a \times b\)</span> factorial designs</a>
-<ul>
-<li class="chapter" data-level="6.3.1" data-path="factorial-experiments.html"><a href="factorial-experiments.html#example-without-a-significant-interaction"><i class="fa fa-check"></i><b>6.3.1</b> Example without a significant interaction</a></li>
-<li class="chapter" data-level="6.3.2" data-path="factorial-experiments.html"><a href="factorial-experiments.html#example-with-a-significant-interaction"><i class="fa fa-check"></i><b>6.3.2</b> Example with a significant interaction</a></li>
-</ul></li>
-<li class="chapter" data-level="6.4" data-path="factorial-experiments.html"><a href="factorial-experiments.html#unreplicated-factorial-designs"><i class="fa fa-check"></i><b>6.4</b> Unreplicated factorial designs</a></li>
-<li class="chapter" data-level="6.5" data-path="factorial-experiments.html"><a href="factorial-experiments.html#missing-cells"><i class="fa fa-check"></i><b>6.5</b> Missing cells</a></li>
-<li class="chapter" data-level="6.6" data-path="factorial-experiments.html"><a href="factorial-experiments.html#more-than-two-factors"><i class="fa fa-check"></i><b>6.6</b> More than two factors</a></li>
-<li class="chapter" data-level="6.7" data-path="factorial-experiments.html"><a href="factorial-experiments.html#analysis-using-proc-glm-in-sas"><i class="fa fa-check"></i><b>6.7</b> Analysis using PROC GLM in SAS</a>
-<ul>
-<li class="chapter" data-level="6.7.1" data-path="factorial-experiments.html"><a href="factorial-experiments.html#effects-notation-for-the-two-factor-anova"><i class="fa fa-check"></i><b>6.7.1</b> Effects notation for the two-factor ANOVA</a></li>
+<li class="chapter" data-level="6.6.1" data-path="one-factor-anova.html"><a href="one-factor-anova.html#effects-model-parameterization-of-the-one-factor-anova-model"><i class="fa fa-check"></i><b>6.6.1</b> Effects-model parameterization of the one-factor ANOVA model</a></li>
+<li class="chapter" data-level="6.6.2" data-path="one-factor-anova.html"><a href="one-factor-anova.html#coding-contrasts-in-proc-glm"><i class="fa fa-check"></i><b>6.6.2</b> Coding contrasts in PROC GLM</a></li>
 </ul></li>
 </ul></li>
-<li class="chapter" data-level="7" data-path="ancova.html"><a href="ancova.html"><i class="fa fa-check"></i><b>7</b> ANCOVA</a></li>
-<li class="chapter" data-level="8" data-path="random-effects.html"><a href="random-effects.html"><i class="fa fa-check"></i><b>8</b> Random effects</a>
+<li class="chapter" data-level="7" data-path="factorial-experiments.html"><a href="factorial-experiments.html"><i class="fa fa-check"></i><b>7</b> Factorial experiments</a>
 <ul>
-<li class="chapter" data-level="8.1" data-path="random-effects.html"><a href="random-effects.html#fixed-vs.-random-effects-the-big-picture"><i class="fa fa-check"></i><b>8.1</b> Fixed vs. random effects: the big picture</a></li>
-<li class="chapter" data-level="8.2" data-path="random-effects.html"><a href="random-effects.html#random-effects-models"><i class="fa fa-check"></i><b>8.2</b> Random-effects models</a></li>
-<li class="chapter" data-level="8.3" data-path="random-effects.html"><a href="random-effects.html#subsampling"><i class="fa fa-check"></i><b>8.3</b> Subsampling</a>
+<li class="chapter" data-level="7.1" data-path="factorial-experiments.html"><a href="factorial-experiments.html#combining-factors-crossed-vs.-nested-designs"><i class="fa fa-check"></i><b>7.1</b> Combining factors: Crossed vs. nested designs</a></li>
+<li class="chapter" data-level="7.2" data-path="factorial-experiments.html"><a href="factorial-experiments.html#times-2-factorial-design"><i class="fa fa-check"></i><b>7.2</b> 2 <span class="math inline">\(\times\)</span> 2 factorial design</a>
 <ul>
-<li class="chapter" data-level="8.3.1" data-path="random-effects.html"><a href="random-effects.html#equal-subsamples-per-eu"><i class="fa fa-check"></i><b>8.3.1</b> Equal subsamples per EU</a></li>
+<li class="chapter" data-level="7.2.1" data-path="factorial-experiments.html"><a href="factorial-experiments.html#example-weight-gain-in-rats"><i class="fa fa-check"></i><b>7.2.1</b> Example: Weight gain in rats</a></li>
+<li class="chapter" data-level="7.2.2" data-path="factorial-experiments.html"><a href="factorial-experiments.html#two-factor-anova-hypothesis-tests"><i class="fa fa-check"></i><b>7.2.2</b> Two-factor ANOVA hypothesis tests</a></li>
+<li class="chapter" data-level="7.2.3" data-path="factorial-experiments.html"><a href="factorial-experiments.html#a-second-example-when-the-interaction-is-significant"><i class="fa fa-check"></i><b>7.2.3</b> A second example when the interaction is significant</a></li>
 </ul></li>
-<li class="chapter" data-level="8.4" data-path="random-effects.html"><a href="random-effects.html#starmathematical-foundations"><i class="fa fa-check"></i><b>8.4</b> <span class="math inline">\(^\star\)</span>Mathematical foundations</a>
+<li class="chapter" data-level="7.3" data-path="factorial-experiments.html"><a href="factorial-experiments.html#a-times-b-factorial-designs"><i class="fa fa-check"></i><b>7.3</b> <span class="math inline">\(a \times b\)</span> factorial designs</a>
 <ul>
-<li class="chapter" data-level="8.4.1" data-path="random-effects.html"><a href="random-effects.html#probability-refresher"><i class="fa fa-check"></i><b>8.4.1</b> Probability refresher</a></li>
-<li class="chapter" data-level="8.4.2" data-path="random-effects.html"><a href="random-effects.html#application-to-models-with-random-effects"><i class="fa fa-check"></i><b>8.4.2</b> Application to models with random effects</a></li>
+<li class="chapter" data-level="7.3.1" data-path="factorial-experiments.html"><a href="factorial-experiments.html#example-without-a-significant-interaction"><i class="fa fa-check"></i><b>7.3.1</b> Example without a significant interaction</a></li>
+<li class="chapter" data-level="7.3.2" data-path="factorial-experiments.html"><a href="factorial-experiments.html#example-with-a-significant-interaction"><i class="fa fa-check"></i><b>7.3.2</b> Example with a significant interaction</a></li>
+</ul></li>
+<li class="chapter" data-level="7.4" data-path="factorial-experiments.html"><a href="factorial-experiments.html#unreplicated-factorial-designs"><i class="fa fa-check"></i><b>7.4</b> Unreplicated factorial designs</a></li>
+<li class="chapter" data-level="7.5" data-path="factorial-experiments.html"><a href="factorial-experiments.html#missing-cells"><i class="fa fa-check"></i><b>7.5</b> Missing cells</a></li>
+<li class="chapter" data-level="7.6" data-path="factorial-experiments.html"><a href="factorial-experiments.html#more-than-two-factors"><i class="fa fa-check"></i><b>7.6</b> More than two factors</a></li>
+<li class="chapter" data-level="7.7" data-path="factorial-experiments.html"><a href="factorial-experiments.html#analysis-using-proc-glm-in-sas"><i class="fa fa-check"></i><b>7.7</b> Analysis using PROC GLM in SAS</a>
+<ul>
+<li class="chapter" data-level="7.7.1" data-path="factorial-experiments.html"><a href="factorial-experiments.html#effects-notation-for-the-two-factor-anova"><i class="fa fa-check"></i><b>7.7.1</b> Effects notation for the two-factor ANOVA</a></li>
 </ul></li>
 </ul></li>
-<li class="chapter" data-level="9" data-path="blocked-designs.html"><a href="blocked-designs.html"><i class="fa fa-check"></i><b>9</b> Blocked designs</a>
+<li class="chapter" data-level="8" data-path="ancova.html"><a href="ancova.html"><i class="fa fa-check"></i><b>8</b> ANCOVA</a>
 <ul>
-<li class="chapter" data-level="9.1" data-path="blocked-designs.html"><a href="blocked-designs.html#randomized-complete-block-designs"><i class="fa fa-check"></i><b>9.1</b> Randomized complete block designs</a>
-<ul>
-<li class="chapter" data-level="9.1.1" data-path="blocked-designs.html"><a href="blocked-designs.html#should-a-blocking-factor-be-a-fixed-or-random-effect"><i class="fa fa-check"></i><b>9.1.1</b> *Should a blocking factor be a fixed or random effect?</a></li>
+<li class="chapter" data-level="8.1" data-path="ancova.html"><a href="ancova.html#common-slopes-model"><i class="fa fa-check"></i><b>8.1</b> Common-slopes model</a></li>
+<li class="chapter" data-level="8.2" data-path="ancova.html"><a href="ancova.html#separate-slopes-model"><i class="fa fa-check"></i><b>8.2</b> Separate-slopes model</a></li>
+<li class="chapter" data-level="8.3" data-path="ancova.html"><a href="ancova.html#further-reading"><i class="fa fa-check"></i><b>8.3</b> Further reading</a></li>
 </ul></li>
-<li class="chapter" data-level="9.2" data-path="blocked-designs.html"><a href="blocked-designs.html#latin-squares-designs"><i class="fa fa-check"></i><b>9.2</b> Latin-squares designs</a></li>
-<li class="chapter" data-level="9.3" data-path="blocked-designs.html"><a href="blocked-designs.html#split-plot-designs"><i class="fa fa-check"></i><b>9.3</b> Split-plot designs</a>
+<li class="chapter" data-level="9" data-path="random-effects.html"><a href="random-effects.html"><i class="fa fa-check"></i><b>9</b> Random effects</a>
 <ul>
-<li class="chapter" data-level="9.3.1" data-path="blocked-designs.html"><a href="blocked-designs.html#denominator-degrees-of-freedom-in-split-plot-designs-and-the-satterthwaite-approximation"><i class="fa fa-check"></i><b>9.3.1</b> Denominator degrees of freedom in split-plot designs and the Satterthwaite approximation</a></li>
+<li class="chapter" data-level="9.1" data-path="random-effects.html"><a href="random-effects.html#fixed-vs.-random-effects-the-big-picture"><i class="fa fa-check"></i><b>9.1</b> Fixed vs. random effects: the big picture</a></li>
+<li class="chapter" data-level="9.2" data-path="random-effects.html"><a href="random-effects.html#random-effects-models"><i class="fa fa-check"></i><b>9.2</b> Random-effects models</a></li>
+<li class="chapter" data-level="9.3" data-path="random-effects.html"><a href="random-effects.html#subsampling"><i class="fa fa-check"></i><b>9.3</b> Subsampling</a>
+<ul>
+<li class="chapter" data-level="9.3.1" data-path="random-effects.html"><a href="random-effects.html#equal-subsamples-per-eu"><i class="fa fa-check"></i><b>9.3.1</b> Equal subsamples per EU</a></li>
 </ul></li>
-<li class="chapter" data-level="9.4" data-path="blocked-designs.html"><a href="blocked-designs.html#repeated-measures"><i class="fa fa-check"></i><b>9.4</b> Repeated measures</a></li>
+<li class="chapter" data-level="9.4" data-path="random-effects.html"><a href="random-effects.html#starmathematical-foundations"><i class="fa fa-check"></i><b>9.4</b> <span class="math inline">\(^\star\)</span>Mathematical foundations</a>
+<ul>
+<li class="chapter" data-level="9.4.1" data-path="random-effects.html"><a href="random-effects.html#probability-refresher"><i class="fa fa-check"></i><b>9.4.1</b> Probability refresher</a></li>
+<li class="chapter" data-level="9.4.2" data-path="random-effects.html"><a href="random-effects.html#application-to-models-with-random-effects"><i class="fa fa-check"></i><b>9.4.2</b> Application to models with random effects</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="10" data-path="blocked-designs.html"><a href="blocked-designs.html"><i class="fa fa-check"></i><b>10</b> Blocked designs</a>
+<ul>
+<li class="chapter" data-level="10.1" data-path="blocked-designs.html"><a href="blocked-designs.html#randomized-complete-block-designs"><i class="fa fa-check"></i><b>10.1</b> Randomized complete block designs</a>
+<ul>
+<li class="chapter" data-level="10.1.1" data-path="blocked-designs.html"><a href="blocked-designs.html#should-a-blocking-factor-be-a-fixed-or-random-effect"><i class="fa fa-check"></i><b>10.1.1</b> *Should a blocking factor be a fixed or random effect?</a></li>
+</ul></li>
+<li class="chapter" data-level="10.2" data-path="blocked-designs.html"><a href="blocked-designs.html#latin-squares-designs"><i class="fa fa-check"></i><b>10.2</b> Latin-squares designs</a></li>
+<li class="chapter" data-level="10.3" data-path="blocked-designs.html"><a href="blocked-designs.html#split-plot-designs"><i class="fa fa-check"></i><b>10.3</b> Split-plot designs</a>
+<ul>
+<li class="chapter" data-level="10.3.1" data-path="blocked-designs.html"><a href="blocked-designs.html#denominator-degrees-of-freedom-in-split-plot-designs-and-the-satterthwaite-approximation"><i class="fa fa-check"></i><b>10.3.1</b> Denominator degrees of freedom in split-plot designs and the Satterthwaite approximation</a></li>
+</ul></li>
+<li class="chapter" data-level="10.4" data-path="blocked-designs.html"><a href="blocked-designs.html#repeated-measures"><i class="fa fa-check"></i><b>10.4</b> Repeated measures</a></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="bibliography.html"><a href="bibliography.html"><i class="fa fa-check"></i>Bibliography</a></li>
 </ul>
