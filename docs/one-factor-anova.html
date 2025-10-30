@@ -23,7 +23,7 @@
 <meta name="author" content="Kevin Gross" />
 
 
-<meta name="date" content="2025-10-27" />
+<meta name="date" content="2025-10-30" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -444,7 +444,7 @@ and the “grand mean” is written
 \]</span></p>
 <p>A word about subscripting: As we progress, the subscripting that we use will become increasingly complicated. Remember that the basic rule for selecting a subscripting scheme is that each unique combination of subscripts must identify a unique data point. In regression, one subscript was sufficient (i.e., <span class="math inline">\(i = 1, \ldots, n\)</span>), because the value of <span class="math inline">\(i\)</span> was sufficient to specify a unique data point. In ANOVA, we need one subscript to distinguish the different groups, and a second subscript to distinguish the individual observations within each group.</p>
 <p>The first order of business in an ANOVA is testing the null hypothesis that all the group means are equal, <span class="math inline">\(H_0\)</span>: <span class="math inline">\(\mu_1 = \mu_2 = \ldots = \mu_g\)</span>, vs. the alternative that at least two group means differ. As we will see below, this is identical to a model utility test in regression with indicators, and so we shouldn’t be surprised that this is an <span class="math inline">\(F\)</span>-test. In the context of ANOVA, however, it is traditional to represent this test via a sums-of-squares decomposition. This decomposition leads to computing formulas that were important in the era before desktop computing.</p>
-<p>We begin by partitioning the variation in the data into two pieces: one quantifying the variation among populations and a second quantifying variation within populations.<a href="#fn25" class="footnote-ref" id="fnref25"><sup>25</sup></a><br />
+<p>We begin by partitioning the variation in the data into two pieces: one quantifying the variation among populations and a second quantifying variation within populations.<a href="#fn26" class="footnote-ref" id="fnref26"><sup>26</sup></a><br />
 <span class="math display">\[
 \mbox{Total variation: } SS_{Total} = \sum_{i=1}^g \sum_{j=1}^{n_{ij}} \left( y_{ij} - \bar{y}_{++} \right)^2
 \]</span>
@@ -1055,7 +1055,7 @@ Groups                       3      2.89623371      0.96541124      12.26    0.0
   Lack-of-fit                  2      0.25794564    0.12897282       1.64    0.2254
 Error                       16      1.26006314      0.07875395
 Total                       19      4.15629685</code></pre>
-<p>If data are not balanced, or if the treatment groups are not equally spaced with respect to the quantitative covariate that defines them, specialized software can be used to find the coefficients for orthogonal polynomial contrasts.<a href="#fn26" class="footnote-ref" id="fnref26"><sup>26</sup></a></p>
+<p>If data are not balanced, or if the treatment groups are not equally spaced with respect to the quantitative covariate that defines them, specialized software can be used to find the coefficients for orthogonal polynomial contrasts.<a href="#fn27" class="footnote-ref" id="fnref27"><sup>27</sup></a></p>
 <!-- However, an easier alternative is to find the sums-of-squares for each contrasts by fitting polynomial regression models.  The key here is that the sum-of-squares for a polynomial regression model is equal to the sum of the sums-of-squares for the respective polynomial contrasts.  That is, with four or more treatment groups, -->
 <!-- \begin{eqnarray*} -->
 <!--    SS(\mbox{Linear regression}) & = & SS(\theta_1) \\ -->
@@ -1443,7 +1443,7 @@ Under the sum-to-zero constraint, our parameter estimates for the hotdog example
 <span class="math display">\[
 \hat{\mu} = 144.8, \ \ \hat{\alpha}_1 = 12.1, \ \ \hat{\alpha_2} = 13.9, \ \ \hat{\alpha_3} = -26.0.
 \]</span>
-Under the sum-to-zero constraint, <span class="math inline">\(\mu\)</span> is the average of the individual group means, and the effects parameters are the differences between the individual group means and <span class="math inline">\(\mu\)</span>.<a href="#fn27" class="footnote-ref" id="fnref27"><sup>27</sup></a></p>
+Under the sum-to-zero constraint, <span class="math inline">\(\mu\)</span> is the average of the individual group means, and the effects parameters are the differences between the individual group means and <span class="math inline">\(\mu\)</span>.<a href="#fn28" class="footnote-ref" id="fnref28"><sup>28</sup></a></p>
 <p>The second commonly used constraint is the set-to-zero constraint. In the set-to-zero constraint, we choose one of the groups to serve as a reference and constrain its effect to be <span class="math inline">\(0\)</span>. If one of the treatment groups is a control, it makes sense to constrain the effect of the control group to <span class="math inline">\(0\)</span>. If there is no control group, then the choice of which effect to constrain = 0 is arbitrary.</p>
 <p>For the hotdog example, suppose we constrain <span class="math inline">\(\alpha_3 = 0\)</span>. The remaining parameter estimates are:
 <span class="math display">\[
@@ -1546,10 +1546,10 @@ Sokal, Robert R, and F James Rohlf. 1995. <em>Biometry</em>. 3rd ed. New York: W
 </div>
 <div class="footnotes">
 <hr />
-<ol start="25">
-<li id="fn25"><p>As with the SS decomposition that lead to <span class="math inline">\(R^2\)</span> in an ANOVA, the SS decomposition here is actually the Pythagorean Theorem in action, albeit in a higher-dimensional space.<a href="one-factor-anova.html#fnref25" class="footnote-back">↩︎</a></p></li>
-<li id="fn26"><p>The sums-of-squares for orthogonal polynomial contrasts can also be found by fitting polynomial regression models of increasingly higher order. It will turn out that the decrease in the SSE (or increase in the model sum-of-squares) obtained by increasing the degree of the polynomial by one exactly equals the sum-of-squares for the corresponding polynomial trend. For example, the sum-of-squares associated with the quadratic contrast can also be found by fitting linear and quadratic regression models, and taking the difference in the model sum-of-squares between the two fits.<a href="one-factor-anova.html#fnref26" class="footnote-back">↩︎</a></p></li>
-<li id="fn27"><p>When the data are not balanced, another choice for the sum-to-zero constraint is to set <span class="math inline">\(\mu\)</span> equal to the grand mean, where the grand mean is weighted by the differences in sample sizes among the groups: <span class="math inline">\(\mu = \frac{1}{n_T} \sum_{i=1}^g n_i \mu_i\)</span>. With this definition of <span class="math inline">\(\mu\)</span>, the weighted sum of the <span class="math inline">\(\alpha_i\)</span>’s will equal zero: <span class="math inline">\(\sum_{i=1}^g n_i \alpha_i = 0\)</span>.<a href="one-factor-anova.html#fnref27" class="footnote-back">↩︎</a></p></li>
+<ol start="26">
+<li id="fn26"><p>As with the SS decomposition that lead to <span class="math inline">\(R^2\)</span> in an ANOVA, the SS decomposition here is actually the Pythagorean Theorem in action, albeit in a higher-dimensional space.<a href="one-factor-anova.html#fnref26" class="footnote-back">↩︎</a></p></li>
+<li id="fn27"><p>The sums-of-squares for orthogonal polynomial contrasts can also be found by fitting polynomial regression models of increasingly higher order. It will turn out that the decrease in the SSE (or increase in the model sum-of-squares) obtained by increasing the degree of the polynomial by one exactly equals the sum-of-squares for the corresponding polynomial trend. For example, the sum-of-squares associated with the quadratic contrast can also be found by fitting linear and quadratic regression models, and taking the difference in the model sum-of-squares between the two fits.<a href="one-factor-anova.html#fnref27" class="footnote-back">↩︎</a></p></li>
+<li id="fn28"><p>When the data are not balanced, another choice for the sum-to-zero constraint is to set <span class="math inline">\(\mu\)</span> equal to the grand mean, where the grand mean is weighted by the differences in sample sizes among the groups: <span class="math inline">\(\mu = \frac{1}{n_T} \sum_{i=1}^g n_i \mu_i\)</span>. With this definition of <span class="math inline">\(\mu\)</span>, the weighted sum of the <span class="math inline">\(\alpha_i\)</span>’s will equal zero: <span class="math inline">\(\sum_{i=1}^g n_i \alpha_i = 0\)</span>.<a href="one-factor-anova.html#fnref28" class="footnote-back">↩︎</a></p></li>
 </ol>
 </div>
             </section>
