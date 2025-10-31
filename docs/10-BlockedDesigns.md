@@ -1,4 +1,4 @@
-# Blocked designs
+# Blocked designs {#blocked-designs}
 
 
 

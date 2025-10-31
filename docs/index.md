@@ -1,7 +1,7 @@
 --- 
 title: "Statistical analysis of designed experiments: yesterday, today, and tomorrow"
 author: "Kevin Gross"
-date: "2025-10-30"
+date: "2025-10-31"
 output:
   bookdown::gitbook:
     config:
@@ -82,7 +82,7 @@ Contemporary statistical software allows anyone to fit complex statistical model
 It is high time for the scientific community to ask whether complex but opaque statistical analyses are in the best interest of science.  For most scientific studies, a simple and transparent analysis provides a more trustworthy vehicle to understanding for both the analyst and the analyst's audience.  These notes will emphasize methods that, when studied, are transparent enough to promote such an understanding. 
 
 *Visualization is everything.*  
-No one is convinced by a $p$-value in isolation, or at least no one should be, given the ease of making errors in statistical analysis.  When an analysis suggests a pattern in data, the best way to understand the pattern is to visualize it with a thoughtfully constructed graphic.  Unfortunately, these notes in their current state are not as richly illustrated as they should be.  Eventually, I hope the notes will contain a full set of graphics that exemplify how to visualize patterns revealed by statistical analysis.^[I've long grappled with, and continue to grapple with, what an emphasis on data visualization implies for learners whose vision may be impaired.  Deep comprehension of statistical concepts is available to everyone, and I aspire to provide materials that provide a path towards that comprehension for every learner.  I hope to continue to update these notes to improve their accessibility as my appreciation for and understanding of the varieties of human experience and the design of pedagogy that is accessible across this breadth of variety grow.]
+No one is convinced by a $p$-value in isolation, or at least no one should be, given the ease of making errors in statistical analysis.  When an analysis suggests a pattern in data, the best way to understand the pattern is to visualize it with a thoughtfully constructed graphic.  Unfortunately, these notes in their current state are not as richly illustrated as they should be.  Eventually, I hope the notes will contain a full set of graphics that exemplify how to visualize patterns revealed by statistical analysis.^[I've long grappled with, and continue to grapple with, whether an emphasis on data visualization creates a burden for learners with impaired vision.  The goal of these notes is to create a resource that learners can use to master statistical concepts.  While data visualization is one aid to understanding, alternate, non-visual paths to deep understanding exist are available to learners of all types.  The ultimate learning objective is statistical reasoning, not visual acuity. I aspire to provide materials that provide a path towards that comprehension for every learner.]
 
 ### Scope and coverage {-}
 

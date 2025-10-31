@@ -1,4 +1,4 @@
-# Blocked designs
+# Blocked designs {#blocked-designs}
 
 ```{r echo = FALSE}
 setwd("C:/Users/krgross/Documents/GitHub/st512-course-notes/")

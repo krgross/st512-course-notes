@@ -1,6 +1,6 @@
 # (PART\*) Part III: Designed experiments {-}
 
-# One-factor ANOVA
+# One-factor layout {#one-way}
 
 
 
@@ -57,7 +57,7 @@ The statistical model that we use for analyzing a one-factor layout with a CRD i
 
 
 
-## One-factor ANOVA: The basics
+## One-factor ANOVA {#one-factor-anova}
 
 ### $F$-test to compare means
 
@@ -619,7 +619,7 @@ Total                       49     17.19136872
 
 ---
 
-### Orthogonal contrasts
+### Orthogonal contrasts {#orthogonal-contrasts}
 
 We have already seen that if several contrasts are not (completely) redundant, they are *linearly independent*.  Linearly independent contrasts might still share some information, however.  For example, the contrasts $\theta_1 = \mu_1 - \mu_2$ and $\theta_2 = \mu_1 - \mu_3$ are linearly independent, but they both depend in the same way on $\mu_1$.  Thus, if we happen to draw a sample from group 1 that is unusual in some regard, the event of drawing that sample will affect our tests of both $H_0$: $\theta_1 = 0$ and $H_0$: $\theta_2 = 0$ in the same way.
 
@@ -1183,7 +1183,7 @@ run;
 ````
 Note that in SAS, all lines must end with a semicolon (;).  Also, comments can be placed between the symbols /* and */.
 
-### Effects-model parameterization of the one-factor ANOVA model
+### Effects-model parameterization of the one-factor ANOVA model {#one-factor-effects-model}
 
 PROC GLM uses a model parameterization called the "effects parameterization" (or "effects model").  This parameterization is not unique to SAS, and is commonly found in many statistics texts.  The effects parameterization seems like overkill for a one-factor ANOVA, but it will be more useful when we contemplate multi-factor ANOVA later.  
 

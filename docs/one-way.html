@@ -1,0 +1,1624 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Chapter 6 One-factor layout | Statistical analysis of designed experiments: yesterday, today, and tomorrow</title>
+  <meta name="description" content="An online text in statistical analysis using the linear model" />
+  <meta name="generator" content="bookdown 0.43 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Chapter 6 One-factor layout | Statistical analysis of designed experiments: yesterday, today, and tomorrow" />
+  <meta property="og:type" content="book" />
+  
+  <meta property="og:description" content="An online text in statistical analysis using the linear model" />
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Chapter 6 One-factor layout | Statistical analysis of designed experiments: yesterday, today, and tomorrow" />
+  
+  <meta name="twitter:description" content="An online text in statistical analysis using the linear model" />
+  
+
+<meta name="author" content="Kevin Gross" />
+
+
+<meta name="date" content="2025-10-31" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="smoothing.html"/>
+<link rel="next" href="factorial-experiments.html"/>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<style type="text/css">
+  
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+</style>
+<style type="text/css">
+/* Used with Pandoc 2.11+ new --citeproc when CSL is used */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}
+</style>
+
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Preface</a>
+<ul>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#philosophy"><i class="fa fa-check"></i>Philosophy</a></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#scope-and-coverage"><i class="fa fa-check"></i>Scope and coverage</a></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#mathematical-level"><i class="fa fa-check"></i>Mathematical level</a></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#computing"><i class="fa fa-check"></i>Computing</a></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#llms-in-statistical-analysis"><i class="fa fa-check"></i>LLMs in statistical analysis</a></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#format-of-the-notes"><i class="fa fa-check"></i>Format of the notes</a></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#a-word-on-the-title"><i class="fa fa-check"></i>A word on the title</a></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#acknowledgments-and-license"><i class="fa fa-check"></i>Acknowledgments and license</a></li>
+</ul></li>
+<li class="part"><span><b>Part I: Regression modeling</b></span></li>
+<li class="chapter" data-level="1" data-path="simple-linear-regression.html"><a href="simple-linear-regression.html"><i class="fa fa-check"></i><b>1</b> Simple linear regression</a>
+<ul>
+<li class="chapter" data-level="1.1" data-path="simple-linear-regression.html"><a href="simple-linear-regression.html#the-basics-of-slr"><i class="fa fa-check"></i><b>1.1</b> The basics of SLR</a></li>
+<li class="chapter" data-level="1.2" data-path="simple-linear-regression.html"><a href="simple-linear-regression.html#least-squares-estimation"><i class="fa fa-check"></i><b>1.2</b> Least-squares estimation</a></li>
+<li class="chapter" data-level="1.3" data-path="simple-linear-regression.html"><a href="simple-linear-regression.html#inference-for-the-slope"><i class="fa fa-check"></i><b>1.3</b> Inference for the slope</a>
+<ul>
+<li class="chapter" data-level="1.3.1" data-path="simple-linear-regression.html"><a href="simple-linear-regression.html#standard-errors"><i class="fa fa-check"></i><b>1.3.1</b> Standard errors</a></li>
+<li class="chapter" data-level="1.3.2" data-path="simple-linear-regression.html"><a href="simple-linear-regression.html#confidence-intervals"><i class="fa fa-check"></i><b>1.3.2</b> Confidence intervals</a></li>
+<li class="chapter" data-level="1.3.3" data-path="simple-linear-regression.html"><a href="simple-linear-regression.html#statistical-hypothesis-tests"><i class="fa fa-check"></i><b>1.3.3</b> Statistical hypothesis tests</a></li>
+<li class="chapter" data-level="1.3.4" data-path="simple-linear-regression.html"><a href="simple-linear-regression.html#inference-for-the-intercept"><i class="fa fa-check"></i><b>1.3.4</b> Inference for the intercept</a></li>
+</ul></li>
+<li class="chapter" data-level="1.4" data-path="simple-linear-regression.html"><a href="simple-linear-regression.html#sums-of-squares-decomposition-and-r2"><i class="fa fa-check"></i><b>1.4</b> Sums of squares decomposition and <span class="math inline">\(R^2\)</span></a></li>
+<li class="chapter" data-level="1.5" data-path="simple-linear-regression.html"><a href="simple-linear-regression.html#diagnostic-plots"><i class="fa fa-check"></i><b>1.5</b> Diagnostic plots</a>
+<ul>
+<li class="chapter" data-level="1.5.1" data-path="simple-linear-regression.html"><a href="simple-linear-regression.html#residuals-vs.-fitted-values"><i class="fa fa-check"></i><b>1.5.1</b> Residuals vs. fitted values</a></li>
+<li class="chapter" data-level="1.5.2" data-path="simple-linear-regression.html"><a href="simple-linear-regression.html#residuals-vs.-predictors"><i class="fa fa-check"></i><b>1.5.2</b> Residuals vs. predictor(s)</a></li>
+<li class="chapter" data-level="1.5.3" data-path="simple-linear-regression.html"><a href="simple-linear-regression.html#residuals-vs.-other-variables"><i class="fa fa-check"></i><b>1.5.3</b> Residuals vs. other variables</a></li>
+<li class="chapter" data-level="1.5.4" data-path="simple-linear-regression.html"><a href="simple-linear-regression.html#normal-probability-plot"><i class="fa fa-check"></i><b>1.5.4</b> Normal probability plot</a></li>
+</ul></li>
+<li class="chapter" data-level="1.6" data-path="simple-linear-regression.html"><a href="simple-linear-regression.html#consequences-of-violating-model-assumptions-and-possible-fixes"><i class="fa fa-check"></i><b>1.6</b> Consequences of violating model assumptions, and possible fixes</a>
+<ul>
+<li class="chapter" data-level="1.6.1" data-path="simple-linear-regression.html"><a href="simple-linear-regression.html#linearity"><i class="fa fa-check"></i><b>1.6.1</b> Linearity</a></li>
+<li class="chapter" data-level="1.6.2" data-path="simple-linear-regression.html"><a href="simple-linear-regression.html#independence"><i class="fa fa-check"></i><b>1.6.2</b> Independence</a></li>
+<li class="chapter" data-level="1.6.3" data-path="simple-linear-regression.html"><a href="simple-linear-regression.html#constant-variance"><i class="fa fa-check"></i><b>1.6.3</b> Constant variance</a></li>
+<li class="chapter" data-level="1.6.4" data-path="simple-linear-regression.html"><a href="simple-linear-regression.html#normality"><i class="fa fa-check"></i><b>1.6.4</b> Normality</a></li>
+</ul></li>
+<li class="chapter" data-level="1.7" data-path="simple-linear-regression.html"><a href="simple-linear-regression.html#prediction-with-regression-models"><i class="fa fa-check"></i><b>1.7</b> Prediction with regression models</a></li>
+<li class="chapter" data-level="1.8" data-path="simple-linear-regression.html"><a href="simple-linear-regression.html#regression-design"><i class="fa fa-check"></i><b>1.8</b> Regression design</a>
+<ul>
+<li class="chapter" data-level="1.8.1" data-path="simple-linear-regression.html"><a href="simple-linear-regression.html#choice-of-predictor-values"><i class="fa fa-check"></i><b>1.8.1</b> Choice of predictor values</a></li>
+<li class="chapter" data-level="1.8.2" data-path="simple-linear-regression.html"><a href="simple-linear-regression.html#powerSLR"><i class="fa fa-check"></i><b>1.8.2</b> Power</a></li>
+</ul></li>
+<li class="chapter" data-level="1.9" data-path="simple-linear-regression.html"><a href="simple-linear-regression.html#centering-the-predictor"><i class="fa fa-check"></i><b>1.9</b> <span class="math inline">\(^\star\)</span>Centering the predictor</a></li>
+<li class="chapter" data-level="" data-path="simple-linear-regression.html"><a href="simple-linear-regression.html#appendix-a-fitting-the-slr-model-in-r"><i class="fa fa-check"></i>Appendix A: Fitting the SLR model in R</a></li>
+<li class="chapter" data-level="" data-path="simple-linear-regression.html"><a href="simple-linear-regression.html#appendix-b-regression-models-in-sas-proc-reg"><i class="fa fa-check"></i>Appendix B: Regression models in SAS PROC REG</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="multiple-regression.html"><a href="multiple-regression.html"><i class="fa fa-check"></i><b>2</b> Multiple regression</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="multiple-regression.html"><a href="multiple-regression.html#multiple-regression-basics"><i class="fa fa-check"></i><b>2.1</b> Multiple regression basics</a>
+<ul>
+<li class="chapter" data-level="2.1.1" data-path="multiple-regression.html"><a href="multiple-regression.html#ideas-that-carry-over-from-slr-to-multiple-regression"><i class="fa fa-check"></i><b>2.1.1</b> Ideas that carry over from SLR to multiple regression</a></li>
+<li class="chapter" data-level="2.1.2" data-path="multiple-regression.html"><a href="multiple-regression.html#interpreting-partial-regression-coefficients."><i class="fa fa-check"></i><b>2.1.2</b> Interpreting partial regression coefficients.</a></li>
+<li class="chapter" data-level="2.1.3" data-path="multiple-regression.html"><a href="multiple-regression.html#visualizing-a-multiple-regression-model"><i class="fa fa-check"></i><b>2.1.3</b> Visualizing a multiple regression model</a></li>
+<li class="chapter" data-level="2.1.4" data-path="multiple-regression.html"><a href="multiple-regression.html#statistical-inference-for-partial-regression-coefficients"><i class="fa fa-check"></i><b>2.1.4</b> Statistical inference for partial regression coefficients</a></li>
+<li class="chapter" data-level="2.1.5" data-path="multiple-regression.html"><a href="multiple-regression.html#prediction"><i class="fa fa-check"></i><b>2.1.5</b> Prediction</a></li>
+</ul></li>
+<li class="chapter" data-level="2.2" data-path="multiple-regression.html"><a href="multiple-regression.html#F-test"><i class="fa fa-check"></i><b>2.2</b> <span class="math inline">\(F\)</span>-tests for several regression coefficients</a>
+<ul>
+<li class="chapter" data-level="2.2.1" data-path="multiple-regression.html"><a href="multiple-regression.html#basic-machinery"><i class="fa fa-check"></i><b>2.2.1</b> Basic machinery</a></li>
+<li class="chapter" data-level="2.2.2" data-path="multiple-regression.html"><a href="multiple-regression.html#model-utility-test"><i class="fa fa-check"></i><b>2.2.2</b> Model utility test</a></li>
+</ul></li>
+<li class="chapter" data-level="2.3" data-path="multiple-regression.html"><a href="multiple-regression.html#categorical-predictors"><i class="fa fa-check"></i><b>2.3</b> Categorical predictors</a></li>
+<li class="chapter" data-level="2.4" data-path="multiple-regression.html"><a href="multiple-regression.html#regression-interactions"><i class="fa fa-check"></i><b>2.4</b> Interactions between predictors</a></li>
+<li class="chapter" data-level="2.5" data-path="multiple-regression.html"><a href="multiple-regression.html#collinearity"><i class="fa fa-check"></i><b>2.5</b> (Multi-)Collinearity</a></li>
+<li class="chapter" data-level="2.6" data-path="multiple-regression.html"><a href="multiple-regression.html#variable-selection-choosing-the-best-model"><i class="fa fa-check"></i><b>2.6</b> Variable selection: Choosing the best model</a>
+<ul>
+<li class="chapter" data-level="2.6.1" data-path="multiple-regression.html"><a href="multiple-regression.html#model-selection-and-inference"><i class="fa fa-check"></i><b>2.6.1</b> Model selection and inference</a></li>
+<li class="chapter" data-level="2.6.2" data-path="multiple-regression.html"><a href="multiple-regression.html#ranking-methods"><i class="fa fa-check"></i><b>2.6.2</b> Ranking methods</a></li>
+<li class="chapter" data-level="2.6.3" data-path="multiple-regression.html"><a href="multiple-regression.html#sequential-methods"><i class="fa fa-check"></i><b>2.6.3</b> Sequential methods</a></li>
+</ul></li>
+<li class="chapter" data-level="2.7" data-path="multiple-regression.html"><a href="multiple-regression.html#leverage-influential-points-and-standardized-residuals"><i class="fa fa-check"></i><b>2.7</b> Leverage, influential points, and standardized residuals</a>
+<ul>
+<li class="chapter" data-level="2.7.1" data-path="multiple-regression.html"><a href="multiple-regression.html#leverage"><i class="fa fa-check"></i><b>2.7.1</b> Leverage</a></li>
+<li class="chapter" data-level="2.7.2" data-path="multiple-regression.html"><a href="multiple-regression.html#standardized-residuals"><i class="fa fa-check"></i><b>2.7.2</b> Standardized residuals</a></li>
+<li class="chapter" data-level="2.7.3" data-path="multiple-regression.html"><a href="multiple-regression.html#cooks-distance"><i class="fa fa-check"></i><b>2.7.3</b> Cook’s distance</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="multiple-regression.html"><a href="multiple-regression.html#appendix-regression-as-a-linear-algebra-problem"><i class="fa fa-check"></i>Appendix: Regression as a linear algebra problem</a>
+<ul>
+<li class="chapter" data-level="" data-path="multiple-regression.html"><a href="multiple-regression.html#singular-or-pathological-design-matrices"><i class="fa fa-check"></i>Singular, or pathological, design matrices</a></li>
+<li class="chapter" data-level="" data-path="multiple-regression.html"><a href="multiple-regression.html#additional-results"><i class="fa fa-check"></i>Additional results</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="non-linear-regression.html"><a href="non-linear-regression.html"><i class="fa fa-check"></i><b>3</b> Non-linear regression</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="non-linear-regression.html"><a href="non-linear-regression.html#polynomial-regression"><i class="fa fa-check"></i><b>3.1</b> Polynomial regression</a></li>
+<li class="chapter" data-level="3.2" data-path="non-linear-regression.html"><a href="non-linear-regression.html#nls"><i class="fa fa-check"></i><b>3.2</b> Non-linear least squares</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="generalized-linear-models.html"><a href="generalized-linear-models.html"><i class="fa fa-check"></i><b>4</b> Generalized linear models</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="generalized-linear-models.html"><a href="generalized-linear-models.html#poisson-regression"><i class="fa fa-check"></i><b>4.1</b> Poisson regression</a></li>
+<li class="chapter" data-level="4.2" data-path="generalized-linear-models.html"><a href="generalized-linear-models.html#binary-responses"><i class="fa fa-check"></i><b>4.2</b> Binary responses</a>
+<ul>
+<li class="chapter" data-level="4.2.1" data-path="generalized-linear-models.html"><a href="generalized-linear-models.html#individual-binary-responses-tb-in-boar"><i class="fa fa-check"></i><b>4.2.1</b> Individual binary responses: TB in boar</a></li>
+<li class="chapter" data-level="4.2.2" data-path="generalized-linear-models.html"><a href="generalized-linear-models.html#grouped-binary-data-industrial-melanism"><i class="fa fa-check"></i><b>4.2.2</b> Grouped binary data: Industrial melanism</a></li>
+</ul></li>
+<li class="chapter" data-level="4.3" data-path="generalized-linear-models.html"><a href="generalized-linear-models.html#implementation-in-sas"><i class="fa fa-check"></i><b>4.3</b> Implementation in SAS</a>
+<ul>
+<li class="chapter" data-level="4.3.1" data-path="generalized-linear-models.html"><a href="generalized-linear-models.html#complete-separation"><i class="fa fa-check"></i><b>4.3.1</b> Complete separation</a></li>
+</ul></li>
+</ul></li>
+<li class="part"><span><b>Part II: Statistical learning</b></span></li>
+<li class="chapter" data-level="5" data-path="smoothing.html"><a href="smoothing.html"><i class="fa fa-check"></i><b>5</b> Smoothing</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="smoothing.html"><a href="smoothing.html#nearest-neighbor-methods"><i class="fa fa-check"></i><b>5.1</b> Nearest-neighbor methods</a></li>
+<li class="chapter" data-level="5.2" data-path="smoothing.html"><a href="smoothing.html#loess-smoothers"><i class="fa fa-check"></i><b>5.2</b> Loess smoothers</a></li>
+<li class="chapter" data-level="5.3" data-path="smoothing.html"><a href="smoothing.html#splines"><i class="fa fa-check"></i><b>5.3</b> Splines</a></li>
+<li class="chapter" data-level="5.4" data-path="smoothing.html"><a href="smoothing.html#generalized-additive-models-gams"><i class="fa fa-check"></i><b>5.4</b> Generalized additive models (GAMs)</a></li>
+</ul></li>
+<li class="part"><span><b>Part III: Designed experiments</b></span></li>
+<li class="chapter" data-level="6" data-path="one-way.html"><a href="one-way.html"><i class="fa fa-check"></i><b>6</b> One-factor layout</a>
+<ul>
+<li class="chapter" data-level="6.1" data-path="one-way.html"><a href="one-way.html#grouped-data-and-the-design-of-experiments-doe-an-overview"><i class="fa fa-check"></i><b>6.1</b> Grouped data and the design of experiments (DoE): an overview</a>
+<ul>
+<li class="chapter" data-level="6.1.1" data-path="one-way.html"><a href="one-way.html#a-vocabulary-for-describing-designed-experiments"><i class="fa fa-check"></i><b>6.1.1</b> A vocabulary for describing designed experiments</a></li>
+<li class="chapter" data-level="6.1.2" data-path="one-way.html"><a href="one-way.html#roadmap"><i class="fa fa-check"></i><b>6.1.2</b> Roadmap</a></li>
+<li class="chapter" data-level="6.1.3" data-path="one-way.html"><a href="one-way.html#the-simplest-experiment"><i class="fa fa-check"></i><b>6.1.3</b> The simplest experiment</a></li>
+</ul></li>
+<li class="chapter" data-level="6.2" data-path="one-way.html"><a href="one-way.html#one-factor-anova"><i class="fa fa-check"></i><b>6.2</b> One-factor ANOVA</a>
+<ul>
+<li class="chapter" data-level="6.2.1" data-path="one-way.html"><a href="one-way.html#f-test-to-compare-means"><i class="fa fa-check"></i><b>6.2.1</b> <span class="math inline">\(F\)</span>-test to compare means</a></li>
+<li class="chapter" data-level="6.2.2" data-path="one-way.html"><a href="one-way.html#connections-between-one-factor-anova-and-other-statistical-procedures"><i class="fa fa-check"></i><b>6.2.2</b> Connections between one-factor ANOVA and other statistical procedures</a></li>
+<li class="chapter" data-level="6.2.3" data-path="one-way.html"><a href="one-way.html#assumptions-in-anova"><i class="fa fa-check"></i><b>6.2.3</b> Assumptions in ANOVA</a></li>
+</ul></li>
+<li class="chapter" data-level="6.3" data-path="one-way.html"><a href="one-way.html#contrasts"><i class="fa fa-check"></i><b>6.3</b> Contrasts of group means</a>
+<ul>
+<li class="chapter" data-level="6.3.1" data-path="one-way.html"><a href="one-way.html#simple-contrasts"><i class="fa fa-check"></i><b>6.3.1</b> Simple contrasts</a></li>
+<li class="chapter" data-level="6.3.2" data-path="one-way.html"><a href="one-way.html#complex-contrasts"><i class="fa fa-check"></i><b>6.3.2</b> Complex contrasts</a></li>
+<li class="chapter" data-level="6.3.3" data-path="one-way.html"><a href="one-way.html#orthogonal-contrasts"><i class="fa fa-check"></i><b>6.3.3</b> Orthogonal contrasts</a></li>
+<li class="chapter" data-level="6.3.4" data-path="one-way.html"><a href="one-way.html#polynomial-contrasts"><i class="fa fa-check"></i><b>6.3.4</b> Polynomial contrasts</a></li>
+</ul></li>
+<li class="chapter" data-level="6.4" data-path="one-way.html"><a href="one-way.html#multiple-testing"><i class="fa fa-check"></i><b>6.4</b> Multiple comparisons</a>
+<ul>
+<li class="chapter" data-level="6.4.1" data-path="one-way.html"><a href="one-way.html#multiple-testing-in-general"><i class="fa fa-check"></i><b>6.4.1</b> Multiple testing in general</a></li>
+<li class="chapter" data-level="6.4.2" data-path="one-way.html"><a href="one-way.html#bonferroni-and-bonferroni-like-procedures"><i class="fa fa-check"></i><b>6.4.2</b> Bonferroni and Bonferroni-like procedures</a></li>
+<li class="chapter" data-level="6.4.3" data-path="one-way.html"><a href="one-way.html#multiple-comparisons-in-anova"><i class="fa fa-check"></i><b>6.4.3</b> Multiple comparisons in ANOVA</a></li>
+</ul></li>
+<li class="chapter" data-level="6.5" data-path="one-way.html"><a href="one-way.html#starpower-and-sample-size-determination-in-anova"><i class="fa fa-check"></i><b>6.5</b> <span class="math inline">\(^\star\)</span>Power and sample-size determination in ANOVA</a></li>
+<li class="chapter" data-level="6.6" data-path="one-way.html"><a href="one-way.html#sas-contrasts"><i class="fa fa-check"></i><b>6.6</b> Using SAS: The effects parameterization of the one-factor ANOVA</a>
+<ul>
+<li class="chapter" data-level="6.6.1" data-path="one-way.html"><a href="one-way.html#one-factor-effects-model"><i class="fa fa-check"></i><b>6.6.1</b> Effects-model parameterization of the one-factor ANOVA model</a></li>
+<li class="chapter" data-level="6.6.2" data-path="one-way.html"><a href="one-way.html#coding-contrasts-in-proc-glm"><i class="fa fa-check"></i><b>6.6.2</b> Coding contrasts in PROC GLM</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="factorial-experiments.html"><a href="factorial-experiments.html"><i class="fa fa-check"></i><b>7</b> Factorial experiments</a>
+<ul>
+<li class="chapter" data-level="7.1" data-path="factorial-experiments.html"><a href="factorial-experiments.html#combining-factors-crossed-vs.-nested-designs"><i class="fa fa-check"></i><b>7.1</b> Combining factors: Crossed vs. nested designs</a></li>
+<li class="chapter" data-level="7.2" data-path="factorial-experiments.html"><a href="factorial-experiments.html#two-factor-anova"><i class="fa fa-check"></i><b>7.2</b> Two-factor ANOVA</a>
+<ul>
+<li class="chapter" data-level="7.2.1" data-path="factorial-experiments.html"><a href="factorial-experiments.html#interaction-plots"><i class="fa fa-check"></i><b>7.2.1</b> Interaction plots</a></li>
+<li class="chapter" data-level="7.2.2" data-path="factorial-experiments.html"><a href="factorial-experiments.html#getting-organized-notation-and-bookkeeping"><i class="fa fa-check"></i><b>7.2.2</b> Getting organized: Notation and bookkeeping</a></li>
+<li class="chapter" data-level="7.2.3" data-path="factorial-experiments.html"><a href="factorial-experiments.html#anova-f-tests"><i class="fa fa-check"></i><b>7.2.3</b> ANOVA <span class="math inline">\(F\)</span>-tests</a></li>
+<li class="chapter" data-level="7.2.4" data-path="factorial-experiments.html"><a href="factorial-experiments.html#an-example-with-a-significant-interaction"><i class="fa fa-check"></i><b>7.2.4</b> An example with a significant interaction</a></li>
+<li class="chapter" data-level="7.2.5" data-path="factorial-experiments.html"><a href="factorial-experiments.html#two-factor-effects-model"><i class="fa fa-check"></i><b>7.2.5</b> The effects model for a two-factor ANOVA</a></li>
+</ul></li>
+<li class="chapter" data-level="7.3" data-path="factorial-experiments.html"><a href="factorial-experiments.html#unreplicated-designs"><i class="fa fa-check"></i><b>7.3</b> Unreplicated factorial designs</a></li>
+<li class="chapter" data-level="7.4" data-path="factorial-experiments.html"><a href="factorial-experiments.html#more-than-two-factors"><i class="fa fa-check"></i><b>7.4</b> More than two factors</a></li>
+<li class="chapter" data-level="7.5" data-path="factorial-experiments.html"><a href="factorial-experiments.html#analysis-using-proc-glm-in-sas"><i class="fa fa-check"></i><b>7.5</b> Analysis using PROC GLM in SAS</a></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="ancova.html"><a href="ancova.html"><i class="fa fa-check"></i><b>8</b> ANCOVA</a>
+<ul>
+<li class="chapter" data-level="8.1" data-path="ancova.html"><a href="ancova.html#common-slopes-model"><i class="fa fa-check"></i><b>8.1</b> Common-slopes model</a></li>
+<li class="chapter" data-level="8.2" data-path="ancova.html"><a href="ancova.html#separate-slopes-model"><i class="fa fa-check"></i><b>8.2</b> Separate-slopes model</a></li>
+<li class="chapter" data-level="8.3" data-path="ancova.html"><a href="ancova.html#further-reading"><i class="fa fa-check"></i><b>8.3</b> Further reading</a></li>
+</ul></li>
+<li class="chapter" data-level="9" data-path="random-effects.html"><a href="random-effects.html"><i class="fa fa-check"></i><b>9</b> Random effects</a>
+<ul>
+<li class="chapter" data-level="9.1" data-path="random-effects.html"><a href="random-effects.html#fixed-vs.-random-effects-the-big-picture"><i class="fa fa-check"></i><b>9.1</b> Fixed vs. random effects: the big picture</a></li>
+<li class="chapter" data-level="9.2" data-path="random-effects.html"><a href="random-effects.html#random-effects-models"><i class="fa fa-check"></i><b>9.2</b> Random-effects models</a></li>
+<li class="chapter" data-level="9.3" data-path="random-effects.html"><a href="random-effects.html#subsampling"><i class="fa fa-check"></i><b>9.3</b> Subsampling</a>
+<ul>
+<li class="chapter" data-level="9.3.1" data-path="random-effects.html"><a href="random-effects.html#equal-subsamples-per-eu"><i class="fa fa-check"></i><b>9.3.1</b> Equal subsamples per EU</a></li>
+</ul></li>
+<li class="chapter" data-level="9.4" data-path="random-effects.html"><a href="random-effects.html#starmathematical-foundations"><i class="fa fa-check"></i><b>9.4</b> <span class="math inline">\(^\star\)</span>Mathematical foundations</a>
+<ul>
+<li class="chapter" data-level="9.4.1" data-path="random-effects.html"><a href="random-effects.html#probability-refresher"><i class="fa fa-check"></i><b>9.4.1</b> Probability refresher</a></li>
+<li class="chapter" data-level="9.4.2" data-path="random-effects.html"><a href="random-effects.html#application-to-models-with-random-effects"><i class="fa fa-check"></i><b>9.4.2</b> Application to models with random effects</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="10" data-path="blocked-designs.html"><a href="blocked-designs.html"><i class="fa fa-check"></i><b>10</b> Blocked designs</a>
+<ul>
+<li class="chapter" data-level="10.1" data-path="blocked-designs.html"><a href="blocked-designs.html#randomized-complete-block-designs"><i class="fa fa-check"></i><b>10.1</b> Randomized complete block designs</a>
+<ul>
+<li class="chapter" data-level="10.1.1" data-path="blocked-designs.html"><a href="blocked-designs.html#should-a-blocking-factor-be-a-fixed-or-random-effect"><i class="fa fa-check"></i><b>10.1.1</b> *Should a blocking factor be a fixed or random effect?</a></li>
+</ul></li>
+<li class="chapter" data-level="10.2" data-path="blocked-designs.html"><a href="blocked-designs.html#latin-squares-designs"><i class="fa fa-check"></i><b>10.2</b> Latin-squares designs</a></li>
+<li class="chapter" data-level="10.3" data-path="blocked-designs.html"><a href="blocked-designs.html#split-plot-designs"><i class="fa fa-check"></i><b>10.3</b> Split-plot designs</a>
+<ul>
+<li class="chapter" data-level="10.3.1" data-path="blocked-designs.html"><a href="blocked-designs.html#denominator-degrees-of-freedom-in-split-plot-designs-and-the-satterthwaite-approximation"><i class="fa fa-check"></i><b>10.3.1</b> Denominator degrees of freedom in split-plot designs and the Satterthwaite approximation</a></li>
+</ul></li>
+<li class="chapter" data-level="10.4" data-path="blocked-designs.html"><a href="blocked-designs.html#repeated-measures"><i class="fa fa-check"></i><b>10.4</b> Repeated measures</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="bibliography.html"><a href="bibliography.html"><i class="fa fa-check"></i>Bibliography</a></li>
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Statistical analysis of designed experiments: yesterday, today, and tomorrow</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="one-way" class="section level1 hasAnchor" number="6">
+<h1><span class="header-section-number">Chapter 6</span> One-factor layout<a href="one-way.html#one-way" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<div id="grouped-data-and-the-design-of-experiments-doe-an-overview" class="section level2 hasAnchor" number="6.1">
+<h2><span class="header-section-number">6.1</span> Grouped data and the design of experiments (DoE): an overview<a href="one-way.html#grouped-data-and-the-design-of-experiments-doe-an-overview" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>In this part of the notes, we study methods to compare data from several groups. Most often, data from several groups arise from a designed experiment in which the groups are different experimental treatments that we wish to compare. The statistical methods extend, however, to observational studies in which the groups that we compare are different populations that already exist in nature. As with regression models, the statistical methods for comparing groups are identical regardless of whether the data are generated by an experiment or an observational study. What differs between experimental or observational studies is how we interpret the results. Again, as with regression studies, designed experiments support a causal interpretation of the differences among groups, whereas observational studies only support a comparative interpretation.</p>
+<div id="a-vocabulary-for-describing-designed-experiments" class="section level3 hasAnchor" number="6.1.1">
+<h3><span class="header-section-number">6.1.1</span> A vocabulary for describing designed experiments<a href="one-way.html#a-vocabulary-for-describing-designed-experiments" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Here we present a scheme and a vocabulary for describing designed experiments. We will see that our scheme aligns closely with the statsitical methods that we use to analyze the resulting data. In other words, if we can identify the experimental design, then the design will often suggest the appropriate statistical analysis.</p>
+<p>There are two basic elements of a designed experiment. The <em>treatment structure</em> of an experiment describes how the different experimental treatments are constructed. The <em>randomization structure</em> of an experiment describes how those experimental treatments are assigned among different units. It is also useful to distinguish the entity to which the treatment is assigned from the entity that is measured. The <em>experimental unit</em> (EU) is the physical entity to which a treatment is assigned, while the <em>measurement unit</em> (MU) is the entity that is measured. The measurement unit is often the same as the EU, but not always. The <em>experimental error</em> is the variation in the response among EUs assigned to the same treatment.</p>
+<p>The treatment and randomization structures of an experiment align tightly with the different components of a statistical model. The <em>fixed effects</em> in a statistical model describe how the average response differs among the treatment groups. The <em>random effects</em> in a statistical model describe how the replicate experimental units assigned to the same treatment vary. (We will have more to say about the distinction between fixed vs. random effects <a href="random-effects.html#random-effects">later</a>. In short, the treatment structure of an experiment determines how the fixed effects should be specified, and the randomization structure determines how the random effects should be specified.</p>
+</div>
+<div id="roadmap" class="section level3 hasAnchor" number="6.1.2">
+<h3><span class="header-section-number">6.1.2</span> Roadmap<a href="one-way.html#roadmap" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>We will begin our study of designed experiments by exploring the treatment structure of an experiment. In this chapter and the next, we will study various types of treatment structures, beginning with the simplest possible treatment structure and progressing to more complex structures. While we study different treatment structures, we will keep the randomization structure simple. Thus, with regard to the statistical models, we will initially focus on the fixed-effects component of the model.</p>
+<p>After studying different treatment structures, we will then pivot to studying different randomization structures. Accordingly, we will also turn our attention to studying the random-effects component of the statistical model.</p>
+<p>Finally, we note that all of our study of designed experiments assumes that the response is normally distributed. The great advantage of this assumption is that, because of the special properties of a normal distribution, the fixed-effect and random-effects components of the statistical model can be separated into two parts that are added together to construct the full model. After having completed our study, we will then study models in which the response has something other than a normal distribution. Things get more complicated here, because without our assumption of normality, we can’t simply break the model apart into its fixed- and random-effect components. The two parts become more tightly intertwined in complicated ways.</p>
+</div>
+<div id="the-simplest-experiment" class="section level3 hasAnchor" number="6.1.3">
+<h3><span class="header-section-number">6.1.3</span> The simplest experiment<a href="one-way.html#the-simplest-experiment" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>The simplest type of treatment structure is a <em>one-factor layout</em>, also known as a one-factor classification or one-way layout or single-factor design. A one-factor layout consists of a single experimental factor with 2 or more levels.</p>
+<p>Here is an example from <span class="citation">Moore and McCabe (<a href="#ref-moore1989introduction">1989</a>)</span>. A researcher is interested in comparing three different methods of teaching reading on students’ reading comprehension. The methods are labeled “Basal”, “DRTA’, and”Strat”. Let <span class="math inline">\(\mu_B\)</span>, <span class="math inline">\(\mu_D\)</span>, and <span class="math inline">\(\mu_S\)</span> denote the average student comprehension for each of the three treatments. We are interested in comparing <span class="math inline">\(\mu_B\)</span>, <span class="math inline">\(\mu_D\)</span>, and <span class="math inline">\(\mu_S\)</span>.</p>
+<p>As a bit of bookkeeping, it is usually awkward to distinguish statistical parameters by letter subscripts. It is usually convenient to recode the parameters by numerical subscripts. In this case, we might code the three mean responses as <span class="math inline">\(\mu_1\)</span>, <span class="math inline">\(\mu_2\)</span>, and <span class="math inline">\(\mu_3\)</span>, referring to the average response for the ” Basal”, “DRTA’, and”Strat” groups, respectively.</p>
+<p>The simplest type of randomization structure is a <em>completely randomized design</em> (CRD). The term “completely randomized design” virtually defines itself: in a CRD, treatments are assigned to EUs completely at random. CRDs are appropriate when EUs do not differ in ways that are known to affect the response. When the EUs do differ in ways known to affect the response, there are other randomization structures that are preferable to a CRD. A <em>balanced</em> CRD is each treatment is assigned to the same number of replicates.</p>
+<p>In the reading example, each of the three methods was randomly assigned to 22 different students. One of the measures of reading comprehension in the data set is called “POST3”. The data for this response are shown in the strip chart below.</p>
+<div class="sourceCode" id="cb231"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb231-1"><a href="one-way.html#cb231-1" tabindex="-1"></a>reading <span class="ot">&lt;-</span> <span class="fu">read.table</span>(<span class="st">&quot;data/reading.txt&quot;</span>, <span class="at">head =</span> T, <span class="at">stringsAsFactors =</span> T)</span>
+<span id="cb231-2"><a href="one-way.html#cb231-2" tabindex="-1"></a><span class="fu">with</span>(reading, <span class="fu">stripchart</span>(POST3 <span class="sc">~</span> Group, <span class="at">method =</span> <span class="st">&quot;jitter&quot;</span>, <span class="at">pch =</span> <span class="dv">16</span>, <span class="at">las =</span> <span class="dv">1</span>))</span></code></pre></div>
+<p><img src="06-OneFactorLayout_files/figure-html/unnamed-chunk-2-1.png" width="480" style="display: block; margin: auto;" /></p>
+<p>In the stripchart above, only left-to-right variation is meaningful. Vertical variation within each of the treatment groups is random scatter added to make sure the data points do not lie directly on top of one another.</p>
+<p>The statistical model that we use for analyzing a one-factor layout with a CRD is a one-factor analysis of variance (ANOVA), which we study next.</p>
+<!-- A one-factor ANOVA analysis (output from R shown below) suggests that there is strong evidence that teaching method affects reading comprehension ($F_{2,63}=4.48$, $p=0.015$). -->
+<!-- ```{r} -->
+<!-- fm3 <- lm(POST3 ~ Group, data = reading) -->
+<!-- anova(fm3) -->
+<!-- ``` -->
+</div>
+</div>
+<div id="one-factor-anova" class="section level2 hasAnchor" number="6.2">
+<h2><span class="header-section-number">6.2</span> One-factor ANOVA<a href="one-way.html#one-factor-anova" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="f-test-to-compare-means" class="section level3 hasAnchor" number="6.2.1">
+<h3><span class="header-section-number">6.2.1</span> <span class="math inline">\(F\)</span>-test to compare means<a href="one-way.html#f-test-to-compare-means" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+To introduce one-factor ANOVA, we will use a data set from an observational study. These data provide the calorie content for 20 randomly selected beef hotdogs, 17 randomly selected poultry hotdogs, and 17 randomly selected meat (!) hotdogs. The data are shown in the stripchart below.
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:unnamed-chunk-3"></span>
+<img src="06-OneFactorLayout_files/figure-html/unnamed-chunk-3-1.png" alt="Strip chart of calorie content for hot dog data." width="480" />
+<p class="caption">
+Figure 6.1: Strip chart of calorie content for hot dog data.
+</p>
+</div>
+<p>Let <span class="math inline">\(\mu_B\)</span>, <span class="math inline">\(\mu_M\)</span> and <span class="math inline">\(\mu_P\)</span> denote the average calorie content for beef, meat and poultry hotdogs, respectively. We wish to characterize if and how these means differ. To do so, we will first test the null hypothesis <span class="math inline">\(H_0\)</span>: <span class="math inline">\(\mu_B = \mu_M = \mu_P\)</span> with a one-factor analysis of variance (ANOVA).</p>
+<p>Before we begin, we need to develop some notation. Let <span class="math inline">\(g\)</span> denote the number of groups to be compared. In the hot dog example, <span class="math inline">\(g = 3\)</span>. Let <span class="math inline">\(i = 1,\ldots,g\)</span> be an index that distinguishes the different populations. The size of the random sample drawn from population <span class="math inline">\(i\)</span> is written <span class="math inline">\(n_i\)</span>. When the sample sizes are the same in every group, we say that the data are balanced, and sometimes replace the individual sample sizes <span class="math inline">\(n_i\)</span> by a common sample size <span class="math inline">\(n\)</span>. Let <span class="math inline">\(n_T = \sum_{i = 1}^g n_i\)</span> denote the total number of data points in the data set. Let <span class="math inline">\(j=1, \ldots,n_i\)</span> be an index that distinguishes the different data points within each sample; that is, <span class="math inline">\(y_{ij}\)</span> is observation <span class="math inline">\(j\)</span> from population <span class="math inline">\(i\)</span>. Finally, let <span class="math inline">\(\mu_i\)</span> denote the population mean for group <span class="math inline">\(i\)</span>.</p>
+<p>We will also use the subscript “+” to indicate summation over the values of an index. For example, if we wanted to add together all the data points from the sample from group <span class="math inline">\(i\)</span>, we could write
+<span class="math display">\[
+y_{i+} = \sum_{j=1}^{n_{ij}} y_{ij}
+\]</span>
+Or, if we wanted to add up all the data points in the data set, we could write
+<span class="math display">\[
+y_{++} = \sum_{i=1}^g \sum_{j=1}^{n_{ij}} y_{ij}
+\]</span>
+Lastly, we use bars to denote sample averages. The sample mean from population <span class="math inline">\(i\)</span> is written
+<span class="math display">\[
+\bar{y}_{i+} = \frac{1}{n_i}\sum_{j=1}^{n_{ij}} y_{ij}
+\]</span>
+and the “grand mean” is written
+<span class="math display">\[
+\bar{y}_{++} = \frac{1}{n_T}\sum_{i=1}^g \sum_{j=1}^{n_{ij}} y_{ij}.
+\]</span></p>
+<p>A word about subscripting: As we progress, the subscripting that we use will become increasingly complicated. Remember that the basic rule for selecting a subscripting scheme is that each unique combination of subscripts must identify a unique data point. In regression, one subscript was sufficient (i.e., <span class="math inline">\(i = 1, \ldots, n\)</span>), because the value of <span class="math inline">\(i\)</span> was sufficient to specify a unique data point. In ANOVA, we need one subscript to distinguish the different groups, and a second subscript to distinguish the individual observations within each group.</p>
+<p>The first order of business in an ANOVA is testing the null hypothesis that all the group means are equal, <span class="math inline">\(H_0\)</span>: <span class="math inline">\(\mu_1 = \mu_2 = \ldots = \mu_g\)</span>, vs. the alternative that at least two group means differ. As we will see below, this is identical to a model utility test in regression with indicators, and so we shouldn’t be surprised that this is an <span class="math inline">\(F\)</span>-test. In the context of ANOVA, however, it is traditional to represent this test via a sums-of-squares decomposition. This decomposition leads to computing formulas that were important in the era before desktop computing.</p>
+<p>We begin by partitioning the variation in the data into two pieces: one quantifying the variation among populations and a second quantifying variation within populations.<a href="#fn26" class="footnote-ref" id="fnref26"><sup>26</sup></a><br />
+<span class="math display">\[
+\mbox{Total variation: } SS_{Total} = \sum_{i=1}^g \sum_{j=1}^{n_{ij}} \left( y_{ij} - \bar{y}_{++} \right)^2
+\]</span>
+<span class="math display">\[
+\mbox{Variation among groups: } SS_{Groups} = \sum_{i=1}^g \sum_{j=1}^{n_{ij}} \left( \bar{y}_{i+} - \bar{y}_{++} \right)^2  = \sum_{i=1}^g n_i \left( \bar{y}_{i+} - \bar{y}_{++} \right)^2
+\]</span>
+<span class="math display">\[
+\mbox{Variation within groups: } SS_{Error} = \sum_{i=1}^g \sum_{j=1}^{n_{ij}} \left( y_{ij} - \bar{y}_{i+} \right)^2  
+\]</span>
+Although it is not obvious, the <span class="math inline">\(SS_{Groups}\)</span> and <span class="math inline">\(SS_{Error}\)</span> add together to give <span class="math inline">\(SS_{Total}\)</span>, that is,
+<span class="math display">\[
+SS_{Total}= SS_{Groups} + SS_{Error}
+\]</span>
+Heuristically, we want to compare the variation among groups to the variation within groups. However, we cannot compare the <span class="math inline">\(SS_{Groups}\)</span> to the <span class="math inline">\(SS_{Error}\)</span> directly, because these sums of squares are based on a different number of free differences, or degrees of freedom. Thus, we must standardize each sum of squares by dividing through by the number of free differences on which the sum of squares is based.</p>
+<p>We divide both <span class="math inline">\(SS_{Groups}\)</span> and <span class="math inline">\(SS_{Error}\)</span> by their respective df to obtain the corresponding mean squares. Mean squares can be directly compared, and the ratio of the <span class="math inline">\(MS_{Groups}\)</span> to the <span class="math inline">\(MS_{Error}\)</span> yields our <span class="math inline">\(F\)</span>-statistic:
+<span class="math display">\[
+F = \frac{MS_{Groups}}{MS_{Error}} = \frac{SS_{Groups} / (g - 1)}{SS_{Error} / (n_T - g)}.
+\]</span>
+Mathematically, it can be shown that if the null hypothesis is true, then <span class="math inline">\(MS_{Groups} \approx MS_{Error}\)</span>, and so <span class="math inline">\(F \approx 1\)</span>. If the null is false and the alternative is true, then <span class="math inline">\(MS_{Groups} &gt; MS_{Error}\)</span>, and so <span class="math inline">\(F &gt; 1\)</span>. Of course, both mean squares have some inherent randomness, so we measure the degree of evidence against the null by comparing the <span class="math inline">\(F\)</span> statistic to the appropriate reference distribution. If the null is true, then the <span class="math inline">\(F\)</span> ratio has an <span class="math inline">\(F\)</span>-distribution with numerator df equal to <span class="math inline">\(g - 1\)</span> and denominator df equal to <span class="math inline">\(n_T - g\)</span>. Large values of the <span class="math inline">\(F\)</span> statistic provide evidence against the null and in favor of the alternative, and so we compute the <span class="math inline">\(p\)</span>-value with a one-tailed test.</p>
+<p>It is customary to package all the information that goes into an <span class="math inline">\(F\)</span>-test into an ANOVA table. Although the layout of this table may differ slightly from one text to the next, the basic pieces are all the same.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left;">
+source
+</th>
+<th style="text-align:left;">
+df
+</th>
+<th style="text-align:left;">
+SS
+</th>
+<th style="text-align:left;">
+MS
+</th>
+<th style="text-align:left;">
+<span class="math inline">\(F\)</span>
+</th>
+<th style="text-align:left;">
+<span class="math inline">\(p\)</span>
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+Groups
+</td>
+<td style="text-align:left;">
+<span class="math inline">\(g-1\)</span>
+</td>
+<td style="text-align:left;">
+<span class="math inline">\(SS_{Groups}\)</span>
+</td>
+<td style="text-align:left;">
+<span class="math inline">\(MS_{Groups}\)</span>
+</td>
+<td style="text-align:left;">
+<span class="math inline">\(MS_{Groups} / MS_{Error}\)</span>
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Error
+</td>
+<td style="text-align:left;">
+<span class="math inline">\(n_T-g\)</span>
+</td>
+<td style="text-align:left;">
+<span class="math inline">\(SS_{Error}\)</span>
+</td>
+<td style="text-align:left;">
+<span class="math inline">\(MS_{Error}\)</span>
+</td>
+<td style="text-align:left;">
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Total
+</td>
+<td style="text-align:left;">
+<span class="math inline">\(n_T-1\)</span>
+</td>
+<td style="text-align:left;">
+<span class="math inline">\(SS_{Total}\)</span>
+</td>
+<td style="text-align:left;">
+</td>
+<td style="text-align:left;">
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+</tbody>
+</table>
+<p>Let’s compare ANOVA tables for the hot-dog calorie data from both R and SAS. Note that although the formatting differs slightly between the two software packages, the components of the <span class="math inline">\(F\)</span>-test are identical.</p>
+<p>In R, the ANOVA table is produced by fitting a linear model using lm(), and then passing that model fit to the command anova().</p>
+<div class="sourceCode" id="cb232"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb232-1"><a href="one-way.html#cb232-1" tabindex="-1"></a>fm1 <span class="ot">&lt;-</span> <span class="fu">lm</span>(calories <span class="sc">~</span> type, <span class="at">data =</span> hotdog)</span>
+<span id="cb232-2"><a href="one-way.html#cb232-2" tabindex="-1"></a><span class="fu">anova</span>(fm1) </span></code></pre></div>
+<pre><code>## Analysis of Variance Table
+## 
+## Response: calories
+##           Df Sum Sq Mean Sq F value    Pr(&gt;F)    
+## type       2  17692  8846.1  16.074 3.862e-06 ***
+## Residuals 51  28067   550.3                      
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+<p>For the sake of these notes, we can make the ANOVA table look a bit nicer using the following code.</p>
+<div class="sourceCode" id="cb234"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb234-1"><a href="one-way.html#cb234-1" tabindex="-1"></a><span class="fu">options</span>(<span class="at">knitr.kable.NA =</span> <span class="st">&#39;&#39;</span>) </span>
+<span id="cb234-2"><a href="one-way.html#cb234-2" tabindex="-1"></a><span class="fu">anova</span>(fm1) <span class="sc">%&gt;%</span> knitr<span class="sc">::</span><span class="fu">kable</span>(<span class="at">format =</span> <span class="st">&quot;html&quot;</span>)</span></code></pre></div>
+<table>
+<thead>
+<tr>
+<th style="text-align:left;">
+</th>
+<th style="text-align:right;">
+Df
+</th>
+<th style="text-align:right;">
+Sum Sq
+</th>
+<th style="text-align:right;">
+Mean Sq
+</th>
+<th style="text-align:right;">
+F value
+</th>
+<th style="text-align:right;">
+Pr(&gt;F)
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+type
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+17692.20
+</td>
+<td style="text-align:right;">
+8846.098
+</td>
+<td style="text-align:right;">
+16.07399
+</td>
+<td style="text-align:right;">
+3.9e-06
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Residuals
+</td>
+<td style="text-align:right;">
+51
+</td>
+<td style="text-align:right;">
+28067.14
+</td>
+<td style="text-align:right;">
+550.336
+</td>
+<td style="text-align:right;">
+</td>
+<td style="text-align:right;">
+</td>
+</tr>
+</tbody>
+</table>
+<!-- ```{r echo = FALSE} -->
+<!-- # set up the options so that knit knows where you SAS executable is -->
+<!-- # set the linesize to be easily readable on letter size paper, portrait -->
+<!-- # and set the knir options using opts_chunk$set(). -->
+<!-- # the lines below are the lines to uncomment if I want to make SAS the global engine.  But I don't, so I've commented those out. -->
+<!-- # saspath <- "C:/Program Files/SASHome/SASFoundation/9.4/sas.exe" -->
+<!-- # sasopts <- "-nosplash -linesize 75" -->
+<!-- # knitr::opts_chunk$set(engine="sashtml", engine.path = saspath,  -->
+<!-- #        engine.opts = sasopts, comment = NA) -->
+<!-- # the website that I consulted said to use this when compiling to PDF  -->
+<!-- # knitr::opts_chunk$set(engine="sas", engine.path=saspath,  -->
+<!-- #         engine.opts=sasopts, comment=NA) -->
+<!-- # but notice that if you run -->
+<!-- # > names(knitr::knit_engines$get()) -->
+<!-- # there is a 'saspdf' engine and so forth.  I would try this instead to compile to pdf. -->
+<!-- # To re-set the global options to using R, I would use -->
+<!-- # ```{r, engine='R', echo = FALSE} -->
+<!-- # knitr::opts_chunk$set(engine="R",  engine.path=NULL,  -->
+<!-- #        engine.opts=NULL, comment=NA) -->
+<!-- # ``` -->
+<!-- ``` -->
+<!-- Let's take a look at the output we obtain from PROC GLM in SAS: -->
+<!-- ```{r, engine = 'sashtml', engine.path = "C:/Program Files/SASHome/SASFoundation/9.4/sas.exe", engine.opts = "-nosplash -linesize 75"} -->
+<!-- data hotdog; -->
+<!--   infile "data\hotdog.txt" firstobs = 2; -->
+<!--   input type$ calorie sodium; -->
+<!-- run; -->
+<!-- proc glm data = hotdog; -->
+<!--   class type; /* declare categorical variables here */ -->
+<!--   model calorie = type; -->
+<!-- run; -->
+<!-- ``` -->
+<p>A PROC GLM program to fit a one-factor ANOVA model to these data is shown below, followed by some curated output.</p>
+<pre><code>data hotdog;
+  infile &quot;data\hotdog.txt&quot; firstobs = 2;
+  input type$ calorie sodium;
+run;
+
+proc glm data = hotdog;
+  class type; /* declare categorical variables here */
+  model calorie = type;
+run;</code></pre>
+<pre><code>The GLM Procedure
+
+                                        Sum of
+Source                      DF         Squares     Mean Square    F Value    Pr &gt; F
+Model                        2     17692.19510      8846.09755      16.07    &lt;.0001
+Error                       51     28067.13824       550.33604
+Corrected Total             53     45759.33333</code></pre>
+<p>Thankfully, we get the same output regardless of which computer package we use. We interpret this output in the following way: There is strong evidence that the average calorie content of meat, beef, and poultry hot dogs are not all equal (<span class="math inline">\(F_{2,51}=16.07\)</span>, <span class="math inline">\(p&lt;.001\)</span>).</p>
+<p><em>Example 2.</em> We also have sodium content (in mg) available for each hotdog. A strip-chart of the sodium data is shown below.</p>
+<div class="sourceCode" id="cb237"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb237-1"><a href="one-way.html#cb237-1" tabindex="-1"></a><span class="fu">with</span>(hotdog, <span class="fu">stripchart</span>(sodium <span class="sc">~</span> type, <span class="at">method =</span> <span class="st">&quot;jitter&quot;</span>, <span class="at">pch =</span> <span class="dv">16</span>))</span></code></pre></div>
+<p><img src="06-OneFactorLayout_files/figure-html/unnamed-chunk-7-1.png" width="480" style="display: block; margin: auto;" /></p>
+<div class="sourceCode" id="cb238"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb238-1"><a href="one-way.html#cb238-1" tabindex="-1"></a>fm2 <span class="ot">&lt;-</span> <span class="fu">lm</span>(sodium <span class="sc">~</span> type, <span class="at">data =</span> hotdog)</span>
+<span id="cb238-2"><a href="one-way.html#cb238-2" tabindex="-1"></a><span class="fu">anova</span>(fm2)</span></code></pre></div>
+<pre><code>## Analysis of Variance Table
+## 
+## Response: sodium
+##           Df Sum Sq Mean Sq F value Pr(&gt;F)
+## type       2  31739 15869.4  1.7778 0.1793
+## Residuals 51 455249  8926.4</code></pre>
+<p>There is no evidence that the average sodium content of meat, beef, and poultry hot dogs differ (<span class="math inline">\(F_{2,51}=1.78\)</span>, <span class="math inline">\(p=0.18\)</span>).</p>
+</div>
+<div id="connections-between-one-factor-anova-and-other-statistical-procedures" class="section level3 hasAnchor" number="6.2.2">
+<h3><span class="header-section-number">6.2.2</span> Connections between one-factor ANOVA and other statistical procedures<a href="one-way.html#connections-between-one-factor-anova-and-other-statistical-procedures" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>It may have occurred to you that we could also have analyzed the hot dog data by using a regression model with indicator variables. In fact, ANOVA and regression with indicators are the same statistical model, a point which we will illustrate more explicitly now. For the hot-dog data, let’s consider the regression model
+<span class="math display">\[
+y=\beta_0 +\beta_1 x_1 +\beta_2 x_2 + \epsilon
+\]</span>
+where <span class="math inline">\(x_1\)</span> and <span class="math inline">\(x_2\)</span> are indicator variables to code for the different types of hotdogs. We can ask if the data contain evidence that the different types of hotdogs have different calorie contents on average by testing <span class="math inline">\(H_0\)</span>: <span class="math inline">\(\beta_1 = \beta_2 = 0\)</span>. In this particular case, the <span class="math inline">\(F\)</span>-test that we need is the model utility test. We’ll just find this test directly in the R output.</p>
+<div class="sourceCode" id="cb240"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb240-1"><a href="one-way.html#cb240-1" tabindex="-1"></a><span class="fu">summary</span>(fm1)</span></code></pre></div>
+<pre><code>## 
+## Call:
+## lm(formula = calories ~ type, data = hotdog)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -51.706 -18.492  -5.278  22.500  36.294 
+## 
+## Coefficients:
+##             Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)  156.850      5.246  29.901  &lt; 2e-16 ***
+## typeMeat       1.856      7.739   0.240    0.811    
+## typePoultry  -38.085      7.739  -4.921 9.39e-06 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 23.46 on 51 degrees of freedom
+## Multiple R-squared:  0.3866, Adjusted R-squared:  0.3626 
+## F-statistic: 16.07 on 2 and 51 DF,  p-value: 3.862e-06</code></pre>
+<p>Note that the test statistic and <span class="math inline">\(p\)</span>-value for the model utility test are exactly the same as the test statistic and <span class="math inline">\(p\)</span>-value from the ANOVA <span class="math inline">\(F\)</span>-test.</p>
+<p>One-factor ANOVA also generalizes a two-sample <span class="math inline">\(t\)</span>-test. To illustrate, consider the data below, which show body temperatures for 65 randomly selected women and 65 randomly selected men.</p>
+<div class="sourceCode" id="cb242"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb242-1"><a href="one-way.html#cb242-1" tabindex="-1"></a>bodytemp <span class="ot">&lt;-</span> <span class="fu">read.table</span>(<span class="st">&quot;data/bodytemp.txt&quot;</span>, <span class="at">head =</span> T, <span class="at">stringsAsFactors =</span> T)</span>
+<span id="cb242-2"><a href="one-way.html#cb242-2" tabindex="-1"></a><span class="fu">with</span>(bodytemp, <span class="fu">stripchart</span>(bodytemp <span class="sc">~</span> gender, <span class="at">method =</span> <span class="st">&#39;jitter&#39;</span>, <span class="at">pch =</span> <span class="dv">16</span>, <span class="at">las =</span> <span class="dv">1</span>))</span></code></pre></div>
+<p><img src="06-OneFactorLayout_files/figure-html/unnamed-chunk-9-1.png" width="480" style="display: block; margin: auto;" />
+Suppose we want to study the difference in average body temperature between men and women. In an introductory course you might have conducted this analysis with a two-sample <span class="math inline">\(t\)</span>-test. Here is how to implement this <span class="math inline">\(t\)</span>-test in R.</p>
+<div class="sourceCode" id="cb243"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb243-1"><a href="one-way.html#cb243-1" tabindex="-1"></a><span class="fu">t.test</span>(bodytemp <span class="sc">~</span> gender, <span class="at">data =</span> bodytemp, <span class="at">var.equal =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
+<pre><code>## 
+##  Two Sample t-test
+## 
+## data:  bodytemp by gender
+## t = 2.2854, df = 128, p-value = 0.02393
+## alternative hypothesis: true difference in means between group female and group male is not equal to 0
+## 95 percent confidence interval:
+##  0.03882216 0.53963938
+## sample estimates:
+## mean in group female   mean in group male 
+##             98.39385             98.10462</code></pre>
+<p>The <span class="math inline">\(p\)</span>-value of 0.0239 suggests that there is reasonably strong evidence of a difference in average body temperature for males and females. Compare this output with a one-factor ANOVA analysis:</p>
+<div class="sourceCode" id="cb245"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb245-1"><a href="one-way.html#cb245-1" tabindex="-1"></a><span class="fu">anova</span>(<span class="fu">lm</span>(bodytemp <span class="sc">~</span> gender, <span class="at">data =</span> bodytemp))</span></code></pre></div>
+<pre><code>## Analysis of Variance Table
+## 
+## Response: bodytemp
+##            Df Sum Sq Mean Sq F value  Pr(&gt;F)  
+## gender      1  2.719 2.71877  5.2232 0.02393 *
+## Residuals 128 66.626 0.52052                  
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+<p>The <span class="math inline">\(p\)</span>-values are exactly the same, because one-factor ANOVA with two groups is identical to a two-sample <span class="math inline">\(t\)</span>-test (with a pooled variance).</p>
+</div>
+<div id="assumptions-in-anova" class="section level3 hasAnchor" number="6.2.3">
+<h3><span class="header-section-number">6.2.3</span> Assumptions in ANOVA<a href="one-way.html#assumptions-in-anova" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Just like regression, ANOVA is based on assumptions about the distributions of the observations within each group. If these assumptions are badly violated, then the <span class="math inline">\(F\)</span>-test is not trustworthy. In ANOVA, the errors are assumed to be independent, normally distributed, and to have equal variance. Because we have seen that ANOVA is tantamount to regression with indicators, it should not surprise you that these are the same assumptions that we encountered in regression. (The linearity assumption from regression is less pertinent to ANOVA because there are no continuously valued predictors.)</p>
+<p>As with regression, we could use the ``residuals’’ <span class="math inline">\(e_{ij} = y_{ij} - \bar{y}_{i+}\)</span> to construct diagnostic plots that allow us to assess these assumptions. With a one-factor ANOVA, however, it typically suffices just to plot the data (either using dotplots, histograms, or boxplots). Troublesome violations of assumptions should be apparent.</p>
+<p>If assumptions are violated, what can we do? As with a two-sample <span class="math inline">\(t\)</span>-test, there are several options. A first option is to transform the data, just as we transformed the response in regression. Transformations are particularly useful for right-skewed data (in which case one may use a log transformation), count data (square-root transformation), or proportion data (eg, percenteges, in which case an arcsin-square root transformation is appropriate).</p>
+<!-- *Example: Cloud seeding.* Fifty-two clouds were randomly divided into two equally sized groups.  The 26 clouds in one group were seeded with silver nitrate, and the 26 clouds in the other group were left as controls.  Rainfall from each cloud was recorded in acre-feet.  The data are shown below.  (The original source for these data is Simpson et al., 1975.  ``A Bayesian analysis of a multiplicative treatment effect in weather modification.'' *Technometrics} 17:161-166.) -->
+<!-- \begin{center} -->
+<!--    \includegraphics*[width=2.5in]{figures/rain-raw} -->
+<!-- \end{center} -->
+<!-- Clearly, the data are not normally distributed within the groups.  Taking a log-transformation of the data eliminates most of the skew: -->
+<!-- \begin{center} -->
+<!--    \includegraphics*[width=2.5in]{figures/rain-log} -->
+<!-- \end{center} -->
+<!-- Now, a one-factor ANOVA using the log-transformed data shows that these data contain strong evidence that seeded clouds produced more rainfall, on average, than unseeded clouds: -->
+<!-- \renewcommand{\baselinestretch}{1} -->
+<!-- \begin{} -->
+<!-- The GLM Procedure -->
+<!--                                         Sum of -->
+<!-- Source                      DF         Squares     Mean Square    F Value    Pr > F -->
+<!-- Model                        1      17.0070591      17.0070591       6.47    0.0141 -->
+<!-- Error                       50     131.3526732       2.6270535 -->
+<!-- Corrected Total             51     148.3597324 -->
+<!-- \end{} -->
+<!-- \renewcommand{\baselinestretch}{1.5} -->
+<p>A second option with non-normal data is to try a non-parametric procedure. A parametric method assumes that the data come from a population with a (so-called) parametric probability distribution. A non-parametric method does not make any particular assumption about the distribution of the population(s) from which the data were collected. The non-parametric equivalent to a one-factor ANOVA is the Kruskal-Wallis test.</p>
+</div>
+</div>
+<div id="contrasts" class="section level2 hasAnchor" number="6.3">
+<h2><span class="header-section-number">6.3</span> Contrasts of group means<a href="one-way.html#contrasts" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>If we reject the null hypothesis that all group means are equal in a one-factor ANOVA, we usually want to go further and characterize how the group means differ. The approach that we use to characterize differences among group means depends on whether we are interested in pre-planned comparisons of the group means or in comparisons that are suggested by the data. A pre-planned comparison is one that you planned to investigate before having collected the data. Pre-planned comparisons can be analyzed using linear contrasts, which are the topic of this section. Comparisons suggested by the data should be analyzed with <a href="one-way.html#multiple-testing">multiple-comparisons procedures</a>, which we will study later.</p>
+<div id="simple-contrasts" class="section level3 hasAnchor" number="6.3.1">
+<h3><span class="header-section-number">6.3.1</span> Simple contrasts<a href="one-way.html#simple-contrasts" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>A linear contrast generalizes the idea of a pairwise difference between two means. A linear contrast is a special type of linear combination. A <em>linear combination</em> of the group means is a weighted sum of the group means. It can be written as
+<span class="math display">\[
+\theta = w_1 \mu_1 + w_2 \mu_2 + \ldots + w_g \mu_g.
+\]</span>
+the <span class="math inline">\(w\)</span>’s in the expression above are weights that we assign to each group mean. We can treat a linear combination just like any other statistical parameter.</p>
+<p>A (simple) <em>linear contrast</em> is a linear combination in which the weights add to 0:
+<span class="math display">\[
+\sum_{i=1}^g w_i = 0.
+\]</span>
+If all the group means are equal, then the true value of any contrast will be 0. A little algebra will verify this claim. A single linear contrast is also called a simple contrast. Later, we will encounter complex contrasts, which are collections of simple contrasts.</p>
+<p><em>Example.</em> Consider the hotdog data. Let <span class="math inline">\(\mu_B\)</span>, <span class="math inline">\(\mu_M\)</span>, and <span class="math inline">\(\mu_P\)</span> denote the average calorie content for beef, meat, and poultry hotdogs, respectively. A linear contrast that compares the average calorie content of beef hotdogs vs. poultry hotdogs is
+<span class="math display">\[
+\theta_1 = \mu_B - \mu_P = (+1) \times \mu_B + 0 \times \mu_M + (-1) \times \mu_P.
+\]</span></p>
+<p>For a contrast, we are almost always interested in testing the null hypothesis that the contrast is 0 (<span class="math inline">\(H_0: \theta_1 = 0\)</span>) against the alternative that the difference is not 0 (<span class="math inline">\(H_a: \theta_1 \ne 0\)</span>). Typically, this happens by computing a sum-of-squares associated with the contrast. There’s a formula for the sum-of-squares for a contrast, but it isn’t enlightening, so we’ll let the computer do the computations. We’ll present output here and focus on coding <a href="one-way.html#sas-contrasts">later</a>.</p>
+<p>The sum-of-squares associated with the contrast <span class="math inline">\(\theta_1\)</span> is <span class="math inline">\(SS(\theta_1) = 13328\)</span>. To test <span class="math inline">\(H_0: \theta_1 = 0\)</span>, we must first convert this sum-of-squares to a mean-square by dividing by the number of degrees of freedom associated with the contrast. For a simple contrast, the associated df is 1. We then compare the mean-square for the contrast to the MSE via an <span class="math inline">\(F\)</span>-statistic. For the contrast <span class="math inline">\(\theta_1\)</span>, this plays out as
+<span class="math display">\[
+F_{1,51} = \frac{MS(\theta_1)}{MS_{Error}} = \frac{SS(\theta_1) / 1}{SS_{Error} / (n_T - g)} = \frac{13328/1}{28067/51} = 24.22.
+\]</span>
+Comparing to an <span class="math inline">\(F_{1,51}\)</span> distribution yields a <span class="math inline">\(p\)</span>-value <span class="math inline">\(&lt;0.0001\)</span>.</p>
+<!-- We can estimate a linear contrast (or any linear combination) simply by plugging in sample means for population means.  For the contrast above -->
+<!-- \[ -->
+<!-- \hat{\theta}_1 = \bar{y}_{1+} - \bar{y}_{3+} = 156.9 - 118.8 = 38.1 -->
+<!-- \] -->
+<!-- Like any estimate, our estimate of a linear contrast has a standard error.  While we will usually rely on software to compute the standard error for us, the expression for the standard error writes as  -->
+<!-- \[ -->
+<!-- s_{\hat{\theta}} = \sqrt{\left\{\frac{w_1^2}{n_1} + \frac{w_2^2}{n_2} + \ldots + \frac{w_g^2}{n_g} \right\} MS_{Error}} -->
+<!-- \] -->
+<!-- Perhaps the one thing to be gained from this formula is to consider the trivial linear combination $\theta = \mu_1$.  You will notice that the formula for the standard error reproduces the familiar formula for a sample mean.   -->
+<!-- Confidence intervals for $\theta$ can be found by using critical values from a $t$-distribution with $n_T - g$ df.  (We use $n_T - g$ df because this is the number of df for the $MS_{Error}$.)  We can also test $H_0: \theta = \theta_0$ vs.\ any appropriate alternative hypothesis by calculating the $t$-statistic -->
+<!-- \[ -->
+<!-- t = \frac{\hat{\theta} - \theta_0}{s_{\hat{\theta}}} -->
+<!-- \]   -->
+<!-- and comparing the value of the test statistic to a $t$-distribution with $n_T - g$ df. -->
+<!-- *Example.* Suppose we wanted to investigate the difference between the average calorie content of beef hotdogs and the average calorie content of poultry hotdogs.  We have already expressed this difference as $\theta_1 = \mu_1 - \mu_3$, and estimated this difference as $\hat{\theta}_1 = 38.1$.  Now, to draw statistical inferences, we calculate the standard error of $\hat{\theta}_1$: -->
+<!-- \[ -->
+<!-- s_{\hat{\theta}_1} = \sqrt{\left\{\frac{1^2}{20} + \frac{0^2}{17} + \frac{(-1)^2}{17} \right\} 550.3} =7.74. -->
+<!-- \] -->
+<!-- By finding the appropriate critical value from a $t$-distribution with $n_T - g = 54 - 3 = 51$ df, a 95\% CI for $\theta_1$  is $38.1 \pm 2.008 \times 7.74 = (22.6, 53.6)$.  Finally, to test $H_0: \theta_1 = 0$ vs.\ $H_a: \theta_1 \ne 0$, calculate the $t$-statistic -->
+<!-- \[ -->
+<!-- t = \frac{38.1 - 0}{7.74} = 4.92 -->
+<!-- \] -->
+<!-- and compare to a $t$-distribution with 51 df to generate a $p$-value of $9.4 \times 10^{-6}$.  Thus, there is overwhelming evidence that beef and poultry hotdogs differ in their average calorie content. -->
+</div>
+<div id="complex-contrasts" class="section level3 hasAnchor" number="6.3.2">
+<h3><span class="header-section-number">6.3.2</span> Complex contrasts<a href="one-way.html#complex-contrasts" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>A complex contrast is a collection of several <em>linearly independent</em> contrasts. “Linear independence” is a bit of a mouthful, but the idea is straightforward. Several contrasts are linearly independent if they are not redundant. Conversely, a collection of contrasts are not linearly independent if a subset of the contrasts equaling 0 dictates that another contrast in the collection must also equal 0. For example, consider the hot-dog data, and consider the three contrasts
+<span class="math display">\[\begin{eqnarray*}
+\theta_1 &amp; = &amp; \mu_B - \mu_M \\
+\theta_2 &amp; = &amp; \mu_B - \mu_P \\
+\theta_3 &amp; = &amp; \mu_M - \mu_P \\
+\end{eqnarray*}\]</span>
+These contrasts are linearly dependent, because if <span class="math inline">\(\theta_1 = 0\)</span> and <span class="math inline">\(\theta_2 = 0\)</span>, then it must be true that <span class="math inline">\(\theta_3 = 0\)</span>. In other words, <span class="math inline">\(\theta_3\)</span> is redundant with <span class="math inline">\(\theta_1\)</span> and <span class="math inline">\(\theta_2\)</span>.</p>
+<p>We test a complex contrast by testing whether all the simple contrasts it contains equal <span class="math inline">\(0\)</span>. For example, in the hotdog data, and using the contrasts as defined above, we can test <span class="math inline">\(H_0\)</span>: <span class="math inline">\(\theta_1 = \theta_2 = 0\)</span>, vs. the alternative that at least one of <span class="math inline">\(\theta_1\)</span> and <span class="math inline">\(\theta_2\)</span> is not 0. Of course, <span class="math inline">\(H_0\)</span>: <span class="math inline">\(\theta_1 = \theta_2 = 0\)</span> is equivalent to <span class="math inline">\(H_0\)</span>: <span class="math inline">\(\mu_B = \mu_M = \mu_P\)</span>, the usual null hypothesis of equality of group means. Thus, contrasts give us an alternative route to understanding the ANOVA <span class="math inline">\(F\)</span>-test. This alternative route will become useful when we consider ANOVA for factorial designs later.</p>
+<p>Suppose we have a complex contrasts that consists of <span class="math inline">\(k\)</span> linearly independent contrasts, which we denote as <span class="math inline">\(\theta_1, \theta_2, \ldots, \theta_k\)</span>. We can use an <span class="math inline">\(F\)</span>-test to test the null hypothesis that all <span class="math inline">\(k\)</span> contrasts are equal to zero. The <span class="math inline">\(F\)</span>-test involves finding a sum of squares for the collection of contrasts, which we will write as <span class="math inline">\(SS(\theta_1, \theta_2, \ldots, \theta_k)\)</span>, and has <span class="math inline">\(k\)</span> df. We usually can’t calculate <span class="math inline">\(SS(\theta_1, \theta_2, \ldots, \theta_k)\)</span> by hand, but a computer can do so for us. To test the null hypothesis that all <span class="math inline">\(k\)</span> contrasts are equal to zero, we construct an <span class="math inline">\(F\)</span> test in the usual way:
+<span class="math display">\[
+F = \frac{MS(\theta_1, \theta_2, \ldots, \theta_k)}{MSE} = \frac{SS(\theta_1, \theta_2, \ldots, \theta_k) / k}{MSE}
+\]</span>
+Here’s PROC GLM code in SAS to test <span class="math inline">\(H_0\)</span>: <span class="math inline">\(\theta_1 = \theta_2 = 0\)</span> (see the section on <a href="one-way.html#sas-contrasts">PROC GLM</a> for explanation of coding).</p>
+<pre><code>proc glm data=hotdog;
+  class type;
+  model calorie = type;
+  /* --------------------------- B  M  P --*/
+  contrast &#39;B vs M, B vs P&#39; type 1 -1  0,
+                            type 1  0 -1;
+run;
+
+                                        Sum of
+Source                      DF         Squares     Mean Square    F Value    Pr &gt; F
+Model                        2     17692.19510      8846.09755      16.07    &lt;.0001
+Error                       51     28067.13824       550.33604
+Corrected Total             53     45759.33333
+
+
+Contrast                    DF     Contrast SS     Mean Square    F Value    Pr &gt; F
+B vs M, B vs P               2     17692.19510      8846.09755      16.07    &lt;.0001</code></pre>
+<p>The <span class="math inline">\(F\)</span>-test of <span class="math inline">\(H_0\)</span>: <span class="math inline">\(\theta_1 = \theta_2 = 0\)</span> yields exactly the same result as the <span class="math inline">\(F\)</span>-test of <span class="math inline">\(H_0\)</span>: <span class="math inline">\(\mu_1 = \mu_2 = \mu_3\)</span>, which should not surprise us.</p>
+<p>Let us collect what we have learned so far. With <span class="math inline">\(g\)</span> groups, the ANOVA <span class="math inline">\(F\)</span>-test that all the group means are equal, that is, of <span class="math inline">\(H_0\)</span>: <span class="math inline">\(\mu_1 = \mu_2 =  \ldots = \mu_g\)</span> is equivalent to a test of <span class="math inline">\(g-1\)</span> linearly independent contrasts among the group means. Note that there are many possible sets of <span class="math inline">\(g-1\)</span> linearly independent contrasts that can be used to test the equality of group means. For example, in the hot-dog data, we could also define the contrasts
+<span class="math display">\[\begin{eqnarray*}
+    \theta_3 &amp; = &amp; \mu_2 - \mu_3 \\
+    \theta_4 &amp; = &amp; 2 \mu_1 - (\mu_2 + \mu_3).
+\end{eqnarray*}\]</span>
+Because <span class="math inline">\(\theta_3\)</span> and <span class="math inline">\(\theta_4\)</span> are linearly independent contrasts, a test of <span class="math inline">\(H_0\)</span>: <span class="math inline">\(\theta_3 = \theta_4 = 0\)</span> should also yield the same <span class="math inline">\(F\)</span>-statistic, and in fact it does:</p>
+<pre><code>proc glm data=hotdog;
+  class type;
+  model calorie = type;
+  /* ------------------------------- B  M  P --*/
+  contrast &#39;two more contrasts&#39; type 0  1 -1,
+                                type 2 -1 -1;
+run;
+
+Contrast                    DF     Contrast SS     Mean Square    F Value    Pr &gt; F
+two more contrasts           2     17692.19510      8846.09755      16.07    &lt;.0001</code></pre>
+<p>So what is the point, if all we have done is to recreate the familiar <span class="math inline">\(F\)</span>-test for equality of means? We will see that contrasts actually allow us to go much further. This is illustrated in the next example.</p>
+<p><em>Example.</em> An experiment is conducted to investigate the effects of five different sugar treatments on the length (in mm) of pea sections grown in tissue culture. The five treatments are: a control (no sugar added), +2% sucrose, +2% fructose, +2% glucose, and +1% fructose +1% glucose. The data are balanced, with <span class="math inline">\(n = 10\)</span> replicates per treatment. These data appear in <span class="citation">Sokal and Rohlf (<a href="#ref-sokal1995biometry">1995</a>)</span>. A stripchart of the data is shown below.</p>
+<div class="sourceCode" id="cb249"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb249-1"><a href="one-way.html#cb249-1" tabindex="-1"></a>pea <span class="ot">&lt;-</span> <span class="fu">read.table</span>(<span class="st">&quot;data/pea.txt&quot;</span>, <span class="at">head =</span> T, <span class="at">stringsAsFactors =</span> T)</span>
+<span id="cb249-2"><a href="one-way.html#cb249-2" tabindex="-1"></a><span class="fu">with</span>(pea, <span class="fu">stripchart</span>(length <span class="sc">~</span> trt, <span class="at">method =</span> <span class="st">&quot;jitter&quot;</span>, <span class="at">pch =</span> <span class="dv">16</span>))</span></code></pre></div>
+<p><img src="06-OneFactorLayout_files/figure-html/unnamed-chunk-12-1.png" width="480" style="display: block; margin: auto;" />
+Notice that the equal variance assumption is suspect here, as the variance of the control group looks larger than the variances of the other groups. We might want to analyze the log of the response to stabilize the variance, but for now we will continue to analyze the raw data.</p>
+<p>The usual one-factor ANOVA allows us to reject the null hypothesis of no difference among group means:</p>
+<pre><code>                      Sum of       Mean
+Source         DF    Squares     Square    F Value    Pr &gt; F
+Model           4     14.001      3.500      49.37    &lt;.0001
+Error          45      3.190      0.071
+Total          49     17.191</code></pre>
+<p>There are several further comparisons of these data that we might have deemed interesting before examining the data. These include:</p>
+<ol style="list-style-type: decimal">
+<li><p>Does the control differ from the average of the non-control treatments?</p></li>
+<li><p>Does the fructose / glucose blend differ from the average of the pure fructose and pure glucose treatments?</p></li>
+<li><p>Do the three pure sugar treatments differ?</p></li>
+</ol>
+<p>The first two of these are simple contrasts, and the last is a complex contrast.</p>
+<p>Using subscripts to distinguish treatment means, the first contrast can be expressed as
+<span class="math display">\[
+\theta_1 = \mu_c - \frac{\mu_{fg} + \mu_{f} + \mu_{g} + \mu_{s}}{4}.
+\]</span>
+For any contrast, we can multiply the entire contrast by a number without changing the meaning of the null hypothesis that the contrast equals <span class="math inline">\(0\)</span>. It is sometimes handy to keep the coefficients that multiply the treatment means as whole numbers, so we will rewrite this contrast as
+<span class="math display">\[
+\theta_1 = 4\mu_c - (\mu_{fg} + \mu_{f} + \mu_{g} + \mu_{s}).
+\]</span></p>
+<p>The second contrast writes as
+<span class="math display">\[
+\theta_2 = 2\mu_{fg} - (\mu_{f} + \mu_{g}).
+\]</span></p>
+<p>The third contrast is a complex contrast that contains two linearly independent simple contrasts. One way to write these simple contrasts is
+<span class="math display">\[\begin{eqnarray*}
+    \theta_3 &amp; = &amp; \mu_f - \mu_g \\
+    \theta_4 &amp; = &amp; \mu_g - \mu_s.
+\end{eqnarray*}\]</span></p>
+<p>Here is PROC GLM code to test for each of these three contrasts, and the output it generates:</p>
+<pre><code>proc glm data=pea;
+  class trt;
+  model length = trt / solution;
+  /*-------------------------------------1f1g   2f   2g   2s ctrl --*/
+  contrast &#39;Control vs. sugars&#39;      trt   -1   -1   -1   -1    4;
+  contrast &#39;Mixed vs pure f, pure g&#39; trt    2   -1   -1    0    0;
+  contrast &#39;Diffs among pure sugars&#39; trt    0    1    0   -1    0,
+                                     trt    0    0    1   -1    0;
+run;
+
+Contrast                       DF     Contrast SS     Mean Square    F Value    Pr &gt; F
+Control vs. sugars              1     10.81683072     10.81683072     152.56    &lt;.0001
+Mixed vs pure f, pure g         1      0.04873500      0.04873500       0.69    0.4114
+Diffs among pure sugars         2      2.55847920      1.27923960      18.04    &lt;.0001
+</code></pre>
+<p>It is often a nice touch to present contrasts of pre-planned comparisons as part of the ANOVA table, like so:</p>
+<pre><code>                                        Sum of
+Source                      DF         Squares     Mean Square    F Value    Pr &gt; F
+Groups                       4     14.00085072      3.50021268      49.37    &lt;.0001
+  Ctrl. vs sugars              1     10.81683072   10.81683072     152.56    &lt;.0001       
+  Mixed vs pure f, pure g      1      0.04873500    0.04873500       0.69    0.4114
+  Diffs among pure sugars      2      2.55847920    1.27923960      18.04    &lt;.0001
+Error                       45      3.19051800      0.07090040
+Total                       49     17.19136872</code></pre>
+<hr />
+<p><span style="color: gray;"> It is a bit unsatisfying to not have any sense of how the sums of squares for a set of contrasts is calculated. The best we can do here is to point out that a test that several contrasts are simultaneously equal to zero can alternatively be formulated as an <span class="math inline">\(F\)</span>-test, using the machinery of “full” and “reduced” models that we studied in the context of multiple regression. Indeed, it is exactly the same idea, and if we wrote the ANOVA model as a regression with indicator variables, we could test a set of contrasts among the group means using exactly the same approach. Thus, it is no surprise that the test statistic for testing several simultaneous contrasts is an <span class="math inline">\(F\)</span>-statistic.</span></p>
+<hr />
+</div>
+<div id="orthogonal-contrasts" class="section level3 hasAnchor" number="6.3.3">
+<h3><span class="header-section-number">6.3.3</span> Orthogonal contrasts<a href="one-way.html#orthogonal-contrasts" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>We have already seen that if several contrasts are not (completely) redundant, they are <em>linearly independent</em>. Linearly independent contrasts might still share some information, however. For example, the contrasts <span class="math inline">\(\theta_1 = \mu_1 - \mu_2\)</span> and <span class="math inline">\(\theta_2 = \mu_1 - \mu_3\)</span> are linearly independent, but they both depend in the same way on <span class="math inline">\(\mu_1\)</span>. Thus, if we happen to draw a sample from group 1 that is unusual in some regard, the event of drawing that sample will affect our tests of both <span class="math inline">\(H_0\)</span>: <span class="math inline">\(\theta_1 = 0\)</span> and <span class="math inline">\(H_0\)</span>: <span class="math inline">\(\theta_2 = 0\)</span> in the same way.</p>
+<p>There is a stronger notion of independence among contrasts called <em>orthogonality</em>. (You might remember that <em>orthogonal</em> is a synonym for <em>perpendicular</em>.) Here is how orthogonality is defined. Two contrasts <span class="math inline">\(\theta_1 = \sum_{i=1}^g c_i \mu_i\)</span> and <span class="math inline">\(\theta_2 = \sum_{i=1}^g d_i \mu_i\)</span> are orthogonal if and only if
+<span class="math display">\[
+\sum_{i=1}^g \frac{c_i d_i}{n_i} = 0.
+\]</span>
+Note that if two contrasts are orthogonal, then they must also be linearly independent. However, two contrasts that are linearly independent may or may not be orthogonal.</p>
+<p>Complex contrasts can also be orthogonal. Consider two complex contrasts, where the first is comprised of the simple contrasts <span class="math inline">\(\theta_1, \theta_2, \ldots, \theta_k\)</span>, and the second is comprised of the simple contrasts <span class="math inline">\(\phi_1, \phi_2, \ldots, \phi_l\)</span>. These two complex contrasts are orthogonal if every simple contrast in the first complex contrast is orthogonal to every simple contrast in the second complex contrast. Note that the simple contrasts within complex contrasts may or may not be orthogonal to each other; whether or not they are orthogonal with each other is irrelevant. All we care about is whether the simple contrasts in the first complex contasts are orthogonal to the simple contrasts in the second complex contrast.</p>
+<p>The major upshot is that if two complex contrasts are orthogonal, then their sums of squares are additive. That is,
+<span class="math display">\[
+SS(\theta_1, \theta_2, \ldots, \theta_k, \phi_1, \phi_2, \ldots, \phi_l) = SS(\theta_1, \theta_2, \ldots, \theta_k) + SS(\phi_1, \phi_2, \ldots, \phi_l).
+\]</span>
+That is, the sum-of-squares for the combined complex contrast can be partitioned into the sum-of-squares for the first complex contrast plus the sum-of-squares for the second complex contrast.</p>
+<p>In the pea example above, note that the complex contasts are <em>not</em> orthogonal. Thus, we have <span class="math inline">\(SS(\theta_1) + SS(\theta_2) + SS(\theta_3, \theta_4) \neq SS_{Groups}\)</span>. However, suppose we redefine the second contrast as the difference between the fructose / glucose blend and the average of the three pure sugar treatments, that is, replace <span class="math inline">\(\theta_2\)</span> with
+<span class="math display">\[
+\theta_{2a} = 3\mu_{fg} - (\mu_{f} + \mu_{g} + \mu_s).
+\]</span>
+Now the contrasts <span class="math inline">\(\theta_1\)</span>, <span class="math inline">\(\theta_{2a}\)</span>, and the complex constrast <span class="math inline">\((\theta_3\)</span>, <span class="math inline">\(\theta_4\)</span>) are orthogonal, and so <span class="math inline">\(SS(\theta_1) + SS(\theta_{2a}) + SS(\theta_3, \theta_4) = SS_{Groups}\)</span>. The code below illustrates:</p>
+<pre><code>proc glm data=pea;
+  class trt;
+  model length = trt / solution;
+  /*-------------------------------------1f1g   2f   2g   2s ctrl --*/
+  contrast &#39;Control vs. sugars&#39;      trt   -1   -1   -1   -1    4;
+  contrast &#39;Mixed vs pure sugars   &#39; trt    3   -1   -1   -1    0;
+  contrast &#39;Diffs among pure sugars&#39; trt    0    1    0   -1    0,
+                                     trt    0    0    1   -1    0;
+run;
+
+Contrast                       DF     Contrast SS     Mean Square    F Value    Pr &gt; F
+Control vs. sugars              1     10.81683072     10.81683072     152.56    &lt;.0001
+Mixed vs pure sugars            1      0.62554080      0.62554080       8.82    0.0048
+Diffs among pure sugars         2      2.55847920      1.27923960      18.04    &lt;.0001</code></pre>
+<p>We might modify the ANOVA table accordingly:</p>
+<pre><code>                                        Sum of
+Source                      DF         Squares     Mean Square    F Value    Pr &gt; F
+Groups                       4     14.00085072      3.50021268      49.37    &lt;.0001
+  Ctrl. vs sugars              1     10.81683072   10.81683072     152.56    &lt;.0001       
+  Mixed vs pure sugars         1      0.62554080    0.62554080       8.82    0.0048
+  Diffs among pure sugars      2      2.55847920    1.27923960      18.04    &lt;.0001
+Error                       45      3.19051800      0.07090040
+Total                       49     17.19136872</code></pre>
+<p>While orthogonality is nice, it is something of a fringe benefit (<span class="citation">Quinn and Keough (<a href="#ref-quinn2002experimental">2002</a>)</span>). Contrasts should be designed to match the comparisons of scientific interest; the comparisons of interest should not be arranged to generate orthogonal contrasts.</p>
+<p>The natural question that arises is: When should we expect orthogonality? One doesn’t just stumble onto sets of orthogonal contrasts by chance. There are three types of experiments where sets of orthogonal contrasts can be expected. If you are able to recognize these types of experiments, you can use orthogonal contrasts to create an especially thorough and satisfying analysis. The three types of experiments that support sets of orthogonal contrasts are:</p>
+<ol style="list-style-type: decimal">
+<li><p>Factorial experiments. By a large margin, factorial experiments (in which treatment groups are formed by crossing multiple experimental factors) are the most important context for orthogonal contrasts. We will study factorial experiments in depth in the next installment of the notes, and thus will say no more about them here.</p></li>
+<li><p>Experiments in which the treatment groups cluster into a hierarchy, and the data are balanced. The pea experiment above could provides an example. The five treatment groups naturally cluster into a group of sugar-addition treatments and a singleton control group. In this type of experiment, we can find a set of contrasts to test for differences among the treatment means within each cluster, and another set of contrasts to test for differences among the clusters, exactly as we have done with the pea data.</p></li>
+<li><p>Experiments in which the treatment groups are formed by different levels of a quantitative variable. We study this scenario in more depth below.</p></li>
+</ol>
+<!--    As a second example of an experiment in which treatment groups cluster into a hierarchy, suppose that we have a balanced experiment with six treatment groups: one control group, three treatments that involve adding different types of sugars, and two treatments that involve adding different types of starches.   With 6 treatment groups, we can find 5 linearly independent contrasts to capture the differences among the treatment groups.  These 5 contrasts can be broken down into the following groups: -->
+<!--  + A set of two linearly independent contrasts that compare the means of the three sugar treatments. -->
+<!--  + A single contrast that compares the means of the two starch treatments. -->
+<!--  + A set of two linearly independent contrasts that compare (i) the control group, (ii) the average of the sugar treatments, and (iii) the average of the starch treatments. -->
+<!--    Alternatively, we might take the two contrasts in the last group above and break those down further into one contrast that compares the control group with the average of the five non-control groups, and a second contrast that compares the average of the sugar treatments to the average of the starch treatments. -->
+</div>
+<div id="polynomial-contrasts" class="section level3 hasAnchor" number="6.3.4">
+<h3><span class="header-section-number">6.3.4</span> Polynomial contrasts<a href="one-way.html#polynomial-contrasts" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Consider the following data set. Pott (1992) conducted an experiment to investigate the effect of added dietary molybdenum (Mo) on the molybdenum concentrations of sheep kidneys. Twenty (20) sheep were randomly assigned to one of four diets, where the diets differed only in the amount of supplementary molybdenum (0, 15, 30 and 45 ppm). Five sheep were assigned to each diet, and the Mo concentration in the kidney was measured after 14 days. The data are shown below:</p>
+<div class="sourceCode" id="cb255"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb255-1"><a href="one-way.html#cb255-1" tabindex="-1"></a>molybdenum <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">&quot;data/molybdenum.csv&quot;</span>, <span class="at">head =</span> T)</span>
+<span id="cb255-2"><a href="one-way.html#cb255-2" tabindex="-1"></a><span class="fu">with</span>(molybdenum, <span class="fu">stripchart</span>(conc <span class="sc">~</span> diet, <span class="at">method =</span> <span class="st">&quot;jitter&quot;</span>, <span class="at">pch =</span> <span class="dv">16</span>))</span></code></pre></div>
+<p><img src="06-OneFactorLayout_files/figure-html/unnamed-chunk-13-1.png" width="480" style="display: block; margin: auto;" />
+Should we model these data with an ANOVA or a regression? In this case, the treatment groups are formed by different values of a quantitative variable — in this case, the amount of supplementary molybdenum in the diet. Many experiments form treatment groups in this way. Often, the data exhibit a clear trend with respect to the quantitative variable, as the sheep example does. This is easier to see if we plot the molybdenum variable on the horizontal axis, as we would if this were a regression design:</p>
+<div class="sourceCode" id="cb256"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb256-1"><a href="one-way.html#cb256-1" tabindex="-1"></a><span class="fu">with</span>(molybdenum, <span class="fu">plot</span>(conc <span class="sc">~</span> diet, <span class="at">xlab =</span> <span class="st">&quot;molybdenum addition (ppm)&quot;</span>, <span class="at">ylab =</span> <span class="st">&quot;kidney Mo&quot;</span>, <span class="at">pch =</span> <span class="dv">16</span>))</span></code></pre></div>
+<p><img src="06-OneFactorLayout_files/figure-html/unnamed-chunk-14-1.png" width="480" style="display: block; margin: auto;" />
+THis plot makes it clear that, as with much biological data, the variance increases as the average response increases. We should analyze the log of the response to stabilize the variance.</p>
+<div class="sourceCode" id="cb257"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb257-1"><a href="one-way.html#cb257-1" tabindex="-1"></a><span class="fu">with</span>(molybdenum, <span class="fu">plot</span>(<span class="fu">log</span>(conc) <span class="sc">~</span> diet, <span class="at">xlab =</span> <span class="st">&quot;molybdenum addition (ppm)&quot;</span>, <span class="at">ylab =</span> <span class="st">&quot;log(kidney Mo)&quot;</span>, <span class="at">pch =</span> <span class="dv">16</span>))</span></code></pre></div>
+<p><img src="06-OneFactorLayout_files/figure-html/unnamed-chunk-15-1.png" width="480" style="display: block; margin: auto;" />
+Now we can essentially have our cake and eat it too, by using polynomial contrasts to characterize the underlying trend within the context of an ANOVA.</p>
+<p>Our strategy is to decompose the <span class="math inline">\(SS_{Groups}\)</span> into sums-of-squares that capture the polynomial component of the underlying trend. That is, with four treatment groups (such as we have with the sheep data), we can partition the <span class="math inline">\(SS_{Groups}\)</span> as
+<span class="math display">\[
+SS_{Groups} = SS(\theta_1) + SS(\theta_2) + SS(\theta_3)
+\]</span></p>
+<p>where <span class="math inline">\(\theta_1\)</span> captures the linear trend in the group means, <span class="math inline">\(\theta_2\)</span> captures the quadratic trend in the group means, and <span class="math inline">\(\theta_3\)</span> captures the cubic trend in the group means. Additionally, we want all of these contrasts to be orthogonal to one another.</p>
+<p>If the data are balanced, and if the treatment groups are equally spaced with respect to the quantitative variable used to construct them, then coefficients for orthogonal polynomial contrasts can be found in a table, such as Table D.6 of Oehlert. The sheep data satisfy these special conditions, so we can go ahead and use Table D.6 in Oehlert to find that the orthogonal polynomial contrasts are:
+<span class="math display">\[\begin{eqnarray*}
+\theta_1 &amp; = &amp; -3 \mu_1 - \mu_2 + \mu_3 + 3 \mu_4 \\
+\theta_2 &amp; = &amp; \mu_1 - \mu_2 - \mu_3 + \mu_4 \\
+\theta_3 &amp; = &amp; - \mu_1 + 3 \mu_2 - 3 \mu_3 + \mu_4
+\end{eqnarray*}\]</span>
+where <span class="math inline">\(\mu_1\)</span>, <span class="math inline">\(\mu_2\)</span>, <span class="math inline">\(\mu_3\)</span>, and <span class="math inline">\(\mu_4\)</span> are the means for the treatment groups with 0, 15, 30 and 45 ppm supplementary molybdenum, respectively.</p>
+<pre><code>proc glm data = sheep;
+  class diet;
+  model logy = diet;
+  contrast &#39;Linear&#39; diet -3 -1 1 3;
+  contrast &#39;Quadratic&#39; diet 1 -1 -1 1;
+  contrast &#39;Cubic&#39; diet -1 3 -3 1;
+run; 
+
+The GLM Procedure
+Dependent Variable: conc
+
+                                        Sum of
+Source                      DF         Squares     Mean Square    F Value    Pr &gt; F
+Model                        3      2.89623371      0.96541124      12.26    0.0002
+Error                       16      1.26006314      0.07875395
+Corrected Total             19      4.15629685
+
+Contrast                    DF     Contrast SS     Mean Square    F Value    Pr &gt; F
+Linear                       1      2.63828807      2.63828807      33.50    &lt;.0001
+Quadratic                    1      0.24832056      0.24832056       3.15    0.0948
+Cubic                        1      0.00962508      0.00962508       0.12    0.7312</code></pre>
+<p>Thus we see that the linear trend is statistically significant (i.e., we can reject <span class="math inline">\(H_0\)</span>: <span class="math inline">\(\theta_1 = 0\)</span>), but neither the quadratic nor the cubic trends are statistically significant.</p>
+<p>Our usual hope is that we can explain the trend in the group means parsimoniously with a small number of low-order polynomial contrasts. In this case, it is common to pool the higher-order, non-significant contrasts together into a single sum-of-squares that we will call the “lack-of-fit”. With the sheep data, we can pool the quadratic and cubic contrasts together into a lack-of-fit term, as shown below:</p>
+<pre><code>proc glm data = sheep;
+  class diet;
+  model logy = diet;
+  contrast &#39;Linear&#39; diet -3 -1 1 3;
+  contrast &#39;Lack-of-fit&#39; diet 1 -1 -1 1,
+                         diet -1 3 -3 1;
+run; 
+
+Contrast                    DF     Contrast SS     Mean Square    F Value    Pr &gt; F
+Linear                       1      2.63828807      2.63828807      33.50    &lt;.0001
+Lack-of-fit                  2      0.25794564      0.12897282       1.64    0.2254</code></pre>
+<p>We conclude that there is strong evidence that the treatment groups differ, and the differences among the treatment groups are parsimoniously explained by a linear trend. As before, it makes for a nice touch to combine this all into one ANOVA table:</p>
+<pre><code>                                        Sum of
+Source                      DF         Squares     Mean Square    F Value    Pr &gt; F
+Groups                       3      2.89623371      0.96541124      12.26    0.0002
+  Linear                       1      2.63828807    2.63828807      33.50    &lt;.0001
+  Lack-of-fit                  2      0.25794564    0.12897282       1.64    0.2254
+Error                       16      1.26006314      0.07875395
+Total                       19      4.15629685</code></pre>
+<p>If data are not balanced, or if the treatment groups are not equally spaced with respect to the quantitative covariate that defines them, specialized software can be used to find the coefficients for orthogonal polynomial contrasts.<a href="#fn27" class="footnote-ref" id="fnref27"><sup>27</sup></a></p>
+<!-- However, an easier alternative is to find the sums-of-squares for each contrasts by fitting polynomial regression models.  The key here is that the sum-of-squares for a polynomial regression model is equal to the sum of the sums-of-squares for the respective polynomial contrasts.  That is, with four or more treatment groups, -->
+<!-- \begin{eqnarray*} -->
+<!--    SS(\mbox{Linear regression}) & = & SS(\theta_1) \\ -->
+<!--    SS(\mbox{Quadratic regression}) & = & SS(\theta_1) + SS(\theta_2) \\ -->
+<!--    SS(\mbox{Cubic regression}) & = & SS(\theta_1) + SS(\theta_2) + SS(\theta_3)  -->
+<!-- \end{eqnarray*} -->
+<!-- and so on.  So, let's suppose we've misplaced our table of orthogonal polynomial contrasts.  We can still calculate the sum-of-squares for each polynomial contrast by fitting a series of polynomial regression models.  For example, to find $SS(\theta_1)$, we fit a linear regression to the sheep data: -->
+<!-- ``` -->
+<!-- proc glm data = sheep; -->
+<!--   model logy = diet; -->
+<!-- run;  -->
+<!-- The GLM Procedure -->
+<!-- Dependent Variable: conc -->
+<!--                                         Sum of -->
+<!-- Source                      DF         Squares     Mean Square    F Value    Pr > F -->
+<!-- Model                        1      2.63828807      2.63828807      31.28    <.0001 -->
+<!-- Error                       18      1.51800878      0.08433382 -->
+<!-- Corrected Total             19      4.15629685 -->
+<!-- ``` -->
+<!-- (Note the absence of a CLASS statement in the PROC GLM program above.  Without a CLASS statement, PROC GLM interprets `conc' as a quantitative predictor.)   To find $SS(\theta_1)$, we simply use $SS(\theta_1) = SS(\mbox{Linear regression}) = 2.638$.  Now, to find $SS(\theta_2)$, we need to fit a quadratic regression: -->
+<!-- ``` -->
+<!-- proc glm data = sheep; -->
+<!--   model logy = diet diet*diet; -->
+<!-- run;  -->
+<!-- The GLM Procedure -->
+<!-- Dependent Variable: conc -->
+<!--                                         Sum of -->
+<!-- Source                      DF         Squares     Mean Square    F Value    Pr > F -->
+<!-- Model                        2      2.88660863      1.44330432      19.32    <.0001 -->
+<!-- Error                       17      1.26968822      0.07468754 -->
+<!-- Corrected Total             19      4.15629685 -->
+<!-- ``` -->
+<!-- Now, $SS(\theta_2) = SS(\mbox{Quadratic regression}) - SS(\mbox{Linear regression}) = 2.889 - 2.638 = 0.248$.  Finally, to find $SS(\theta_3)$, we could fit a cubic regression: -->
+<!-- ``` -->
+<!-- proc glm data = sheep; -->
+<!--   model logy = diet diet*diet diet*diet*diet; -->
+<!-- run;  -->
+<!-- The GLM Procedure -->
+<!-- Dependent Variable: conc -->
+<!--                                         Sum of -->
+<!-- Source                      DF         Squares     Mean Square    F Value    Pr > F -->
+<!-- Model                        3      2.89623371      0.96541124      12.26    0.0002 -->
+<!-- Error                       16      1.26006314      0.07875395 -->
+<!-- Corrected Total             19      4.15629685 -->
+<!-- ``` -->
+<!-- or we could have just recognized that $SS(\mbox{Cubic regression}) = SS_{Groups}$.  In either case, we now have $SS(\theta_3) = SS(\mbox{Cubic regression}) - SS(\mbox{Quadratic regression}) = 2.896 - 2.887 = 0.009$.   We have thus found the sums-of-squares associated with each polynomial contrasts without having to use the table in Oehlert.  Thankfully, this method of finding the sums-of-squares associated with each polynomial contrasts will work any time the treatment groups are formed by different levels of a quantitative variable, and does not require either balance or equally spaced treatment groups. -->
+</div>
+</div>
+<div id="multiple-testing" class="section level2 hasAnchor" number="6.4">
+<h2><span class="header-section-number">6.4</span> Multiple comparisons<a href="one-way.html#multiple-testing" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>In contrast to pre-planned comparisons, when we just want to describe how population means differ, we need tools for multiple comparisons. Multiple comparisons are a concern any time we conduct several hypothesis tests in the context of a single analysis or experiment. We will introduce the general ideas behind multiple comparisons first, before proceeding to a specific discussion of how these ideas apply in the context of comparing means from a one-factor ANOVA.</p>
+<div id="multiple-testing-in-general" class="section level3 hasAnchor" number="6.4.1">
+<h3><span class="header-section-number">6.4.1</span> Multiple testing in general<a href="one-way.html#multiple-testing-in-general" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Recall that in the context of hypothesis testing, a Type I error occurs when we erroneously reject a true null hypothesis. (In contrast, a Type II error occurs when we fail to reject a false null hypothesis.) Suppose we conducted 10 independent hypothesis tests, each of which has a 5% Type I error rate. Suppose also that <span class="math inline">\(H_0\)</span> is true for each of these 10 tests. Then the probability of correctly failing to reject <span class="math inline">\(H_0\)</span> on all 10 tests is <span class="math inline">\(0.95^{10} = 0.60\)</span>, and so the probability of committing a Type I error on at least one test is <span class="math inline">\(1- 0.60 = 0.40\)</span>. Thus, the overall probability of falsely rejecting a true null at least once is much greater than the 5% Type I error rate for any individual test.</p>
+<p>This is the essence of the multiple comparisons problem. To structure our thinking, it is helpful to define several different Type I error rates. Oehlert (section 5.1) describes several different Type I error rates. The <em>experimentwise</em> (or <em>familywise</em>) error rate is the probability of falsely rejecting at least one null hypothesis, if all of the null hypotheses are true. The <em>comparisonwise</em> (or <em>individual</em>) error rate is the probability of falsely rejecting the null in a single hypothesis test. The <em>strong familywise</em> error rate is the probability of falsely rejecting at least one null hypothesis, regardless of how many of the null hypotheses are actually true, and how many are actually false. Finally, the <em>false discovery rate</em> (FDR) is the proportion of rejected null hypotheses that are rejected incorrectly. Which multiple testing procedure we use depends on which error rate we want to control. Some multiple testing procedures can be applied to any collection of hypothesis tests, while others are designed specifically for detecting significant differences among a collection of treatment means.</p>
+<p>Below, we will follow Oehlert’s lead and denote the error rate that we wish to control as <span class="math inline">\(\mathcal{E}\)</span>. The specific error rate to which this refers will depend on context.</p>
+</div>
+<div id="bonferroni-and-bonferroni-like-procedures" class="section level3 hasAnchor" number="6.4.2">
+<h3><span class="header-section-number">6.4.2</span> Bonferroni and Bonferroni-like procedures<a href="one-way.html#bonferroni-and-bonferroni-like-procedures" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>The simplest way to control the strong familywise error rate is with a Bonferroni correction. Suppose we intend to perform <span class="math inline">\(K\)</span> individual hypothesis tests, and want to fix the experiment-wise error rate at <span class="math inline">\(\mathcal{E}\)</span>. For each individual test, we reject <span class="math inline">\(H_0\)</span> if and only if<br />
+<span class="math display">\[
+p \leq \frac{\mathcal{E}}{K}.
+\]</span>
+An interesting variation of the Bonferroni procedure was developed by <span class="citation">Holm (<a href="#ref-holm1979simple">1979</a>)</span>. The steps of the Holm procedure are:</p>
+<ol style="list-style-type: decimal">
+<li><p>Sort the <span class="math inline">\(p\)</span>-values from smallest to largest. Use subscripts with parentheses to denote the sorted <span class="math inline">\(p\)</span>-values, so that <span class="math inline">\(p_{(1)} \leq p_{(2)} \leq \ldots \leq p_{(K)}\)</span>.</p></li>
+<li><p>Starting with the smallest <span class="math inline">\(p\)</span>-value, reject the associated null hypothesis if
+<span class="math display">\[
+p_{(j)} \leq \frac{\mathcal{E}}{K-j+1}.
+\]</span></p></li>
+<li><p>Continue until encountering a <span class="math inline">\(p\)</span>-value for which the associated null hypothesis cannot be rejected. Then stop: Neither the null hypothesis associated with this <span class="math inline">\(p\)</span>-value, nor the null hypotheses associated with any larger <span class="math inline">\(p\)</span>-values, are rejected.
+\end{enumerate}
+The Holm procedure also controls the strong familywise error rate.</p></li>
+</ol>
+<p>Another interesting variation of the Bonferroni procedure is due to <span class="citation">Benjamini and Hochberg (<a href="#ref-benjamini1995controlling">1995</a>)</span>. This procedure only works with independent hypotheses, and it controls the FDR. The steps of Benjamini &amp; Hochberg’s FDR procedure are:</p>
+<ol style="list-style-type: decimal">
+<li><p>Sort the <span class="math inline">\(p\)</span>-values from smallest to largest. Use subscripts with parentheses to denote the sorted <span class="math inline">\(p\)</span>-values, so that <span class="math inline">\(p_{(1)} \leq p_{(2)} \leq \ldots \leq p_{(K)}\)</span>.</p></li>
+<li><p>Find the largest <span class="math inline">\(p\)</span>-value for which
+<span class="math display">\[
+p_{(j)} \leq \frac{j\mathcal{E}}{K}.
+\]</span></p></li>
+<li><p>Once the largest <span class="math inline">\(p\)</span>-value for which the above is true has been found, reject both the null hypothesis associated with this <span class="math inline">\(p\)</span>-value, and the null hypotheses associated with all smaller <span class="math inline">\(p\)</span>-values.</p></li>
+</ol>
+</div>
+<div id="multiple-comparisons-in-anova" class="section level3 hasAnchor" number="6.4.3">
+<h3><span class="header-section-number">6.4.3</span> Multiple comparisons in ANOVA<a href="one-way.html#multiple-comparisons-in-anova" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>In the context of ANOVA, our goal is to simultaneously compare all possible pairs of means. Thus, if there are <span class="math inline">\(g\)</span> means to be compared, then there are <span class="math inline">\(K = g \times (g-1) / 2\)</span> different comparisons to be performed. As <span class="math inline">\(g\)</span> becomes larger, the number of comparisons grows quickly. For example, if <span class="math inline">\(g = 3\)</span>, then there are only <span class="math inline">\(K = 3\)</span> different comparisons (ex., beef vs. meat, beef vs. poultry, and meat vs. poultry). However, if <span class="math inline">\(g = 10\)</span>, then there are <span class="math inline">\(K = 45\)</span> different comparisons.</p>
+<p>Also, in the context of ANOVA, many (but not all) multiple comparisons procedures boil down to comparing the difference between each pair of means to a minimum significant difference. That is, two means will be declared significantly different from one another if the (absolute) difference between them equals or exceeds some minimum level. When the data are balanced, there is one common minimum significant difference for all pairs of means. When the data are not balanced, the minimum significant difference can itself differ for different pairs of means (because of the differences in sample sizes).</p>
+<div id="bonferroni-correction." class="section level4 hasAnchor" number="6.4.3.1">
+<h4><span class="header-section-number">6.4.3.1</span> Bonferroni correction.<a href="one-way.html#bonferroni-correction." class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p>To implement a Bonferroni correction, we can simply use a linear contrast for each pairwise comparison, and test the null hypothesis that the pairwise difference is equal to 0. To control the strong familywise error rate, we would reject the null hypothesis of no difference if <span class="math inline">\(p \leq \mathcal{E} / K\)</span>.</p>
+<p><em>Example.</em> <span class="citation">Sokal and Rohlf (<a href="#ref-sokal1995biometry">1995</a>)</span> give the following data. H. L. Willis measured the head width of tiger beetles at <span class="math inline">\(g=8\)</span> sites across the central U.S. The data are balanced, with are <span class="math inline">\(n=15\)</span> tiger beetles measured at each site. The data are shown below.</p>
+<div class="sourceCode" id="cb261"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb261-1"><a href="one-way.html#cb261-1" tabindex="-1"></a>beetle <span class="ot">&lt;-</span> <span class="fu">read.table</span>(<span class="st">&quot;data/beetle.txt&quot;</span>, <span class="at">head =</span> T, <span class="at">stringsAsFactors =</span> T)</span>
+<span id="cb261-2"><a href="one-way.html#cb261-2" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mar =</span> <span class="fu">c</span>(<span class="dv">5</span>, <span class="dv">7</span>, <span class="dv">1</span>, <span class="dv">1</span>))</span>
+<span id="cb261-3"><a href="one-way.html#cb261-3" tabindex="-1"></a><span class="fu">with</span>(beetle, <span class="fu">stripchart</span>(head.width <span class="sc">~</span> site, <span class="at">method =</span> <span class="st">&quot;jitter&quot;</span>, <span class="at">pch =</span> <span class="dv">16</span>, <span class="at">las =</span> <span class="dv">1</span>))</span></code></pre></div>
+<p><img src="06-OneFactorLayout_files/figure-html/unnamed-chunk-16-1.png" width="480" style="display: block; margin: auto;" />
+With <span class="math inline">\(g=8\)</span> groups, there are <span class="math inline">\(K = (8 \times 7)/ 2 = 28\)</span> pairwise comparisons. Thus, for a strong familywise error rate of <span class="math inline">\(\mathcal{E} = 0.05\)</span>, we could perform contrasts for all pairwise comparisons manually, and declare two group means to be different using a <span class="math inline">\(p\)</span>-value threshold of <span class="math inline">\(p \leq 0.05 / 28 = 0.0018\)</span>. Alternatively, we can use the MEANS statement in PROC GLM. In PROC GLM, the MEANS statement computes the mean for each treatment group, and then clusters the group means if a multiple comparisons procedure is specified. For example, to perform all pairwise comparisons using a Bonferroni correction, use the BON option on the MEANS statement:</p>
+<pre><code>proc glm data=beetle;
+  class site;
+  model head_width = site;
+  means site / bon;
+run;
+
+The GLM Procedure
+Dependent Variable: head_width
+
+                                        Sum of
+Source                      DF         Squares     Mean Square    F Value    Pr &gt; F
+Model                        7      0.99607399      0.14229628       6.46    &lt;.0001
+Error                      112      2.46675560      0.02202460
+Corrected Total            119      3.46282959
+
+Bonferroni (Dunn) t Tests for head_width
+
+NOTE: This test controls the Type I experimentwise error rate, but it generally has a higher 
+Type II error rate than REGWQ.
+
+Alpha                              0.05
+Error Degrees of Freedom            112
+Error Mean Square              0.022025
+Critical Value of t             3.20042
+Minimum Significant Difference   0.1734
+
+Means with the same letter are not significantly different.
+
+Bon
+Grouping   Mean      N    site
+
+A       3.88053     15    Stafford.K
+A       3.77353     15    Mayfield.O
+A       3.76373     15    Okeene.OK
+A       3.75353     15    Kackley.KS
+A       3.75247     15    Talmo.KS
+A       3.73260     15    NE
+A       3.70753     15    Roswell.NM
+B       3.53120     15    Barnard.KS</code></pre>
+<p>PROC GLM summarizes the outcome of the multiple comparisons procedure by assigning letters to groups (A, B, …). Groups that do not share a letter in common have statistically distinguishable means. Thus, we again conclude that Barnard, KS is significantly different from all the other sites, but that none of the other sites are significantly different from one another.</p>
+<p>With balanced data, two means will be significantly different if they differ by more than a threshold difference. PROC GLM reports this difference as the `minimum significant difference’, which for the beetle data is 0.1734. Several popular multiple comparisons procedures give rise to a minimum significant difference with balanced data, although the size of the minimum significant difference will depend on the procedure being used.</p>
+<p>With unbalanced data, the minimum significant difference depends on the sample sizes of the two groups being compared. Thus, SAS doesn’t report a common minimum significant difference, and instead reports significance levels for each possible pairwise comparison. We can see this with the hotdog data:</p>
+<pre><code>proc glm;
+  class type;
+  model calorie = type;
+  means type / bon;
+run;  
+
+Bonferroni (Dunn) t Tests for calorie
+
+NOTE: This test controls the Type I experimentwise error rate, but it generally has a
+higher Type II error rate than Tukey&#39;s for all pairwise comparisons.
+
+
+Alpha                        0.05
+Error Degrees of Freedom       51
+Error Mean Square         550.336
+Critical Value of t       2.47551
+
+Comparisons significant at the 0.05 level are indicated by ***.
+
+                     Difference
+type                    Between     Simultaneous 95%
+Comparison                Means    Confidence Limits
+Meat    - Beef            1.856     -17.302   21.013
+Meat    - Poultry        39.941      20.022   59.860  ***
+Beef    - Meat           -1.856     -21.013   17.302
+Beef    - Poultry        38.085      18.928   57.243  ***
+Poultry - Meat          -39.941     -59.860  -20.022  ***
+Poultry - Beef          -38.085     -57.243  -18.928  ***</code></pre>
+<p>Thus, using Bonferroni, we would declare that meat and poultry hotdogs have a significantly different average calorie content, as do beef and poultry hotdogs. However, the difference between beef and meat hotdogs is not statistically significant.</p>
+<p>Another option for unbalanced data is to calculate a common BSD using the harmonic mean of the group sizes. The harmonic mean is defined as
+<span class="math display">\[
+\tilde{n} = \left[ \left(\frac{1}{n_1} + \frac{1}{n_2} + \cdots + \frac{1}{n_g}\right) / g \right]^{-1}.
+\]</span>
+In PROC GLM, we implement this by asking for the LINES option in the MEANS statement. Here’s an example with the hotdog data:</p>
+<pre><code>proc glm;
+  class type;
+  model calorie = type;
+  means type / bon lines;
+run;
+
+Bonferroni (Dunn) t Tests for calorie
+
+NOTE: This test controls the Type I experimentwise error rate, but it generally has a
+higher Type II error rate than REGWQ.
+
+
+Alpha                              0.05
+Error Degrees of Freedom             51
+Error Mean Square               550.336
+Critical Value of t             2.47551
+Minimum Significant Difference   19.415
+Harmonic Mean of Cell Sizes    17.89474
+
+NOTE: Cell sizes are not equal.
+
+Means with the same letter are not significantly different.
+
+           Mean      N    type
+A       158.706     17    Meat
+A       156.850     20    Beef
+B       118.765     17    Poultry</code></pre>
+<p>Here, the harmonic mean of the sample sizes is 17.9, resulting in a common minimum significant difference of 19.4. In general, using a harmonic mean as a common sample size is okay if the imbalance is mild, but not if the imbalance is severe.</p>
+<p>The advantage to a Bonferroni correction is that it is easy, quick, and broadly applicable. The disadvantage is that it is extremely conservative, and thus has very little power to find differences between means. Because of its extremely low power, Bonferroni is not often used in practice.</p>
+</div>
+<div id="fishers-protected-least-significant-difference-lsd" class="section level4 hasAnchor" number="6.4.3.2">
+<h4><span class="header-section-number">6.4.3.2</span> Fisher’s protected Least Significant Difference (LSD)<a href="one-way.html#fishers-protected-least-significant-difference-lsd" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p>Fisher’s protected LSD is a two-stage procedure that controls the experimentwise error rate. In the first stage, use an ANOVA <span class="math inline">\(F\)</span>-test to test <span class="math inline">\(H_0\)</span>: <span class="math inline">\(\mu_1 = \mu_2 = \ldots = \mu_g\)</span>. If we fail to reject <span class="math inline">\(H_0\)</span> at the <span class="math inline">\(\mathcal{E}\)</span> significance level, we will stop. (This is the “protection”). If <span class="math inline">\(H_0\)</span> is rejected, then the second state entails comparing each pair of means using a two-sample <span class="math inline">\(t\)</span>-test, using <span class="math inline">\(MS_{Error}\)</span> as the pooled variance estimate.</p>
+<p>Fisher’s protected LSD tends to be anti-conservative. Here’s an example with the beetle data:</p>
+<pre><code>proc glm data=beetle;
+  class site;
+  model head_width = site;
+  means site / lsd;
+run;
+
+The GLM Procedure
+t Tests (LSD) for head_width
+NOTE: This test controls the Type I comparisonwise error rate, not the experimentwise error rate.
+
+Alpha                            0.05
+Error Degrees of Freedom          112
+Error Mean Square            0.022025
+Critical Value of t           1.98137
+Least Significant Difference   0.1074
+
+Means with the same letter are not significantly different.
+
+t
+Grouping        Mean      N    site
+
+A            3.88053     15    Stafford.K
+B    A       3.77353     15    Mayfield.O
+B            3.76373     15    Okeene.OK
+B            3.75353     15    Kackley.KS
+B            3.75247     15    Talmo.KS
+B            3.73260     15    NE
+B            3.70753     15    Roswell.NM
+C            3.53120     15    Barnard.KS</code></pre>
+<p>Note that PROC GLM does not actually implement the first-stage of Fisher’s procedure; instead, it’s the user’s responsibility to stop if the overall <span class="math inline">\(F\)</span>-test does not reject the null hypothesis that all group means are equal. Note that Fisher’s least significant difference (0.1074) is substantially smaller than Bonferroni’s minimum significant difference, and thus a greater number of significant pairwise differences have been detected. In general, Fisher’s LSD suffers the opposite sin of Bonferroni, in that it tends to be too anti-conservative. (If you use LSD, you tend to see differences that aren’t there.)</p>
+</div>
+<div id="tukeys-honest-significant-difference-hsd" class="section level4 hasAnchor" number="6.4.3.3">
+<h4><span class="header-section-number">6.4.3.3</span> Tukey’s Honest Significant Difference (HSD)<a href="one-way.html#tukeys-honest-significant-difference-hsd" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p>For balanced data, if all group means are equal, then it can be shown that the (standardized) difference between the largest sample mean and the smallest sample mean has a known statistical distribution (a so-called studentized range distribution). The idea of Tukey’s HSD is to compare the difference between each pair of sample means from a critical value of this known distribution. If the difference between two sample means is greater than this critical value (Tukey’s HSD), then we declare the means different from one another. Tukey’s HSD tends to be more conservative than Fisher’s LSD, though not as conservative as Bonferroni. Here’s an example of Tukey’s HSD with the beetle data:</p>
+<pre><code>proc glm data=beetle;
+  class site;
+  model head_width = site;
+  means site / tukey;
+run;
+
+The GLM Procedure
+
+Tukey&#39;s Studentized Range (HSD) Test for head_width
+
+NOTE: This test controls the Type I experimentwise error rate, but it generally has a higher Type II error rate than
+REGWQ.
+
+Alpha                                   0.05
+Error Degrees of Freedom                 112
+Error Mean Square                   0.022025
+Critical Value of Studentized Range  4.36851
+Minimum Significant Difference        0.1674
+
+Means with the same letter are not significantly different.
+
+Tukey
+Grouping        Mean      N    site
+
+A            3.88053     15    Stafford.K
+B    A       3.77353     15    Mayfield.O
+B    A       3.76373     15    Okeene.OK
+B    A       3.75353     15    Kackley.KS
+B    A       3.75247     15    Talmo.KS
+B    A       3.73260     15    NE
+B            3.70753     15    Roswell.NM
+C            3.53120     15    Barnard.KS</code></pre>
+<p>Note that Tukey’s HSD with the beetle data is 0.1674 – not as big a difference as Bonferroni’s minimum significant difference, but bigger than Fisher’s LSD. As with Bonferroni and Fisher, a common HSD is only available when data are balanced. When data are unbalanced, an adjustment to Tukey’s method is available called the Tukey-Kramer adjustment. Tukey-Kramer tends to be slightly conservative.</p>
+</div>
+<div id="comparisons-to-a-control-dunnetts-procedure" class="section level4 hasAnchor" number="6.4.3.4">
+<h4><span class="header-section-number">6.4.3.4</span> Comparisons to a control: Dunnett’s procedure<a href="one-way.html#comparisons-to-a-control-dunnetts-procedure" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p>Dunnett’s procedure is useful when one group serves as a control, and the comparisons of interest involve comparing the remaining groups to that control. Here is an example using the beetle data, assuming that ‘Stafford.K’ is the control group:</p>
+<pre><code>proc glm data=beetle;
+  class site;
+  model head_width = site;
+  means site / dunnett(&#39;Stafford.K&#39;);
+run;
+
+The GLM Procedure
+
+Dunnett&#39;s t Tests for head_width
+
+NOTE: This test controls the Type I experimentwise error for comparisons of all treatments
+      against a control.
+
+Alpha                              0.05
+Error Degrees of Freedom            112
+Error Mean Square              0.022025
+Critical Value of Dunnett&#39;s t   2.65419
+Minimum Significant Difference   0.1438
+
+Comparisons significant at the 0.05 level are indicated by ***.
+
+                           Difference
+         site                 Between     Simultaneous 95%
+      Comparison                Means    Confidence Limits
+
+Mayfield.O - Stafford.K      -0.10700    -0.25083  0.03683
+Okeene.OK  - Stafford.K      -0.11680    -0.26063  0.02703
+Kackley.KS - Stafford.K      -0.12700    -0.27083  0.01683
+Talmo.KS   - Stafford.K      -0.12807    -0.27190  0.01577
+NE         - Stafford.K      -0.14793    -0.29177 -0.00410  ***
+Roswell.NM - Stafford.K      -0.17300    -0.31683 -0.02917  ***
+Barnard.KS - Stafford.K      -0.34933    -0.49317 -0.20550  ***</code></pre>
+<!-- ## General strategy for analyzing data from a CRD with a one-factor treatment structure -->
+<!--  1. Plot the data.  Determine if assumptions of normality and constant variance within treatment groups are appropriate. -->
+<!--  2. If ANOVA assumptions are appropriate, use an $F$-test to test for differences among treatments. -->
+<!--  3.  If the $F$-test in step 2 provides evidence of a treatment effect, use linear contrasts to investigate pre-planned comparisons, and/or use a multiple comparisons procedure to characterize differences among treatments. -->
+<!--  4.  Report the following: -->
+<!--     + Sample sizes. -->
+<!--     + Estimates of treatment means, and a measure of the statistical uncertainty in the treatment mean (either a standard error or a CI). -->
+<!--     + Outcome of the $F$-test for a treatment effect. -->
+<!--     + If the $F$-test provides evidence of a treatment effect, also report tests of contrasts or multiple comparisons. -->
+</div>
+</div>
+</div>
+<div id="starpower-and-sample-size-determination-in-anova" class="section level2 hasAnchor" number="6.5">
+<h2><span class="header-section-number">6.5</span> <span class="math inline">\(^\star\)</span>Power and sample-size determination in ANOVA<a href="one-way.html#starpower-and-sample-size-determination-in-anova" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>In the course of proposing or designing an experiment, it is often helpful to have some guidance regarding how many data points are needed to obtain the statistical precision that we desire. This sort of information comes from a power calculation. As we’ll see, power calculations require specifying parameter values that are unknown. (If we knew the parameter values, we wouldn’t need to do the experiment!). Often, even having some small amount of pilot data that can be used to make educated guesses about these unknown parameters is superior to taking blind stabs at those values. As a last resort, blind stabs are better than foregoing a power analysis altogether.</p>
+<p>A power analysis can be focused on one of two particular questions:
+1. How many samples are needed for the margin of error around a group mean (or a contrast between group means) to be less than a certain desired threshold?
+2. How many samples are needed for the power to reject a false null hypothesis to be at least as big as a certain desired threshold?</p>
+<p>Here, we will focus on the second of these two questions. For power analysis built around the margin of error, see Oehlert sections 7.2 and 7.4</p>
+<p>The power associated with rejecting the null hypothesis that all group means are equal depends on all of the following quantities:</p>
+<ol style="list-style-type: decimal">
+<li>The Type I error, <span class="math inline">\(\alpha\)</span> (i.e., the tolerable false-positive rate; higher <span class="math inline">\(\alpha\)</span> gives more power)</li>
+<li>How different the group means actually are (larger differences among group means give more power)</li>
+<li>The sample size (bigger sample sizes give more power)</li>
+<li>The number of groups being compared, although this is often dictated by the experiment</li>
+<li>The variance in observations within the same group, <span class="math inline">\(\sigma^2_{\epsilon}\)</span> (greater variation within a group reduces power)</li>
+</ol>
+<p>A usual approach is to choose a tolerable Type I error rate (often 0.05 or 0.01), and to make educated guesses (ideally based on pilot data) about the actual values of the group means and the error variance , and then to calculate power from either an on-line calculator or a textbook chart. Oehlert provides a few such charts in his Table D.10. If values of the group means and the within-group variance are unknown, the conservative approach is to assume the smallest group-differences that one might hope to detect, and to assume a large (but still reasonable) value for the within-group. Of course, a conservative calculation will suggest a larger sample size, but many scientists prefer to err on the side of caution.</p>
+<p>To make sense of these charts, one needs to be able to calculate something called a non-centrality parameter. Basically, the non-centrality parameter is a single quantity that pulls together the combined effects of the differences in the group means, the sample sizes, and the error variance on the power. Fortunately, the non-centrality parameter is easy to calculate, even if the formula is somewhat mysterious. NB: In the formula below, the <span class="math inline">\(\alpha_i\)</span>’s refer to the effect parameters in the ANOVA model, not to the significance level. The non-centrality parameter will be the same regardless of the particular constraint that one chooses to define the effect parameters. The formula for the non-centrality parameter is:
+<span class="math display">\[
+\zeta = \dfrac{\sum_{i=1}^g n_i \alpha_i^2}{\sigma^2_{\epsilon}}
+\]</span>
+As the non-centrality parameter increases, power also increases. Thus, we see that power increases as either the sample sizes increase, the differences among the group means increase, or the error variance decreases.</p>
+</div>
+<div id="sas-contrasts" class="section level2 hasAnchor" number="6.6">
+<h2><span class="header-section-number">6.6</span> Using SAS: The effects parameterization of the one-factor ANOVA<a href="one-way.html#sas-contrasts" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>SAS has several procedures (or PROCs) that can be used for a one-factor ANOVA analysis. We’ll be using PROC GLM, where GLM stands for General Linear Model. The term “general linear model” encompasses both regression and ANOVA. Thus, PROC GLM can be used for regression modeling as well.</p>
+<p>At a minimum, PROC GLM code for a one-factor ANOVA model requires two components. First, a CLASS statement is used to declare which of the variables in the data set are categorical variables. Second, a MODEL statement is used to identify the response variable (placed on the left-hand side of the equals sign) and the categorical variable that identifies the factor that distinguishes the groups (placed on the right-hand side of the equals sign). For example, in the hot dog data, the categorical variable called “type” specifies the type of hot dog, and the response variable is labeled “calorie”. PROC GLM code for a one-factor ANOVA model for the calorie data is:</p>
+<pre><code>proc glm data=hotdog;
+  class type; /* declare categorical variables here */
+  model calorie = type;
+run;</code></pre>
+<p>Note that in SAS, all lines must end with a semicolon (;). Also, comments can be placed between the symbols /* and */.</p>
+<div id="one-factor-effects-model" class="section level3 hasAnchor" number="6.6.1">
+<h3><span class="header-section-number">6.6.1</span> Effects-model parameterization of the one-factor ANOVA model<a href="one-way.html#one-factor-effects-model" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>PROC GLM uses a model parameterization called the “effects parameterization” (or “effects model”). This parameterization is not unique to SAS, and is commonly found in many statistics texts. The effects parameterization seems like overkill for a one-factor ANOVA, but it will be more useful when we contemplate multi-factor ANOVA later.</p>
+<p>The effects model simply re-expresses the mean of each treatment group as the sum of an overall reference level and a unique “effect” for that treatment group. That is,
+<span class="math display">\[
+\mu_i = \mu + \alpha_i.
+\]</span>
+Here, <span class="math inline">\(\mu\)</span> is a reference level (alternatively called an intercept), and <span class="math inline">\(\alpha_i\)</span> is the “effect” of the group <span class="math inline">\(i\)</span>. For the moment, we will be intentionally vague about what we mean by a “reference level” and an “effect”, and we will clarify later. We can go one step further and write the one-factor ANOVA model for the entire data set as
+<span class="math display">\[
+y_{ij} = \mu_i + \epsilon_{ij} = \mu + \alpha_i + \epsilon_{ij}
+\]</span>
+where the <span class="math inline">\(\epsilon_{ij}\)</span>’s are residual errors that take the usual assumptions of normality, independence, and constant variance. In the effects representation, the standard ANOVA null hypothesis of equality of the group means can be re-written as <span class="math inline">\(H_0\)</span>: <span class="math inline">\(\alpha_1 = \alpha_2 = \ldots = \alpha_g = 0\)</span>.</p>
+<p>The problem with the effects model is that it is <em>overparameterized</em>. For example, consider the calorie data from the hot dog data set. The average calorie content for each type of hotdog is:
+<span class="math display">\[\begin{eqnarray*}
+    \bar{y}_{1+} &amp; = &amp; 156.9 \mbox{  calories, for beef}\\
+    \bar{y}_{2+} &amp; = &amp; 158.7 \mbox{  calories, for meat}\\
+    \bar{y}_{3+} &amp; = &amp; 118.8 \mbox{  calories, for poultry.}\\
+\end{eqnarray*}\]</span>
+In the effects model, there is no unique way to estimate both the reference level and the individual effect parameters for each hot dog type. For example, we could choose
+<span class="math display">\[
+\hat{\mu} = 0, \ \ \hat{\alpha}_1 = 156.9, \ \ \hat{\alpha_2} = 158.7, \ \ \hat{\alpha_3} = 118.8
+\]</span>
+or we could choose
+<span class="math display">\[
+\hat{\mu} = 100, \ \ \hat{\alpha}_1 = 56.9, \ \ \hat{\alpha_2} = 58.7, \ \  \hat{\alpha_3} = 18.8.
+\]</span>
+There is no way to discriminate between these two (or many other) possibilities. Thus, there is no unique set of best parameter estimates in the effects model. To estimate the parameters in the effects model, we need to impose a constraint. There are two commonly used constraints. The first is the sum-to-zero constraint:
+<span class="math display">\[
+\sum_{i=1}^g \alpha_i = 0.
+\]</span>
+Under the sum-to-zero constraint, our parameter estimates for the hotdog example are:
+<span class="math display">\[
+\hat{\mu} = 144.8, \ \ \hat{\alpha}_1 = 12.1, \ \ \hat{\alpha_2} = 13.9, \ \ \hat{\alpha_3} = -26.0.
+\]</span>
+Under the sum-to-zero constraint, <span class="math inline">\(\mu\)</span> is the average of the individual group means, and the effects parameters are the differences between the individual group means and <span class="math inline">\(\mu\)</span>.<a href="#fn28" class="footnote-ref" id="fnref28"><sup>28</sup></a></p>
+<p>The second commonly used constraint is the set-to-zero constraint. In the set-to-zero constraint, we choose one of the groups to serve as a reference and constrain its effect to be <span class="math inline">\(0\)</span>. If one of the treatment groups is a control, it makes sense to constrain the effect of the control group to <span class="math inline">\(0\)</span>. If there is no control group, then the choice of which effect to constrain = 0 is arbitrary.</p>
+<p>For the hotdog example, suppose we constrain <span class="math inline">\(\alpha_3 = 0\)</span>. The remaining parameter estimates are:
+<span class="math display">\[
+\hat{\mu} = 118.8, \hat{\alpha}_1 = 38.1, \hat{\alpha_2} = 39.9, \hat{\alpha_3} = 0.
+\]</span>
+The set-to-zero constraint is exactly like choosing a reference level in regression with indicators. Under the set-to-zero constraint, <span class="math inline">\(\mu\)</span> is the average response of the reference group, and the effects parameters <span class="math inline">\(\alpha_i\)</span> are the differences between the other individual group means and the reference group.</p>
+<p>When PROC GLM fits a one-factor ANOVA model, it uses the effects parameterization with a set-to-zero constraint. We can ask SAS to display least-squares parameter estimates for this model by adding a SOLUTION option to the MODEL statement in PROC GLM. Here’s an example with the hotdog data:</p>
+<pre><code>proc glm;
+  class type;
+  model calorie = type / solution;
+run;  
+
+Dependent Variable: calorie
+                                            Standard
+Parameter                 Estimate             Error    t Value    Pr &gt; |t|
+
+Intercept              118.7647059 B      5.68970197      20.87      &lt;.0001
+type      Beef          38.0852941 B      7.73883135       4.92      &lt;.0001
+type      Meat          39.9411765 B      8.04645369       4.96      &lt;.0001
+type      Poultry        0.0000000 B       .                .         .
+
+NOTE: The X`X matrix has been found to be singular, and a generalized inverse was used to
+solve the normal equations.  Terms whose estimates are followed by the letter &#39;B&#39;
+are not uniquely estimable.</code></pre>
+<!-- Note: I had to change the prime mark used to show matrix transpose in the NOTE so that Markdown did not interpret the quote as a fence. -->
+<p>Thus, SAS has chosen “poultry” as the reference group. (The default in PROC GLM is to designate as the reference the group that is last alphabetically.) The B’s that appear by the parameter estimates and the NOTE that SAS provides warn us that the parameter estimates would be different under a different constraint.</p>
+</div>
+<div id="coding-contrasts-in-proc-glm" class="section level3 hasAnchor" number="6.6.2">
+<h3><span class="header-section-number">6.6.2</span> Coding contrasts in PROC GLM<a href="one-way.html#coding-contrasts-in-proc-glm" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>PROC GLM includes two facilities for linear contrasts: the ESTIMATE statement for any linear combination, and the CONTRAST statement specifically for contrasts. The ESTIMATE statement calculates an estimate, a standard error, and a <span class="math inline">\(t\)</span>-test of <span class="math inline">\(H_0\)</span>: <span class="math inline">\(\theta = 0\)</span> vs. <span class="math inline">\(H_a\)</span>: <span class="math inline">\(\theta \ne 0\)</span>. The CONTRAST statement conducts <span class="math inline">\(F\)</span>-tests of simple or complex contrasts.</p>
+<p>To use either the ESTIMATE or CONTRAST statement, we must re-code each linear combination or simple contrast in terms of the effects parameterization. Consider the contrast <span class="math inline">\(\theta_1 = \mu_1 - \mu_3\)</span>. Re-expressing this contrast in terms of the effects parameterization yields
+<span class="math display">\[\begin{eqnarray*}
+  \theta_1 &amp; = &amp; \mu_1 - \mu_3  \\
+    &amp; = &amp; (\mu + \alpha_1) - (\mu + \alpha_3) \\
+    &amp; = &amp; \alpha_1 - \alpha_3
+\end{eqnarray*}\]</span>
+Once the linear contrasts have been re-expressed in terms of the effects model, we simply pass the coefficients of the effects parameters to SAS in the ESTIMATE or CONTRAST statement. In the examples above, the only terms included are effects associated with the classification factor ‘type’. (This will get more complicated for multi-factor ANOVA models.) Here is an example of how we might use ESTIMATE statements for <span class="math inline">\(\theta_1\)</span>:</p>
+<pre><code>proc glm data = hotdog; 
+  class type;
+  model calorie = type;
+  estimate &#39;Beef vs. Poultry&#39; type 1 0 -1 / e;
+run;
+
+The GLM Procedure
+
+Dependent Variable: calorie
+
+                                             Standard
+Parameter                    Estimate           Error    t Value    Pr &gt; |t|
+Beef vs. Poultry           38.0852941      7.73883135       4.92      &lt;.0001
+
+Coefficients for Estimate Beef vs. Poultry
+
+Intercept                    0
+
+type      Beef               1
+type      Meat               0
+type      Poul              -1</code></pre>
+<p>Notes:</p>
+<ol style="list-style-type: decimal">
+<li><p>The title that appears in single quotes is just a label that helps you remember which linear combination is which.</p></li>
+<li><p>SAS orders the effects parameters alphabetically. Be careful! Check to make sure that you’ve specified the order of the coefficients correctly. The “e” option at the end of the estimate statement provides a listing of the coefficients in tabular form, lined up against the model parameters. This provides a good way to double check whether your code is correct.</p></li>
+<li><p>For each linear combination, SAS provides a test of <span class="math inline">\(H_0: \theta = 0\)</span> vs. <span class="math inline">\(H_0: \theta \ne 0\)</span>. Of course, you can use the SAS output to calculate CIs or to conduct other hypothesis tests of interest.</p></li>
+</ol>
+<p>As another example, consider the linear combination <span class="math inline">\(\theta_2 = \mu_1\)</span>. Expressed in terms of the effects-model parameterization, this combination is simply <span class="math inline">\(\theta_2 = \mu + \alpha_1\)</span>. SAS calls the reference level the ‘intercept’, so we could find this linear combination using the ESTIMATE statement as:</p>
+<pre><code>proc glm data=hotdog;
+  class type;
+  model calorie = type;
+  estimate &#39;Beef mean&#39; intercept 1 type 1 0 0;
+run;
+
+                                            Standard
+Parameter                   Estimate           Error    t Value    Pr &gt; |t|
+Beef mean                 156.850000      5.24564602      29.90      &lt;.0001</code></pre>
+<hr />
+<p><span style="color: gray;"> An unfortunate consequence of using the effects-model parameterization is that it is possible to write down linear combinations of the effects parameters that do not correspond to a linear combination of the group means. We say that these functions are “not estimable”. For example, consider the function <span class="math inline">\(\mu + \alpha_1 + \alpha_2\)</span>. (An even simpler example of a function that is not estimable is just <span class="math inline">\(\alpha_1\)</span>.) Even though we can write this function down as a mathematical formula, its value will depend on the constraint that we choose to estimate the model parameters. However, we have said that the choice of a constraint is arbitrary. Therefore, we are only interested in functions whose values are the same, regardless of the constraint chosen. If you try to estimate a function that is not estimable in SAS, SAS will produce an error message.</p>
+<p><span style="color: gray;"> Of course, if we start with a linear combination of group means, and then convert that combination to its representation with the effects model parameters, we’ll be guaranteed to have an estimable function. So, it’s best to always start with the group means, and then work from the group means to the parameters of the effect model, instead of starting directly with the parameters of the effects model.</span></p>
+<hr />
+
+</div>
+</div>
+</div>
+<h3>Bibliography<a href="bibliography.html#bibliography" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div id="refs" class="references csl-bib-body hanging-indent" entry-spacing="0">
+<div id="ref-benjamini1995controlling" class="csl-entry">
+Benjamini, Yoav, and Yosef Hochberg. 1995. <span>“Controlling the False Discovery Rate: A Practical and Powerful Approach to Multiple Testing.”</span> <em>Journal of the Royal Statistical Society: Series B (Methodological)</em> 57 (1): 289–300.
+</div>
+<div id="ref-holm1979simple" class="csl-entry">
+Holm, Sture. 1979. <span>“A Simple Sequentially Rejective Multiple Test Procedure.”</span> <em>Scandinavian Journal of Statistics</em>, 65–70.
+</div>
+<div id="ref-moore1989introduction" class="csl-entry">
+Moore, David S, and George P McCabe. 1989. <em>Introduction to the Practice of Statistics.</em> WH Freeman.
+</div>
+<div id="ref-quinn2002experimental" class="csl-entry">
+Quinn, Gerry P, and Michael J Keough. 2002. <em>Experimental Design and Data Analysis for Biologists</em>. Cambridge university press.
+</div>
+<div id="ref-sokal1995biometry" class="csl-entry">
+Sokal, Robert R, and F James Rohlf. 1995. <em>Biometry</em>. 3rd ed. New York: W.H. Freeman.
+</div>
+</div>
+<div class="footnotes">
+<hr />
+<ol start="26">
+<li id="fn26"><p>As with the SS decomposition that lead to <span class="math inline">\(R^2\)</span> in an ANOVA, the SS decomposition here is actually the Pythagorean Theorem in action, albeit in a higher-dimensional space.<a href="one-way.html#fnref26" class="footnote-back">↩︎</a></p></li>
+<li id="fn27"><p>The sums-of-squares for orthogonal polynomial contrasts can also be found by fitting polynomial regression models of increasingly higher order. It will turn out that the decrease in the SSE (or increase in the model sum-of-squares) obtained by increasing the degree of the polynomial by one exactly equals the sum-of-squares for the corresponding polynomial trend. For example, the sum-of-squares associated with the quadratic contrast can also be found by fitting linear and quadratic regression models, and taking the difference in the model sum-of-squares between the two fits.<a href="one-way.html#fnref27" class="footnote-back">↩︎</a></p></li>
+<li id="fn28"><p>When the data are not balanced, another choice for the sum-to-zero constraint is to set <span class="math inline">\(\mu\)</span> equal to the grand mean, where the grand mean is weighted by the differences in sample sizes among the groups: <span class="math inline">\(\mu = \frac{1}{n_T} \sum_{i=1}^g n_i \mu_i\)</span>. With this definition of <span class="math inline">\(\mu\)</span>, the weighted sum of the <span class="math inline">\(\alpha_i\)</span>’s will equal zero: <span class="math inline">\(\sum_{i=1}^g n_i \alpha_i = 0\)</span>.<a href="one-way.html#fnref28" class="footnote-back">↩︎</a></p></li>
+</ol>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="smoothing.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="factorial-experiments.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+  "sharing": {
+    "github": false,
+    "facebook": true,
+    "twitter": true,
+    "linkedin": false,
+    "weibo": false,
+    "instapaper": false,
+    "vk": false,
+    "whatsapp": false,
+    "all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+  },
+  "fontsettings": {
+    "theme": "white",
+    "family": "serif",
+    "size": 2
+  },
+  "edit": {
+    "link": null,
+    "text": null
+  },
+  "history": {
+    "link": null,
+    "text": null
+  },
+  "view": {
+    "link": null,
+    "text": null
+  },
+  "download": null,
+  "search": {
+    "engine": "fuse",
+    "options": null
+  },
+  "toc": {
+    "collapse": "section"
+  }
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>
