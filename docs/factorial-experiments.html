@@ -23,7 +23,7 @@
 <meta name="author" content="Kevin Gross" />
 
 
-<meta name="date" content="2025-10-31" />
+<meta name="date" content="2025-11-04" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -1017,6 +1017,8 @@ D               13.667      6    circular</code></pre>
     SS[AB] &amp; = &amp; \sum_{i=1}^{a}\sum_{j=1}^{b}\sum_{k=1}^{n_{ij} }\left(\bar{y}_{ij+} -\bar{y}_{i++} -\bar{y}_{+j+} +\bar{y}_{+++} \right)^2
 \end{eqnarray*}\]</span>
 where SS[AB] denotes the sum-of-squares for the interaction. The formulas for SS[A] and SS[B] should make some sense: they consist of squared differences between the marginal means for one level of an experimental factor and the grand mean. The formula for SS[AB] is a bit more mysterious. Heuristically, the idea is this: with some algebra, the null hypothesis for no interaction <span class="math inline">\(H_0\)</span>: <span class="math inline">\(\mu_{ij} -\bar{\mu}_{++} =\bar{\mu}_{+i} -\bar{\mu}_{++} +\bar{\mu}_{+j} -\bar{\mu}_{++}\)</span> can be re-written as <span class="math inline">\(H_0\)</span>: <span class="math inline">\(\mu_{ij} -\bar{\mu}_{+i} -\bar{\mu}_{+j} +\bar{\mu}_{++} =0\)</span>. Thus, the term <span class="math inline">\(\bar{y}_{ij+} -\bar{y}_{i++} -\bar{y}_{+j+} +\bar{y}_{+++}\)</span> measures the extent to which the mean of group <span class="math inline">\(ij\)</span> departs this null hypothesis.</span></p>
+<hr />
+<p><span style="color: gray;">In ANOVA, we typically don’t remove non-significant interactions from the model, as we would in regression. The reasoning is that when we fit a “saturated” or “full-factorial” ANOVA to a factorial experiment (a “saturated” or “full-factorial” ANOVA model is one that includes all possible main effects and interactions), then the error sum-of-squares and associated MSE provide a “pure” measure of the experimental error. (Remember that in the context of a designed experiment, the experimental error refers ot the variability among replicates of the same experimental treatment.) If we were to remove the non-significant interaction, then we would contaminate our estimate of the experimental error by combining it with the variation that we had previous attributed to the interaction. We lose more than we gain by doing so, so we typically avoid the practice.</span></p>
 <hr />
 <!-- #### Back to the rat data -->
 <!-- Let's see how this works for the rat weight-gain data.  Here's a sum-of-squares decomposition for the rat data, along with the df associated with each term in the ANOVA: -->

@@ -624,6 +624,13 @@ where SS[AB] denotes the sum-of-squares for the interaction.  The formulas for S
 
 ---
 
+<span style="color: gray;">In ANOVA, we typically don't remove non-significant interactions from the model, as we would in regression. The reasoning is that when we fit a "saturated" or "full-factorial" ANOVA to a factorial experiment (a "saturated" or "full-factorial" ANOVA model is one that includes all possible main effects and interactions), then the error sum-of-squares and associated MSE provide a "pure" measure of the experimental error.  (Remember that in the context of a designed experiment, the experimental error refers ot the variability among replicates of the same experimental treatment.)  If we were to remove the non-significant interaction, then we would contaminate our estimate of the experimental error by combining it with the variation that we had previous attributed to the interaction.  We lose more than we gain by doing so, so we typically avoid the practice.</span>
+
+---
+
+
+
+
 <!-- #### Back to the rat data -->
 
 <!-- Let's see how this works for the rat weight-gain data.  Here's a sum-of-squares decomposition for the rat data, along with the df associated with each term in the ANOVA: -->

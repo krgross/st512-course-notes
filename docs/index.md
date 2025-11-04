@@ -1,7 +1,7 @@
 --- 
 title: "Statistical analysis of designed experiments: yesterday, today, and tomorrow"
 author: "Kevin Gross"
-date: "2025-10-31"
+date: "2025-11-04"
 output:
   bookdown::gitbook:
     config:
@@ -459,7 +459,7 @@ Thus, while a statistical hypothesis can often embody a scientific hypothesis, a
 
 ---
 
-<span style="color: gray;"> When the ideas of hypothesis testing were first being developed, there was stark disagreement about what the output of a hypothesis test should be.  R.A. Fisher argued that a hypothesis test should quantify how compatible the data are with the null hypothesis, relative to the universe of alternatives contained in the alternative hypothesis.  Fisher argued that the appropriate tool for this purpose was the $p$-value.  In contrast, Jerzy Neyman and Egon Pearson argued that the result of a hypothesis test should be a decision about whether or not to reject the null.  Of course, the two approaches can often be combined by specifying the rejection region (the set of outcomes that would cause the analyst to "reject" the null) in terms of the $p$-value.  While Fisher, Neyman, and Pearson argued vehemently, contemporary practice typically reports both a $p$-value and a reject / fail-to-reject decision, even if it may be difficult to articulate an entirely coherent rationale for doing so.</span>
+<span style="color: gray;"> When the ideas of hypothesis testing were first being developed, there was stark disagreement about what the output of a hypothesis test should be.  R.A. Fisher argued that a hypothesis test should quantify how compatible the data are with the null hypothesis, relative to the universe of alternatives contained in the alternative hypothesis.  Fisher argued that the appropriate tool for this purpose was the $p$-value.  In contrast, Jerzy Neyman and Egon Pearson argued that the result of a hypothesis test should be a decision about whether or not to reject the null.^[Pearson later (quoting @lehmann1993fisher) "admitted that the terms "acceptance" and "rejection" were perhaps unfortunately chosen" (@pearson1955statistical).  If we could re-invent statistics from scratch, can you think of better alternatives terms?]  Of course, the two approaches can often be combined by specifying the rejection region (the set of outcomes that would cause the analyst to "reject" the null) in terms of the $p$-value.  While Fisher, Neyman, and Pearson argued vehemently, contemporary practice typically reports both a $p$-value and a reject / fail-to-reject decision, even if it may be difficult to articulate an entirely coherent rationale for doing so.</span>
 
 ---
 

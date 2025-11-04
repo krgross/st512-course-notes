@@ -474,13 +474,15 @@ Comparing to an $F_{1,51}$ distribution yields a $p$-value $<0.0001$.
 
 ### Complex contrasts
 
-A complex contrast is a collection of several *linearly independent* contrasts.  "Linear independence" is a bit of a mouthful, but the idea is straightforward.  Several contrasts are linearly independent if they are not redundant.  Conversely, a collection of contrasts are not linearly independent if a subset of the contrasts equaling 0 dictates that another contrast in the collection must also equal 0.  For example, consider the hot-dog data, and consider the three contrasts
+A complex contrast is a collection of several *linearly independent* contrasts.  It is a bit easier to define "linear independence" by describing what it isn't: several contrasts linearly dependent if one contrast in the group is perfectly correlated with a weighted sum of one or more other contrasts in the group.  Most trivially, in a design that includes the two group means $\mu_1$ and $\mu_2$, the contrasts $\mu_1 - \mu_2$ and $\mu_2 - \mu_1$ are linearly dependent, because they are perfectly (negatively) correlated.  Less trivially, consider the hot-dog data, and consider the three contrasts
 \begin{eqnarray*}
 \theta_1 & = & \mu_B - \mu_M \\
 \theta_2 & = & \mu_B - \mu_P \\
-\theta_3 & = & \mu_M - \mu_P \\
+\theta_3 & = & \mu_M - \mu_P. \\
 \end{eqnarray*}
-These contrasts are linearly dependent, because if $\theta_1 = 0$ and $\theta_2 = 0$, then it must be true that $\theta_3 = 0$.  In other words, $\theta_3$ is redundant with $\theta_1$ and $\theta_2$.  
+These contrasts are not linearly independent, because $\theta_3$ (the difference between meat and poultry) is perfectly (positively) correlated with the difference $\theta_2 - \theta_1$. (In fact, $\theta_3 = \theta_2 - \theta_1$).
+
+Linear independence is important for contrasts because we want to test if contrasts equal $0$.  If several contrasts are linearly independent, then the test of each contrast is informative.  On the other hand, if several contrasts are not linearly independent, then those tests are redundant.  For example, in the hotdog data, if $\theta_1 = 0$ and $\theta_2 = 0$, then it must be true that $\theta_3 = 0$.  Thus the test of $H_0: \theta_3 = 0$ is redundant with test of $H_0: \theta_1 = \theta_2 = 0$.   
 
 We test a complex contrast by testing whether all the simple contrasts it contains equal $0$.  For example, in the hotdog data, and using the contrasts as defined above, we can test $H_0$: $\theta_1 = \theta_2 = 0$, vs.\ the alternative that at least one of $\theta_1$ and $\theta_2$ is not 0.  Of course, $H_0$: $\theta_1 = \theta_2 = 0$ is equivalent to $H_0$: $\mu_B = \mu_M = \mu_P$, the usual null hypothesis of equality of group means.  Thus, contrasts give us an alternative route to understanding the ANOVA $F$-test.  This alternative route will become useful when we consider ANOVA for factorial designs later.
 
@@ -621,15 +623,21 @@ Total                       49     17.19136872
 
 ### Orthogonal contrasts {#orthogonal-contrasts}
 
-We have already seen that if several contrasts are not (completely) redundant, they are *linearly independent*.  Linearly independent contrasts might still share some information, however.  For example, the contrasts $\theta_1 = \mu_1 - \mu_2$ and $\theta_2 = \mu_1 - \mu_3$ are linearly independent, but they both depend in the same way on $\mu_1$.  Thus, if we happen to draw a sample from group 1 that is unusual in some regard, the event of drawing that sample will affect our tests of both $H_0$: $\theta_1 = 0$ and $H_0$: $\theta_2 = 0$ in the same way.
+We have already seen that if several linearly independent contrasts are not perfectly correlated, they are linearly independent.  Linearly independent contrasts might still be partially correlated, however.  For example, the contrasts $\theta_1 = \mu_1 - \mu_2$ and $\theta_2 = \mu_1 - \mu_3$ are linearly independent, but they both depend in the same way on $\mu_1$.  Thus, if we happen to draw a sample from group 1 that is unusual in some regard, the event of drawing that sample will affect our tests of both $H_0$: $\theta_1 = 0$ and $H_0$: $\theta_2 = 0$ in the same way.
 
-There is a stronger notion of independence among contrasts called *orthogonality*.  (You might remember that *orthogonal* is a synonym for *perpendicular*.)   Here is how orthogonality is defined.  Two contrasts $\theta_1 = \sum_{i=1}^g c_i \mu_i$ and $\theta_2 = \sum_{i=1}^g d_i \mu_i$ are orthogonal if and only if
+There is a stronger notion of independence among contrasts called *orthogonality*.  (You might remember that *orthogonal* is a synonym for *perpendicular*.)   Two simple contrasts are orthogonal if they are perfectly *un*correlated.  It turns out that we can check whether two simple contrasts are orthogonal in the following way. Two contrasts $\theta_1 = \sum_{i=1}^g c_i \mu_i$ and $\theta_2 = \sum_{i=1}^g d_i \mu_i$ are orthogonal if and only if
 \[
 \sum_{i=1}^g \frac{c_i d_i}{n_i} = 0.
 \]
-Note that if two contrasts are orthogonal, then they must also be linearly independent.  However, two contrasts that are linearly independent may or may not be orthogonal.\footnote{To run with the geometric idea for a bit, if we think about a contrasts as vectors in a plane, two contrasts are orthogonal if they are perpendicular.  Two contrasts are linearly independent as long as they are not parallel.  Thus, two contrasts that are orthogonal (perpendicular) are necessarily linearly independent (not parallel), but two contrasts that are linearly independent (not parallel) may or may not be orthogonal (perpendicular).}
+Note that if two contrasts are orthogonal, then they must also be linearly independent.  However, two contrasts that are linearly independent may or may not be orthogonal.
 
-Complex contrasts can also be orthogonal.  Consider two complex contrasts, where the first is comprised of the simple contrasts $\theta_1, \theta_2, \ldots, \theta_k$, and the second is comprised of the simple contrasts $\phi_1, \phi_2, \ldots, \phi_l$.  These two complex contrasts are orthogonal if every simple contrast in the first complex contrast is orthogonal to every simple contrast in the second complex contrast.  Note that the simple contrasts within complex contrasts may or may not be orthogonal to each other; whether or not they are orthogonal with each other is irrelevant.  All we care about is whether the simple contrasts in the first complex contasts are orthogonal to the simple contrasts in the second complex contrast. 
+Complex contrasts are orthogonal if every simple contrast in the first complex contrast is orthogonal to every simple contrast in the second complex contrast.  Note that the simple contrasts within complex contrasts may or may not be orthogonal to each other; whether or not they are orthogonal with each other is irrelevant.  All we care about is whether the simple contrasts in the first complex contrast are orthogonal to the simple contrasts in the second complex contrast. 
+
+---
+
+<span style="color: gray;"> If this all seems to be coming out of thin air, the reason is that contrasts, linear independence, and orthogonality are all ultimately linear algebra concepts.  A complex contrast defines a subspace of $\mathcal{R}^n$, the linearly independent contrasts that comprise it are a basis for that subspace, and two linearly independent contrasts are orthogonal iff the corresponding subspaces are orthogonal. Further, the sum-of-squares associated with a contrast is the squared length of the orthogonal projection of the data vector (which lives in $\mathcal{R}^n$) onto that subspace, and hence orthogonality of the contrasts implies additivity of the sums-of-squares (see below) via Pythagoras. </span>
+
+---
 
 The major upshot is that if two complex contrasts are orthogonal, then their sums of squares are additive.  That is,
 \[
