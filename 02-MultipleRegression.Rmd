@@ -446,6 +446,8 @@ A picture may be worth a thousand words, but it isn't worth a test!  The plot of
 
 ## (Multi-)Collinearity {#collinearity}
 
+### What is collinearity?
+
 Collinearity (or what is sometimes also called multi-collinearity) refers to correlations among predictors, or among weighted sums of predictors.  In a designed experiment, collinearity should not be an issue: The experimenter should be able to assign predictors in such a way that predictors are not strongly correlated with one another, or even better, are perfectly uncorrelated.^[Indeed, if the predictors are perfectly uncorrelated with one another, then the multiple regression coefficients will be identical to the slopes from individual simple regression models.]  With observational data, however, collinearity is often the rule more than the exception.  This is especially true when the number of predictors becomes large relative to the number of data points.  For example, the problem is especially acute in genomic studies, in which one may seek to find genetic correlates of phenotypic differences with a sample of a few dozen genomes, each of which contains genotypes at several thousand or more loci.  In this section, we will explain what collinearity is, how it affects regression modeling, how it can be measured, and what (if anything) can be done about it.
 
 To illustrate, we'll use a data set that details the tar content, nicotine content, weight, and carbon monoxide content of a couple dozen brands of cigarettes.  I found these data in @mcintyre1994using, who offers the following context:
@@ -492,6 +494,8 @@ Collinearity is not a problem for prediction, however.  As @quinn2002experimenta
 
 In other words, we can still use our regression model for prediction, as long as we supply values of tar content and nicotine content that are consistent with the strong correlation between those two variables in the original data set.
 
+### Variance inflation factors (VIFs)
+
 Collinearity is usually assessed by a variance inflation factor (VIF).  The VIF is so named because it measures the amount by which the correlations among the predictors increase the standard error (and thus the variance) of the estimated regression coefficients.  A separate VIF can be calculated for each predictor in the model.  There is a relatively simple recipe for calculating VIFs that is somewhat edifying, although it's easier to let the software compute the VIFs for you.  Here's the recipe if you are interested:
 
 To calculate the VIF for predictor $x_j$, do the following:
@@ -515,11 +519,123 @@ So that's the good news: that collinearity is readily measured.  The bad news is
 
 The second half of the bad news is that there's no easy fix for collinearity.  In some sense, this is just a statement of common sense:  If two predictors and a response vary together, then it is difficult (if not impossible) to tease apart the effect of one predictor on the response from the effect of the other predictor with a statistical model.  With the cigarette data, for example, if we really wanted to characterize the effects of tar and nicotine content separately, then we'd need to find some cigarettes with high tar content and low nicotine content, or vice versa.
 
+### Coping with collinearity
+
 The usual recommendations for coping with collinearity attempt to stabilize the estimated partial regression coefficients at the expense of accepting a (hopefully) small bias.^[Here, we use "bias" in its technical sense, meaning the difference between the average of a sampling distribution of an estimate, and the parameter we are trying to estimate.  All else being equal, we prefer estimators that are unbiased.  However, sometimes a small amount of bias may be acceptable if it leads to big improvements in other properties of the estimator.]  Here are two:
 
 1. Omit predictors that are highly correlated with other predictors in the model.  The rationale here is that highly correlated predictors may just be redundant measures of the same thing.  As an example, in the cigarette data, tar content and nicotine content may both be driven by the same underlying features of the cigarette's ingredients.  If this is true, there is little to be gained by including both variables as predictors in a regression model.
 
 2. Use principal components analysis (PCA) to reduce the number of predictors, and use principal components as predictors.  PCA is a multivariate statistical method that takes several variables and produces a smaller number of new variables (the "principal components") that contain the majority of the information in the original variables.  The advantage of using a principal component as a predictor is that different principal components are guaranteed to be independent of one another, by virtue of how they are calculated.  The major disadvantage of using principal components is that the newly created predictors (the principal components) are amalgams of the original variables, and thus it is more difficult to assign a scientific interpretation to the partial regression coefficients associated with each.  So, using PCA to find new predictors yields a more robust statistical model, albeit at the expense of reduced interpretability. 
+
+The code below shows an example of the second approach, in which we create a new predictor using PCA that is the composite of nicotine and tar.  Then we use this composite predictor as the (in this case, lone) predictor in a regression model.
+
+```{r pca-cigarette}
+pca <- prcomp(cig[, c("tar", "nicotine")],
+              center = TRUE,
+              scale. = TRUE)
+
+# Make PC1 increase as tar and nicotine increase.
+# With two positively associated variables, the two loadings
+# should have the same sign; reverse PC1 if that sign is negative.
+
+if (sum(pca$rotation[, 1]) < 0) {
+    pca$rotation[, 1] <- -pca$rotation[, 1]
+    pca$x[, 1] <- -pca$x[, 1]
+}
+
+# First principal-component scores
+PC1 <- pca$x[, 1]
+
+# ------------------------------------------------------------
+# Regression of CO on PC1
+# ------------------------------------------------------------
+
+fit <- lm(cig$co ~ PC1)
+summary(fit)
+```
+
+The plot below shows the composite predictor overlaid on a scatterplot of nicotine and tar (left), as well as the simple regression model that results on the right.
+
+```{r echo = FALSE, fig.width = 6}
+# ------------------------------------------------------------
+# 3. Two-panel graphic
+# ------------------------------------------------------------
+
+par(mfrow = c(1, 2))
+
+# ===== Left panel: nicotine versus tar, with PC1 axis =====
+
+plot(cig$tar, cig$nicotine,
+     xlab = "Tar",
+     ylab = "Nicotine",
+     pch = 19)
+
+# PC1 loading vector
+w <- pca$rotation[, 1]
+
+# Direction of PC1 in the original tar/nicotine units
+dx <- w["tar"]      * pca$scale["tar"]
+dy <- w["nicotine"] * pca$scale["nicotine"]
+
+# PC1 line in original units
+slope <- dy / dx
+
+intercept <- pca$center["nicotine"] -
+             slope * pca$center["tar"]
+
+abline(a = intercept, b = slope, lwd = 2)
+
+# Choose integer PC1 values covering the observed scores
+pcvals <- floor(min(PC1)):ceiling(max(PC1))
+
+# Coordinates corresponding to these PC1 values
+xtick <- pca$center["tar"] +
+         pcvals * w["tar"] * pca$scale["tar"]
+
+ytick <- pca$center["nicotine"] +
+         pcvals * w["nicotine"] * pca$scale["nicotine"]
+
+# Draw short tick marks perpendicular to PC1.
+#
+# The conversion through par("usr") accounts for the very
+# different numerical scales of tar and nicotine.
+usr <- par("usr")
+pin <- par("pin")
+
+# Direction of PC1 in physical plotting units
+dx.in <- dx / diff(usr[1:2]) * pin[1]
+dy.in <- dy / diff(usr[3:4]) * pin[2]
+
+# Perpendicular unit vector in physical plotting units
+d <- sqrt(dx.in^2 + dy.in^2)
+px.in <- -dy.in / d
+py.in <-  dx.in / d
+
+# Half-length of each tick, in inches
+tick.length <- 0.06
+
+# Convert perpendicular direction back to data units
+px <- px.in * tick.length * diff(usr[1:2]) / pin[1]
+py <- py.in * tick.length * diff(usr[3:4]) / pin[2]
+
+segments(xtick - px, ytick - py,
+         xtick + px, ytick + py)
+
+# Label PC1 values beside the tick marks
+text(xtick + 2.5 * px,
+     ytick + 2.5 * py,
+     labels = pcvals,
+     cex = 0.8)
+
+# ===== Right panel: CO versus PC1, with regression line =====
+
+plot(PC1, cig$co,
+     xlab = "First principal component",
+     ylab = "CO",
+     pch = 19)
+
+abline(fit, lwd = 2)
+```
 
 ## Variable selection: Choosing the best model
 

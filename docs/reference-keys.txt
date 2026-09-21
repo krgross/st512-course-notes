@@ -47,6 +47,9 @@ model-utility-test
 categorical-predictors
 regression-interactions
 collinearity
+what-is-collinearity
+variance-inflation-factors-vifs
+coping-with-collinearity
 variable-selection-choosing-the-best-model
 model-selection-and-inference
 ranking-methods
