@@ -14,7 +14,7 @@ This chapter is in an early stage of development.
 
 
 ``` r
-## download the data from the book's website
+## download the data 
 isit <- read.table("data/ISIT.txt", head = T)
 
 ## extract the data from station 16
@@ -30,11 +30,23 @@ with(st16, plot(sources ~ depth))
 
 <img src="05-Smoothing_files/figure-html/unnamed-chunk-1-1.png" width="480" style="display: block; margin: auto;" />
 
+Before proceeding, we note that much of the challenge with these data flows from analyzing the data on their native scale, which is a step we take here for pedagogical purposes.  In real life, it would be simpler to realize that these data seem to exhibit an exponential decay.  Indeed, log transforming the response converts the relationship to one that is nearly linear.
+
+
+
+``` r
+with(st16, plot(log(sources) ~ depth))
+```
+
+<img src="05-Smoothing_files/figure-html/unnamed-chunk-2-1.png" width="480" style="display: block; margin: auto;" />
+
+We proceed to analyze these data on their native scale to illustrate the use of algorithmic smoothers.  Hopefully, in time, these data will be replaced with a more compelling example.
+
 ## Nearest-neighbor methods
 
 <!-- Some coding assistance in this section from ChatGPT 5. -->
 
-The simplest of all possible smoothing methods is a $k$-nearest neighbor method.  For this method, the value of the smooth at a target depth ($x$) is given by the average of the response ($y$) values of the $k$ nearest observed depths to $x$. We implement this with `kknn::kknn()` using `kernel = "rectangular"`, which assigns equal weights to the `k` nearest neighbors.
+The simplest of all possible smoothing methods is a $k$-nearest neighbor method.  For this method, the value of the smooth at a target depth ($x$) is given by the average of the response ($y$) values of the $k$ nearest observed depths to $x$. We implement this with `kknn::kknn()` using `kernel = "rectangular"`, which assigns equal weights to the $k$ nearest neighbors.
 
 
 
@@ -77,11 +89,11 @@ legend("topright", legend = paste("k =", Ks_demo),
        col = cols, lwd = 2, bty = "n")
 ```
 
-<img src="05-Smoothing_files/figure-html/unnamed-chunk-2-1.png" width="720" style="display: block; margin: auto;" />
+<img src="05-Smoothing_files/figure-html/unnamed-chunk-3-1.png" width="720" style="display: block; margin: auto;" />
 
 As $k$ increases, the trend becomes smoother.
 
-To find the best `k`, we use cross-validation.  Here, we evaluate a set of odd `k` values with 10-fold cross-validation and choose the `k` that minimizes out-of-fold SSE.  
+To find the best $k$, we use cross-validation.  Here, we evaluate a set of odd $k$ values with 10-fold cross-validation and choose the $k$ that minimizes out-of-fold SSE.  
 
 
 ``` r
@@ -154,6 +166,52 @@ lines(pred_final$depth, pred_final$fit, lwd = 2)
 
 <img src="05-Smoothing_files/figure-html/final-fit-1.png" width="624" style="display: block; margin: auto;" />
 
+A moment's thought suggests that we might consider approaches that do more than merely average the $k$ nearest neighbors. We might instead want to compute a weighted average of the $k$ nearest neighbors, with nearer neighbors receiving more weight than neighbors that are further away.  The `kknn::kknn` program provides a variety of alternative kernels. Here are the best fits with $k=5$ nearest neighbors and (left to right) the rectangular (unweighted) kernel, a triangular kernel, and a Gaussian kernel.
+
+
+``` r
+depth_grid <- data.frame(depth = seq(min(st16$depth), max(st16$depth), length.out = 300))
+
+fit_knn_grid <- function(train_df, new_df, kernel, k) {
+  mod <- kknn::kknn(
+    formula = sources ~ depth,
+    train = train_df,
+    test  = new_df,
+    k     = k,
+    kernel = kernel,
+  )
+  data.frame(depth = new_df$depth, fit = fitted(mod))
+}
+```
+
+
+``` r
+my_kernels <- c("rectangular", "triangular", "gaussian")
+
+cols <- 1:length(my_kernels)  # base palette
+
+par(mfrow = c(1, 3))
+
+for (i in seq_along(my_kernels)) {
+  # Base scatter
+  with(st16, plot(depth, sources, pch = 19, cex = 0.7,
+       xlab = "Depth", ylab = "Sources"))
+  
+# Add k-NN smooth lines
+
+  kernel <- my_kernels[i]
+  pred <- fit_knn_grid(st16, depth_grid, kernel, k = 5)
+  lines(pred$depth, pred$fit, lwd = 2, col = cols[i])
+}
+
+legend("topright", legend = my_kernels,
+       col = cols, lwd = 2, bty = "n")
+```
+
+<img src="05-Smoothing_files/figure-html/unnamed-chunk-4-1.png" width="720" style="display: block; margin: auto;" />
+
+Note that the ``kknn::kknn`` routine does not return any measure of the precision of the fit, so we would have to work a bit harder to compute the precision.
+
 ## Loess smoothers
 
 A loess smoother takes the logic of $k$-nearest neighbor fitting one step further. Now, instead of simply averaging the $k$ nearest neighbors, we fit a regression model to the nearest neighbors, and use the predicted value of the regression trend as our smooth.  "Loess" is an acronym for [lo]cal regr[ess]ion.  Nomenclature can be a bit frustrating with loess models. As we will see later, some versions of loess models use weighted least squares instead of ordinary least squares, and are called "lowess" models to emphasize the use of weighted least squares.   However, the basic `R` routine for fitting lo(w)ess models is called `loess`, but uses the weighted least-squares fitting with its default factory settings.  
@@ -211,7 +269,7 @@ lines(x   = depth.vals,
       lty = "dashed")
 ```
 
-<img src="05-Smoothing_files/figure-html/unnamed-chunk-4-1.png" width="480" style="display: block; margin: auto;" />
+<img src="05-Smoothing_files/figure-html/unnamed-chunk-6-1.png" width="480" style="display: block; margin: auto;" />
 
 Examine the residuals:
 
@@ -232,7 +290,7 @@ plot(st16.lo$residuals ~ st16$depth)
 abline(h = 0, lty = "dotted")
 ```
 
-<img src="05-Smoothing_files/figure-html/unnamed-chunk-5-1.png" width="480" style="display: block; margin: auto;" />
+<img src="05-Smoothing_files/figure-html/unnamed-chunk-7-1.png" width="480" style="display: block; margin: auto;" />
 
 Let's look at how changing the span changes the fit.  We'll write a custom function to fit a LOESS curve, and then call the function with various values for the span.
 
@@ -285,19 +343,19 @@ Now we'll call the function several times, each time chanigng the value of the `
 PlotLoessFit(x = st16$depth, y = st16$sources, span = 0.5)
 ```
 
-<img src="05-Smoothing_files/figure-html/unnamed-chunk-7-1.png" width="480" style="display: block; margin: auto;" />
+<img src="05-Smoothing_files/figure-html/unnamed-chunk-9-1.png" width="480" style="display: block; margin: auto;" />
 
 ``` r
 PlotLoessFit(x = st16$depth, y = st16$sources, span = 0.25)
 ```
 
-<img src="05-Smoothing_files/figure-html/unnamed-chunk-7-2.png" width="480" style="display: block; margin: auto;" />
+<img src="05-Smoothing_files/figure-html/unnamed-chunk-9-2.png" width="480" style="display: block; margin: auto;" />
 
 ``` r
 PlotLoessFit(x = st16$depth, y = st16$sources, span = 0.1)
 ```
 
-<img src="05-Smoothing_files/figure-html/unnamed-chunk-7-3.png" width="480" style="display: block; margin: auto;" />
+<img src="05-Smoothing_files/figure-html/unnamed-chunk-9-3.png" width="480" style="display: block; margin: auto;" />
 
 Let's try a loess fit with a locally linear regression:
 
@@ -306,7 +364,7 @@ Let's try a loess fit with a locally linear regression:
 PlotLoessFit(x = st16$depth, y = st16$sources, span = 0.25, degree = 1)
 ```
 
-<img src="05-Smoothing_files/figure-html/unnamed-chunk-8-1.png" width="480" style="display: block; margin: auto;" />
+<img src="05-Smoothing_files/figure-html/unnamed-chunk-10-1.png" width="480" style="display: block; margin: auto;" />
 
 ## Splines
 
@@ -317,7 +375,7 @@ $$
 \mbox{response = intercept + spline + error}
 $$
 
-The `s()` component of the model formula designates a spline, and specifies details about the particular type of spline to be fit.  The `fx = TRUE` component of the formula indicates that the amount of smoothing is fixed.  The default value for the `fx` argument is `fx = FALSE`, in which case the amount of smoothing is determined by (generalized) cross-validation.  When `fx = TRUE`, the parameter `k` determines the dimensionality (degree of flexibility) of the spline.  Larger values of `k` correspond to greater flexibility, and a less smooth fit.  I think that the number of knots is $k-4$, such that setting $k=4$ fits a familiar cubic polynomial with no knots.  Setting $k=5$ then fits a regression spline with one knot, etc.  I have not been able to figure out where the knots are placed.
+The `s()` component of the model formula designates a spline, and specifies details about the particular type of spline to be fit.  The `fx = TRUE` component of the formula indicates that the amount of smoothing is fixed.  The default value for the `fx` argument is `fx = FALSE`, in which case the amount of smoothing is determined by (generalized) cross-validation.  When `fx = TRUE`, the parameter $k$ determines the dimensionality (degree of flexibility) of the spline.  Larger values of $k$ correspond to greater flexibility, and a less smooth fit.  I think that the number of knots is $k-4$, such that setting $k=4$ fits a familiar cubic polynomial with no knots.  Setting $k=5$ then fits a regression spline with one knot, etc.  I have not been able to figure out where the knots are placed.
 
 In any case, we'll fit a regression spline with two knots:
 
@@ -339,7 +397,7 @@ st16.rspline <- mgcv::gam(sources ~ s(depth, k = 6, fx = TRUE), data = st16)
 plot(st16.rspline, se = TRUE)
 ```
 
-<img src="05-Smoothing_files/figure-html/unnamed-chunk-9-1.png" width="480" style="display: block; margin: auto;" />
+<img src="05-Smoothing_files/figure-html/unnamed-chunk-11-1.png" width="480" style="display: block; margin: auto;" />
 
 Note that the plot includes only the portion of the model attributable to the covariate effect.  This is because we have actually fit an additive model (e.g., a GAM).  
 
@@ -361,7 +419,7 @@ lines(x = depth.vals, y = st16.fit$fit + 2 * st16.fit$se.fit, lty = "dashed")
 lines(x = depth.vals, y = st16.fit$fit - 2 * st16.fit$se.fit, lty = "dashed")
 ```
 
-<img src="05-Smoothing_files/figure-html/unnamed-chunk-10-1.png" width="480" style="display: block; margin: auto;" />
+<img src="05-Smoothing_files/figure-html/unnamed-chunk-12-1.png" width="480" style="display: block; margin: auto;" />
 
 We see that this particular fit is not flexible enough to capture the trend in luminescence at low depth.
 
@@ -405,7 +463,7 @@ st16.spline <- mgcv::gam(sources ~ s(depth), data = st16)
 plot(st16.spline, se = TRUE)  # note that the plot does not include the intercept
 ```
 
-<img src="05-Smoothing_files/figure-html/unnamed-chunk-12-1.png" width="480" style="display: block; margin: auto;" />
+<img src="05-Smoothing_files/figure-html/unnamed-chunk-14-1.png" width="480" style="display: block; margin: auto;" />
 
 Again, we make a plot that includes both the points and the fit
 
@@ -426,7 +484,7 @@ lines(x = depth.vals, y = st16.fit$fit + 2 * st16.fit$se.fit, lty = "dashed")
 lines(x = depth.vals, y = st16.fit$fit - 2 * st16.fit$se.fit, lty = "dashed")
 ```
 
-<img src="05-Smoothing_files/figure-html/unnamed-chunk-13-1.png" width="480" style="display: block; margin: auto;" />
+<img src="05-Smoothing_files/figure-html/unnamed-chunk-15-1.png" width="480" style="display: block; margin: auto;" />
 
 Let's ask for a summary:
 
@@ -624,7 +682,7 @@ The output reports the partial regression coefficient for the lone quantitative 
 plot(bird.gam1)
 ```
 
-<img src="05-Smoothing_files/figure-html/unnamed-chunk-20-1.png" width="480" style="display: block; margin: auto;" /><img src="05-Smoothing_files/figure-html/unnamed-chunk-20-2.png" width="480" style="display: block; margin: auto;" /><img src="05-Smoothing_files/figure-html/unnamed-chunk-20-3.png" width="480" style="display: block; margin: auto;" /><img src="05-Smoothing_files/figure-html/unnamed-chunk-20-4.png" width="480" style="display: block; margin: auto;" /><img src="05-Smoothing_files/figure-html/unnamed-chunk-20-5.png" width="480" style="display: block; margin: auto;" />
+<img src="05-Smoothing_files/figure-html/unnamed-chunk-22-1.png" width="480" style="display: block; margin: auto;" /><img src="05-Smoothing_files/figure-html/unnamed-chunk-22-2.png" width="480" style="display: block; margin: auto;" /><img src="05-Smoothing_files/figure-html/unnamed-chunk-22-3.png" width="480" style="display: block; margin: auto;" /><img src="05-Smoothing_files/figure-html/unnamed-chunk-22-4.png" width="480" style="display: block; margin: auto;" /><img src="05-Smoothing_files/figure-html/unnamed-chunk-22-5.png" width="480" style="display: block; margin: auto;" />
 
 In the interest of time, we take a casual approach to variable selection here.  We'll drop smooth terms that are clearly not significant to obtain:
 
@@ -662,7 +720,7 @@ summary(bird.gam2)
 plot(bird.gam2)
 ```
 
-<img src="05-Smoothing_files/figure-html/unnamed-chunk-21-1.png" width="480" style="display: block; margin: auto;" />
+<img src="05-Smoothing_files/figure-html/unnamed-chunk-23-1.png" width="480" style="display: block; margin: auto;" />
 
 Note that the GRAZE variable is currently treated as a numerical predictor.  We'll try fitting a model with GRAZE as a factor.  First we'll create a new variable that treats GRAZE as a factor.  We'll use the `summary` command to confirm that the new variable fGRAZE is indeed a factor.
 
@@ -695,7 +753,7 @@ bird.gam3 <- gam(ABUND ~ s(L.AREA) + fGRAZE, data = bird)
 plot(bird.gam3)
 ```
 
-<img src="05-Smoothing_files/figure-html/unnamed-chunk-23-1.png" width="480" style="display: block; margin: auto;" />
+<img src="05-Smoothing_files/figure-html/unnamed-chunk-25-1.png" width="480" style="display: block; margin: auto;" />
 
 ``` r
 summary(bird.gam3)
@@ -779,7 +837,7 @@ plot(x = bird$GRAZE, y = bird.gam4$residuals)
 abline(h = 0, lty = "dashed")
 ```
 
-<img src="05-Smoothing_files/figure-html/unnamed-chunk-26-1.png" width="480" style="display: block; margin: auto;" />
+<img src="05-Smoothing_files/figure-html/unnamed-chunk-28-1.png" width="480" style="display: block; margin: auto;" />
 
 Both the plot and the model output suggest that the effect of grazing is primarily due to lower bird abundance in the most heavily grazed category.
 

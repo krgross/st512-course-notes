@@ -15,7 +15,7 @@ As a running example, we will consider a data set originally published by @gilli
 This chapter is in an early stage of development.
 
 ```{r}
-## download the data from the book's website
+## download the data 
 isit <- read.table("data/ISIT.txt", head = T)
 
 ## extract the data from station 16
@@ -29,11 +29,20 @@ names(st16) <- c("depth", "sources")
 with(st16, plot(sources ~ depth))
 ```
 
+Before proceeding, we note that much of the challenge with these data flows from analyzing the data on their native scale, which is a step we take here for pedagogical purposes.  In real life, it would be simpler to realize that these data seem to exhibit an exponential decay.  Indeed, log transforming the response converts the relationship to one that is nearly linear.
+
+
+```{r}
+with(st16, plot(log(sources) ~ depth))
+```
+
+We proceed to analyze these data on their native scale to illustrate the use of algorithmic smoothers.  Hopefully, in time, these data will be replaced with a more compelling example.
+
 ## Nearest-neighbor methods
 
 <!-- Some coding assistance in this section from ChatGPT 5. -->
 
-The simplest of all possible smoothing methods is a $k$-nearest neighbor method.  For this method, the value of the smooth at a target depth ($x$) is given by the average of the response ($y$) values of the $k$ nearest observed depths to $x$. We implement this with `kknn::kknn()` using `kernel = "rectangular"`, which assigns equal weights to the `k` nearest neighbors.
+The simplest of all possible smoothing methods is a $k$-nearest neighbor method.  For this method, the value of the smooth at a target depth ($x$) is given by the average of the response ($y$) values of the $k$ nearest observed depths to $x$. We implement this with `kknn::kknn()` using `kernel = "rectangular"`, which assigns equal weights to the $k$ nearest neighbors.
 
 ```{r libraries, echo = FALSE}
 # Use base R wherever possible.
@@ -82,7 +91,7 @@ legend("topright", legend = paste("k =", Ks_demo),
 
 As $k$ increases, the trend becomes smoother.
 
-To find the best `k`, we use cross-validation.  Here, we evaluate a set of odd `k` values with 10-fold cross-validation and choose the `k` that minimizes out-of-fold SSE.  
+To find the best $k$, we use cross-validation.  Here, we evaluate a set of odd $k$ values with 10-fold cross-validation and choose the $k$ that minimizes out-of-fold SSE.  
 
 ```{r cross-validate}
 set.seed(1)
@@ -143,6 +152,48 @@ plot(st16$depth, st16$sources, pch = 19, cex = 0.7,
      main = paste("k-NN Smoother with CV-selected k =", best_k))
 lines(pred_final$depth, pred_final$fit, lwd = 2)
 ```
+
+A moment's thought suggests that we might consider approaches that do more than merely average the $k$ nearest neighbors. We might instead want to compute a weighted average of the $k$ nearest neighbors, with nearer neighbors receiving more weight than neighbors that are further away.  The `kknn::kknn` program provides a variety of alternative kernels. Here are the best fits with $k=5$ nearest neighbors and (left to right) the rectangular (unweighted) kernel, a triangular kernel, and a Gaussian kernel.
+
+```{r alternative-kernels}
+depth_grid <- data.frame(depth = seq(min(st16$depth), max(st16$depth), length.out = 300))
+
+fit_knn_grid <- function(train_df, new_df, kernel, k) {
+  mod <- kknn::kknn(
+    formula = sources ~ depth,
+    train = train_df,
+    test  = new_df,
+    k     = k,
+    kernel = kernel,
+  )
+  data.frame(depth = new_df$depth, fit = fitted(mod))
+}
+```
+
+```{r, fig.height=3.5, fig.width=7.5}
+my_kernels <- c("rectangular", "triangular", "gaussian")
+
+cols <- 1:length(my_kernels)  # base palette
+
+par(mfrow = c(1, 3))
+
+for (i in seq_along(my_kernels)) {
+  # Base scatter
+  with(st16, plot(depth, sources, pch = 19, cex = 0.7,
+       xlab = "Depth", ylab = "Sources"))
+  
+# Add k-NN smooth lines
+
+  kernel <- my_kernels[i]
+  pred <- fit_knn_grid(st16, depth_grid, kernel, k = 5)
+  lines(pred$depth, pred$fit, lwd = 2, col = cols[i])
+}
+
+legend("topright", legend = my_kernels,
+       col = cols, lwd = 2, bty = "n")
+```
+
+Note that the ``kknn::kknn`` routine does not return any measure of the precision of the fit, so we would have to work a bit harder to compute the precision.
 
 ## Loess smoothers
 
@@ -256,7 +307,7 @@ $$
 \mbox{response = intercept + spline + error}
 $$
 
-The `s()` component of the model formula designates a spline, and specifies details about the particular type of spline to be fit.  The `fx = TRUE` component of the formula indicates that the amount of smoothing is fixed.  The default value for the `fx` argument is `fx = FALSE`, in which case the amount of smoothing is determined by (generalized) cross-validation.  When `fx = TRUE`, the parameter `k` determines the dimensionality (degree of flexibility) of the spline.  Larger values of `k` correspond to greater flexibility, and a less smooth fit.  I think that the number of knots is $k-4$, such that setting $k=4$ fits a familiar cubic polynomial with no knots.  Setting $k=5$ then fits a regression spline with one knot, etc.  I have not been able to figure out where the knots are placed.
+The `s()` component of the model formula designates a spline, and specifies details about the particular type of spline to be fit.  The `fx = TRUE` component of the formula indicates that the amount of smoothing is fixed.  The default value for the `fx` argument is `fx = FALSE`, in which case the amount of smoothing is determined by (generalized) cross-validation.  When `fx = TRUE`, the parameter $k$ determines the dimensionality (degree of flexibility) of the spline.  Larger values of $k$ correspond to greater flexibility, and a less smooth fit.  I think that the number of knots is $k-4$, such that setting $k=4$ fits a familiar cubic polynomial with no knots.  Setting $k=5$ then fits a regression spline with one knot, etc.  I have not been able to figure out where the knots are placed.
 
 In any case, we'll fit a regression spline with two knots:
 
