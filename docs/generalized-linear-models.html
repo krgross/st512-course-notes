@@ -258,7 +258,7 @@ div.csl-indent {
 <li class="chapter" data-level="4.1" data-path="generalized-linear-models.html"><a href="generalized-linear-models.html#logistic-regression"><i class="fa fa-check"></i><b>4.1</b> Logistic regression</a>
 <ul>
 <li class="chapter" data-level="4.1.1" data-path="generalized-linear-models.html"><a href="generalized-linear-models.html#individual-binary-responses-donner-party-data"><i class="fa fa-check"></i><b>4.1.1</b> Individual binary responses: Donner party data</a></li>
-<li class="chapter" data-level="4.1.2" data-path="generalized-linear-models.html"><a href="generalized-linear-models.html#individual-binary-responses-tb-in-boar"><i class="fa fa-check"></i><b>4.1.2</b> Individual binary responses: TB in boar</a></li>
+<li class="chapter" data-level="4.1.2" data-path="generalized-linear-models.html"><a href="generalized-linear-models.html#complete-separation"><i class="fa fa-check"></i><b>4.1.2</b> Complete separation</a></li>
 </ul></li>
 <li class="chapter" data-level="4.2" data-path="generalized-linear-models.html"><a href="generalized-linear-models.html#poisson-regression"><i class="fa fa-check"></i><b>4.2</b> Poisson regression</a></li>
 </ul></li>
@@ -451,6 +451,12 @@ which will work just fine.</p>
 \]</span></p>
 <p>Sometimes we interpret the logistic regression parameters in terms of the odds ratio. In the logistic regression model, if we hold all other predictors constant and increase the predictor <span class="math inline">\(x_i\)</span> by 1, then the predicted odds of success are multiplied by the factor <span class="math inline">\(e^{\beta_i}\)</span>. This is called the odds ratio for predictor <span class="math inline">\(i\)</span>. For the Donner party data, the odds ratio associated with age is <span class="math inline">\(e^{-0.078} = 0.925\)</span>, so that each additional year of age (when comparing two people of the same sex) decreases the odds by a multiplicative factor of 0.925. Or, if you prefer, the odds decrease by 7.5% for every additional year of age.</p>
 <p>For generalized linear models, there are several different tests that we can use for statistical significance. The <code>glm</code> output reports a <span class="math inline">\(z\)</span>-test, for which the test statistic is simply the estimate divided by the standard error, and the <span class="math inline">\(p\)</span>-value is found by comparison to a standard normal distribution. (Remember that by “standard” normal distribution, we mean a normal distribution with a mean of 0 and a variance of 1. Remember also that statisticians usually reserve the notation <span class="math inline">\(z\)</span> for the standard normal distribution.)</p>
+<p>The output provided by the <code>summary</code> also includes items called the <code>null deviance</code> and <code>residual deviance</code>. Loosely, these are the analogous quantities to the total sum-of-squares and residual (or error) sum-of-squares in the general linear model. The null deviance measures the total variation in the data (with the definition of variation suitably adjusted for the binary distribution of the response) and the residual deviance measures the variation left unexplained by the model. Notice that both in this case are associated with a degrees of freedom, and that the df is the same as it would be in the sum-of-squares case in ordinary least-squares. For example, in the Donner party data, there are <span class="math inline">\(n=45\)</span> data points, our model currently contains <span class="math inline">\(k=2\)</span> predictors, and the df associated with the residual deviance is <span class="math inline">\(n-(k+1)=42\)</span>.</p>
+<p>Motivated by this analogy, some have proposed that we can compute a “pseudo-<span class="math inline">\(R^2\)</span>” to tell us how much of the variance in the response is explained by the regression model. Working by analogy with our formula for <span class="math inline">\(R^2\)</span> from ordinary regression, the pseudo-<span class="math inline">\(R^2\)</span> is
+<span class="math display">\[
+\mathrm{pseudo}-R^2 = 1 - \frac{\mbox{residual deviance}}{\mbox{null deviance}} = 1 - \frac{\mbox{51.26}}{\mbox{61.83}} = 16.3\%
+\]</span></p>
+<p>This value needs to be taken with a grain of salt, because it turns out that the residual deviance will never be (or at least should never be) much lower than its associated df, because of the randomness inherent in observing binomial outcomes instead of probabilities.</p>
 <hr />
 <p><span style="color: gray;"> In generalized linear models, parameter estimates are found by a scheme called maximum likelihood estimation. In maximum likelihood estimation, the model is used to construct an objective function called the likelihood, in which large values of the likelihood indicate a better fit. Some call the likelihood a “goodness-of-fit” metric. The maximum likelihood estimates, or MLEs, are the values of the parameters that (you guessed it) maximize this likelihood. (Actually, its computationally easier to maximize the log-likelihood, but the values that maximize the log-likelihood will also be the values that maximize the likelihood.) The MLEs are found by an optimization algorithm, which is the mysterious “Fisher scoring” reported at the end of the <code>glm</code> summary. Standard errors of parameter estimates are found by inverting the Hessian (or matrix of second derivatves) of the log-likelihood function at the MLEs.</span></p>
 <hr />
@@ -480,8 +486,8 @@ which will work just fine.</p>
 ## Number of Fisher Scoring iterations: 5</code></pre>
 <p>The interaction is not significant at the usual 5% threshold for significance, so we’ll revert to the additive model.</p>
 </div>
-<div id="individual-binary-responses-tb-in-boar" class="section level3 hasAnchor" number="4.1.2">
-<h3><span class="header-section-number">4.1.2</span> Individual binary responses: TB in boar<a href="generalized-linear-models.html#individual-binary-responses-tb-in-boar" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div id="complete-separation" class="section level3 hasAnchor" number="4.1.2">
+<h3><span class="header-section-number">4.1.2</span> Complete separation<a href="generalized-linear-models.html#complete-separation" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>Here’s a second example of logistic regression. Something interesting and different will happen in these data.</p>
 <p>This is a data set analyzed by <span class="citation">Zuur et al. (<a href="#ref-zuur2009mixed">2009</a>)</span>. As explained there, these data describe the incidence of “tuberculosis-like lesions in wild boar <em>Sus scrofa</em>” in southern Spain, and were originally collected by <span class="citation">Vicente et al. (<a href="#ref-vicente2006wild">2006</a>)</span>. The potential explanatory variables in the data set include a measure of the animal’s size, it’s sex, and a grouping into one of four age classes.</p>
 <p>Let’s load the data, do some housekeeping, and have a look at the data set:</p>
@@ -583,7 +589,7 @@ which will work just fine.</p>
 ## AIC: 653.43
 ## 
 ## Number of Fisher Scoring iterations: 14</code></pre>
-<p>It’s pandemonium! Something has gone wickedly wrong here. Notice how wild the standard errors are.</p>
+<p>Something has gone wickedly wrong here. Notice how wild the standard errors are.</p>
 <p>To figure out what went wrong, we need to do a bit of detective work. Let’s back up and try to figure out how many boar were infected in each combination of sex and age class. We can compute the appropriate tallies with the <code>table</code> command; we’ll be stylish at use the <code>with</code> command to write some pretty code:</p>
 <div class="sourceCode" id="cb149"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb149-1"><a href="generalized-linear-models.html#cb149-1" tabindex="-1"></a><span class="fu">with</span>(boar, <span class="fu">table</span>(tb, age, sex))</span></code></pre></div>
 <pre><code>## , , sex = 1
@@ -637,25 +643,51 @@ which will work just fine.</p>
 ## Number of Fisher Scoring iterations: 4</code></pre>
 <p>For these data, this works. In other cases, a second option is to use so-called “exact” methods for inference. There doesn’t appear to be a good package available for implementing these methods in R. Other software packages might be necessary.</p>
 <!-- ### Grouped binary data: Industrial melanism -->
-<!-- We'll start with the standard logistic regression model for the industrial melanism data.  We are primarily interested in determining if the effect of color morph on removal rate changes with distance from Liverpool.  For grouped binary data, we need to specify both the number of "successes" and number of "failures" as the response variable in the model.  Here, we use `cbind` to create a two-column matrix with the number of "successes" (moths removed) in the first column, and the number of "failures" (moths not removed) in the second column.  See the help documentation for `glm` for more details. -->
+<!-- So far, in both data sets that we have seen, each individual data point gives the outcome of a single trial.  Sometimes, the data are structured so that each data point is a tally of the number of outcomes of one type in a set of trials.  We call these data "grouped". -->
+<!-- To illustrate, we will consider data from a famous ecological study investigating predation on light and dark colored moths along an urban-rural transect outside of Liverpool, England. The original source for these data is @bishop1972; I obtained them from @ramsey2002. These data consist of paired binomial responses with two covariates: distance from Liverpool (a station-level covariate) and color morph (an observation-level covariate).   -->
+<!-- Although simple, these data contain many features that complicate their analysis: -->
+<!-- * Observations from the same location are (positively) correlated, presumably because the predation pressure varies from one location to the next. -->
+<!-- * The responses are grouped binomial responses with varying group size (that is, varying numbers of moths placed on trees) at each location. -->
+<!-- Accommodating both the non-independence (due to the pairing) and the non-normality of these data requires a more sophisticated approach.  Here, we will focus on accommodating the binomial nature of the response.  We will focus on using mixed models to accommodate the correlations among observations from the same location. -->
+<!-- Let's first have a look at the data: -->
 <!-- ```{r} -->
 <!-- moth <- read.table("data/moth.txt", head = TRUE, stringsAsFactors = TRUE) -->
-<!-- fm1 <- glm(cbind(removed, placed - removed) ~ morph * distance,  -->
+<!-- summary(moth) -->
+<!-- head(moth) -->
+<!-- ``` -->
+<!-- In each record, the variable `placed` gives the number of moths that were placed on the trees, and the variable `removed` gives the number that were removed, presumably by predators.  For these data, we'd like to know if the rate at which moths are removed changes differently for light vs.\ dark moths as we move further out into the countryside and away from the urban city center. In other words, we want to know if there is an interaction between `distance` (the distance from Liverpool) and the color `morph`. -->
+<!-- In notation, let $i=1,2$ index the two color morphs, let $j = 1, \ldots, 7$ index the locations, let $y_{ij}$ give the number of moths removed, let $n_{ij}$ give the number of moths placed, and let $x_j$ give the distance of station $j$ from Liverpool.  Here, we will study the model  -->
+<!-- \[ -->
+<!-- \mathrm{logit}(y_{ij} / n_{ij}) = a_i + b_i x_j + \varepsilon_{ij}  -->
+<!-- \] -->
+<!-- which regresses the log odds of moth removal against distance from Liverpool, with different intercepts and slopes for each color morph.  We are most interested in learning about the difference $b_1 - b_2$, which quantifies how the relationship between log odds of removal and distance differs between the two color morphs, and determining whether there is evidence that this difference $\neq 0$.   -->
+<!-- For grouped binary data, we need to specify both the number of "successes" and number of "failures" as the response variable in the model.  Here, we use `cbind` to create a two-column matrix with the number of "successes" (moths removed) in the first column, and the number of "failures" (moths not removed) in the second column.   -->
+<!-- ```{r} -->
+<!-- fm1 <- glm(cbind(removed, placed - removed) ~ morph * distance, -->
+<!--            family = binomial(link = "logit"), -->
+<!--            data = moth) -->
+<!-- summary(fm1) -->
+<!-- ``` -->
+<!-- I STOPPED HERE -->
+<!-- We'll start with the standard logistic regression model for the industrial melanism data.  We are primarily interested in determining if the effect of color morph on removal rate changes with distance from Liverpool.   -->
+<!-- ```{r} -->
+<!-- moth <- read.table("data/moth.txt", head = TRUE, stringsAsFactors = TRUE) -->
+<!-- fm1 <- glm(cbind(removed, placed - removed) ~ morph * distance, -->
 <!--            family = binomial(link = "logit"), -->
 <!--            data = moth) -->
 <!-- summary(fm1) -->
 <!-- ``` -->
 <!-- Grouped binary data are often overdispersed relative to the variance implied by a binomial distribution.  In this case, we would call the overdispersion "extra-binomial" variation.  As with count data, we can deal with overdispersion through a quasi-likelihood approach: -->
 <!-- ```{r} -->
-<!-- fm1q <- glm(cbind(removed, placed - removed) ~ morph * distance,  -->
+<!-- fm1q <- glm(cbind(removed, placed - removed) ~ morph * distance, -->
 <!--            family = quasibinomial(link = "logit"), -->
 <!--            data = moth) -->
 <!-- summary(fm1q) -->
 <!-- ``` -->
-<!-- As with count data, using quasi-likelihood to estimate the scale (or dispersion) parameter increases the estimates of the standard errors of the coefficients by an amount equal to the square root of the estimated scale parameter.   -->
+<!-- As with count data, using quasi-likelihood to estimate the scale (or dispersion) parameter increases the estimates of the standard errors of the coefficients by an amount equal to the square root of the estimated scale parameter. -->
 <!-- The $t$-test of the interaction between color morph and distance indicates that there is a statistically significant difference in how the proportion of moth removes changes over the distance transect between the two color morphs. -->
 <!-- ```{r} -->
-<!-- plot(x = moth$distance,  -->
+<!-- plot(x = moth$distance, -->
 <!--      y = residuals(fm1q, type = "deviance"), -->
 <!--      xlab = "distance", -->
 <!--      ylab = "Deviance residuals") -->
@@ -678,7 +710,7 @@ which will work just fine.</p>
 <!-- Note that this is generalization of the usual $F$-statistic for comparing nested models from OLS.  Under the null hypothesis, the test statistic has an $F_{p_1 - p_0, n - p_1}$ distribution. -->
 <!-- # test for interaction between distance and morph -->
 <!-- ```{r} -->
-<!-- fm2q <- glm(cbind(removed, placed - removed) ~ morph + distance,  -->
+<!-- fm2q <- glm(cbind(removed, placed - removed) ~ morph + distance, -->
 <!--             family = quasibinomial(link = "logit"), -->
 <!--             data = moth) -->
 <!-- anova(fm2q, fm1q, test = "F") -->
@@ -724,7 +756,7 @@ which will work just fine.</p>
 ## AIC: 156.46
 ## 
 ## Number of Fisher Scoring iterations: 5</code></pre>
-<p>Thus the so-called pseudo-<span class="math inline">\(R^2\)</span> for the model with the log link is
+<p>Thus the pseudo-<span class="math inline">\(R^2\)</span> for the model is
 <span class="math display">\[
 \mathrm{pseudo}-R^2 = 1 - \frac{51.012}{75.372} = 32.3\%
 \]</span>
@@ -798,8 +830,8 @@ We can visualize the fit by plotting a best-fitting line with a 95% confidence i
 <span id="cb162-12"><a href="generalized-linear-models.html#cb162-12" tabindex="-1"></a>      <span class="at">y   =</span> predict.fm3<span class="sc">$</span>fit <span class="sc">+</span> <span class="fu">qt</span>(<span class="fl">0.975</span>, <span class="at">df =</span> <span class="dv">39</span>) <span class="sc">*</span> predict.fm3<span class="sc">$</span>se.fit, </span>
 <span id="cb162-13"><a href="generalized-linear-models.html#cb162-13" tabindex="-1"></a>      <span class="at">col =</span> <span class="st">&quot;blue&quot;</span>,</span>
 <span id="cb162-14"><a href="generalized-linear-models.html#cb162-14" tabindex="-1"></a>      <span class="at">lty =</span> <span class="st">&quot;dashed&quot;</span>)</span></code></pre></div>
-<p><img src="04-GeneralizedLinearModels_files/figure-html/unnamed-chunk-12-1.png" width="672" />
-Switching from a Poisson family to a quasi-Poisson family hasn’t changed the parameter estimates of the fit, but it has increased the associate standard errors. To be precise, the standard errors have been multiplied by something called the “dispersion parameter”, which in this case is about 1.16. So, the standard errors have increased by 16% — nothing dramatic, but big enough that we need to account for it. The dispersion parameter should be close to the square root of the ratio of the residual deviance to its df; I’m not sure why it isn’t exactly that value in this case.</p>
+<p><img src="04-GeneralizedLinearModels_files/figure-html/unnamed-chunk-12-1.png" width="672" /></p>
+<p>Switching from a Poisson family to a quasi-Poisson family hasn’t changed the parameter estimates of the fit, but it has increased the associate standard errors. To be precise, the standard errors have been multiplied by something called the “dispersion parameter”, which in this case is about 1.16. So, the standard errors have increased by 16% — nothing dramatic, but big enough that we need to account for it. The dispersion parameter should be close to the square root of the ratio of the residual deviance to its df; I’m not sure why it isn’t exactly that value in this case.</p>
 <hr />
 <p><span style="color: gray;">So what’s “quasi” about a quasi-Poisson family? In the first case, there is no such thing as a “quasi-Poisson” distribution. The “quasi-Poisson” family is just a Poisson fit with the standard errors inflated by the dispersion parameter.</span></p>
 <p><span style="color: gray;">You may also wonder why we didn’t discuss overdispersion in logistic regression. In logistic regression with individual responses, like the Donner party data and the boar data, it’s hard to define overdispersion. For logistic regression with grouped binary responses, however, overdispersion can and should be accounted for, just like in Poisson regression. (Grouped responses are those where each data point is not a single success or failure, but a tally of the number of successes in many trials.) There is a <code>quasibinomial</code> family in R to deal with overdispersed (grouped) binomial data.</span></p>

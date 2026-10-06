@@ -67,7 +67,7 @@ nls
 generalized-linear-models
 logistic-regression
 individual-binary-responses-donner-party-data
-individual-binary-responses-tb-in-boar
+complete-separation
 poisson-regression
 smoothing
 nearest-neighbor-methods
