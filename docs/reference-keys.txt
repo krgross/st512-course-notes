@@ -65,12 +65,10 @@ non-linear-regression
 polynomial-regression
 nls
 generalized-linear-models
-poisson-regression
-binary-responses
+logistic-regression
+individual-binary-responses-donner-party-data
 individual-binary-responses-tb-in-boar
-grouped-binary-data-industrial-melanism
-implementation-in-sas
-complete-separation
+poisson-regression
 smoothing
 nearest-neighbor-methods
 loess-smoothers

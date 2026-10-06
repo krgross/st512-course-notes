@@ -1,7 +1,7 @@
 --- 
 title: "Statistical analysis of designed experiments: yesterday, today, and tomorrow"
 author: "Kevin Gross"
-date: "2026-09-21"
+date: "2026-10-05"
 output:
   bookdown::gitbook:
     config:

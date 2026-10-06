@@ -23,7 +23,7 @@
 <meta name="author" content="Kevin Gross" />
 
 
-<meta name="date" content="2026-09-21" />
+<meta name="date" content="2026-10-05" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -255,16 +255,12 @@ div.csl-indent {
 </ul></li>
 <li class="chapter" data-level="4" data-path="generalized-linear-models.html"><a href="generalized-linear-models.html"><i class="fa fa-check"></i><b>4</b> Generalized linear models</a>
 <ul>
-<li class="chapter" data-level="4.1" data-path="generalized-linear-models.html"><a href="generalized-linear-models.html#poisson-regression"><i class="fa fa-check"></i><b>4.1</b> Poisson regression</a></li>
-<li class="chapter" data-level="4.2" data-path="generalized-linear-models.html"><a href="generalized-linear-models.html#binary-responses"><i class="fa fa-check"></i><b>4.2</b> Binary responses</a>
+<li class="chapter" data-level="4.1" data-path="generalized-linear-models.html"><a href="generalized-linear-models.html#logistic-regression"><i class="fa fa-check"></i><b>4.1</b> Logistic regression</a>
 <ul>
-<li class="chapter" data-level="4.2.1" data-path="generalized-linear-models.html"><a href="generalized-linear-models.html#individual-binary-responses-tb-in-boar"><i class="fa fa-check"></i><b>4.2.1</b> Individual binary responses: TB in boar</a></li>
-<li class="chapter" data-level="4.2.2" data-path="generalized-linear-models.html"><a href="generalized-linear-models.html#grouped-binary-data-industrial-melanism"><i class="fa fa-check"></i><b>4.2.2</b> Grouped binary data: Industrial melanism</a></li>
+<li class="chapter" data-level="4.1.1" data-path="generalized-linear-models.html"><a href="generalized-linear-models.html#individual-binary-responses-donner-party-data"><i class="fa fa-check"></i><b>4.1.1</b> Individual binary responses: Donner party data</a></li>
+<li class="chapter" data-level="4.1.2" data-path="generalized-linear-models.html"><a href="generalized-linear-models.html#individual-binary-responses-tb-in-boar"><i class="fa fa-check"></i><b>4.1.2</b> Individual binary responses: TB in boar</a></li>
 </ul></li>
-<li class="chapter" data-level="4.3" data-path="generalized-linear-models.html"><a href="generalized-linear-models.html#implementation-in-sas"><i class="fa fa-check"></i><b>4.3</b> Implementation in SAS</a>
-<ul>
-<li class="chapter" data-level="4.3.1" data-path="generalized-linear-models.html"><a href="generalized-linear-models.html#complete-separation"><i class="fa fa-check"></i><b>4.3.1</b> Complete separation</a></li>
-</ul></li>
+<li class="chapter" data-level="4.2" data-path="generalized-linear-models.html"><a href="generalized-linear-models.html#poisson-regression"><i class="fa fa-check"></i><b>4.2</b> Poisson regression</a></li>
 </ul></li>
 <li class="part"><span><b>Part II: Statistical learning</b></span></li>
 <li class="chapter" data-level="5" data-path="smoothing.html"><a href="smoothing.html"><i class="fa fa-check"></i><b>5</b> Smoothing</a>
@@ -424,8 +420,8 @@ mean of x
 <!-- \end{center} -->
 <p>This is a randomized complete block design (RCBD). A RCBD consists of several blocks, each of which is divided into several homogeneous EUs. Treatments are randomly assigned to EUs within each block. A blocked design is “complete” when each level of the experimental treatment is represented at least once in every block. In contrast, a blocked design is “incomplete” when some experimental treatments are missing from one or more blocks.<a href="#fn33" class="footnote-ref" id="fnref33"><sup>33</sup></a> A <em>standard</em> RCBD is one in which every treatment (or every treatment combination) is assigned to exactly one EU in each block.</p>
 <p>The classical way to analyze data from an RCBD is to include the block as an additional factor in the ANOVA, albeit a factor that is not engaged in interactions with the treatment factors. For the grip strength data, we would treat “subject” (the person) as a blocking factor.</p>
-<div class="sourceCode" id="cb312"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb312-1"><a href="blocked-designs.html#cb312-1" tabindex="-1"></a>grip <span class="ot">&lt;-</span> <span class="fu">read.table</span>(<span class="st">&quot;data/gripall-long.txt&quot;</span>, <span class="at">head =</span> T, <span class="at">stringsAsFactors =</span> T)</span>
-<span id="cb312-2"><a href="blocked-designs.html#cb312-2" tabindex="-1"></a><span class="fu">summary</span>(grip)</span></code></pre></div>
+<div class="sourceCode" id="cb299"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb299-1"><a href="blocked-designs.html#cb299-1" tabindex="-1"></a>grip <span class="ot">&lt;-</span> <span class="fu">read.table</span>(<span class="st">&quot;data/gripall-long.txt&quot;</span>, <span class="at">head =</span> T, <span class="at">stringsAsFactors =</span> T)</span>
+<span id="cb299-2"><a href="blocked-designs.html#cb299-2" tabindex="-1"></a><span class="fu">summary</span>(grip)</span></code></pre></div>
 <pre><code>##     subject          hand        strength    
 ##  AA     :  2   dominant:145   Min.   :119.0  
 ##  AB     :  2   off     :145   1st Qu.:216.2  
@@ -434,8 +430,8 @@ mean of x
 ##  AE     :  2                  3rd Qu.:362.5  
 ##  AF     :  2                  Max.   :503.0  
 ##  (Other):278</code></pre>
-<div class="sourceCode" id="cb314"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb314-1"><a href="blocked-designs.html#cb314-1" tabindex="-1"></a>fm1 <span class="ot">&lt;-</span> <span class="fu">lm</span>(strength <span class="sc">~</span> subject <span class="sc">+</span> hand, <span class="at">data =</span> grip)</span>
-<span id="cb314-2"><a href="blocked-designs.html#cb314-2" tabindex="-1"></a><span class="fu">anova</span>(fm1)</span></code></pre></div>
+<div class="sourceCode" id="cb301"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb301-1"><a href="blocked-designs.html#cb301-1" tabindex="-1"></a>fm1 <span class="ot">&lt;-</span> <span class="fu">lm</span>(strength <span class="sc">~</span> subject <span class="sc">+</span> hand, <span class="at">data =</span> grip)</span>
+<span id="cb301-2"><a href="blocked-designs.html#cb301-2" tabindex="-1"></a><span class="fu">anova</span>(fm1)</span></code></pre></div>
 <pre><code>## Analysis of Variance Table
 ## 
 ## Response: strength

@@ -23,7 +23,7 @@
 <meta name="author" content="Kevin Gross" />
 
 
-<meta name="date" content="2026-09-21" />
+<meta name="date" content="2026-10-05" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -255,16 +255,12 @@ div.csl-indent {
 </ul></li>
 <li class="chapter" data-level="4" data-path="generalized-linear-models.html"><a href="generalized-linear-models.html"><i class="fa fa-check"></i><b>4</b> Generalized linear models</a>
 <ul>
-<li class="chapter" data-level="4.1" data-path="generalized-linear-models.html"><a href="generalized-linear-models.html#poisson-regression"><i class="fa fa-check"></i><b>4.1</b> Poisson regression</a></li>
-<li class="chapter" data-level="4.2" data-path="generalized-linear-models.html"><a href="generalized-linear-models.html#binary-responses"><i class="fa fa-check"></i><b>4.2</b> Binary responses</a>
+<li class="chapter" data-level="4.1" data-path="generalized-linear-models.html"><a href="generalized-linear-models.html#logistic-regression"><i class="fa fa-check"></i><b>4.1</b> Logistic regression</a>
 <ul>
-<li class="chapter" data-level="4.2.1" data-path="generalized-linear-models.html"><a href="generalized-linear-models.html#individual-binary-responses-tb-in-boar"><i class="fa fa-check"></i><b>4.2.1</b> Individual binary responses: TB in boar</a></li>
-<li class="chapter" data-level="4.2.2" data-path="generalized-linear-models.html"><a href="generalized-linear-models.html#grouped-binary-data-industrial-melanism"><i class="fa fa-check"></i><b>4.2.2</b> Grouped binary data: Industrial melanism</a></li>
+<li class="chapter" data-level="4.1.1" data-path="generalized-linear-models.html"><a href="generalized-linear-models.html#individual-binary-responses-donner-party-data"><i class="fa fa-check"></i><b>4.1.1</b> Individual binary responses: Donner party data</a></li>
+<li class="chapter" data-level="4.1.2" data-path="generalized-linear-models.html"><a href="generalized-linear-models.html#individual-binary-responses-tb-in-boar"><i class="fa fa-check"></i><b>4.1.2</b> Individual binary responses: TB in boar</a></li>
 </ul></li>
-<li class="chapter" data-level="4.3" data-path="generalized-linear-models.html"><a href="generalized-linear-models.html#implementation-in-sas"><i class="fa fa-check"></i><b>4.3</b> Implementation in SAS</a>
-<ul>
-<li class="chapter" data-level="4.3.1" data-path="generalized-linear-models.html"><a href="generalized-linear-models.html#complete-separation"><i class="fa fa-check"></i><b>4.3.1</b> Complete separation</a></li>
-</ul></li>
+<li class="chapter" data-level="4.2" data-path="generalized-linear-models.html"><a href="generalized-linear-models.html#poisson-regression"><i class="fa fa-check"></i><b>4.2</b> Poisson regression</a></li>
 </ul></li>
 <li class="part"><span><b>Part II: Statistical learning</b></span></li>
 <li class="chapter" data-level="5" data-path="smoothing.html"><a href="smoothing.html"><i class="fa fa-check"></i><b>5</b> Smoothing</a>
@@ -377,223 +373,125 @@ div.csl-indent {
             <section class="normal" id="section-">
 <div id="generalized-linear-models" class="section level1 hasAnchor" number="4">
 <h1><span class="header-section-number">Chapter 4</span> Generalized linear models<a href="generalized-linear-models.html#generalized-linear-models" class="anchor-section" aria-label="Anchor link to header"></a></h1>
-<p>Generalized linear modes extend the machinery of the “general linear model” (regression and ANOVA) to data sets in which the response variable may have a non-Gaussian distribution. Generalized linear models do not encompass all possible distributions for the response variable. Instead, the distribution of the response variable must belong to a group of distributions known as the “exponential family”. (Confusingly, there is also such a thing as an exponential distribution. The exponential distribution is a member of the exponential family, but it is not the only one.) The exponential family of distributions includes many of the distributions that we encounter in practical data analysis, including Poisson, negative binomial, binomial, gamma, and beta distributions. The Gaussian distribution is included in the exponential family as well. One notable distribution that is not part of the exponential family is the <span class="math inline">\(t\)</span>-distribution. Distributions in the exponential family all give rise to likelihoods that share the same general form, and thus can be handled with a unified fitting scheme.</p>
-<p>In practice, logistic regression (with binomial responses) and Poisson regression are far and away the two most common forms of generalized linear models that one encounters.</p>
-<div id="poisson-regression" class="section level2 hasAnchor" number="4.1">
-<h2><span class="header-section-number">4.1</span> Poisson regression<a href="generalized-linear-models.html#poisson-regression" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p>We will begin with an example of Poisson regression. These data are originally from <span class="citation">Poole (<a href="#ref-poole1989mate">1989</a>)</span>, and were analyzed in <span class="citation">Ramsey and Schafer (<a href="#ref-ramsey2012statistical">2012</a>)</span>. They describe an observational study of 41 male elephants over 8 years at Amboseli National Park in Kenya. Each record in this data set gives the age of a male elephant at the beginning of a study and the number of successful matings for the elephant over the study’s duration. The number of matings is a count variable. Our goal is to characterize how the number of matings is related to the elephant’s age. We’ll start by fitting a model with the canonical log link.</p>
-<div class="sourceCode" id="cb134"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb134-1"><a href="generalized-linear-models.html#cb134-1" tabindex="-1"></a>elephant <span class="ot">&lt;-</span> <span class="fu">read.table</span>(<span class="st">&quot;data/elephant.txt&quot;</span>, <span class="at">head =</span> T)</span>
-<span id="cb134-2"><a href="generalized-linear-models.html#cb134-2" tabindex="-1"></a><span class="fu">head</span>(elephant)</span></code></pre></div>
-<pre><code>##   age matings
-## 1  27       0
-## 2  28       1
-## 3  28       1
-## 4  28       1
-## 5  28       3
-## 6  29       0</code></pre>
-<div class="sourceCode" id="cb136"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb136-1"><a href="generalized-linear-models.html#cb136-1" tabindex="-1"></a><span class="fu">with</span>(elephant, <span class="fu">plot</span>(matings <span class="sc">~</span> age))</span></code></pre></div>
-<p><img src="04-GeneralizedLinearModels_files/figure-html/unnamed-chunk-1-1.png" width="672" /></p>
-<div class="sourceCode" id="cb137"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb137-1"><a href="generalized-linear-models.html#cb137-1" tabindex="-1"></a>fm1 <span class="ot">&lt;-</span> <span class="fu">glm</span>(matings <span class="sc">~</span> age, </span>
-<span id="cb137-2"><a href="generalized-linear-models.html#cb137-2" tabindex="-1"></a>           <span class="at">family =</span> <span class="fu">poisson</span>(<span class="at">link =</span> <span class="st">&quot;log&quot;</span>), </span>
-<span id="cb137-3"><a href="generalized-linear-models.html#cb137-3" tabindex="-1"></a>           <span class="at">data   =</span> elephant)  <span class="co"># log link is the default</span></span>
-<span id="cb137-4"><a href="generalized-linear-models.html#cb137-4" tabindex="-1"></a></span>
-<span id="cb137-5"><a href="generalized-linear-models.html#cb137-5" tabindex="-1"></a><span class="fu">summary</span>(fm1)</span></code></pre></div>
-<pre><code>## 
-## Call:
-## glm(formula = matings ~ age, family = poisson(link = &quot;log&quot;), 
-##     data = elephant)
-## 
-## Coefficients:
-##             Estimate Std. Error z value Pr(&gt;|z|)    
-## (Intercept) -1.58201    0.54462  -2.905  0.00368 ** 
-## age          0.06869    0.01375   4.997 5.81e-07 ***
-## ---
-## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
-## 
-## (Dispersion parameter for poisson family taken to be 1)
-## 
-##     Null deviance: 75.372  on 40  degrees of freedom
-## Residual deviance: 51.012  on 39  degrees of freedom
-## AIC: 156.46
-## 
-## Number of Fisher Scoring iterations: 5</code></pre>
-<p>Thus the so-called pseudo-<span class="math inline">\(R^2\)</span> for the model with the log link is
+<p>Generalized linear modes extend the machinery of the “general linear model” (regression and ANOVA) to data sets in which the response variable may have a non-Gaussian distribution. Generalized linear models do not encompass all possible distributions for the response variable. Instead, the distribution of the response variable must belong to a group of distributions known as the “exponential family”. (Confusingly, there is also such a thing as an exponential distribution. The exponential distribution is a member of the exponential family, but it is not the only one.) The exponential family of distributions includes many of the distributions that we encounter in practical data analysis, including Poisson, negative binomial, binomial, gamma, and beta distributions. The Gaussian distribution is included in the exponential family as well. One notable distribution that is not part of the exponential family is the <span class="math inline">\(t\)</span>-distribution. Distributions in the exponential family all have a common mathematical structure, and thus can be handled with a unified fitting scheme.</p>
+<p>In practice, logistic regression (with binomial responses) and Poisson regression are far and away the two most common forms of generalized linear models that one encounters. You can go far with only knowing these two examples of generalized linear models.</p>
+<div id="logistic-regression" class="section level2 hasAnchor" number="4.1">
+<h2><span class="header-section-number">4.1</span> Logistic regression<a href="generalized-linear-models.html#logistic-regression" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>We generally distinguish between two types of data with binary responses: Data in which each individual record is a separate a binary response, and data in which each record consists of a group of binary observations. The same methods can be used for either type of data. We will begin by studying two data sets with individual binary responses</p>
+<div id="individual-binary-responses-donner-party-data" class="section level3 hasAnchor" number="4.1.1">
+<h3><span class="header-section-number">4.1.1</span> Individual binary responses: Donner party data<a href="generalized-linear-models.html#individual-binary-responses-donner-party-data" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>The Donner party was a well-known group of settlers who got stuck in the Sierra Nevada snows in the winter of 1846-47. The Donner party included 45 adults (defined here as individuals at least 15 years of age), of whom only 20 survived the famous winter <span class="citation">Grayson (<a href="#ref-grayson1993differential">1993</a>)</span>. We have a data set that includes age, gender, and fate for all 45 members of the party. Here’s a look at the data set:</p>
+<div class="sourceCode" id="cb134"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb134-1"><a href="generalized-linear-models.html#cb134-1" tabindex="-1"></a>donner <span class="ot">&lt;-</span> <span class="fu">read.table</span>(<span class="st">&quot;data/donner.txt&quot;</span>, <span class="at">head =</span> T, <span class="at">stringsAsFactors =</span> T)</span>
+<span id="cb134-2"><a href="generalized-linear-models.html#cb134-2" tabindex="-1"></a><span class="fu">summary</span>(donner)</span></code></pre></div>
+<pre><code>##       age           sex           fate   
+##  Min.   :15.0   female:15   died    :25  
+##  1st Qu.:24.0   male  :30   survived:20  
+##  Median :28.0                            
+##  Mean   :31.8                            
+##  3rd Qu.:40.0                            
+##  Max.   :65.0</code></pre>
+<p>Suppose we want to model the relationship between age, gender, and fate, where age and gender are predictors, and fate is the response. Fate is a binary response because it has only two possible values.</p>
+<p>Our goal is to relate the predictors to the probability of one outcome or the other. The challenge in doing so is that probabilities are constrained to take values between 0 and 1, and are thus awkward to work with mathematically. Instead, we model the log odds of oue outcome for the other. To explain log odds, we first need to explain odds.</p>
+<p>Suppose that the probability of an event occurring is <span class="math inline">\(p\)</span>. The odds of that event occurring are
 <span class="math display">\[
-\mathrm{pseudo}-R^2 = 1 - \frac{51.012}{75.372} = 32.3\%
+\mathrm{odds} = \dfrac{p}{1-p}
 \]</span>
-We can visualize the fit by plotting a best-fitting line with a 95% confidence interval. Because the scale parameter is not estimated here, we will use a critical value from a standard normal distribution. Later, when we estimate the scale parameter based on data, we will use a critical value from a <span class="math inline">\(t\)</span>-distribution instead.</p>
-<div class="sourceCode" id="cb139"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb139-1"><a href="generalized-linear-models.html#cb139-1" tabindex="-1"></a>new.data <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">age =</span> <span class="fu">seq</span>(<span class="at">from =</span> <span class="fu">min</span>(elephant<span class="sc">$</span>age),</span>
-<span id="cb139-2"><a href="generalized-linear-models.html#cb139-2" tabindex="-1"></a>                                 <span class="at">to   =</span> <span class="fu">max</span>(elephant<span class="sc">$</span>age),</span>
-<span id="cb139-3"><a href="generalized-linear-models.html#cb139-3" tabindex="-1"></a>                                 <span class="at">length =</span> <span class="dv">100</span>))</span>
-<span id="cb139-4"><a href="generalized-linear-models.html#cb139-4" tabindex="-1"></a></span>
-<span id="cb139-5"><a href="generalized-linear-models.html#cb139-5" tabindex="-1"></a>predict.fm1 <span class="ot">&lt;-</span> <span class="fu">predict</span>(fm1, <span class="at">newdata =</span> new.data, <span class="at">type =</span> <span class="st">&quot;response&quot;</span>, <span class="at">se.fit =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb139-6"><a href="generalized-linear-models.html#cb139-6" tabindex="-1"></a></span>
-<span id="cb139-7"><a href="generalized-linear-models.html#cb139-7" tabindex="-1"></a><span class="fu">with</span>(elephant, <span class="fu">plot</span>(matings <span class="sc">~</span> age))</span>
-<span id="cb139-8"><a href="generalized-linear-models.html#cb139-8" tabindex="-1"></a><span class="fu">lines</span>(<span class="at">x =</span> new.data<span class="sc">$</span>age, <span class="at">y =</span> predict.fm1<span class="sc">$</span>fit, <span class="at">col =</span> <span class="st">&quot;red&quot;</span>)</span>
-<span id="cb139-9"><a href="generalized-linear-models.html#cb139-9" tabindex="-1"></a></span>
-<span id="cb139-10"><a href="generalized-linear-models.html#cb139-10" tabindex="-1"></a><span class="co"># add lines for standard errors</span></span>
-<span id="cb139-11"><a href="generalized-linear-models.html#cb139-11" tabindex="-1"></a></span>
-<span id="cb139-12"><a href="generalized-linear-models.html#cb139-12" tabindex="-1"></a><span class="fu">lines</span>(<span class="at">x   =</span> new.data<span class="sc">$</span>age, </span>
-<span id="cb139-13"><a href="generalized-linear-models.html#cb139-13" tabindex="-1"></a>      <span class="at">y   =</span> predict.fm1<span class="sc">$</span>fit <span class="sc">-</span> <span class="fl">1.96</span> <span class="sc">*</span> predict.fm1<span class="sc">$</span>se.fit, </span>
-<span id="cb139-14"><a href="generalized-linear-models.html#cb139-14" tabindex="-1"></a>      <span class="at">col =</span> <span class="st">&quot;red&quot;</span>,</span>
-<span id="cb139-15"><a href="generalized-linear-models.html#cb139-15" tabindex="-1"></a>      <span class="at">lty =</span> <span class="st">&quot;dashed&quot;</span>)</span>
-<span id="cb139-16"><a href="generalized-linear-models.html#cb139-16" tabindex="-1"></a></span>
-<span id="cb139-17"><a href="generalized-linear-models.html#cb139-17" tabindex="-1"></a><span class="fu">lines</span>(<span class="at">x   =</span> new.data<span class="sc">$</span>age, </span>
-<span id="cb139-18"><a href="generalized-linear-models.html#cb139-18" tabindex="-1"></a>      <span class="at">y   =</span> predict.fm1<span class="sc">$</span>fit <span class="sc">+</span> <span class="fl">1.96</span> <span class="sc">*</span> predict.fm1<span class="sc">$</span>se.fit, </span>
-<span id="cb139-19"><a href="generalized-linear-models.html#cb139-19" tabindex="-1"></a>      <span class="at">col =</span> <span class="st">&quot;red&quot;</span>,</span>
-<span id="cb139-20"><a href="generalized-linear-models.html#cb139-20" tabindex="-1"></a>      <span class="at">lty =</span> <span class="st">&quot;dashed&quot;</span>)</span></code></pre></div>
-<p><img src="04-GeneralizedLinearModels_files/figure-html/unnamed-chunk-2-1.png" width="672" /></p>
-<p>While the canonical link is a natural starting point, we are free to try other link functions as well. Below, we try the identity link and plot the fit.</p>
-<div class="sourceCode" id="cb140"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb140-1"><a href="generalized-linear-models.html#cb140-1" tabindex="-1"></a>fm2 <span class="ot">&lt;-</span> <span class="fu">glm</span>(matings <span class="sc">~</span> age, <span class="at">family =</span> <span class="fu">poisson</span>(<span class="at">link =</span> <span class="st">&quot;identity&quot;</span>), <span class="at">data =</span> elephant)  </span>
-<span id="cb140-2"><a href="generalized-linear-models.html#cb140-2" tabindex="-1"></a></span>
-<span id="cb140-3"><a href="generalized-linear-models.html#cb140-3" tabindex="-1"></a><span class="fu">summary</span>(fm2)</span></code></pre></div>
+The logit, or log odds are simply the natural log of the odds, or
+<span class="math display">\[
+\mathrm{logit} = \ln \mathrm{odds} = \ln(\dfrac{p}{1-p}).
+\]</span></p>
+<p>We can work backwards from log odds or odds to probabilities by inverting the formulas above. Going from log odds to odds is easy:
+<span class="math display">\[
+\mathrm{odds} = e^{\mathrm{logit}}.
+\]</span>
+Going from odds to probabilities is also easy:
+<span class="math display">\[
+p = \dfrac{\mathrm{odds}}{1 + \mathrm{odds}}
+\]</span></p>
+<p>Now, we can use
+<span class="math display">\[
+\mathrm{logit}(p) = \beta_0 + \beta_1 x_1 + \beta_2 x_2 + \ldots,
+\]</span>
+which will work just fine.</p>
+<p>In R, we can fit this model using the <code>glm</code> command. The <code>glm</code> program fits [g]eneralized [l]inear [m]odels. The <code>glm</code> command includes an additional <code>family</code> argument, which is where we specify the distribution of the response. With binary responses, the distribution is the <code>binomial</code> family.</p>
+<div class="sourceCode" id="cb136"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb136-1"><a href="generalized-linear-models.html#cb136-1" tabindex="-1"></a>fm1 <span class="ot">&lt;-</span> <span class="fu">glm</span>(fate <span class="sc">~</span> age <span class="sc">+</span> sex, <span class="at">family =</span> binomial, <span class="at">data =</span> donner)</span>
+<span id="cb136-2"><a href="generalized-linear-models.html#cb136-2" tabindex="-1"></a><span class="fu">summary</span>(fm1)</span></code></pre></div>
 <pre><code>## 
 ## Call:
-## glm(formula = matings ~ age, family = poisson(link = &quot;identity&quot;), 
-##     data = elephant)
+## glm(formula = fate ~ age + sex, family = binomial, data = donner)
 ## 
 ## Coefficients:
-##             Estimate Std. Error z value Pr(&gt;|z|)    
-## (Intercept) -4.55205    1.33916  -3.399 0.000676 ***
-## age          0.20179    0.04023   5.016 5.29e-07 ***
+##             Estimate Std. Error z value Pr(&gt;|z|)  
+## (Intercept)  3.23041    1.38686   2.329   0.0198 *
+## age         -0.07820    0.03728  -2.097   0.0359 *
+## sexmale     -1.59729    0.75547  -2.114   0.0345 *
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
 ## 
-## (Dispersion parameter for poisson family taken to be 1)
+## (Dispersion parameter for binomial family taken to be 1)
 ## 
-##     Null deviance: 75.372  on 40  degrees of freedom
-## Residual deviance: 50.058  on 39  degrees of freedom
-## AIC: 155.5
+##     Null deviance: 61.827  on 44  degrees of freedom
+## Residual deviance: 51.256  on 42  degrees of freedom
+## AIC: 57.256
+## 
+## Number of Fisher Scoring iterations: 4</code></pre>
+<p>To interpret the output correctly, it is critical to know whether the software is modeling the probability of an individual dying or of an individual surviving. As far as I can tell, there’s no great way to figure this out. Some online documentation suggests that <code>glm</code> will model the probability of the outcome listed second following a call to the <code>levels</code> command. Let’s try it.</p>
+<div class="sourceCode" id="cb138"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb138-1"><a href="generalized-linear-models.html#cb138-1" tabindex="-1"></a><span class="fu">levels</span>(donner<span class="sc">$</span>fate)</span></code></pre></div>
+<pre><code>## [1] &quot;died&quot;     &quot;survived&quot;</code></pre>
+<p>So, the model above is modeling the log odds of surviving. That seems less morbid than modeling the log odds of dying, so we’ll stick with it. (It turns out that a model for the log odds of dying would generate the same parameter estimates, albeit with all the signs reversed.)</p>
+<p>We can interpret the model parameters in the same way that we interpret parameters from a multiple regression model, just remembering that we’re thinking about the log odds of surviving as the response. For example, the parameter associated with <code>age</code> tells us that when we compare two people of different ages but of the same sex, the older individual’s log odds of surviving will be 0.078 less for every additional year of age. (So 0.078 less if the older individual is one year older, <span class="math inline">\(2 \times 0.078 = 0.156\)</span> less if the individual is two years older, and so on.)</p>
+<p>While it’s quite hard to think on a log odds scale, note that log odds and probabilities move in the same direction. So, if older folks have a lower log odds of surviving, then they also have a lower probability of surviving.</p>
+<p>It’s good practice to work out the probabilities of surviving for a few test cases. For example, here’s how we’d compute the predicted survival probability for a 30-year old man.
+<span class="math display">\[
+\begin{align}
+\mathrm{logit} &amp; = \hat{\beta}_0 + \hat{\beta}_1 \times 30 + \hat{\beta}_2 \times 1 = -0.713 \\
+\mathrm{odds} &amp; =e^{-0.713} = 0.49\\
+\mathrm{probability} &amp; = 0.49/1.49 = 0.33.
+\end{align}
+\]</span></p>
+<p>Sometimes we interpret the logistic regression parameters in terms of the odds ratio. In the logistic regression model, if we hold all other predictors constant and increase the predictor <span class="math inline">\(x_i\)</span> by 1, then the predicted odds of success are multiplied by the factor <span class="math inline">\(e^{\beta_i}\)</span>. This is called the odds ratio for predictor <span class="math inline">\(i\)</span>. For the Donner party data, the odds ratio associated with age is <span class="math inline">\(e^{-0.078} = 0.925\)</span>, so that each additional year of age (when comparing two people of the same sex) decreases the odds by a multiplicative factor of 0.925. Or, if you prefer, the odds decrease by 7.5% for every additional year of age.</p>
+<p>For generalized linear models, there are several different tests that we can use for statistical significance. The <code>glm</code> output reports a <span class="math inline">\(z\)</span>-test, for which the test statistic is simply the estimate divided by the standard error, and the <span class="math inline">\(p\)</span>-value is found by comparison to a standard normal distribution. (Remember that by “standard” normal distribution, we mean a normal distribution with a mean of 0 and a variance of 1. Remember also that statisticians usually reserve the notation <span class="math inline">\(z\)</span> for the standard normal distribution.)</p>
+<p>The model as we have it so far is additive on the log-odds scale. Note that an additive model on the log-odds scale necessarily is non-additive on the probability scale. For example, in this case, if we compare a man to a woman of the same age, the man’s log odds of survival will always be -1.60 less. The difference between the equivalent probabilities will depend on the particular age of the two individuals being compared.</p>
+<p>We can still test for an interaction between age and sex on the log odds scale. If nothing else, this model is more flexible and so it might provide a significantly better fit. Let’s see.</p>
+<div class="sourceCode" id="cb140"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb140-1"><a href="generalized-linear-models.html#cb140-1" tabindex="-1"></a>fm2 <span class="ot">&lt;-</span> <span class="fu">glm</span>(fate <span class="sc">~</span> age <span class="sc">*</span> sex, <span class="at">family =</span> binomial, <span class="at">data =</span> donner)</span>
+<span id="cb140-2"><a href="generalized-linear-models.html#cb140-2" tabindex="-1"></a><span class="fu">summary</span>(fm2)</span></code></pre></div>
+<pre><code>## 
+## Call:
+## glm(formula = fate ~ age * sex, family = binomial, data = donner)
+## 
+## Coefficients:
+##             Estimate Std. Error z value Pr(&gt;|z|)  
+## (Intercept)  7.24638    3.20517   2.261   0.0238 *
+## age         -0.19407    0.08742  -2.220   0.0264 *
+## sexmale     -6.92805    3.39887  -2.038   0.0415 *
+## age:sexmale  0.16160    0.09426   1.714   0.0865 .
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## (Dispersion parameter for binomial family taken to be 1)
+## 
+##     Null deviance: 61.827  on 44  degrees of freedom
+## Residual deviance: 47.346  on 41  degrees of freedom
+## AIC: 55.346
 ## 
 ## Number of Fisher Scoring iterations: 5</code></pre>
-<div class="sourceCode" id="cb142"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb142-1"><a href="generalized-linear-models.html#cb142-1" tabindex="-1"></a>predict.fm2 <span class="ot">&lt;-</span> <span class="fu">predict</span>(fm2, <span class="at">newdata =</span> new.data, <span class="at">type =</span> <span class="st">&quot;response&quot;</span>, <span class="at">se.fit =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb142-2"><a href="generalized-linear-models.html#cb142-2" tabindex="-1"></a></span>
-<span id="cb142-3"><a href="generalized-linear-models.html#cb142-3" tabindex="-1"></a><span class="fu">with</span>(elephant, <span class="fu">plot</span>(matings <span class="sc">~</span> age))</span>
-<span id="cb142-4"><a href="generalized-linear-models.html#cb142-4" tabindex="-1"></a><span class="fu">lines</span>(<span class="at">x =</span> new.data<span class="sc">$</span>age, <span class="at">y =</span> predict.fm2<span class="sc">$</span>fit, <span class="at">col =</span> <span class="st">&quot;blue&quot;</span>)</span>
-<span id="cb142-5"><a href="generalized-linear-models.html#cb142-5" tabindex="-1"></a></span>
-<span id="cb142-6"><a href="generalized-linear-models.html#cb142-6" tabindex="-1"></a><span class="fu">lines</span>(<span class="at">x   =</span> new.data<span class="sc">$</span>age, </span>
-<span id="cb142-7"><a href="generalized-linear-models.html#cb142-7" tabindex="-1"></a>      <span class="at">y   =</span> predict.fm2<span class="sc">$</span>fit <span class="sc">-</span> <span class="fl">1.96</span> <span class="sc">*</span> predict.fm2<span class="sc">$</span>se.fit, </span>
-<span id="cb142-8"><a href="generalized-linear-models.html#cb142-8" tabindex="-1"></a>      <span class="at">col =</span> <span class="st">&quot;blue&quot;</span>,</span>
-<span id="cb142-9"><a href="generalized-linear-models.html#cb142-9" tabindex="-1"></a>      <span class="at">lty =</span> <span class="st">&quot;dashed&quot;</span>)</span>
-<span id="cb142-10"><a href="generalized-linear-models.html#cb142-10" tabindex="-1"></a></span>
-<span id="cb142-11"><a href="generalized-linear-models.html#cb142-11" tabindex="-1"></a><span class="fu">lines</span>(<span class="at">x   =</span> new.data<span class="sc">$</span>age, </span>
-<span id="cb142-12"><a href="generalized-linear-models.html#cb142-12" tabindex="-1"></a>      <span class="at">y   =</span> predict.fm2<span class="sc">$</span>fit <span class="sc">+</span> <span class="fl">1.96</span> <span class="sc">*</span> predict.fm2<span class="sc">$</span>se.fit, </span>
-<span id="cb142-13"><a href="generalized-linear-models.html#cb142-13" tabindex="-1"></a>      <span class="at">col =</span> <span class="st">&quot;blue&quot;</span>,</span>
-<span id="cb142-14"><a href="generalized-linear-models.html#cb142-14" tabindex="-1"></a>      <span class="at">lty =</span> <span class="st">&quot;dashed&quot;</span>)</span></code></pre></div>
-<p><img src="04-GeneralizedLinearModels_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
-<p>Note that the choice of the link function has a substantial impact on the shape of the fit. The canonical (log) link suggests that the average number of matings increases with age at an accelerating rate, while the identity link suggests that the average number of matings increases steadily with age. The AIC favors the identity link here.</p>
-<p>We can also have a look at the residuals to see if they suggest any model deficiencies. In general, we prefer the deviance residuals, so we will look at them.</p>
-<div class="sourceCode" id="cb143"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb143-1"><a href="generalized-linear-models.html#cb143-1" tabindex="-1"></a><span class="fu">plot</span>(<span class="at">x =</span> elephant<span class="sc">$</span>age, </span>
-<span id="cb143-2"><a href="generalized-linear-models.html#cb143-2" tabindex="-1"></a>     <span class="at">y =</span> <span class="fu">residuals</span>(fm2, <span class="at">type =</span> <span class="st">&quot;deviance&quot;</span>),</span>
-<span id="cb143-3"><a href="generalized-linear-models.html#cb143-3" tabindex="-1"></a>     <span class="at">xlab =</span> <span class="st">&quot;age&quot;</span>,</span>
-<span id="cb143-4"><a href="generalized-linear-models.html#cb143-4" tabindex="-1"></a>     <span class="at">ylab =</span> <span class="st">&quot;Deviance residuals&quot;</span>)</span>
-<span id="cb143-5"><a href="generalized-linear-models.html#cb143-5" tabindex="-1"></a></span>
-<span id="cb143-6"><a href="generalized-linear-models.html#cb143-6" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">h =</span> <span class="dv">0</span>, <span class="at">lty =</span> <span class="st">&quot;dashed&quot;</span>)</span></code></pre></div>
-<p><img src="04-GeneralizedLinearModels_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
-<p>The residuals do not suggest any deficiency in the fit.</p>
-<p>For this fit, the residual deviance suggests a small amount of overdispersion. To be on the safe side, we can fit a quasi-Poisson model in which the scale (overdispersion) parameter is estimated from the data. Note that when we estimate the overdispersion parameter, the estimates of the model parameters do not change, but their standard errors increase. Consequently, the uncertainty in the fit increases as well. In this case, however, the increase is so slight that it is barely noticeable.</p>
-<div class="sourceCode" id="cb144"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb144-1"><a href="generalized-linear-models.html#cb144-1" tabindex="-1"></a>fm3 <span class="ot">&lt;-</span> <span class="fu">glm</span>(matings <span class="sc">~</span> age, <span class="at">family =</span> <span class="fu">quasipoisson</span>(<span class="at">link =</span> <span class="st">&quot;identity&quot;</span>), <span class="at">data =</span> elephant)  </span>
-<span id="cb144-2"><a href="generalized-linear-models.html#cb144-2" tabindex="-1"></a></span>
-<span id="cb144-3"><a href="generalized-linear-models.html#cb144-3" tabindex="-1"></a><span class="fu">summary</span>(fm3)</span></code></pre></div>
-<pre><code>## 
-## Call:
-## glm(formula = matings ~ age, family = quasipoisson(link = &quot;identity&quot;), 
-##     data = elephant)
-## 
-## Coefficients:
-##             Estimate Std. Error t value Pr(&gt;|t|)    
-## (Intercept) -4.55205    1.42164  -3.202  0.00272 ** 
-## age          0.20179    0.04271   4.725 2.97e-05 ***
-## ---
-## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
-## 
-## (Dispersion parameter for quasipoisson family taken to be 1.126975)
-## 
-##     Null deviance: 75.372  on 40  degrees of freedom
-## Residual deviance: 50.058  on 39  degrees of freedom
-## AIC: NA
-## 
-## Number of Fisher Scoring iterations: 5</code></pre>
-<div class="sourceCode" id="cb146"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb146-1"><a href="generalized-linear-models.html#cb146-1" tabindex="-1"></a>predict.fm3 <span class="ot">&lt;-</span> <span class="fu">predict</span>(fm3, <span class="at">newdata =</span> new.data, <span class="at">type =</span> <span class="st">&quot;response&quot;</span>, <span class="at">se.fit =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb146-2"><a href="generalized-linear-models.html#cb146-2" tabindex="-1"></a></span>
-<span id="cb146-3"><a href="generalized-linear-models.html#cb146-3" tabindex="-1"></a><span class="fu">with</span>(elephant, <span class="fu">plot</span>(matings <span class="sc">~</span> age))</span>
-<span id="cb146-4"><a href="generalized-linear-models.html#cb146-4" tabindex="-1"></a><span class="fu">lines</span>(<span class="at">x =</span> new.data<span class="sc">$</span>age, <span class="at">y =</span> predict.fm3<span class="sc">$</span>fit, <span class="at">col =</span> <span class="st">&quot;blue&quot;</span>)</span>
-<span id="cb146-5"><a href="generalized-linear-models.html#cb146-5" tabindex="-1"></a></span>
-<span id="cb146-6"><a href="generalized-linear-models.html#cb146-6" tabindex="-1"></a><span class="fu">lines</span>(<span class="at">x   =</span> new.data<span class="sc">$</span>age, </span>
-<span id="cb146-7"><a href="generalized-linear-models.html#cb146-7" tabindex="-1"></a>      <span class="at">y   =</span> predict.fm3<span class="sc">$</span>fit <span class="sc">+</span> <span class="fu">qt</span>(<span class="fl">0.025</span>, <span class="at">df =</span> <span class="dv">39</span>) <span class="sc">*</span> predict.fm3<span class="sc">$</span>se.fit, </span>
-<span id="cb146-8"><a href="generalized-linear-models.html#cb146-8" tabindex="-1"></a>      <span class="at">col =</span> <span class="st">&quot;blue&quot;</span>,</span>
-<span id="cb146-9"><a href="generalized-linear-models.html#cb146-9" tabindex="-1"></a>      <span class="at">lty =</span> <span class="st">&quot;dashed&quot;</span>)</span>
-<span id="cb146-10"><a href="generalized-linear-models.html#cb146-10" tabindex="-1"></a></span>
-<span id="cb146-11"><a href="generalized-linear-models.html#cb146-11" tabindex="-1"></a><span class="fu">lines</span>(<span class="at">x   =</span> new.data<span class="sc">$</span>age, </span>
-<span id="cb146-12"><a href="generalized-linear-models.html#cb146-12" tabindex="-1"></a>      <span class="at">y   =</span> predict.fm3<span class="sc">$</span>fit <span class="sc">+</span> <span class="fu">qt</span>(<span class="fl">0.975</span>, <span class="at">df =</span> <span class="dv">39</span>) <span class="sc">*</span> predict.fm3<span class="sc">$</span>se.fit, </span>
-<span id="cb146-13"><a href="generalized-linear-models.html#cb146-13" tabindex="-1"></a>      <span class="at">col =</span> <span class="st">&quot;blue&quot;</span>,</span>
-<span id="cb146-14"><a href="generalized-linear-models.html#cb146-14" tabindex="-1"></a>      <span class="at">lty =</span> <span class="st">&quot;dashed&quot;</span>)</span></code></pre></div>
-<p><img src="04-GeneralizedLinearModels_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
-<p>As an alternative, we could fit a model that uses a negative binomial distribution for the response. Negative binomial distributions belong to the exponential family, so we can fit them using the GLM framework. However, the authors of <code>glm</code> did not include a negative binomial family in their initial code. Venables &amp; Ripley’s <code>MASS</code> package includes a program called <code>glm.nb</code> which is specifically designed for negative binomial responses. <code>MASS::glm.nb</code> uses the parameterization familiar to ecologists, although they use the parameter <span class="math inline">\(\theta\)</span> instead of <span class="math inline">\(k\)</span>. So, in their notation, if <span class="math inline">\(y \sim \mathrm{NB}(\mu, \theta)\)</span>, then <span class="math inline">\(\mathrm{Var}(y) = \mu + \mu^2/\theta\)</span>.</p>
-<div class="sourceCode" id="cb147"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb147-1"><a href="generalized-linear-models.html#cb147-1" tabindex="-1"></a><span class="fu">require</span>(MASS)</span></code></pre></div>
-<pre><code>## Loading required package: MASS</code></pre>
-<div class="sourceCode" id="cb149"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb149-1"><a href="generalized-linear-models.html#cb149-1" tabindex="-1"></a>fm4 <span class="ot">&lt;-</span> <span class="fu">glm.nb</span>(matings <span class="sc">~</span> age, <span class="at">link =</span> identity, <span class="at">data =</span> elephant)  </span>
-<span id="cb149-2"><a href="generalized-linear-models.html#cb149-2" tabindex="-1"></a></span>
-<span id="cb149-3"><a href="generalized-linear-models.html#cb149-3" tabindex="-1"></a><span class="fu">summary</span>(fm4)</span></code></pre></div>
-<pre><code>## 
-## Call:
-## glm.nb(formula = matings ~ age, data = elephant, link = identity, 
-##     init.theta = 15.80269167)
-## 
-## Coefficients:
-##             Estimate Std. Error z value Pr(&gt;|z|)    
-## (Intercept) -4.56939    1.45770  -3.135  0.00172 ** 
-## age          0.20232    0.04428   4.569  4.9e-06 ***
-## ---
-## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
-## 
-## (Dispersion parameter for Negative Binomial(15.8027) family taken to be 1)
-## 
-##     Null deviance: 64.836  on 40  degrees of freedom
-## Residual deviance: 43.214  on 39  degrees of freedom
-## AIC: 156.87
-## 
-## Number of Fisher Scoring iterations: 1
-## 
-## 
-##               Theta:  15.8 
-##           Std. Err.:  23.0 
-## 
-##  2 x log-likelihood:  -150.872</code></pre>
-<div class="sourceCode" id="cb151"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb151-1"><a href="generalized-linear-models.html#cb151-1" tabindex="-1"></a>predict.fm4 <span class="ot">&lt;-</span> <span class="fu">predict</span>(fm4, <span class="at">newdata =</span> new.data, <span class="at">type =</span> <span class="st">&quot;response&quot;</span>, <span class="at">se.fit =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb151-2"><a href="generalized-linear-models.html#cb151-2" tabindex="-1"></a></span>
-<span id="cb151-3"><a href="generalized-linear-models.html#cb151-3" tabindex="-1"></a><span class="fu">with</span>(elephant, <span class="fu">plot</span>(matings <span class="sc">~</span> age))</span>
-<span id="cb151-4"><a href="generalized-linear-models.html#cb151-4" tabindex="-1"></a><span class="fu">lines</span>(<span class="at">x =</span> new.data<span class="sc">$</span>age, <span class="at">y =</span> predict.fm4<span class="sc">$</span>fit, <span class="at">col =</span> <span class="st">&quot;blue&quot;</span>)</span>
-<span id="cb151-5"><a href="generalized-linear-models.html#cb151-5" tabindex="-1"></a></span>
-<span id="cb151-6"><a href="generalized-linear-models.html#cb151-6" tabindex="-1"></a><span class="fu">lines</span>(<span class="at">x   =</span> new.data<span class="sc">$</span>age, </span>
-<span id="cb151-7"><a href="generalized-linear-models.html#cb151-7" tabindex="-1"></a>      <span class="at">y   =</span> predict.fm4<span class="sc">$</span>fit <span class="sc">+</span> <span class="fl">1.96</span> <span class="sc">*</span> predict.fm4<span class="sc">$</span>se.fit, </span>
-<span id="cb151-8"><a href="generalized-linear-models.html#cb151-8" tabindex="-1"></a>      <span class="at">col =</span> <span class="st">&quot;blue&quot;</span>,</span>
-<span id="cb151-9"><a href="generalized-linear-models.html#cb151-9" tabindex="-1"></a>      <span class="at">lty =</span> <span class="st">&quot;dashed&quot;</span>)</span>
-<span id="cb151-10"><a href="generalized-linear-models.html#cb151-10" tabindex="-1"></a></span>
-<span id="cb151-11"><a href="generalized-linear-models.html#cb151-11" tabindex="-1"></a><span class="fu">lines</span>(<span class="at">x   =</span> new.data<span class="sc">$</span>age, </span>
-<span id="cb151-12"><a href="generalized-linear-models.html#cb151-12" tabindex="-1"></a>      <span class="at">y   =</span> predict.fm4<span class="sc">$</span>fit <span class="sc">-</span> <span class="fl">1.96</span> <span class="sc">*</span> predict.fm4<span class="sc">$</span>se.fit, </span>
-<span id="cb151-13"><a href="generalized-linear-models.html#cb151-13" tabindex="-1"></a>      <span class="at">col =</span> <span class="st">&quot;blue&quot;</span>,</span>
-<span id="cb151-14"><a href="generalized-linear-models.html#cb151-14" tabindex="-1"></a>      <span class="at">lty =</span> <span class="st">&quot;dashed&quot;</span>)</span></code></pre></div>
-<p><img src="04-GeneralizedLinearModels_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
-<p>Notice that <span class="math inline">\(\hat{\theta} = 15.8\)</span>, again indicating that the extra-Poisson variation is mild. Notice also that the error bounds on the fitted curve are ever so slightly larger than the error bounds from the Poisson fit, and nearly identical to the error bounds from the quasi-Poisson fit.</p>
+<p>The interaction is not significant at the usual 5% threshold for significance, so we’ll revert to the additive model.</p>
 </div>
-<div id="binary-responses" class="section level2 hasAnchor" number="4.2">
-<h2><span class="header-section-number">4.2</span> Binary responses<a href="generalized-linear-models.html#binary-responses" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p>We generally distinguish between two types of data with binary responses: Data in which each individual record is a separate a binary response, and data in which each record consists of a group of binary observations. The same methods can be used for either type of data. We will begin by studying a data set with individual binary responses, and then use the industrial melanism data to illustrate grouped binary responses.</p>
-<div id="individual-binary-responses-tb-in-boar" class="section level3 hasAnchor" number="4.2.1">
-<h3><span class="header-section-number">4.2.1</span> Individual binary responses: TB in boar<a href="generalized-linear-models.html#individual-binary-responses-tb-in-boar" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<p>To illustrate individual binary data, we will use a data set analyzed by <span class="citation">Zuur et al. (<a href="#ref-zuur2009mixed">2009</a>)</span>. As explained there, these data describe the incidence of “tuberculosis-like lesions in wild boar <em>Sus scrofa</em>” in southern Spain, and were originally collected by <span class="citation">Vicente et al. (<a href="#ref-vicente2006wild">2006</a>)</span>. The potential explanatory variables in the data set include a measure of the animal’s size, it’s sex, and a grouping into one of four age classes.</p>
-<p>Preparatory work:</p>
-<div class="sourceCode" id="cb152"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb152-1"><a href="generalized-linear-models.html#cb152-1" tabindex="-1"></a>boar <span class="ot">&lt;-</span> <span class="fu">read.table</span>(<span class="st">&quot;data/boar.txt&quot;</span>, <span class="at">head =</span> T)</span>
-<span id="cb152-2"><a href="generalized-linear-models.html#cb152-2" tabindex="-1"></a></span>
-<span id="cb152-3"><a href="generalized-linear-models.html#cb152-3" tabindex="-1"></a><span class="co"># remove incomplete records</span></span>
-<span id="cb152-4"><a href="generalized-linear-models.html#cb152-4" tabindex="-1"></a>boar <span class="ot">&lt;-</span> <span class="fu">na.omit</span>(boar)</span>
-<span id="cb152-5"><a href="generalized-linear-models.html#cb152-5" tabindex="-1"></a></span>
-<span id="cb152-6"><a href="generalized-linear-models.html#cb152-6" tabindex="-1"></a><span class="co"># convert sex to a factor</span></span>
-<span id="cb152-7"><a href="generalized-linear-models.html#cb152-7" tabindex="-1"></a>boar<span class="sc">$</span>SEX <span class="ot">&lt;-</span> <span class="fu">as.factor</span>(boar<span class="sc">$</span>SEX)</span>
-<span id="cb152-8"><a href="generalized-linear-models.html#cb152-8" tabindex="-1"></a></span>
-<span id="cb152-9"><a href="generalized-linear-models.html#cb152-9" tabindex="-1"></a><span class="fu">names</span>(boar) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;tb&quot;</span>, <span class="st">&quot;sex&quot;</span>, <span class="st">&quot;age&quot;</span>, <span class="st">&quot;length&quot;</span>)</span>
-<span id="cb152-10"><a href="generalized-linear-models.html#cb152-10" tabindex="-1"></a><span class="fu">summary</span>(boar)</span></code></pre></div>
+<div id="individual-binary-responses-tb-in-boar" class="section level3 hasAnchor" number="4.1.2">
+<h3><span class="header-section-number">4.1.2</span> Individual binary responses: TB in boar<a href="generalized-linear-models.html#individual-binary-responses-tb-in-boar" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Here’s a second example of logistic regression. Something interesting and different will happen in these data.</p>
+<p>This is a data set analyzed by <span class="citation">Zuur et al. (<a href="#ref-zuur2009mixed">2009</a>)</span>. As explained there, these data describe the incidence of “tuberculosis-like lesions in wild boar <em>Sus scrofa</em>” in southern Spain, and were originally collected by <span class="citation">Vicente et al. (<a href="#ref-vicente2006wild">2006</a>)</span>. The potential explanatory variables in the data set include a measure of the animal’s size, it’s sex, and a grouping into one of four age classes.</p>
+<p>Let’s load the data, do some housekeeping, and have a look at the data set:</p>
+<div class="sourceCode" id="cb142"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb142-1"><a href="generalized-linear-models.html#cb142-1" tabindex="-1"></a>boar <span class="ot">&lt;-</span> <span class="fu">read.table</span>(<span class="st">&quot;data/boar.txt&quot;</span>, <span class="at">head =</span> T)</span>
+<span id="cb142-2"><a href="generalized-linear-models.html#cb142-2" tabindex="-1"></a></span>
+<span id="cb142-3"><a href="generalized-linear-models.html#cb142-3" tabindex="-1"></a><span class="co"># remove incomplete records</span></span>
+<span id="cb142-4"><a href="generalized-linear-models.html#cb142-4" tabindex="-1"></a>boar <span class="ot">&lt;-</span> <span class="fu">na.omit</span>(boar)</span>
+<span id="cb142-5"><a href="generalized-linear-models.html#cb142-5" tabindex="-1"></a></span>
+<span id="cb142-6"><a href="generalized-linear-models.html#cb142-6" tabindex="-1"></a><span class="co"># convert sex to a factor</span></span>
+<span id="cb142-7"><a href="generalized-linear-models.html#cb142-7" tabindex="-1"></a>boar<span class="sc">$</span>SEX <span class="ot">&lt;-</span> <span class="fu">as.factor</span>(boar<span class="sc">$</span>SEX)</span>
+<span id="cb142-8"><a href="generalized-linear-models.html#cb142-8" tabindex="-1"></a></span>
+<span id="cb142-9"><a href="generalized-linear-models.html#cb142-9" tabindex="-1"></a><span class="fu">names</span>(boar) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;tb&quot;</span>, <span class="st">&quot;sex&quot;</span>, <span class="st">&quot;age&quot;</span>, <span class="st">&quot;length&quot;</span>)</span>
+<span id="cb142-10"><a href="generalized-linear-models.html#cb142-10" tabindex="-1"></a><span class="fu">summary</span>(boar)</span></code></pre></div>
 <pre><code>##        tb         sex          age            length     
 ##  Min.   :0.0000   1:206   Min.   :1.000   Min.   : 46.5  
 ##  1st Qu.:0.0000   2:288   1st Qu.:3.000   1st Qu.:107.0  
@@ -601,13 +499,12 @@ We can visualize the fit by plotting a best-fitting line with a 95% confidence i
 ##  Mean   :0.4575           Mean   :3.142   Mean   :117.3  
 ##  3rd Qu.:1.0000           3rd Qu.:4.000   3rd Qu.:130.4  
 ##  Max.   :1.0000           Max.   :4.000   Max.   :165.0</code></pre>
-<p>We’ll fit the usual logistic regression model first, considering only the animal’s size as a predictor. Size in this case is a measure of the length of the animal, in cm.</p>
-<div class="sourceCode" id="cb154"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb154-1"><a href="generalized-linear-models.html#cb154-1" tabindex="-1"></a>fm1 <span class="ot">&lt;-</span> <span class="fu">glm</span>(tb <span class="sc">~</span> length, <span class="at">family =</span> <span class="fu">binomial</span>(<span class="at">link =</span> <span class="st">&quot;logit&quot;</span>), <span class="at">data =</span> boar)</span>
-<span id="cb154-2"><a href="generalized-linear-models.html#cb154-2" tabindex="-1"></a><span class="fu">summary</span>(fm1)</span></code></pre></div>
+<p>We’ll fit the usual logistic regression model first, considering only the animal’s size as a predictor. Size in this case is a measure of the length of the animal, in cm. (Check it out, these are some big pigs.)</p>
+<div class="sourceCode" id="cb144"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb144-1"><a href="generalized-linear-models.html#cb144-1" tabindex="-1"></a>fm1 <span class="ot">&lt;-</span> <span class="fu">glm</span>(tb <span class="sc">~</span> length, <span class="at">family =</span> binomial, <span class="at">data =</span> boar)</span>
+<span id="cb144-2"><a href="generalized-linear-models.html#cb144-2" tabindex="-1"></a><span class="fu">summary</span>(fm1)</span></code></pre></div>
 <pre><code>## 
 ## Call:
-## glm(formula = tb ~ length, family = binomial(link = &quot;logit&quot;), 
-##     data = boar)
+## glm(formula = tb ~ length, family = binomial, data = boar)
 ## 
 ## Coefficients:
 ##              Estimate Std. Error z value Pr(&gt;|z|)    
@@ -623,71 +520,42 @@ We can visualize the fit by plotting a best-fitting line with a 95% confidence i
 ## AIC: 645.23
 ## 
 ## Number of Fisher Scoring iterations: 4</code></pre>
-<div class="sourceCode" id="cb156"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb156-1"><a href="generalized-linear-models.html#cb156-1" tabindex="-1"></a><span class="fu">with</span>(boar, <span class="fu">plot</span>(tb <span class="sc">~</span> length))</span>
-<span id="cb156-2"><a href="generalized-linear-models.html#cb156-2" tabindex="-1"></a></span>
-<span id="cb156-3"><a href="generalized-linear-models.html#cb156-3" tabindex="-1"></a><span class="co"># add a line for the fitted probabilities of tb</span></span>
-<span id="cb156-4"><a href="generalized-linear-models.html#cb156-4" tabindex="-1"></a></span>
-<span id="cb156-5"><a href="generalized-linear-models.html#cb156-5" tabindex="-1"></a>new.data <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">length =</span> <span class="fu">seq</span>(<span class="at">from =</span> <span class="fu">min</span>(boar<span class="sc">$</span>length),</span>
-<span id="cb156-6"><a href="generalized-linear-models.html#cb156-6" tabindex="-1"></a>                                    <span class="at">to   =</span> <span class="fu">max</span>(boar<span class="sc">$</span>length),</span>
-<span id="cb156-7"><a href="generalized-linear-models.html#cb156-7" tabindex="-1"></a>                                    <span class="at">length =</span> <span class="dv">100</span>))</span>
-<span id="cb156-8"><a href="generalized-linear-models.html#cb156-8" tabindex="-1"></a></span>
-<span id="cb156-9"><a href="generalized-linear-models.html#cb156-9" tabindex="-1"></a>predict.fm1 <span class="ot">&lt;-</span> <span class="fu">predict</span>(fm1, <span class="at">newdata =</span> new.data, <span class="at">type =</span> <span class="st">&quot;response&quot;</span>, <span class="at">se.fit =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb156-10"><a href="generalized-linear-models.html#cb156-10" tabindex="-1"></a></span>
-<span id="cb156-11"><a href="generalized-linear-models.html#cb156-11" tabindex="-1"></a><span class="fu">lines</span>(<span class="at">x =</span> new.data<span class="sc">$</span>length, <span class="at">y =</span> predict.fm1<span class="sc">$</span>fit, <span class="at">col =</span> <span class="st">&quot;red&quot;</span>)</span>
-<span id="cb156-12"><a href="generalized-linear-models.html#cb156-12" tabindex="-1"></a></span>
-<span id="cb156-13"><a href="generalized-linear-models.html#cb156-13" tabindex="-1"></a><span class="co"># add lines for standard errors</span></span>
-<span id="cb156-14"><a href="generalized-linear-models.html#cb156-14" tabindex="-1"></a><span class="co"># use critical value from z distribution here because</span></span>
-<span id="cb156-15"><a href="generalized-linear-models.html#cb156-15" tabindex="-1"></a><span class="co"># the scale parameter is not estimated</span></span>
-<span id="cb156-16"><a href="generalized-linear-models.html#cb156-16" tabindex="-1"></a></span>
-<span id="cb156-17"><a href="generalized-linear-models.html#cb156-17" tabindex="-1"></a><span class="fu">lines</span>(<span class="at">x   =</span> new.data<span class="sc">$</span>length, </span>
-<span id="cb156-18"><a href="generalized-linear-models.html#cb156-18" tabindex="-1"></a>      <span class="at">y   =</span> predict.fm1<span class="sc">$</span>fit <span class="sc">-</span> <span class="fl">1.96</span> <span class="sc">*</span> predict.fm1<span class="sc">$</span>se.fit, </span>
-<span id="cb156-19"><a href="generalized-linear-models.html#cb156-19" tabindex="-1"></a>      <span class="at">col =</span> <span class="st">&quot;red&quot;</span>,</span>
-<span id="cb156-20"><a href="generalized-linear-models.html#cb156-20" tabindex="-1"></a>      <span class="at">lty =</span> <span class="st">&quot;dashed&quot;</span>)</span>
-<span id="cb156-21"><a href="generalized-linear-models.html#cb156-21" tabindex="-1"></a></span>
-<span id="cb156-22"><a href="generalized-linear-models.html#cb156-22" tabindex="-1"></a><span class="fu">lines</span>(<span class="at">x   =</span> new.data<span class="sc">$</span>length, </span>
-<span id="cb156-23"><a href="generalized-linear-models.html#cb156-23" tabindex="-1"></a>      <span class="at">y   =</span> predict.fm1<span class="sc">$</span>fit <span class="sc">+</span> <span class="fl">1.96</span> <span class="sc">*</span> predict.fm1<span class="sc">$</span>se.fit, </span>
-<span id="cb156-24"><a href="generalized-linear-models.html#cb156-24" tabindex="-1"></a>      <span class="at">col =</span> <span class="st">&quot;red&quot;</span>,</span>
-<span id="cb156-25"><a href="generalized-linear-models.html#cb156-25" tabindex="-1"></a>      <span class="at">lty =</span> <span class="st">&quot;dashed&quot;</span>)</span></code></pre></div>
-<p><img src="04-GeneralizedLinearModels_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
-<p>Regression coefficients in logistic regression can be a bit hard to interpret. One interpretation flows from exponentiating the regression coefficient to obtain an odds ratio. For the boar data, the regression coefficient of 0.0335 corresponds to an odds ratio of <span class="math inline">\(e^{0.0335}\)</span> = 1.034. This means that for two boars that differ by one cm in length, the larger boar’s odds of having a TB-like lesion will be 1.034 times the smaller boar’s odds of having such a lesion.</p>
-<p>Overdispersion is typically not an issue with individual binary response data. Nonetheless, the pseudo-<span class="math inline">\(R^2\)</span> here is fairly low. We can try the probit and complementary log-log links to see if we obtain a better fit:</p>
-<div class="sourceCode" id="cb157"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb157-1"><a href="generalized-linear-models.html#cb157-1" tabindex="-1"></a><span class="co"># probit link</span></span>
-<span id="cb157-2"><a href="generalized-linear-models.html#cb157-2" tabindex="-1"></a></span>
-<span id="cb157-3"><a href="generalized-linear-models.html#cb157-3" tabindex="-1"></a>fm1a <span class="ot">&lt;-</span> <span class="fu">glm</span>(tb <span class="sc">~</span> length, <span class="at">family =</span> <span class="fu">binomial</span>(<span class="at">link =</span> <span class="st">&quot;probit&quot;</span>), <span class="at">data =</span> boar)</span>
-<span id="cb157-4"><a href="generalized-linear-models.html#cb157-4" tabindex="-1"></a></span>
-<span id="cb157-5"><a href="generalized-linear-models.html#cb157-5" tabindex="-1"></a><span class="co"># complementary log-log link</span></span>
-<span id="cb157-6"><a href="generalized-linear-models.html#cb157-6" tabindex="-1"></a></span>
-<span id="cb157-7"><a href="generalized-linear-models.html#cb157-7" tabindex="-1"></a>fm1b <span class="ot">&lt;-</span> <span class="fu">glm</span>(tb <span class="sc">~</span> length, <span class="at">family =</span> <span class="fu">binomial</span>(<span class="at">link =</span> <span class="st">&quot;cloglog&quot;</span>), <span class="at">data =</span> boar)</span>
-<span id="cb157-8"><a href="generalized-linear-models.html#cb157-8" tabindex="-1"></a><span class="fu">AIC</span>(fm1, fm1a, fm1b)</span></code></pre></div>
-<pre><code>##      df      AIC
-## fm1   2 645.2265
-## fm1a  2 645.2665
-## fm1b  2 645.6100</code></pre>
-<div class="sourceCode" id="cb159"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb159-1"><a href="generalized-linear-models.html#cb159-1" tabindex="-1"></a><span class="co"># make a plot to compare the fits with the different links</span></span>
-<span id="cb159-2"><a href="generalized-linear-models.html#cb159-2" tabindex="-1"></a></span>
-<span id="cb159-3"><a href="generalized-linear-models.html#cb159-3" tabindex="-1"></a>predict.fm1a <span class="ot">&lt;-</span> <span class="fu">predict</span>(fm1a, <span class="at">newdata =</span> new.data, <span class="at">type =</span> <span class="st">&quot;response&quot;</span>, <span class="at">se.fit =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb159-4"><a href="generalized-linear-models.html#cb159-4" tabindex="-1"></a>predict.fm1b <span class="ot">&lt;-</span> <span class="fu">predict</span>(fm1b, <span class="at">newdata =</span> new.data, <span class="at">type =</span> <span class="st">&quot;response&quot;</span>, <span class="at">se.fit =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb159-5"><a href="generalized-linear-models.html#cb159-5" tabindex="-1"></a></span>
-<span id="cb159-6"><a href="generalized-linear-models.html#cb159-6" tabindex="-1"></a><span class="fu">with</span>(boar, <span class="fu">plot</span>(tb <span class="sc">~</span> length))</span>
-<span id="cb159-7"><a href="generalized-linear-models.html#cb159-7" tabindex="-1"></a></span>
-<span id="cb159-8"><a href="generalized-linear-models.html#cb159-8" tabindex="-1"></a><span class="fu">lines</span>(<span class="at">x =</span> new.data<span class="sc">$</span>length, <span class="at">y =</span> predict.fm1<span class="sc">$</span>fit, <span class="at">col =</span> <span class="st">&quot;red&quot;</span>, <span class="at">lwd =</span> <span class="dv">2</span>)</span>
-<span id="cb159-9"><a href="generalized-linear-models.html#cb159-9" tabindex="-1"></a><span class="fu">lines</span>(<span class="at">x =</span> new.data<span class="sc">$</span>length, <span class="at">y =</span> predict.fm1a<span class="sc">$</span>fit, <span class="at">col =</span> <span class="st">&quot;blue&quot;</span>, <span class="at">lwd =</span> <span class="dv">2</span>)</span>
-<span id="cb159-10"><a href="generalized-linear-models.html#cb159-10" tabindex="-1"></a><span class="fu">lines</span>(<span class="at">x =</span> new.data<span class="sc">$</span>length, <span class="at">y =</span> predict.fm1b<span class="sc">$</span>fit, <span class="at">col =</span> <span class="st">&quot;forestgreen&quot;</span>, <span class="at">lwd =</span> <span class="dv">2</span>)</span>
-<span id="cb159-11"><a href="generalized-linear-models.html#cb159-11" tabindex="-1"></a></span>
-<span id="cb159-12"><a href="generalized-linear-models.html#cb159-12" tabindex="-1"></a><span class="fu">legend</span>(<span class="st">&quot;left&quot;</span>, </span>
-<span id="cb159-13"><a href="generalized-linear-models.html#cb159-13" tabindex="-1"></a>       <span class="at">leg =</span> <span class="fu">c</span>(<span class="st">&quot;logit&quot;</span>, <span class="st">&quot;probit&quot;</span>, <span class="st">&quot;cloglog&quot;</span>), </span>
-<span id="cb159-14"><a href="generalized-linear-models.html#cb159-14" tabindex="-1"></a>       <span class="at">col =</span> <span class="fu">c</span>(<span class="st">&quot;red&quot;</span>, <span class="st">&quot;blue&quot;</span>, <span class="st">&quot;forestgreen&quot;</span>), </span>
-<span id="cb159-15"><a href="generalized-linear-models.html#cb159-15" tabindex="-1"></a>       <span class="at">pch =</span> <span class="dv">16</span>)</span></code></pre></div>
-<p><img src="04-GeneralizedLinearModels_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
-<p>The logit and probit links are nearly identical. The complementary log-log link differs slightly, but the logit link is AIC-best.</p>
-<p>Try adding sex and age class as predictors. Some of the MLEs cannot be found, because none of the individuals with and are infected, thus the MLE of the log odds of infection for this group (which happens to be the baseline) is <span class="math inline">\(-\infty\)</span>. This phenomenon is known as “complete separation”.</p>
-<div class="sourceCode" id="cb160"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb160-1"><a href="generalized-linear-models.html#cb160-1" tabindex="-1"></a><span class="co"># fit a model with sex, age (as a categorical predictor) and their interaction</span></span>
-<span id="cb160-2"><a href="generalized-linear-models.html#cb160-2" tabindex="-1"></a></span>
-<span id="cb160-3"><a href="generalized-linear-models.html#cb160-3" tabindex="-1"></a>fm2 <span class="ot">&lt;-</span> <span class="fu">glm</span>(tb <span class="sc">~</span> length <span class="sc">+</span> sex <span class="sc">*</span> <span class="fu">as.factor</span>(age),</span>
-<span id="cb160-4"><a href="generalized-linear-models.html#cb160-4" tabindex="-1"></a>           <span class="at">family =</span> binomial,</span>
-<span id="cb160-5"><a href="generalized-linear-models.html#cb160-5" tabindex="-1"></a>           <span class="at">data =</span> boar)</span>
-<span id="cb160-6"><a href="generalized-linear-models.html#cb160-6" tabindex="-1"></a></span>
-<span id="cb160-7"><a href="generalized-linear-models.html#cb160-7" tabindex="-1"></a><span class="fu">summary</span>(fm2)</span></code></pre></div>
+<p>For these data, the response (<code>tb</code>) is coded as zeros and ones. When <code>glm</code> is given a response coded thusly, it always models the probability of the outcome labeled with a one. In this case, zeros code for uninfected animals and ones code for infected animals, so we are modeling the probability of infection. Our model suggests that bigger boar are more likely to be infected, and the effect is crazy significant.</p>
+<p>Here’s some R code to plot the model’s fit on a probability scale. It takes a bit of work, but probabilities are so much easier to understand than log odds. If these were your data, it’d be worth the extra effort.</p>
+<div class="sourceCode" id="cb146"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb146-1"><a href="generalized-linear-models.html#cb146-1" tabindex="-1"></a><span class="fu">with</span>(boar, <span class="fu">plot</span>(tb <span class="sc">~</span> length))</span>
+<span id="cb146-2"><a href="generalized-linear-models.html#cb146-2" tabindex="-1"></a></span>
+<span id="cb146-3"><a href="generalized-linear-models.html#cb146-3" tabindex="-1"></a><span class="co"># add a line for the fitted probabilities of tb</span></span>
+<span id="cb146-4"><a href="generalized-linear-models.html#cb146-4" tabindex="-1"></a></span>
+<span id="cb146-5"><a href="generalized-linear-models.html#cb146-5" tabindex="-1"></a>new.data <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">length =</span> <span class="fu">seq</span>(<span class="at">from =</span> <span class="fu">min</span>(boar<span class="sc">$</span>length),</span>
+<span id="cb146-6"><a href="generalized-linear-models.html#cb146-6" tabindex="-1"></a>                                    <span class="at">to   =</span> <span class="fu">max</span>(boar<span class="sc">$</span>length),</span>
+<span id="cb146-7"><a href="generalized-linear-models.html#cb146-7" tabindex="-1"></a>                                    <span class="at">length =</span> <span class="dv">100</span>))</span>
+<span id="cb146-8"><a href="generalized-linear-models.html#cb146-8" tabindex="-1"></a></span>
+<span id="cb146-9"><a href="generalized-linear-models.html#cb146-9" tabindex="-1"></a>predict.fm1 <span class="ot">&lt;-</span> <span class="fu">predict</span>(fm1, <span class="at">newdata =</span> new.data, <span class="at">type =</span> <span class="st">&quot;response&quot;</span>, <span class="at">se.fit =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb146-10"><a href="generalized-linear-models.html#cb146-10" tabindex="-1"></a></span>
+<span id="cb146-11"><a href="generalized-linear-models.html#cb146-11" tabindex="-1"></a><span class="fu">lines</span>(<span class="at">x =</span> new.data<span class="sc">$</span>length, <span class="at">y =</span> predict.fm1<span class="sc">$</span>fit, <span class="at">col =</span> <span class="st">&quot;red&quot;</span>)</span>
+<span id="cb146-12"><a href="generalized-linear-models.html#cb146-12" tabindex="-1"></a></span>
+<span id="cb146-13"><a href="generalized-linear-models.html#cb146-13" tabindex="-1"></a><span class="co"># add lines for standard errors</span></span>
+<span id="cb146-14"><a href="generalized-linear-models.html#cb146-14" tabindex="-1"></a><span class="co"># use critical value from z distribution here because</span></span>
+<span id="cb146-15"><a href="generalized-linear-models.html#cb146-15" tabindex="-1"></a><span class="co"># the scale parameter is not estimated</span></span>
+<span id="cb146-16"><a href="generalized-linear-models.html#cb146-16" tabindex="-1"></a></span>
+<span id="cb146-17"><a href="generalized-linear-models.html#cb146-17" tabindex="-1"></a><span class="fu">lines</span>(<span class="at">x   =</span> new.data<span class="sc">$</span>length, </span>
+<span id="cb146-18"><a href="generalized-linear-models.html#cb146-18" tabindex="-1"></a>      <span class="at">y   =</span> predict.fm1<span class="sc">$</span>fit <span class="sc">-</span> <span class="fl">1.96</span> <span class="sc">*</span> predict.fm1<span class="sc">$</span>se.fit, </span>
+<span id="cb146-19"><a href="generalized-linear-models.html#cb146-19" tabindex="-1"></a>      <span class="at">col =</span> <span class="st">&quot;red&quot;</span>,</span>
+<span id="cb146-20"><a href="generalized-linear-models.html#cb146-20" tabindex="-1"></a>      <span class="at">lty =</span> <span class="st">&quot;dashed&quot;</span>)</span>
+<span id="cb146-21"><a href="generalized-linear-models.html#cb146-21" tabindex="-1"></a></span>
+<span id="cb146-22"><a href="generalized-linear-models.html#cb146-22" tabindex="-1"></a><span class="fu">lines</span>(<span class="at">x   =</span> new.data<span class="sc">$</span>length, </span>
+<span id="cb146-23"><a href="generalized-linear-models.html#cb146-23" tabindex="-1"></a>      <span class="at">y   =</span> predict.fm1<span class="sc">$</span>fit <span class="sc">+</span> <span class="fl">1.96</span> <span class="sc">*</span> predict.fm1<span class="sc">$</span>se.fit, </span>
+<span id="cb146-24"><a href="generalized-linear-models.html#cb146-24" tabindex="-1"></a>      <span class="at">col =</span> <span class="st">&quot;red&quot;</span>,</span>
+<span id="cb146-25"><a href="generalized-linear-models.html#cb146-25" tabindex="-1"></a>      <span class="at">lty =</span> <span class="st">&quot;dashed&quot;</span>)</span></code></pre></div>
+<p><img src="04-GeneralizedLinearModels_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
+<p>Now let’s try adding sex and age class as predictors. Because the age class is coded with values 1–4, we want to make sure that R treats these values as levels of a categorical predictor (and not a quantitative predictor), so we enclose the <code>age</code> predictor in <code>as.factor(age)</code>.</p>
+<div class="sourceCode" id="cb147"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb147-1"><a href="generalized-linear-models.html#cb147-1" tabindex="-1"></a><span class="co"># fit a model with sex, age (as a categorical predictor) and their interaction</span></span>
+<span id="cb147-2"><a href="generalized-linear-models.html#cb147-2" tabindex="-1"></a></span>
+<span id="cb147-3"><a href="generalized-linear-models.html#cb147-3" tabindex="-1"></a>fm2 <span class="ot">&lt;-</span> <span class="fu">glm</span>(tb <span class="sc">~</span> length <span class="sc">+</span> sex <span class="sc">*</span> <span class="fu">as.factor</span>(age),</span>
+<span id="cb147-4"><a href="generalized-linear-models.html#cb147-4" tabindex="-1"></a>           <span class="at">family =</span> binomial,</span>
+<span id="cb147-5"><a href="generalized-linear-models.html#cb147-5" tabindex="-1"></a>           <span class="at">data =</span> boar)</span>
+<span id="cb147-6"><a href="generalized-linear-models.html#cb147-6" tabindex="-1"></a></span>
+<span id="cb147-7"><a href="generalized-linear-models.html#cb147-7" tabindex="-1"></a><span class="fu">summary</span>(fm2)</span></code></pre></div>
 <pre><code>## 
 ## Call:
 ## glm(formula = tb ~ length + sex * as.factor(age), family = binomial, 
@@ -712,7 +580,9 @@ We can visualize the fit by plotting a best-fitting line with a 95% confidence i
 ## AIC: 653.43
 ## 
 ## Number of Fisher Scoring iterations: 14</code></pre>
-<div class="sourceCode" id="cb162"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb162-1"><a href="generalized-linear-models.html#cb162-1" tabindex="-1"></a><span class="fu">with</span>(boar, <span class="fu">table</span>(tb, age, sex))</span></code></pre></div>
+<p>It’s pandemonium! Something has gone wickedly wrong here. Notice how wild the standard errors are.</p>
+<p>To figure out what went wrong, we need to do a bit of detective work. Let’s back up and try to figure out how many boar were infected in each combination of sex and age class. We can compute the appropriate tallies with the <code>table</code> command; we’ll be stylish at use the <code>with</code> command to write some pretty code:</p>
+<div class="sourceCode" id="cb149"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb149-1"><a href="generalized-linear-models.html#cb149-1" tabindex="-1"></a><span class="fu">with</span>(boar, <span class="fu">table</span>(tb, age, sex))</span></code></pre></div>
 <pre><code>## , , sex = 1
 ## 
 ##    age
@@ -726,14 +596,19 @@ We can visualize the fit by plotting a best-fitting line with a 95% confidence i
 ## tb   1  2  3  4
 ##   0  7 40 62 53
 ##   1  2 11 48 65</code></pre>
-<p>There are several possible remedies here. The first is to try to reduce the number of parameters in the model, perhaps by eliminating the interaction between sex and age class.</p>
-<div class="sourceCode" id="cb164"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb164-1"><a href="generalized-linear-models.html#cb164-1" tabindex="-1"></a><span class="co"># fit a model with sex, age (as a categorical predictor) and their interaction</span></span>
-<span id="cb164-2"><a href="generalized-linear-models.html#cb164-2" tabindex="-1"></a></span>
-<span id="cb164-3"><a href="generalized-linear-models.html#cb164-3" tabindex="-1"></a>fm3 <span class="ot">&lt;-</span> <span class="fu">glm</span>(tb <span class="sc">~</span> length <span class="sc">+</span> sex <span class="sc">+</span> <span class="fu">as.factor</span>(age),</span>
-<span id="cb164-4"><a href="generalized-linear-models.html#cb164-4" tabindex="-1"></a>            <span class="at">family =</span> binomial,</span>
-<span id="cb164-5"><a href="generalized-linear-models.html#cb164-5" tabindex="-1"></a>            <span class="at">data =</span> boar)</span>
-<span id="cb164-6"><a href="generalized-linear-models.html#cb164-6" tabindex="-1"></a></span>
-<span id="cb164-7"><a href="generalized-linear-models.html#cb164-7" tabindex="-1"></a><span class="fu">summary</span>(fm3)</span></code></pre></div>
+<p>And here is our problem. Our problematic model included an interaction between the categorical predictors <code>age</code> and <code>sex</code>, and a numerical predictor for <code>length</code>. So, if we were to make a picture of the model, on a log odds scale the model has 8 parallel lines: one for each combination of <code>age</code> and <code>sex</code>. But of the 4 boar of the sex coded by a 1 (whichever sex that is), and in age class 1, none of the 4 are infected, so the empirical probability of infection is 0. Yet on a log odds scale, a probability of 0 corresponds to a log odds of <span class="math inline">\(-\infty\)</span>. The model can’t handle log odds of <span class="math inline">\(-\infty\)</span>, and so it returns nonsense.</p>
+<hr />
+<p><span style="color: gray;"> We can do better than just say that the model output is nonsense. In R, the <code>glm</code> program estimates model parameters by a routine called maximum likelihood. In this case, the maximum likelihood estimates are found by constructing an objective function called the likelihood, and then (you guessed it) finding the parameter estimates that maximize this likelihood. The maximum likelihood estimates can only be found via an algorithmic optimization (the mysterious “Fisher scoring” reported at the end of the <code>glm</code> summary). In cases of complete separation, though, the likelihood function is pathological in the sense that the maximizing parameter estimates are found at either <span class="math inline">\(+\infty\)</span> or <span class="math inline">\(-\infty\)</span>. In this case, the <code>glm</code> program works for awhile, and then kicks out after it goes through a predetermined maximum number of iterations without converging on the likelihood-maximizing estimates. The estimates that we saw when we looked at the summary of <code>fm2</code> were just the parameter values at the last iteration before the program stopped.</span></p>
+<hr />
+<p>This is an example of “complete separation”. Complete separation happens when there are predictor values, or combinations of predictor values, that completely separate one of the two outcomes being modeled from the other. In this case, the model fitting fails because the model is trying to generate fitted log odds of <span class="math inline">\(+\infty\)</span> or <span class="math inline">\(-\infty\)</span>.</p>
+<p>Complete separation happens, especially in data sets (like this one) with several categorical predictors. It must be dealt with; the model <code>fm2</code> above is nonsense. There are several possible remedies here. The first is to try to reduce the number of parameters in the model, perhaps by eliminating the interaction between sex and age class.</p>
+<div class="sourceCode" id="cb151"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb151-1"><a href="generalized-linear-models.html#cb151-1" tabindex="-1"></a><span class="co"># fit a model with sex, age (as a categorical predictor) and their interaction</span></span>
+<span id="cb151-2"><a href="generalized-linear-models.html#cb151-2" tabindex="-1"></a></span>
+<span id="cb151-3"><a href="generalized-linear-models.html#cb151-3" tabindex="-1"></a>fm3 <span class="ot">&lt;-</span> <span class="fu">glm</span>(tb <span class="sc">~</span> length <span class="sc">+</span> sex <span class="sc">+</span> <span class="fu">as.factor</span>(age),</span>
+<span id="cb151-4"><a href="generalized-linear-models.html#cb151-4" tabindex="-1"></a>            <span class="at">family =</span> binomial,</span>
+<span id="cb151-5"><a href="generalized-linear-models.html#cb151-5" tabindex="-1"></a>            <span class="at">data =</span> boar)</span>
+<span id="cb151-6"><a href="generalized-linear-models.html#cb151-6" tabindex="-1"></a></span>
+<span id="cb151-7"><a href="generalized-linear-models.html#cb151-7" tabindex="-1"></a><span class="fu">summary</span>(fm3)</span></code></pre></div>
 <pre><code>## 
 ## Call:
 ## glm(formula = tb ~ length + sex + as.factor(age), family = binomial, 
@@ -757,83 +632,40 @@ We can visualize the fit by plotting a best-fitting line with a 95% confidence i
 ## AIC: 649.41
 ## 
 ## Number of Fisher Scoring iterations: 4</code></pre>
-<p>A second option is to use so-called ``exact’’ methods for inference. There doesn’t appear to be a good package available for implementing these methods in R. Other software packages might be necessary.</p>
-</div>
-<div id="grouped-binary-data-industrial-melanism" class="section level3 hasAnchor" number="4.2.2">
-<h3><span class="header-section-number">4.2.2</span> Grouped binary data: Industrial melanism<a href="generalized-linear-models.html#grouped-binary-data-industrial-melanism" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<p>We’ll start with the standard logistic regression model for the industrial melanism data. We are primarily interested in determining if the effect of color morph on removal rate changes with distance from Liverpool. For grouped binary data, we need to specify both the number of “successes” and number of “failures” as the response variable in the model. Here, we use <code>cbind</code> to create a two-column matrix with the number of “successes” (moths removed) in the first column, and the number of “failures” (moths not removed) in the second column. See the help documentation for <code>glm</code> for more details.</p>
-<div class="sourceCode" id="cb166"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb166-1"><a href="generalized-linear-models.html#cb166-1" tabindex="-1"></a>moth <span class="ot">&lt;-</span> <span class="fu">read.table</span>(<span class="st">&quot;data/moth.txt&quot;</span>, <span class="at">head =</span> <span class="cn">TRUE</span>, <span class="at">stringsAsFactors =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb166-2"><a href="generalized-linear-models.html#cb166-2" tabindex="-1"></a></span>
-<span id="cb166-3"><a href="generalized-linear-models.html#cb166-3" tabindex="-1"></a>fm1 <span class="ot">&lt;-</span> <span class="fu">glm</span>(<span class="fu">cbind</span>(removed, placed <span class="sc">-</span> removed) <span class="sc">~</span> morph <span class="sc">*</span> distance, </span>
-<span id="cb166-4"><a href="generalized-linear-models.html#cb166-4" tabindex="-1"></a>           <span class="at">family =</span> <span class="fu">binomial</span>(<span class="at">link =</span> <span class="st">&quot;logit&quot;</span>),</span>
-<span id="cb166-5"><a href="generalized-linear-models.html#cb166-5" tabindex="-1"></a>           <span class="at">data =</span> moth)</span>
-<span id="cb166-6"><a href="generalized-linear-models.html#cb166-6" tabindex="-1"></a></span>
-<span id="cb166-7"><a href="generalized-linear-models.html#cb166-7" tabindex="-1"></a><span class="fu">summary</span>(fm1)</span></code></pre></div>
-<pre><code>## 
-## Call:
-## glm(formula = cbind(removed, placed - removed) ~ morph * distance, 
-##     family = binomial(link = &quot;logit&quot;), data = moth)
-## 
-## Coefficients:
-##                      Estimate Std. Error z value Pr(&gt;|z|)    
-## (Intercept)         -1.128987   0.197906  -5.705 1.17e-08 ***
-## morphlight           0.411257   0.274490   1.498 0.134066    
-## distance             0.018502   0.005645   3.277 0.001048 ** 
-## morphlight:distance -0.027789   0.008085  -3.437 0.000588 ***
-## ---
-## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
-## 
-## (Dispersion parameter for binomial family taken to be 1)
-## 
-##     Null deviance: 35.385  on 13  degrees of freedom
-## Residual deviance: 13.230  on 10  degrees of freedom
-## AIC: 83.904
-## 
-## Number of Fisher Scoring iterations: 4</code></pre>
-<p>Grouped binary data are often overdispersed relative to the variance implied by a binomial distribution. In this case, we would call the overdispersion “extra-binomial” variation. As with count data, we can deal with overdispersion through a quasi-likelihood approach:</p>
-<div class="sourceCode" id="cb168"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb168-1"><a href="generalized-linear-models.html#cb168-1" tabindex="-1"></a>fm1q <span class="ot">&lt;-</span> <span class="fu">glm</span>(<span class="fu">cbind</span>(removed, placed <span class="sc">-</span> removed) <span class="sc">~</span> morph <span class="sc">*</span> distance, </span>
-<span id="cb168-2"><a href="generalized-linear-models.html#cb168-2" tabindex="-1"></a>           <span class="at">family =</span> <span class="fu">quasibinomial</span>(<span class="at">link =</span> <span class="st">&quot;logit&quot;</span>),</span>
-<span id="cb168-3"><a href="generalized-linear-models.html#cb168-3" tabindex="-1"></a>           <span class="at">data =</span> moth)</span>
-<span id="cb168-4"><a href="generalized-linear-models.html#cb168-4" tabindex="-1"></a></span>
-<span id="cb168-5"><a href="generalized-linear-models.html#cb168-5" tabindex="-1"></a><span class="fu">summary</span>(fm1q)</span></code></pre></div>
-<pre><code>## 
-## Call:
-## glm(formula = cbind(removed, placed - removed) ~ morph * distance, 
-##     family = quasibinomial(link = &quot;logit&quot;), data = moth)
-## 
-## Coefficients:
-##                      Estimate Std. Error t value Pr(&gt;|t|)    
-## (Intercept)         -1.128987   0.223104  -5.060 0.000492 ***
-## morphlight           0.411257   0.309439   1.329 0.213360    
-## distance             0.018502   0.006364   2.907 0.015637 *  
-## morphlight:distance -0.027789   0.009115  -3.049 0.012278 *  
-## ---
-## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
-## 
-## (Dispersion parameter for quasibinomial family taken to be 1.270859)
-## 
-##     Null deviance: 35.385  on 13  degrees of freedom
-## Residual deviance: 13.230  on 10  degrees of freedom
-## AIC: NA
-## 
-## Number of Fisher Scoring iterations: 4</code></pre>
-<p>As with count data, using quasi-likelihood to estimate the scale (or dispersion) parameter increases the estimates of the standard errors of the coefficients by an amount equal to the square root of the estimated scale parameter.</p>
-<p>The <span class="math inline">\(t\)</span>-test of the interaction between color morph and distance indicates that there is a statistically significant difference in how the proportion of moth removes changes over the distance transect between the two color morphs.</p>
-<div class="sourceCode" id="cb170"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb170-1"><a href="generalized-linear-models.html#cb170-1" tabindex="-1"></a><span class="fu">plot</span>(<span class="at">x =</span> moth<span class="sc">$</span>distance, </span>
-<span id="cb170-2"><a href="generalized-linear-models.html#cb170-2" tabindex="-1"></a>     <span class="at">y =</span> <span class="fu">residuals</span>(fm1q, <span class="at">type =</span> <span class="st">&quot;deviance&quot;</span>),</span>
-<span id="cb170-3"><a href="generalized-linear-models.html#cb170-3" tabindex="-1"></a>     <span class="at">xlab =</span> <span class="st">&quot;distance&quot;</span>,</span>
-<span id="cb170-4"><a href="generalized-linear-models.html#cb170-4" tabindex="-1"></a>     <span class="at">ylab =</span> <span class="st">&quot;Deviance residuals&quot;</span>)</span>
-<span id="cb170-5"><a href="generalized-linear-models.html#cb170-5" tabindex="-1"></a></span>
-<span id="cb170-6"><a href="generalized-linear-models.html#cb170-6" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">h =</span> <span class="dv">0</span>, <span class="at">lty =</span> <span class="st">&quot;dashed&quot;</span>)</span></code></pre></div>
-<p><img src="04-GeneralizedLinearModels_files/figure-html/unnamed-chunk-15-1.png" width="672" /></p>
-<p>The plot of the residuals suggests that we should include a random effect for the sampling station. This makes complete sense. The data for the two color morphs at each station share whatever other characteristics make the station unique, and are thus correlated. To account for this correlation, we need to introduce a random effect for the station. This again gets us into the world of generalized linear mixed models. Before proceeding, we’ll write the model down. Let <span class="math inline">\(i=1,2\)</span> index the two color morphs, and let <span class="math inline">\(j = 1, \ldots, 7\)</span> index the stations. Let <span class="math inline">\(y_{ij}\)</span> be the number of moths removed, let <span class="math inline">\(n_{ij}\)</span> be the number of moths placed, and let <span class="math inline">\(x_j\)</span> be the distance of the station from Liverpool. We wish to fit the model
-<span class="math display">\[\begin{align*}
-y_{ij} &amp; \sim \mathrm{Binom}(p_{ij}, n_{ij})\\
-\mathrm{logit}(p_{ij})  &amp; = \eta_{ij} \\
-\eta_{ij} &amp; = a_i + b_i x_j + L_j \\
-L_j &amp; \sim \mathcal{N}(0, \sigma^2_L)
-\end{align*}\]</span></p>
-<p>The <span class="math inline">\(L_j\)</span>’s are our [l]ocation-specific random effects that capture any other station-to-station differences above and beyond the station’s distance from Liverpool. (It turns out that an observation-level random effect does not improve the model, at least as indicated by DIC.) Because this model includes both a random effect for the station and a non-Gaussian response, it is a generalized linear mixed model (GLMM). We postpone our discussion accordingly.</p>
+<p>For these data, this works. In other cases, a second option is to use so-called “exact” methods for inference. There doesn’t appear to be a good package available for implementing these methods in R. Other software packages might be necessary.</p>
+<!-- ### Grouped binary data: Industrial melanism -->
+<!-- We'll start with the standard logistic regression model for the industrial melanism data.  We are primarily interested in determining if the effect of color morph on removal rate changes with distance from Liverpool.  For grouped binary data, we need to specify both the number of "successes" and number of "failures" as the response variable in the model.  Here, we use `cbind` to create a two-column matrix with the number of "successes" (moths removed) in the first column, and the number of "failures" (moths not removed) in the second column.  See the help documentation for `glm` for more details. -->
+<!-- ```{r} -->
+<!-- moth <- read.table("data/moth.txt", head = TRUE, stringsAsFactors = TRUE) -->
+<!-- fm1 <- glm(cbind(removed, placed - removed) ~ morph * distance,  -->
+<!--            family = binomial(link = "logit"), -->
+<!--            data = moth) -->
+<!-- summary(fm1) -->
+<!-- ``` -->
+<!-- Grouped binary data are often overdispersed relative to the variance implied by a binomial distribution.  In this case, we would call the overdispersion "extra-binomial" variation.  As with count data, we can deal with overdispersion through a quasi-likelihood approach: -->
+<!-- ```{r} -->
+<!-- fm1q <- glm(cbind(removed, placed - removed) ~ morph * distance,  -->
+<!--            family = quasibinomial(link = "logit"), -->
+<!--            data = moth) -->
+<!-- summary(fm1q) -->
+<!-- ``` -->
+<!-- As with count data, using quasi-likelihood to estimate the scale (or dispersion) parameter increases the estimates of the standard errors of the coefficients by an amount equal to the square root of the estimated scale parameter.   -->
+<!-- The $t$-test of the interaction between color morph and distance indicates that there is a statistically significant difference in how the proportion of moth removes changes over the distance transect between the two color morphs. -->
+<!-- ```{r} -->
+<!-- plot(x = moth$distance,  -->
+<!--      y = residuals(fm1q, type = "deviance"), -->
+<!--      xlab = "distance", -->
+<!--      ylab = "Deviance residuals") -->
+<!-- abline(h = 0, lty = "dashed") -->
+<!-- ``` -->
+<!-- The plot of the residuals suggests that we should include a random effect for the sampling station.  This makes complete sense.  The data for the two color morphs at each station share whatever other characteristics make the station unique, and are thus correlated.  To account for this correlation, we need to introduce a random effect for the station.  This again gets us into the world of generalized linear mixed models.  Before proceeding, we'll write the model down.  Let $i=1,2$ index the two color morphs, and let $j = 1, \ldots, 7$ index the stations.  Let $y_{ij}$ be the number of moths removed, let $n_{ij}$ be the number of moths placed, and let $x_j$ be the distance of the station from Liverpool.  We wish to fit the model -->
+<!-- \begin{align*} -->
+<!-- y_{ij} & \sim \mathrm{Binom}(p_{ij}, n_{ij})\\ -->
+<!-- \mathrm{logit}(p_{ij})  & = \eta_{ij} \\ -->
+<!-- \eta_{ij} & = a_i + b_i x_j + L_j \\ -->
+<!-- L_j & \sim \mathcal{N}(0, \sigma^2_L) -->
+<!-- \end{align*} -->
+<!-- The $L_j$'s are our [l]ocation-specific random effects that capture any other station-to-station differences above and beyond the station's distance from Liverpool.  (It turns out that an observation-level random effect does not improve the model, at least as indicated by DIC.)  Because this model includes both a random effect for the station and a non-Gaussian response, it is a generalized linear mixed model (GLMM).  We postpone our discussion accordingly. -->
 <!-- We have already mentioned that the $t$-statistics reported in `summary.glm` are based on standard errors calculated from the curvature (Hessian) of the negative log-likelihood at the MLEs, with df determined by the df available for the residual deviance.  An alternative approach for testing for the significance of model terms is to use the residual deviance to compare nested models, much as one would use $F$-tests to compare nested models in ordinary least squares.  Here is a bit of theory.  Let $D$ denote the residual deviance for a model.  Suppose we are comparing two nested models: a parameter poor model that we call model 0, and a parameter rich model that we call model 1.  The parameter-rich model nests the parameter poor model.  Let $p_0$ and $p_1$ be the number of estimated parameters in the linear predictor of models 0 and 1, respectively, and let $D_0$ and $D_1$ denote the (residual) deviances of both models.  In the usual way, we wish to test whether or not the parameter-rich model provides a statistically significant improvement in fit over the parameter-poor model. -->
 <!-- There are two separate approaches here depending on whether the scale parameter is known, or is estimated from the data.  If the scale parameter is known to be $\phi$, then define the scaled deviance as $D^* = D / \phi$.  The LRT to compare the two models is equal to the drop in the scaled deviance, $D^*_0 - D^*_1$.  Under the null hypothesis that the parameter-poor model generated the data, the test statistic has a $\chi^2$ distribution with $p_1 - p_0$ degrees of freedom. -->
 <!-- If the scale parameter is estimated from the data, then we work with the (residual) deviances directly.  In this case, we calculate the $F$-statistic -->
@@ -850,123 +682,144 @@ L_j &amp; \sim \mathcal{N}(0, \sigma^2_L)
 <!-- ``` -->
 </div>
 </div>
-<div id="implementation-in-sas" class="section level2 hasAnchor" number="4.3">
-<h2><span class="header-section-number">4.3</span> Implementation in SAS<a href="generalized-linear-models.html#implementation-in-sas" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p>The Donner party was a well-known group of settlers who got stuck in the Sierra Nevada snows in the winter of 1846-47. The Donner party included 45 adults (defined here as individuals at least 15 years of age), of whom only 20 survived the famous winter <span class="citation">Grayson (<a href="#ref-grayson1993differential">1993</a>)</span>. We have a data set that includes age, gender, and fate for all 45 members of the party. The first few records of the data set are:</p>
-<pre><code>age gender  fate
-23  male    died
-40  female  survived
-40  male    survived
-30  male    died
-28  male    died
-40  male    died
-45  female  died
-...</code></pre>
-<p>Suppose we want to model the relationship between age, gender, and fate, where age and gender are predictors, and fate is the response. Fate is a binary response because it has only two possible values. Clearly, we can’t use the usual multiple regression model, because the residuals are sure to be severely non-normal.</p>
-<p>Our goal is to relate the predictors to the probability of one outcome or the other. The challenge in doing so is that probabilities are constrained to take values between 0 and 1, and are thus awkward to work with mathematically. Instead, we model the log odds of oue outcome for the other. To explain log odds, we first need to explain odds.</p>
-<p>uppose that the probability of an event occurring is <span class="math inline">\(p\)</span>. The odds of that event occurring are
+<div id="poisson-regression" class="section level2 hasAnchor" number="4.2">
+<h2><span class="header-section-number">4.2</span> Poisson regression<a href="generalized-linear-models.html#poisson-regression" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Poisson regression is used when the response is a “count” variable. A count variable just counts the number of times that an event occurs. Thus count variables are necessarily non-negative integers.</p>
+<p>These data are originally from <span class="citation">Poole (<a href="#ref-poole1989mate">1989</a>)</span>, and were analyzed in <span class="citation">Ramsey and Schafer (<a href="#ref-ramsey2012statistical">2012</a>)</span>. They describe an observational study of 41 male elephants over 8 years at Amboseli National Park in Kenya. Each record in this data set gives the age of a male elephant at the beginning of a study and the number of successful matings for the elephant over the study’s duration. The number of matings is a count variable. Our goal is to characterize how the number of matings is related to the elephant’s age.</p>
+<p>Poisson regression is sometimes called “log-linear” regression. In Poisson regression, we try to fit a model for the (natural) log of the average response.</p>
+<div class="sourceCode" id="cb153"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb153-1"><a href="generalized-linear-models.html#cb153-1" tabindex="-1"></a>elephant <span class="ot">&lt;-</span> <span class="fu">read.table</span>(<span class="st">&quot;data/elephant.txt&quot;</span>, <span class="at">head =</span> T)</span>
+<span id="cb153-2"><a href="generalized-linear-models.html#cb153-2" tabindex="-1"></a><span class="fu">head</span>(elephant)</span></code></pre></div>
+<pre><code>##   age matings
+## 1  27       0
+## 2  28       1
+## 3  28       1
+## 4  28       1
+## 5  28       3
+## 6  29       0</code></pre>
+<div class="sourceCode" id="cb155"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb155-1"><a href="generalized-linear-models.html#cb155-1" tabindex="-1"></a><span class="fu">with</span>(elephant, <span class="fu">plot</span>(matings <span class="sc">~</span> age))</span></code></pre></div>
+<p><img src="04-GeneralizedLinearModels_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
+<div class="sourceCode" id="cb156"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb156-1"><a href="generalized-linear-models.html#cb156-1" tabindex="-1"></a>fm1 <span class="ot">&lt;-</span> <span class="fu">glm</span>(matings <span class="sc">~</span> age, </span>
+<span id="cb156-2"><a href="generalized-linear-models.html#cb156-2" tabindex="-1"></a>           <span class="at">family =</span> poisson, </span>
+<span id="cb156-3"><a href="generalized-linear-models.html#cb156-3" tabindex="-1"></a>           <span class="at">data   =</span> elephant)  </span>
+<span id="cb156-4"><a href="generalized-linear-models.html#cb156-4" tabindex="-1"></a></span>
+<span id="cb156-5"><a href="generalized-linear-models.html#cb156-5" tabindex="-1"></a><span class="fu">summary</span>(fm1)</span></code></pre></div>
+<pre><code>## 
+## Call:
+## glm(formula = matings ~ age, family = poisson, data = elephant)
+## 
+## Coefficients:
+##             Estimate Std. Error z value Pr(&gt;|z|)    
+## (Intercept) -1.58201    0.54462  -2.905  0.00368 ** 
+## age          0.06869    0.01375   4.997 5.81e-07 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## (Dispersion parameter for poisson family taken to be 1)
+## 
+##     Null deviance: 75.372  on 40  degrees of freedom
+## Residual deviance: 51.012  on 39  degrees of freedom
+## AIC: 156.46
+## 
+## Number of Fisher Scoring iterations: 5</code></pre>
+<p>Thus the so-called pseudo-<span class="math inline">\(R^2\)</span> for the model with the log link is
 <span class="math display">\[
-\mathrm{odds} = \dfrac{p}{1-p}
+\mathrm{pseudo}-R^2 = 1 - \frac{51.012}{75.372} = 32.3\%
 \]</span>
-The logit, or log odds are simply the natural log of the odds, or
-<span class="math display">\[
-\mathrm{logit} = \ln \mathrm{odds} = \ln(\dfrac{p}{1-p}).
-\]</span></p>
-<p>We can work backwards from log odds or odds to probabilities by inverting the formulas above. Going from log odds to odds is easy:
-<span class="math display">\[
-\mathrm{odds} = e^{\mathrm{logit}}.
-\]</span>
-Going from odds to probabilities is also easy:
-<span class="math display">\[
-p = \dfrac{\mathrm{odds}}{1 + \mathrm{odds}}
-\]</span></p>
-<p>Now, we can use
-<span class="math display">\[
-\mathrm{logit}(p) = \beta_0 + \beta_1 x_1 + \beta_2 x_2 + \ldots,
-\]</span>
-which will work just fine.</p>
-<p>In SAS, we can fit this model using PROC LOGISTIC:</p>
-<pre><code>proc logistic descending;
-  model fate = age male;
-run;
+We can visualize the fit by plotting a best-fitting line with a 95% confidence interval.</p>
+<div class="sourceCode" id="cb158"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb158-1"><a href="generalized-linear-models.html#cb158-1" tabindex="-1"></a>new.data <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">age =</span> <span class="fu">seq</span>(<span class="at">from =</span> <span class="fu">min</span>(elephant<span class="sc">$</span>age),</span>
+<span id="cb158-2"><a href="generalized-linear-models.html#cb158-2" tabindex="-1"></a>                                 <span class="at">to   =</span> <span class="fu">max</span>(elephant<span class="sc">$</span>age),</span>
+<span id="cb158-3"><a href="generalized-linear-models.html#cb158-3" tabindex="-1"></a>                                 <span class="at">length =</span> <span class="dv">100</span>))</span>
+<span id="cb158-4"><a href="generalized-linear-models.html#cb158-4" tabindex="-1"></a></span>
+<span id="cb158-5"><a href="generalized-linear-models.html#cb158-5" tabindex="-1"></a>predict.fm1 <span class="ot">&lt;-</span> <span class="fu">predict</span>(fm1, <span class="at">newdata =</span> new.data, <span class="at">type =</span> <span class="st">&quot;response&quot;</span>, <span class="at">se.fit =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb158-6"><a href="generalized-linear-models.html#cb158-6" tabindex="-1"></a></span>
+<span id="cb158-7"><a href="generalized-linear-models.html#cb158-7" tabindex="-1"></a><span class="fu">with</span>(elephant, <span class="fu">plot</span>(matings <span class="sc">~</span> age))</span>
+<span id="cb158-8"><a href="generalized-linear-models.html#cb158-8" tabindex="-1"></a><span class="fu">lines</span>(<span class="at">x =</span> new.data<span class="sc">$</span>age, <span class="at">y =</span> predict.fm1<span class="sc">$</span>fit, <span class="at">col =</span> <span class="st">&quot;red&quot;</span>)</span>
+<span id="cb158-9"><a href="generalized-linear-models.html#cb158-9" tabindex="-1"></a></span>
+<span id="cb158-10"><a href="generalized-linear-models.html#cb158-10" tabindex="-1"></a><span class="co"># add lines for standard errors</span></span>
+<span id="cb158-11"><a href="generalized-linear-models.html#cb158-11" tabindex="-1"></a></span>
+<span id="cb158-12"><a href="generalized-linear-models.html#cb158-12" tabindex="-1"></a><span class="fu">lines</span>(<span class="at">x   =</span> new.data<span class="sc">$</span>age, </span>
+<span id="cb158-13"><a href="generalized-linear-models.html#cb158-13" tabindex="-1"></a>      <span class="at">y   =</span> predict.fm1<span class="sc">$</span>fit <span class="sc">-</span> <span class="fl">1.96</span> <span class="sc">*</span> predict.fm1<span class="sc">$</span>se.fit, </span>
+<span id="cb158-14"><a href="generalized-linear-models.html#cb158-14" tabindex="-1"></a>      <span class="at">col =</span> <span class="st">&quot;red&quot;</span>,</span>
+<span id="cb158-15"><a href="generalized-linear-models.html#cb158-15" tabindex="-1"></a>      <span class="at">lty =</span> <span class="st">&quot;dashed&quot;</span>)</span>
+<span id="cb158-16"><a href="generalized-linear-models.html#cb158-16" tabindex="-1"></a></span>
+<span id="cb158-17"><a href="generalized-linear-models.html#cb158-17" tabindex="-1"></a><span class="fu">lines</span>(<span class="at">x   =</span> new.data<span class="sc">$</span>age, </span>
+<span id="cb158-18"><a href="generalized-linear-models.html#cb158-18" tabindex="-1"></a>      <span class="at">y   =</span> predict.fm1<span class="sc">$</span>fit <span class="sc">+</span> <span class="fl">1.96</span> <span class="sc">*</span> predict.fm1<span class="sc">$</span>se.fit, </span>
+<span id="cb158-19"><a href="generalized-linear-models.html#cb158-19" tabindex="-1"></a>      <span class="at">col =</span> <span class="st">&quot;red&quot;</span>,</span>
+<span id="cb158-20"><a href="generalized-linear-models.html#cb158-20" tabindex="-1"></a>      <span class="at">lty =</span> <span class="st">&quot;dashed&quot;</span>)</span></code></pre></div>
+<p><img src="04-GeneralizedLinearModels_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
+<p>Unlike logistic regression, with Poisson regression we can generate meaningful residuals. There are two ways to define the residuals for generalized linear models. Here, we’ll have a look at the so-called deviance residuals.</p>
+<div class="sourceCode" id="cb159"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb159-1"><a href="generalized-linear-models.html#cb159-1" tabindex="-1"></a><span class="fu">plot</span>(<span class="at">x =</span> elephant<span class="sc">$</span>age, </span>
+<span id="cb159-2"><a href="generalized-linear-models.html#cb159-2" tabindex="-1"></a>     <span class="at">y =</span> <span class="fu">residuals</span>(fm1, <span class="at">type =</span> <span class="st">&quot;deviance&quot;</span>),</span>
+<span id="cb159-3"><a href="generalized-linear-models.html#cb159-3" tabindex="-1"></a>     <span class="at">xlab =</span> <span class="st">&quot;age&quot;</span>,</span>
+<span id="cb159-4"><a href="generalized-linear-models.html#cb159-4" tabindex="-1"></a>     <span class="at">ylab =</span> <span class="st">&quot;Deviance residuals&quot;</span>)</span>
+<span id="cb159-5"><a href="generalized-linear-models.html#cb159-5" tabindex="-1"></a></span>
+<span id="cb159-6"><a href="generalized-linear-models.html#cb159-6" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">h =</span> <span class="dv">0</span>, <span class="at">lty =</span> <span class="st">&quot;dashed&quot;</span>)</span></code></pre></div>
+<p><img src="04-GeneralizedLinearModels_files/figure-html/unnamed-chunk-11-1.png" width="672" /></p>
+<p>The residuals do not suggest any deficiency in the fit.</p>
+<p>With Poisson data, we also have to be wary of so-called overdispersion. In Poisson regression, the assumption of a Poisson-distributed response introduces a very specific assumption about the relationship between the variance of the response and the mean. (Do you remember what this is? In a Poisson distribution, the variance equals the mean!). But this assumption is just an assumption, and its suitability needs to be assessed.</p>
+<p>More often than not (dare we say almost always?), the data are more variable, or more dispersed, then the Poisson distribution would suggest. When this happens, we say that the data are “overdispersed” relative to a Poisson distribution. (Underdispersion is possible too, but it’s rare, and for reasons that we will see shortly, it doesn’t create the same statistical problems that overdispersion does.)</p>
+<p>Here’s some good news: the degree of over-/under-dispersion is measured by the ratio of something called the “residual deviance” to the df associated with the residual deviance. The residual deviance is the counterpart to the error sum-of-squares in general linear models, and the associated df are computed in the same way. When the ratio of the residual deviance to its df is <span class="math inline">\(&gt;1\)</span>, this suggests overdispersion; when the ratio is <span class="math inline">\(&lt;1\)</span>, this suggest underdispersion. No surprise, the elephant data are overdispersed.</p>
+<p>When data are overdispersed, the “naive” standard errors (i.e., those calculated assuming Poisson variation) are too small. That’s bad, and we need to correct for it. (When data are underdispersed, the naive standard errors are too big, which just means we wind up with conservative inferences, which no one worries about.) In R, the way to correct for overdispersion is to use a so-called <code>quasipoisson</code> family. Let’s try it:</p>
+<div class="sourceCode" id="cb160"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb160-1"><a href="generalized-linear-models.html#cb160-1" tabindex="-1"></a>fm3 <span class="ot">&lt;-</span> <span class="fu">glm</span>(matings <span class="sc">~</span> age, <span class="at">family =</span> quasipoisson, <span class="at">data =</span> elephant)  </span>
+<span id="cb160-2"><a href="generalized-linear-models.html#cb160-2" tabindex="-1"></a></span>
+<span id="cb160-3"><a href="generalized-linear-models.html#cb160-3" tabindex="-1"></a><span class="fu">summary</span>(fm3)</span></code></pre></div>
+<pre><code>## 
+## Call:
+## glm(formula = matings ~ age, family = quasipoisson, data = elephant)
+## 
+## Coefficients:
+##             Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept) -1.58201    0.58590  -2.700   0.0102 *  
+## age          0.06869    0.01479   4.645 3.81e-05 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## (Dispersion parameter for quasipoisson family taken to be 1.157334)
+## 
+##     Null deviance: 75.372  on 40  degrees of freedom
+## Residual deviance: 51.012  on 39  degrees of freedom
+## AIC: NA
+## 
+## Number of Fisher Scoring iterations: 5</code></pre>
+<div class="sourceCode" id="cb162"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb162-1"><a href="generalized-linear-models.html#cb162-1" tabindex="-1"></a>predict.fm3 <span class="ot">&lt;-</span> <span class="fu">predict</span>(fm3, <span class="at">newdata =</span> new.data, <span class="at">type =</span> <span class="st">&quot;response&quot;</span>, <span class="at">se.fit =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb162-2"><a href="generalized-linear-models.html#cb162-2" tabindex="-1"></a></span>
+<span id="cb162-3"><a href="generalized-linear-models.html#cb162-3" tabindex="-1"></a><span class="fu">with</span>(elephant, <span class="fu">plot</span>(matings <span class="sc">~</span> age))</span>
+<span id="cb162-4"><a href="generalized-linear-models.html#cb162-4" tabindex="-1"></a><span class="fu">lines</span>(<span class="at">x =</span> new.data<span class="sc">$</span>age, <span class="at">y =</span> predict.fm3<span class="sc">$</span>fit, <span class="at">col =</span> <span class="st">&quot;blue&quot;</span>)</span>
+<span id="cb162-5"><a href="generalized-linear-models.html#cb162-5" tabindex="-1"></a></span>
+<span id="cb162-6"><a href="generalized-linear-models.html#cb162-6" tabindex="-1"></a><span class="fu">lines</span>(<span class="at">x   =</span> new.data<span class="sc">$</span>age, </span>
+<span id="cb162-7"><a href="generalized-linear-models.html#cb162-7" tabindex="-1"></a>      <span class="at">y   =</span> predict.fm3<span class="sc">$</span>fit <span class="sc">+</span> <span class="fu">qt</span>(<span class="fl">0.025</span>, <span class="at">df =</span> <span class="dv">39</span>) <span class="sc">*</span> predict.fm3<span class="sc">$</span>se.fit, </span>
+<span id="cb162-8"><a href="generalized-linear-models.html#cb162-8" tabindex="-1"></a>      <span class="at">col =</span> <span class="st">&quot;blue&quot;</span>,</span>
+<span id="cb162-9"><a href="generalized-linear-models.html#cb162-9" tabindex="-1"></a>      <span class="at">lty =</span> <span class="st">&quot;dashed&quot;</span>)</span>
+<span id="cb162-10"><a href="generalized-linear-models.html#cb162-10" tabindex="-1"></a></span>
+<span id="cb162-11"><a href="generalized-linear-models.html#cb162-11" tabindex="-1"></a><span class="fu">lines</span>(<span class="at">x   =</span> new.data<span class="sc">$</span>age, </span>
+<span id="cb162-12"><a href="generalized-linear-models.html#cb162-12" tabindex="-1"></a>      <span class="at">y   =</span> predict.fm3<span class="sc">$</span>fit <span class="sc">+</span> <span class="fu">qt</span>(<span class="fl">0.975</span>, <span class="at">df =</span> <span class="dv">39</span>) <span class="sc">*</span> predict.fm3<span class="sc">$</span>se.fit, </span>
+<span id="cb162-13"><a href="generalized-linear-models.html#cb162-13" tabindex="-1"></a>      <span class="at">col =</span> <span class="st">&quot;blue&quot;</span>,</span>
+<span id="cb162-14"><a href="generalized-linear-models.html#cb162-14" tabindex="-1"></a>      <span class="at">lty =</span> <span class="st">&quot;dashed&quot;</span>)</span></code></pre></div>
+<p><img src="04-GeneralizedLinearModels_files/figure-html/unnamed-chunk-12-1.png" width="672" />
+Switching from a Poisson family to a quasi-Poisson family hasn’t changed the parameter estimates of the fit, but it has increased the associate standard errors. To be precise, the standard errors have been multiplied by something called the “dispersion parameter”, which in this case is about 1.16. So, the standard errors have increased by 16% — nothing dramatic, but big enough that we need to account for it. The dispersion parameter should be close to the square root of the ratio of the residual deviance to its df; I’m not sure why it isn’t exactly that value in this case.</p>
+<hr />
+<p><span style="color: gray;">So what’s “quasi” about a quasi-Poisson family? In the first case, there is no such thing as a “quasi-Poisson” distribution. The “quasi-Poisson” family is just a Poisson fit with the standard errors inflated by the dispersion parameter.</span></p>
+<p><span style="color: gray;">You may also wonder why we didn’t discuss overdispersion in logistic regression. In logistic regression with individual responses, like the Donner party data and the boar data, it’s hard to define overdispersion. For logistic regression with grouped binary responses, however, overdispersion can and should be accounted for, just like in Poisson regression. (Grouped responses are those where each data point is not a single success or failure, but a tally of the number of successes in many trials.) There is a <code>quasibinomial</code> family in R to deal with overdispersed (grouped) binomial data.</span></p>
+<hr />
+<!-- As an alternative, we could fit a model that uses a negative binomial distribution for the response.  Negative binomial distributions belong to the exponential family, so we can fit them using the GLM framework.  However, the authors of `glm` did not include a negative binomial family in their initial code.  Venables & Ripley's `MASS` package includes a program called `glm.nb` which is specifically designed for negative binomial responses.  `MASS::glm.nb` uses the parameterization familiar to ecologists, although they use the parameter $\theta$ instead of $k$.  So, in their notation, if $y \sim \mathrm{NB}(\mu, \theta)$, then $\mathrm{Var}(y) = \mu + \mu^2/\theta$. -->
+<!-- ```{r} -->
+<!-- require(MASS) -->
+<!-- fm4 <- glm.nb(matings ~ age, link = identity, data = elephant)   -->
+<!-- summary(fm4) -->
+<!-- predict.fm4 <- predict(fm4, newdata = new.data, type = "response", se.fit = TRUE) -->
+<!-- with(elephant, plot(matings ~ age)) -->
+<!-- lines(x = new.data$age, y = predict.fm4$fit, col = "blue") -->
+<!-- lines(x   = new.data$age,  -->
+<!--       y   = predict.fm4$fit + 1.96 * predict.fm4$se.fit,  -->
+<!--       col = "blue", -->
+<!--       lty = "dashed") -->
+<!-- lines(x   = new.data$age,  -->
+<!--       y   = predict.fm4$fit - 1.96 * predict.fm4$se.fit,  -->
+<!--       col = "blue", -->
+<!--       lty = "dashed") -->
+<!-- ``` -->
+<!-- Notice that $\hat{\theta} = 15.8$, again indicating that the extra-Poisson variation is mild.  Notice also that the error bounds on the fitted curve are ever so slightly larger than the error bounds from the Poisson fit, and nearly identical to the error bounds from the quasi-Poisson fit. -->
 
-
-Output:
-The LOGISTIC Procedure
-
-         Response Profile
-
- Ordered                      Total
-   Value     fate         Frequency
-
-       1     survived            20
-       2     died                25
-
-Probability modeled is fate=&#39;survived&#39;.
-
-
-             Analysis of Maximum Likelihood Estimates
-
-                               Standard          Wald
-Parameter    DF    Estimate       Error    Chi-Square    Pr &gt; ChiSq
-
-Intercept     1      3.2304      1.3870        5.4248        0.0199
-age           1     -0.0782      0.0373        4.3988        0.0360
-male          1     -1.5973      0.7555        4.4699        0.0345
-
-
-           Odds Ratio Estimates
-
-             Point          95% Wald
-Effect    Estimate      Confidence Limits
-
-age          0.925       0.860       0.995
-male         0.202       0.046       0.890</code></pre>
-<p>To interpret the SAS output correcty, it is critical to know whether the software is modeling the probability of an individual dying or of an individual surviving. By default, SAS models the probability of the value of the response variable for the first record in the data set. In this case, the first record in the data set is for someone who died, so SAS’s default is to model the probability of dying. There are several ways to override this default. Here, we do so by using the DESCENDING option.</p>
-<p>The parameter estimates describe a fitted regression surface on the log odds scale. For example, for individuals of a given gender, increasing age by one year decreases the log odds of survival by 0.078. We will work towards converting this estimate back to something that is easier to interpret. For now, though, recognize that log odds, odds, and probabilities all increase and decrease together, so that the sign of the estimated regression coefficient is meaningful. Here, the sign of the regression coefficient for age tells us that when comparing two people of the same gender, older people are less likely to survive. The sign of the regression coefficient for gender tells us that when comparing two people of the same age, men are less likely to survive than women. Of course, we have yet to determine if these effects are statistically significant.</p>
-<p>Example: Calculate the predicted survival probability for a 30-year old man.
-<span class="math display">\[
-\begin{align}
-\mathrm{logit} &amp; = \hat{\beta}_0 + \hat{\beta}_1 \times 30 + \hat{\beta}_2 \times 1 = -0.713 \\
-\mathrm{odds} &amp; =e^{-0.713} = 0.49\\
-\mathrm{probability} &amp; = 0.49/1.49 = 0.33.
-\end{align}
-\]</span></p>
-<p>Sometimes we interpret the logistic regression parameters in terms of the odds ratio. In the logistic regression model, if we hold all other predictors constant and increase the predictor <span class="math inline">\(x_i\)</span> by 1, then the predicted odds of success are multiplied by the factor <span class="math inline">\(e^{\beta_i}\)</span>. This is called the odds ratio for predictor <span class="math inline">\(i\)</span>, and is computed automatically by the SAS output. SAS also provides 95% CIs for odds ratios.</p>
-<p>As an example, suppose we repeated the procedure above to predict the odds of survival for a 31-year old man. We would find that this man’s odds of survival is 0.45. The odds ratio, <span class="math inline">\(0.45/0.49 = 0.92 = e^{\hat{\beta}_1}\)</span>.</p>
-<p>SAS reports (estimated) standard errors for each logistic regression parameter as well as Wald <span class="math inline">\(\chi^2\)</span> tests. The Wald <span class="math inline">\(\chi^2\)</span> tests are tests of <span class="math inline">\(H_0: \beta_i = 0\)</span> vs. <span class="math inline">\(H_a:\beta_i \neq 0\)</span>. Wald <span class="math inline">\(\chi^2\)</span> tests are the analog of Type III <span class="math inline">\(F\)</span> (or <span class="math inline">\(t\)</span>-) tests in regression and ANOVA. In the example above, both the effects of age and gender are statistically significant at the 5% level.</p>
-<p>Do the Donner party data contain evidence that the effect of age on survival is different for men vs. women? Fit a model with an age-by-gender interaction and determine if the interaction is significant.</p>
-<pre><code>proc logistic descending;
-  model fate = age|male;
-run;  
-             Analysis of Maximum Likelihood Estimates
-
-                               Standard          Wald
-Parameter    DF    Estimate       Error    Chi-Square    Pr &gt; ChiSq
-
-Intercept     1      7.2450      3.2046        5.1114        0.0238
-age           1     -0.1940      0.0874        4.9289        0.0264
-male          1     -6.9267      3.3983        4.1546        0.0415
-age*male      1      0.1616      0.0942        2.9385        0.0865</code></pre>
-<p>Conclusion: There is no evidence that the effect of age depends on gender (<span class="math inline">\(\chi^2_1 =2.94\)</span>, <span class="math inline">\(p = 0.0865\)</span>).</p>
-<div id="complete-separation" class="section level3 hasAnchor" number="4.3.1">
-<h3><span class="header-section-number">4.3.1</span> Complete separation<a href="generalized-linear-models.html#complete-separation" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<p>Consider the following hypothetical data set:</p>
-<pre><code>    x       y
-    0       fail
-    1       fail
-    2       success
-    3       success</code></pre>
-<p>The best-fitting model for these data is one where the success probability is 0 for values of <span class="math inline">\(x \leq 1\)</span> and the success probability is 1 for values of <span class="math inline">\(x \geq 2\)</span>. On a log odds scale, the log odds should be <span class="math inline">\(-\infty\)</span> for <span class="math inline">\(x \leq 1\)</span> and <span class="math inline">\(+\infty\)</span> for <span class="math inline">\(x \geq 2\)</span>. Thus, on a log odds scale, the best-fitting line is vertical: it has infinite slope and no intercept. Thus, the intercept and slope of the logistic regression fit are impossible to estimate.</p>
-<p>This condition is known as complete separation. A similar and equally problematic condition is quasi-complete separation. Complete and quasi-complete separation are easy to detect visually when there is only a single predictor. When there are multiple predictors, (quasi-) complete separation may exist and may not be easy to detect visually. (Quasi-) complete separation is more likely when the ratio of the number of data points to the number of predictors is small.</p>
-<p>SAS will tell you when it detects (quasi-) complete separation. When it does, the Wald-tests are unreliable. Instead, exact tests must be used. The syntax for requesting an exact test in PROC LOGISTIC</p>
-<pre><code>proc logistic exactonly;
-  model y = x1 x2;
-  exact x1 x2;
-run;</code></pre>
-<p>Consult the on-line documentation for details and examples.</p>
-
-</div>
 </div>
 </div>
 
