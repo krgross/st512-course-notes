@@ -163,9 +163,155 @@ summary(fm2)
 ```
 The interaction is not significant at the usual 5\% threshold for significance, so we'll revert to the additive model.
 
+### Grouped binary data and overdispersion
+
+In the Donner party data, each individual data point gives the outcome of a single trial.  Sometimes, the data are structured so that each data point is a tally of the number of outcomes of one type in a set of trials.  We call these data "grouped".
+
+To illustrate, we will consider data from a famous ecological study investigating predation on light and dark colored moths along an urban-rural transect outside of Liverpool, England. The original source for these data is @bishop1972; I obtained them from @ramsey2002. These data consist of paired binomial responses with two covariates: distance from Liverpool (a station-level covariate) and color morph (an observation-level covariate).
+
+Although simple, these data contain many features that complicate their analysis:
+
+* Observations from the same location are (positively) correlated, presumably because the predation pressure varies from one location to the next.
+* The responses are grouped binomial responses with varying group size (that is, varying numbers of moths placed on trees) at each location.
+
+Accommodating both the non-independence (due to the pairing) and the non-normality of these data requires a more sophisticated approach.  Here, we will focus on accommodating the binomial nature of the response.  To accomodate the correlations among observations from the same location we would have to introduce a random effect for the location, which gets complicated.
+
+Let's first have a look at the data:
+
+``` r
+moth <- read.table("data/moth.txt", head = TRUE, stringsAsFactors = TRUE)
+summary(moth)
+```
+
+```
+##  location    distance       morph       placed         removed     
+##  cm:2     Min.   : 0.00   dark :7   Min.   :52.00   Min.   : 9.00  
+##  ef:2     1st Qu.:11.43   light:7   1st Qu.:57.00   1st Qu.:16.25  
+##  ha:2     Median :30.20             Median :60.00   Median :20.00  
+##  ll:2     Mean   :27.23             Mean   :69.14   Mean   :21.86  
+##  lo:2     3rd Qu.:40.23             3rd Qu.:83.00   3rd Qu.:23.75  
+##  pw:2     Max.   :51.20             Max.   :92.00   Max.   :40.00  
+##  sp:2
+```
+
+``` r
+head(moth)
+```
+
+```
+##   location distance morph placed removed
+## 1       sp      0.0 light     56      17
+## 2       sp      0.0  dark     56      14
+## 3       ef      7.2 light     80      28
+## 4       ef      7.2  dark     80      20
+## 5       ha     24.1 light     52      18
+## 6       ha     24.1  dark     52      22
+```
+In each record, the variable `placed` gives the number of moths that were placed on the trees, and the variable `removed` gives the number that were removed, presumably by predators.  For these data, we'd like to know if the rate at which moths are removed changes differently for light vs.\ dark moths as we move further out into the countryside and away from the urban city center. In other words, we want to know if there is an interaction between `distance` (the distance from Liverpool) and the color `morph`.
+
+In notation, let $i=1,2$ index the two color morphs, let $j = 1, \ldots, 7$ index the locations, let $y_{ij}$ give the number of moths removed, let $n_{ij}$ give the number of moths placed, and let $x_j$ give the distance of station $j$ from Liverpool.  Here, we will study the model
+\[
+\mathrm{logit}(y_{ij} / n_{ij}) = a_i + b_i x_j + \varepsilon_{ij}
+\]
+which regresses the log odds of moth removal against distance from Liverpool, with different intercepts and slopes for each color morph.  We are most interested in learning about the difference $b_1 - b_2$, which quantifies how the relationship between log odds of removal and distance differs between the two color morphs, and determining whether there is evidence that this difference $\neq 0$.
+
+For grouped binary data, we need to specify both the number of "successes" and number of "failures" as the response variable in the model.  Here, we use `cbind` to create a two-column matrix with the number of "successes" (moths removed) in the first column, and the number of "failures" (moths not removed) in the second column.
+
+
+``` r
+fm1 <- glm(cbind(removed, placed - removed) ~ morph * distance,
+           family = binomial(link = "logit"),
+           data = moth)
+
+summary(fm1)
+```
+
+```
+## 
+## Call:
+## glm(formula = cbind(removed, placed - removed) ~ morph * distance, 
+##     family = binomial(link = "logit"), data = moth)
+## 
+## Coefficients:
+##                      Estimate Std. Error z value Pr(>|z|)    
+## (Intercept)         -1.128987   0.197906  -5.705 1.17e-08 ***
+## morphlight           0.411257   0.274490   1.498 0.134066    
+## distance             0.018502   0.005645   3.277 0.001048 ** 
+## morphlight:distance -0.027789   0.008085  -3.437 0.000588 ***
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## (Dispersion parameter for binomial family taken to be 1)
+## 
+##     Null deviance: 35.385  on 13  degrees of freedom
+## Residual deviance: 13.230  on 10  degrees of freedom
+## AIC: 83.904
+## 
+## Number of Fisher Scoring iterations: 4
+```
+
+The most interesting parameter is the interaction term, which gives the difference in slopes for the two color morphs.  Because the dark morph is serving as the reference, the fact that the coefficient is negative means that the (log odds of) removal decline with increased distance from Liverpool more quickly for the light moths.  (In fact, a little algebra shows that the log odds of removal increase with distance from Liverpool for the dark moths and decrease with distance from Liverpool for the light moths.)  This is exactly what we would expect based on the changing effectiveness of dark vs. light camouflage in the city vs, the countryside.  The difference is statistically significant.
+
+#### Overdispersion
+
+With grouped binary data, we also have to be wary of so-called overdispersion.  With grouped binary data, the assumption of a binomially distributed response introduces a very specific assumption about the relationship between the variance of the response and the mean.   (Do you remember what this is?).  But this assumption is just an assumption, and its suitability needs to be assessed.  
+
+More often than not (dare we say almost always?), the data are more variable, or more dispersed, then the binomial distribution would suggest.  When this happens, we say that the data are "overdispersed" relative to a binomial distribution.  (Underdispersion is possible too, but it's rare, and for reasons that we will see shortly, it doesn't create the same statistical problems that overdispersion does.)  
+
+Here's some good news: the degree of over-/under-dispersion is measured by the ratio of something called the "residual deviance" to the df associated with the residual deviance.  The residual deviance is the counterpart to the error sum-of-squares in general linear models, and the associated df are computed in the same way.  When the ratio of the residual deviance to its df is $>1$, this suggests overdispersion; when the ratio is $<1$, this suggest underdispersion.  No surprise, the moth data are overdispersed.
+
+When data are overdispersed, the "naive" standard errors (i.e., those calculated assuming binomial variation) are too small.  That's bad, and we need to correct for it.  (When data are underdispersed, the naive standard errors are too big, which just means we wind up with conservative inferences, which no one worries about.)  In R, the way to correct for overdispersion is to use a so-called `quasibinomial` family.  Let's try it: 
+
+
+``` r
+fm2 <- glm(cbind(removed, placed - removed) ~ morph * distance,
+           family = quasibinomial,
+           data = moth)
+
+summary(fm2)
+```
+
+```
+## 
+## Call:
+## glm(formula = cbind(removed, placed - removed) ~ morph * distance, 
+##     family = quasibinomial, data = moth)
+## 
+## Coefficients:
+##                      Estimate Std. Error t value Pr(>|t|)    
+## (Intercept)         -1.128987   0.223104  -5.060 0.000492 ***
+## morphlight           0.411257   0.309439   1.329 0.213360    
+## distance             0.018502   0.006364   2.907 0.015637 *  
+## morphlight:distance -0.027789   0.009115  -3.049 0.012278 *  
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## (Dispersion parameter for quasibinomial family taken to be 1.270859)
+## 
+##     Null deviance: 35.385  on 13  degrees of freedom
+## Residual deviance: 13.230  on 10  degrees of freedom
+## AIC: NA
+## 
+## Number of Fisher Scoring iterations: 4
+```
+
+Using quasi-likelihood to estimate the scale (or dispersion) parameter increases the estimates of the standard errors of the coefficients by an amount equal to the square root of the estimated scale parameter.  However, the $t$-test of the interaction between color morph and distance indicates that there is a statistically significant difference in how the proportion of moth removes changes over the distance transect between the two color morphs.
+
+---
+
+<span style="color: gray;">So what's "quasi" about a quasi-binomial family?  In the first case, there is no such thing as a "quasi-binomial" distribution.  The "quasi-binomial" family is just a Poisson fit with the standard errors inflated by the dispersion parameter.</span>
+
+<span style="color: gray;">You may also wonder why we didn't discuss overdispersion with the Donner-party data.  In logistic regression with individual responses, it's essentially impossible to distinguish overdispersion from lack of fit. </span>
+
+<span style="color: gray;">So where does the dispersion parameter come from?  It turns out that the dispersion parameter is just the square root of the residual deviance divided by its df.  In the moth data, this would be $\sqrt{13.23/10} = 1.15$. But wait...that's not the value we see.  It turns out that there are several ways to compute the residual deviance.  The authors of `glm` compute the dispersion parameter based on something called the Pearson (residual) deviance.  On the other hand, the residual deviance in the model summary is computed based on the so-called deviance residuals.  The residual deviance based on the Pearson residuals and the residual deviance based on the deviance residuals might be similar, but they won't be the same. Generalized linear models are complicated.</span>
+
+<span style="color: gray;">Finally, you may also have noticed that with the `quasibinomial` family, hypothesis tests about parameters were $t$-tests instead of $z$-tests.  The authors of `glm` decided to implement $z$-tests when the dispersion parameter was assumed to be known, and $t$-tests when it the dispersion parameter is estimated from data.  The $t$-tests use the same df as the df associated with the residual deviance.</span>
+
+---
+
 ### Complete separation
 
-Here's a second example of logistic regression.  Something interesting and different will happen in these data.
+Here's a third example of logistic regression.  Something interesting and different will happen in these data.
 
 This is a data set analyzed by @zuur2009mixed.  As explained there, these data describe the incidence of "tuberculosis-like lesions in wild boar *Sus scrofa*" in southern Spain, and were originally collected by @vicente2006wild.  The potential explanatory variables in the data set include a measure of the animal's size, it's sex, and a grouping into one of four age classes.
 
@@ -253,7 +399,7 @@ lines(x   = new.data$length,
       lty = "dashed")
 ```
 
-<img src="04-GeneralizedLinearModels_files/figure-html/unnamed-chunk-5-1.png" width="672" />
+<img src="04-GeneralizedLinearModels_files/figure-html/unnamed-chunk-8-1.png" width="672" />
 
 Now let's try adding sex and age class as predictors.  Because the age class is coded with values 1--4, we want to make sure that R treats these values as levels of a categorical predictor (and not a quantitative predictor), so we enclose the `age` predictor in `as.factor(age)`.  
 
@@ -367,111 +513,7 @@ summary(fm3)
 ```
 For these data, this works.  In other cases, a second option is to use so-called "exact" methods for inference.  There doesn't appear to be a good package available for implementing these methods in R.  Other software packages might be necessary. 
 
-<!-- ### Grouped binary data: Industrial melanism -->
 
-<!-- So far, in both data sets that we have seen, each individual data point gives the outcome of a single trial.  Sometimes, the data are structured so that each data point is a tally of the number of outcomes of one type in a set of trials.  We call these data "grouped". -->
-
-<!-- To illustrate, we will consider data from a famous ecological study investigating predation on light and dark colored moths along an urban-rural transect outside of Liverpool, England. The original source for these data is @bishop1972; I obtained them from @ramsey2002. These data consist of paired binomial responses with two covariates: distance from Liverpool (a station-level covariate) and color morph (an observation-level covariate).   -->
-
-<!-- Although simple, these data contain many features that complicate their analysis: -->
-
-<!-- * Observations from the same location are (positively) correlated, presumably because the predation pressure varies from one location to the next. -->
-<!-- * The responses are grouped binomial responses with varying group size (that is, varying numbers of moths placed on trees) at each location. -->
-
-<!-- Accommodating both the non-independence (due to the pairing) and the non-normality of these data requires a more sophisticated approach.  Here, we will focus on accommodating the binomial nature of the response.  We will focus on using mixed models to accommodate the correlations among observations from the same location. -->
-
-<!-- Let's first have a look at the data: -->
-<!-- ```{r} -->
-<!-- moth <- read.table("data/moth.txt", head = TRUE, stringsAsFactors = TRUE) -->
-<!-- summary(moth) -->
-<!-- head(moth) -->
-<!-- ``` -->
-<!-- In each record, the variable `placed` gives the number of moths that were placed on the trees, and the variable `removed` gives the number that were removed, presumably by predators.  For these data, we'd like to know if the rate at which moths are removed changes differently for light vs.\ dark moths as we move further out into the countryside and away from the urban city center. In other words, we want to know if there is an interaction between `distance` (the distance from Liverpool) and the color `morph`. -->
-
-<!-- In notation, let $i=1,2$ index the two color morphs, let $j = 1, \ldots, 7$ index the locations, let $y_{ij}$ give the number of moths removed, let $n_{ij}$ give the number of moths placed, and let $x_j$ give the distance of station $j$ from Liverpool.  Here, we will study the model  -->
-<!-- \[ -->
-<!-- \mathrm{logit}(y_{ij} / n_{ij}) = a_i + b_i x_j + \varepsilon_{ij}  -->
-<!-- \] -->
-<!-- which regresses the log odds of moth removal against distance from Liverpool, with different intercepts and slopes for each color morph.  We are most interested in learning about the difference $b_1 - b_2$, which quantifies how the relationship between log odds of removal and distance differs between the two color morphs, and determining whether there is evidence that this difference $\neq 0$.   -->
-
-<!-- For grouped binary data, we need to specify both the number of "successes" and number of "failures" as the response variable in the model.  Here, we use `cbind` to create a two-column matrix with the number of "successes" (moths removed) in the first column, and the number of "failures" (moths not removed) in the second column.   -->
-
-<!-- ```{r} -->
-<!-- fm1 <- glm(cbind(removed, placed - removed) ~ morph * distance, -->
-<!--            family = binomial(link = "logit"), -->
-<!--            data = moth) -->
-
-<!-- summary(fm1) -->
-<!-- ``` -->
-
-<!-- I STOPPED HERE -->
-
-<!-- We'll start with the standard logistic regression model for the industrial melanism data.  We are primarily interested in determining if the effect of color morph on removal rate changes with distance from Liverpool.   -->
-
-<!-- ```{r} -->
-<!-- moth <- read.table("data/moth.txt", head = TRUE, stringsAsFactors = TRUE) -->
-
-<!-- fm1 <- glm(cbind(removed, placed - removed) ~ morph * distance, -->
-<!--            family = binomial(link = "logit"), -->
-<!--            data = moth) -->
-
-<!-- summary(fm1) -->
-<!-- ``` -->
-
-<!-- Grouped binary data are often overdispersed relative to the variance implied by a binomial distribution.  In this case, we would call the overdispersion "extra-binomial" variation.  As with count data, we can deal with overdispersion through a quasi-likelihood approach: -->
-
-<!-- ```{r} -->
-<!-- fm1q <- glm(cbind(removed, placed - removed) ~ morph * distance, -->
-<!--            family = quasibinomial(link = "logit"), -->
-<!--            data = moth) -->
-
-<!-- summary(fm1q) -->
-<!-- ``` -->
-
-<!-- As with count data, using quasi-likelihood to estimate the scale (or dispersion) parameter increases the estimates of the standard errors of the coefficients by an amount equal to the square root of the estimated scale parameter. -->
-
-<!-- The $t$-test of the interaction between color morph and distance indicates that there is a statistically significant difference in how the proportion of moth removes changes over the distance transect between the two color morphs. -->
-
-<!-- ```{r} -->
-<!-- plot(x = moth$distance, -->
-<!--      y = residuals(fm1q, type = "deviance"), -->
-<!--      xlab = "distance", -->
-<!--      ylab = "Deviance residuals") -->
-
-<!-- abline(h = 0, lty = "dashed") -->
-<!-- ``` -->
-
-<!-- The plot of the residuals suggests that we should include a random effect for the sampling station.  This makes complete sense.  The data for the two color morphs at each station share whatever other characteristics make the station unique, and are thus correlated.  To account for this correlation, we need to introduce a random effect for the station.  This again gets us into the world of generalized linear mixed models.  Before proceeding, we'll write the model down.  Let $i=1,2$ index the two color morphs, and let $j = 1, \ldots, 7$ index the stations.  Let $y_{ij}$ be the number of moths removed, let $n_{ij}$ be the number of moths placed, and let $x_j$ be the distance of the station from Liverpool.  We wish to fit the model -->
-<!-- \begin{align*} -->
-<!-- y_{ij} & \sim \mathrm{Binom}(p_{ij}, n_{ij})\\ -->
-<!-- \mathrm{logit}(p_{ij})  & = \eta_{ij} \\ -->
-<!-- \eta_{ij} & = a_i + b_i x_j + L_j \\ -->
-<!-- L_j & \sim \mathcal{N}(0, \sigma^2_L) -->
-<!-- \end{align*} -->
-
-<!-- The $L_j$'s are our [l]ocation-specific random effects that capture any other station-to-station differences above and beyond the station's distance from Liverpool.  (It turns out that an observation-level random effect does not improve the model, at least as indicated by DIC.)  Because this model includes both a random effect for the station and a non-Gaussian response, it is a generalized linear mixed model (GLMM).  We postpone our discussion accordingly. -->
-
-<!-- We have already mentioned that the $t$-statistics reported in `summary.glm` are based on standard errors calculated from the curvature (Hessian) of the negative log-likelihood at the MLEs, with df determined by the df available for the residual deviance.  An alternative approach for testing for the significance of model terms is to use the residual deviance to compare nested models, much as one would use $F$-tests to compare nested models in ordinary least squares.  Here is a bit of theory.  Let $D$ denote the residual deviance for a model.  Suppose we are comparing two nested models: a parameter poor model that we call model 0, and a parameter rich model that we call model 1.  The parameter-rich model nests the parameter poor model.  Let $p_0$ and $p_1$ be the number of estimated parameters in the linear predictor of models 0 and 1, respectively, and let $D_0$ and $D_1$ denote the (residual) deviances of both models.  In the usual way, we wish to test whether or not the parameter-rich model provides a statistically significant improvement in fit over the parameter-poor model. -->
-
-<!-- There are two separate approaches here depending on whether the scale parameter is known, or is estimated from the data.  If the scale parameter is known to be $\phi$, then define the scaled deviance as $D^* = D / \phi$.  The LRT to compare the two models is equal to the drop in the scaled deviance, $D^*_0 - D^*_1$.  Under the null hypothesis that the parameter-poor model generated the data, the test statistic has a $\chi^2$ distribution with $p_1 - p_0$ degrees of freedom. -->
-
-<!-- If the scale parameter is estimated from the data, then we work with the (residual) deviances directly.  In this case, we calculate the $F$-statistic -->
-<!-- $$ -->
-<!-- F = \frac{(D_0 - D_1)/(p_1 - p_0)}{D_1 / (n - p_1)}. -->
-<!-- $$ -->
-
-<!-- Note that this is generalization of the usual $F$-statistic for comparing nested models from OLS.  Under the null hypothesis, the test statistic has an $F_{p_1 - p_0, n - p_1}$ distribution. -->
-
-
-<!-- # test for interaction between distance and morph -->
-
-<!-- ```{r} -->
-<!-- fm2q <- glm(cbind(removed, placed - removed) ~ morph + distance, -->
-<!--             family = quasibinomial(link = "logit"), -->
-<!--             data = moth) -->
-
-<!-- anova(fm2q, fm1q, test = "F") -->
-<!-- ``` -->
 
 ## Poisson regression
 
@@ -501,7 +543,7 @@ head(elephant)
 with(elephant, plot(matings ~ age))
 ```
 
-<img src="04-GeneralizedLinearModels_files/figure-html/unnamed-chunk-9-1.png" width="672" />
+<img src="04-GeneralizedLinearModels_files/figure-html/unnamed-chunk-12-1.png" width="672" />
 
 ``` r
 fm1 <- glm(matings ~ age, 
@@ -561,9 +603,9 @@ lines(x   = new.data$age,
       lty = "dashed")
 ```
 
-<img src="04-GeneralizedLinearModels_files/figure-html/unnamed-chunk-10-1.png" width="672" />
+<img src="04-GeneralizedLinearModels_files/figure-html/unnamed-chunk-13-1.png" width="672" />
 
-Unlike logistic regression, with Poisson regression we can generate meaningful residuals.  There are two ways to define the residuals for generalized linear models.  Here, we'll have a look at the so-called deviance residuals.
+With Poisson regression, we can generate meaningful residuals.  There are two ways to define the residuals for generalized linear models.  Here, we'll have a look at the so-called deviance residuals.
 
 
 ``` r
@@ -575,17 +617,12 @@ plot(x = elephant$age,
 abline(h = 0, lty = "dashed")
 ```
 
-<img src="04-GeneralizedLinearModels_files/figure-html/unnamed-chunk-11-1.png" width="672" />
+<img src="04-GeneralizedLinearModels_files/figure-html/unnamed-chunk-14-1.png" width="672" />
 
 The residuals do not suggest any deficiency in the fit.
 
-With Poisson data, we also have to be wary of so-called overdispersion.  In Poisson regression, the assumption of a Poisson-distributed response introduces a very specific assumption about the relationship between the variance of the response and the mean.   (Do you remember what this is?  In a Poisson distribution, the variance equals the mean!).  But this assumption is just an assumption, and its suitability needs to be assessed.  
+With Poisson data, we also have to be wary of overdispersion.  As with grouped binary data, count data are almost always overdispersed relative to a Poisson distribution.  `glm` also provides a `quasipoisson` family for such data.  Let's try it with the elephant data.
 
-More often than not (dare we say almost always?), the data are more variable, or more dispersed, then the Poisson distribution would suggest.  When this happens, we say that the data are "overdispersed" relative to a Poisson distribution.  (Underdispersion is possible too, but it's rare, and for reasons that we will see shortly, it doesn't create the same statistical problems that overdispersion does.)  
-
-Here's some good news: the degree of over-/under-dispersion is measured by the ratio of something called the "residual deviance" to the df associated with the residual deviance.  The residual deviance is the counterpart to the error sum-of-squares in general linear models, and the associated df are computed in the same way.  When the ratio of the residual deviance to its df is $>1$, this suggests overdispersion; when the ratio is $<1$, this suggest underdispersion.  No surprise, the elephant data are overdispersed.
-
-When data are overdispersed, the "naive" standard errors (i.e., those calculated assuming Poisson variation) are too small.  That's bad, and we need to correct for it.  (When data are underdispersed, the naive standard errors are too big, which just means we wind up with conservative inferences, which no one worries about.)  In R, the way to correct for overdispersion is to use a so-called `quasipoisson` family.  Let's try it: 
 
 
 ``` r
@@ -632,17 +669,10 @@ lines(x   = new.data$age,
       lty = "dashed")
 ```
 
-<img src="04-GeneralizedLinearModels_files/figure-html/unnamed-chunk-12-1.png" width="672" />
+<img src="04-GeneralizedLinearModels_files/figure-html/unnamed-chunk-15-1.png" width="672" />
 
-Switching from a Poisson family to a quasi-Poisson family hasn't changed the parameter estimates of the fit, but it has increased the associate standard errors.  To be precise, the standard errors have been multiplied by something called the "dispersion parameter", which in this case is about 1.16.  So, the standard errors have increased by 16\% --- nothing dramatic, but big enough that we need to account for it.  The dispersion parameter should be close to the square root of the ratio of the residual deviance to its df; I'm not sure why it isn't exactly that value in this case.
+In this case, the "dispersion parameter" is about 1.16 so, the standard errors have increased by 16\% --- nothing dramatic, but big enough that we need to account for it.  
 
----
-
-<span style="color: gray;">So what's "quasi" about a quasi-Poisson family?  In the first case, there is no such thing as a "quasi-Poisson" distribution.  The "quasi-Poisson" family is just a Poisson fit with the standard errors inflated by the dispersion parameter.</span>
-
-<span style="color: gray;">You may also wonder why we didn't discuss overdispersion in logistic regression.  In logistic regression with individual responses, like the Donner party data and the boar data, it's hard to define overdispersion.  For logistic regression with grouped binary responses, however, overdispersion can and should be accounted for, just like in Poisson regression.  (Grouped responses are those where each data point is not a single success or failure, but a tally of the number of successes in many trials.)  There is a `quasibinomial` family in R to deal with overdispersed (grouped) binomial data.</span>
-
----
 
 
 <!-- As an alternative, we could fit a model that uses a negative binomial distribution for the response.  Negative binomial distributions belong to the exponential family, so we can fit them using the GLM framework.  However, the authors of `glm` did not include a negative binomial family in their initial code.  Venables & Ripley's `MASS` package includes a program called `glm.nb` which is specifically designed for negative binomial responses.  `MASS::glm.nb` uses the parameterization familiar to ecologists, although they use the parameter $\theta$ instead of $k$.  So, in their notation, if $y \sim \mathrm{NB}(\mu, \theta)$, then $\mathrm{Var}(y) = \mu + \mu^2/\theta$. -->

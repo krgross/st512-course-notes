@@ -67,6 +67,8 @@ nls
 generalized-linear-models
 logistic-regression
 individual-binary-responses-donner-party-data
+grouped-binary-data-and-overdispersion
+overdispersion
 complete-separation
 poisson-regression
 smoothing
