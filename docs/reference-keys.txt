@@ -71,6 +71,7 @@ grouped-binary-data-and-overdispersion
 overdispersion
 complete-separation
 poisson-regression
+transforming-count-responses
 smoothing
 nearest-neighbor-methods
 loess-smoothers

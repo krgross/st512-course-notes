@@ -357,6 +357,18 @@ lines(x   = new.data$age,
 
 In this case, the "dispersion parameter" is about 1.16 so, the standard errors have increased by 16\% --- nothing dramatic, but big enough that we need to account for it.  
 
+### Transforming count responses
+
+With count data, if we don't want to deal with the hassle of generalized linear models, there's always the option of using ordinary least-squares regression with a transformed response. For count data, the classic transformation is to use $\sqrt{y}$.  Let's illustrate with the elephant data:
+
+```{r elephant-sqrt-transformation}
+fm4 <- lm(sqrt(matings) ~ age, data = elephant)
+summary(fm4)
+with(elephant, plot(sqrt(matings) ~ age))
+abline(fm4)
+```
+
+Whether you prefer to use Poisson regression or to use ordinary least-squares with a transformed response is something of a matter of taste.  Contemporary tastes lean towards Poisson regression, but contemporary tastes also tend to fetishize overly fancy methods.  
 
 
 <!-- As an alternative, we could fit a model that uses a negative binomial distribution for the response.  Negative binomial distributions belong to the exponential family, so we can fit them using the GLM framework.  However, the authors of `glm` did not include a negative binomial family in their initial code.  Venables & Ripley's `MASS` package includes a program called `glm.nb` which is specifically designed for negative binomial responses.  `MASS::glm.nb` uses the parameterization familiar to ecologists, although they use the parameter $\theta$ instead of $k$.  So, in their notation, if $y \sim \mathrm{NB}(\mu, \theta)$, then $\mathrm{Var}(y) = \mu + \mu^2/\theta$. -->

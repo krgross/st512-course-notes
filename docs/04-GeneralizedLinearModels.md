@@ -673,6 +673,45 @@ lines(x   = new.data$age,
 
 In this case, the "dispersion parameter" is about 1.16 so, the standard errors have increased by 16\% --- nothing dramatic, but big enough that we need to account for it.  
 
+### Transforming count responses
+
+With count data, if we don't want to deal with the hassle of generalized linear models, there's always the option of using ordinary least-squares regression with a transformed response. For count data, the classic transformation is to use $\sqrt{y}$.  Let's illustrate with the elephant data:
+
+
+``` r
+fm4 <- lm(sqrt(matings) ~ age, data = elephant)
+summary(fm4)
+```
+
+```
+## 
+## Call:
+## lm(formula = sqrt(matings) ~ age, data = elephant)
+## 
+## Residuals:
+##      Min       1Q   Median       3Q      Max 
+## -1.90532 -0.33654  0.07767  0.45871  1.09468 
+## 
+## Coefficients:
+##             Estimate Std. Error t value Pr(>|t|)    
+## (Intercept) -0.81220    0.56867  -1.428 0.161187    
+## age          0.06320    0.01561   4.049 0.000236 ***
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Residual standard error: 0.6493 on 39 degrees of freedom
+## Multiple R-squared:  0.296,	Adjusted R-squared:  0.2779 
+## F-statistic:  16.4 on 1 and 39 DF,  p-value: 0.0002362
+```
+
+``` r
+with(elephant, plot(sqrt(matings) ~ age))
+abline(fm4)
+```
+
+<img src="04-GeneralizedLinearModels_files/figure-html/elephant-sqrt-transformation-1.png" width="672" />
+
+Whether you prefer to use Poisson regression or to use ordinary least-squares with a transformed response is something of a matter of taste.  Contemporary tastes lean towards Poisson regression, but contemporary tastes also tend to fetishize overly fancy methods.  
 
 
 <!-- As an alternative, we could fit a model that uses a negative binomial distribution for the response.  Negative binomial distributions belong to the exponential family, so we can fit them using the GLM framework.  However, the authors of `glm` did not include a negative binomial family in their initial code.  Venables & Ripley's `MASS` package includes a program called `glm.nb` which is specifically designed for negative binomial responses.  `MASS::glm.nb` uses the parameterization familiar to ecologists, although they use the parameter $\theta$ instead of $k$.  So, in their notation, if $y \sim \mathrm{NB}(\mu, \theta)$, then $\mathrm{Var}(y) = \mu + \mu^2/\theta$. -->
